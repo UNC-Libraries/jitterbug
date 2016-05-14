@@ -6,7 +6,13 @@
   <style>
 /*        * { border: 1px solid black; }*/
 
-    .banner {
+
+    a:link, a:visited, a:hover, a:active {
+      color: #707070;
+      text-decoration: none;
+    }
+
+    #banner {
       margin-bottom: 5px;
     }
 
@@ -24,6 +30,10 @@
       margin-left: 360px;
       margin-top: 25px;
       float: right;
+    }
+    
+    #support-nav a {
+       color: #000000;
     }
 
     #support-nav ul {
@@ -163,7 +173,7 @@
       text-decoration: none;
     }
 
-    #data-panel .pagination li.page-item a:hover{
+    #data-panel .pagination li.page-item a:hover {
       color: #000000;
       background-color: #fff;
     }
@@ -185,7 +195,8 @@
      * same height.
      */
     #content {
-      display: table;
+      background-color: #fff;
+/*      display: table;  */
     }
 
     #content .panel {
@@ -218,6 +229,73 @@
 
     .input-group-addon {
       padding: 0.25rem 0.75rem;
+    }
+
+    /* Misc */
+
+    .col-fff {
+      background-color: #fff;
+    }
+
+    .col-e0 {
+      background-color: #e0e0e0;
+    }
+
+    .detail {
+      background-color: #fff;
+      font-size: .9rem;
+    }
+
+    .detail h6 {
+      background-color: #e0e0e0;
+      padding-top: 8px;
+      font-weight: bold;
+      font-size: .95rem;
+    }
+
+    .detail .first {
+      padding-top: .3rem;
+      background-color: #fff;
+    }
+
+    .detail .last {
+      padding-bottom: 1.5rem;
+      background-color: #fff;
+    }
+
+    .detail .back {
+      padding-top: .75rem;
+      padding-bottom: 1.5rem;
+      font-size: .95rem;
+      background-color: #fff;
+    }
+
+    .detail .detail-label {
+      padding-top: .5rem;
+      padding-right: .4rem;
+      font-weight: bold;
+      text-align: right;
+      background-color: #fff;
+    }
+
+    .detail .detail-value {
+      padding-top: .5rem;
+      background-color: #fff;
+    }
+
+    .detail table {
+      font-size: .9rem;
+      table-layout: fixed;
+    }
+
+    .detail table th {
+      border-top: none;
+    }
+
+    .detail table td {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     body {

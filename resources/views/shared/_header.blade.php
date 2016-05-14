@@ -1,4 +1,4 @@
-      <div class="row banner">
+      <div id="banner" class="row">
         <div class="col-md-12">
           <!-- <div id="logo">{!! Html::image('img/junebug.png', 'Junebug logo', array('width' => 37 , 'height' => 41)) !!} &nbsp;junebug</div> -->
           <!-- <div id="logo">{!! Html::image('img/junebug-cute.png', 'Junebug logo', array('width' => 33 , 'height' => 42)) !!} &nbsp;junebug</div> -->

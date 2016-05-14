@@ -1,92 +1,175 @@
 @extends('layouts.master', ['title' => 'Audio Item'])
 
 @section('content')
-<div class="row">
-  <div id="filter-panel" class="col-md-3 panel">
-    <h6>Type</h6>
-    <ul id="type-filters" class="filter-list">
-      <li>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="0">
-            Any
-          </label>
-
-        </div>
-      </li>
-      @foreach ($types as $type)
-      <li>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="{{ $type->id }}">
-            {{ $type->name }}&nbsp;<span class="filter-count">({{ $type->count }})</span>
-          </label>
-        </div>
-      </li>
-      @endforeach
-    </ul>
-
-    <h6>Collection</h6>
-    <ul id="collection-filters" class="filter-list" style="height: 260px; overflow-y: scroll; overflow-x: hidden;">
-      <li>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="0">
-            Any
-          </label>
-        </div>
-      </li>
-      @foreach ($collections as $collection)
-      <li>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="{{ $collection->id }}">
-            {{ $collection->name }}&nbsp;<span class="filter-count">({{ $collection->count }})</span>
-          </label>
-        </div>
-      </li>
-      @endforeach
-    </ul>
-
-    <h6>Format</h6>
-    <ul id="format-filters" class="filter-list" style="height: 250px; overflow-y: scroll; overflow-x: hidden;">
-      <li class="">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="0">
-            Any
-          </label>
-        </div>
-      </li>
-      @foreach ($formats as $format)
-      <li>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="{{ $format->id }}">
-            {{ $format->name }}&nbsp;<span class="filter-count">({{ $format->count }})</span>
-          </label>
-        </div>
-      </li>
-      @endforeach
-    </ul>
-
-  </div>
-  <div id="data-panel" class="col-md-9 panel">
-    <div class="top-controls">
-      <div style="float: left;">
-        <a class="btn btn-sm btn-secondary" style="margin-right: 5px;" href="#" role="button"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
-        <a class="btn btn-sm btn-secondary" href="#" role="button"><i class="fa fa-upload" aria-hidden="true"></i> Export</a>
-      </div>
-      <div style="float: right; width: 275px;">
-        <div class="input-group">
-          <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
-          <input id="search" class="form-control form-control-sm" type="text" placeholder="Search">
-        </div>
-      </div>
-    </div>
-    <div id="data-container">
-      <table id="data" class="table"></table>
+<div class="detail">
+  <div class="row">
+    <div class="col-xs-12 back">
+      <a href="#"><i class="fa fa-caret-left" aria-hidden="true"></i> Items</a>
     </div>
   </div>
+  <div class="row">
+    <div class="col-xs-12 col-e0">
+      <h6>Audio Item</h6>
+    </div>
+  </div>
+  <div class="row first">
+    <div class="col-xs-3 detail-label">
+      Call Number
+    </div>
+    <div class="col-xs-9 detail-value">
+      FS-1102
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-3 detail-label">
+      Container Note
+    </div>
+    <div class="col-xs-9 detail-value">
+      Oral History Interview:  Theresa Conley
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-3 detail-label">
+      Format
+    </div>
+    <div class="col-xs-9 detail-value">
+      Audiocassette
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-3 detail-label">
+      Collection
+    </div>
+    <div class="col-xs-9 detail-value">
+      Alvic, Phillis
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-3 detail-label">
+      Speed
+    </div>
+    <div class="col-xs-9 detail-value">
+      1.875 ips
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-3 detail-label">
+      Listening Copy
+    </div>
+    <div class="col-xs-9 detail-value">
+      No
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-3 detail-label">
+      Mono/Stereo
+    </div>
+    <div class="col-xs-9 detail-value">
+      No
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-3 detail-label">
+      Base
+    </div>
+    <div class="col-xs-9 detail-value">
+      Plastic/open reel
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-3 detail-label">
+      Created On
+    </div>
+    <div class="col-xs-9 detail-value">
+      4/26/2016 by System
+    </div>
+  </div>
+  <div class="row last">
+    <div class="col-xs-3 detail-label">
+      Updated On
+    </div>
+    <div class="col-xs-9 detail-value">
+      5/15/2016 by John Loy
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-e0">
+      <h6>Preservation Masters</h6>
+    </div>
+  </div>
+  <div class="row first last">
+    <div class="col-xs-12 col-fff">
+      <table class="table table-sm table-hover">
+        <thead>
+          <tr>
+            <th width="12%">#</th>
+            <th width="20%">File Name</th>
+            <th width="30%">File Location</th>
+            <th width="15%">Department</th>
+            <th width="16%">Duration</th>
+            <th width="7%">Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr role="button" data-id="{{14365}}">
+            <td>14365</td>
+            <td></td>
+            <td></td>
+            <td>SFC</td>
+            <td>45' 23"</td>
+            <td>Audio</td>
+          </tr> 
+          <tr role="button" data-id="{{14366}}">
+            <td>14366</td>
+            <td></td>
+            <td></td>
+            <td>SFC</td>
+            <td>9’ 19”</td>
+            <td>Audio</td>
+          </tr>                          
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-e0">
+      <h6>Cuts</h6>
+    </div>
+  </div>
+  <div class="row first last">
+    <div class="col-xs-12 col-fff">
+      <table class="table table-sm table-hover">
+        <thead>
+          <tr>
+            <th width="10%">PM #</th>
+            <th width="15%">Cut Number</th>
+            <th width="10%">Side</th>
+            <th width="20%">Title</th>
+            <th width="25%">Performer/Composer</th>
+            <th width="20%">PM Start Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr role="button" data-id="{{14365}}">
+            <td>14365</td>
+            <td>1</td>
+            <td></td>
+            <td>SFC</td>
+            <td>SFC</td>
+            <td>45' 23"</td>
+          </tr> 
+          <tr role="button" data-id="{{14366}}">
+            <td>14366</td>
+            <td>2</td>
+            <td></td>
+            <td>SFC</td>
+            <td>SFC</td>
+            <td>9’ 19”</td>
+          </tr>                          
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 </div>
 @stop

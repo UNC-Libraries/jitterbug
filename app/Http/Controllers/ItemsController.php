@@ -75,8 +75,8 @@ class ItemsController extends Controller
   
   public function show($id)
   {
-    $item = AudioVisualItem::findOrFail($id);
-    return $item;
+    $item = AudioVisualItem::findOrFail(58661);
+    return view('items.show');
   }
   
   public function template()
