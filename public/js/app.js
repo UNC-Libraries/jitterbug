@@ -58,9 +58,11 @@ $(function() {
   if (location.pathname === '/items') {
     initialize();
     query = {};
-    if(Cookies.get('page')) {
-      query['page'] = Cookies.get('page');     
+    if(Cookies.get('page') != null) {
+      query['page'] = Cookies.get('page');
+      console.log("restoring page " + Cookies.get('page'));     
     }
+    console.log(query);
     doSearch(query);
   }
 
@@ -130,31 +132,33 @@ function doSearch(query) {
     });
 
     // Bind click handlers to all data pagination links
-    var currentPage = parseInt($('.page-item.active').text().trim());
-    Cookies.set('page',currentPage);
-    $('.pagination').each(function() {
-      $('.page-link').each(function() {
-        if($(this).parent().hasClass('disabled') || 
-           $(this).parent().hasClass('active')) {
-          return;
-        } else if($(this).hasClass('prev-page')) {
-          $(this).click(function(){
-            query['page'] = currentPage - 1;
-            doSearch(query);
-          });
-        } else if($(this).hasClass('next-page')) {
-          $(this).click(function(){
-            query['page'] = currentPage + 1;
-            doSearch(query);
-          });
-        } else {
-          $(this).click(function(){
-            query['page'] = $(this).text().trim();
-            doSearch(query);
-          });
-        }
-      })
-    });
+    if($('.pagination').length) {
+      var currentPage = parseInt($('.page-item.active').text().trim());
+      Cookies.set('page',currentPage);
+      $('.pagination').each(function() {
+        $('.page-link').each(function() {
+          if($(this).parent().hasClass('disabled') || 
+             $(this).parent().hasClass('active')) {
+            return;
+          } else if($(this).hasClass('prev-page')) {
+            $(this).click(function(){
+              query['page'] = currentPage - 1;
+              doSearch(query);
+            });
+          } else if($(this).hasClass('next-page')) {
+            $(this).click(function(){
+              query['page'] = currentPage + 1;
+              doSearch(query);
+            });
+          } else {
+            $(this).click(function(){
+              query['page'] = $(this).text().trim();
+              doSearch(query);
+            });
+          }
+        })
+      });
+    }
   });
 }
 
