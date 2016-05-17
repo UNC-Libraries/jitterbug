@@ -1,6 +1,7 @@
 <?php
 namespace Junebug\Http\Controllers;
 
+use DB;
 use Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -10,6 +11,7 @@ use Junebug\Models\AudioVisualItem;
 use Junebug\Models\AudioVisualItemType;
 use Junebug\Models\AudioVisualItemCollection;
 use Junebug\Models\AudioVisualItemFormat;
+use Junebug\Models\Cut;
 use Junebug\Support\SolariumPaginator;
 
 class ItemsController extends Controller
@@ -22,6 +24,7 @@ class ItemsController extends Controller
    */
   public function __construct()
   {
+    DB::enableQueryLog();
     $this->middleware('guest');
   }
   
@@ -37,6 +40,7 @@ class ItemsController extends Controller
 
       $client = new Solarium\Client(Config::get('solarium'));
       $solariumQuery = $client->createSelect();
+
       $searchTerms = $userQuery->{'search'};
       $solariumQuery->setQuery($searchTerms);
 
@@ -75,13 +79,15 @@ class ItemsController extends Controller
   
   public function show($id)
   {
-    $item = AudioVisualItem::findOrFail(58661);
-    return view('items.show');
-  }
-  
-  public function template()
-  {
-    return view('items.template');
+    $item = AudioVisualItem::findOrFail($id);
+    $itemable = $item->itemable();
+    $cuts = Cut::where('call_number', $item->callNumber)
+               ->orderBy('preservation_master_id', 'asc')
+               ->orderBy('cut_number', 'asc')
+               ->get();
+    $queries = DB::getQueryLog();
+    $lastQuery = end($queries);
+    return view('items.show', compact('item','itemable','cuts'));
   }
   
   private function createFilterQueries($solariumQuery, $userQuery)

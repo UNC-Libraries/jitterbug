@@ -15,4 +15,9 @@ Route::get('/', 'WelcomeController@index');
 
 Route::resource('items', 'ItemsController');
 
-Route::get('/items-template', "ItemsController@template");
+
+// Display all SQL executed in Eloquent
+// Event::listen('illuminate.query', function($query)
+// {
+//     var_dump($query);
+// });

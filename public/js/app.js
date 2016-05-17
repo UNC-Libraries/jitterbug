@@ -55,10 +55,10 @@ $(function() {
     }
   });
 
-
-  initialize();
-
-  doSearch();
+  if (location.pathname === '/items') {
+    initialize();
+    doSearch();
+  }
 
 });
 
@@ -98,7 +98,10 @@ function doSearch(query) {
   }
   query['q'] = encodeURIComponent(searchQuery());
   $.get('/items', query, function(data) {
-    $("#data-container").replaceWith(data);
+    $('#data-container').replaceWith(data);
+    $('#data tr').click(function(event) {
+        window.location.href="/items/" + $(this).data('id');
+    });
 
     // Bind click handlers to all data pagination links
     var currentPage = parseInt($('.page-item.active').text().trim());

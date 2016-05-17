@@ -242,8 +242,11 @@
     }
 
     .detail {
-      background-color: #fff;
       font-size: .9rem;
+    }
+
+    .detail .row {
+      background-color: #fff;
     }
 
     .detail h6 {
@@ -255,12 +258,10 @@
 
     .detail .first {
       padding-top: .3rem;
-      background-color: #fff;
     }
 
     .detail .last {
       padding-bottom: 1.5rem;
-      background-color: #fff;
     }
 
     .detail .back {
@@ -275,12 +276,19 @@
       padding-right: .4rem;
       font-weight: bold;
       text-align: right;
-      background-color: #fff;
     }
 
     .detail .detail-value {
       padding-top: .5rem;
+    }
+
+    .detail .actions {
       background-color: #fff;
+      text-align: right;
+      position: absolute;
+      right: 0;
+      top: .75rem;
+      z-index: 100;
     }
 
     .detail table {

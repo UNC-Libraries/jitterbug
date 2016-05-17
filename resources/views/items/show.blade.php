@@ -1,81 +1,184 @@
-@extends('layouts.master', ['title' => 'Audio Item'])
+@extends('layouts.master', ['title' => "$item->type Item"])
 
 @section('content')
 <div class="detail">
   <div class="row">
     <div class="col-xs-12 back">
-      <a href="#"><i class="fa fa-caret-left" aria-hidden="true"></i> Items</a>
+      <a href="/items"><i class="fa fa-caret-left" aria-hidden="true"></i> Items</a>
     </div>
   </div>
   <div class="row">
     <div class="col-xs-12 col-e0">
-      <h6>Audio Item</h6>
+      <h6>{{$item->type}} Item</h6>
     </div>
   </div>
-  <div class="row first">
+  {{-- AudioVisualItem Fields --}}
+  <div class="row first" style="position: relative;">
     <div class="col-xs-3 detail-label">
       Call Number
     </div>
-    <div class="col-xs-9 detail-value">
-      FS-1102
+    <div class="col-xs-7 detail-value">
+      {{$item->callNumber}}
+    </div>
+    <div class="col-xs-2 actions">
+      <a class="btn btn-sm btn-secondary" role="button" href="#"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
     </div>
   </div>
+  @if ($item->title)
+  <div class="row">
+    <div class="col-xs-3 detail-label">
+      Title
+    </div>
+    <div class="col-xs-9 detail-value">
+      {{$item->title}}
+    </div>
+  </div>
+  @endif
+  @if ($item->containerNote)
   <div class="row">
     <div class="col-xs-3 detail-label">
       Container Note
     </div>
     <div class="col-xs-9 detail-value">
-      Oral History Interview:  Theresa Conley
+      {{$item->containerNote}}
     </div>
   </div>
+  @endif
+  @if ($item->recordingLocation)
+  <div class="row">
+    <div class="col-xs-3 detail-label">
+      Recording Location
+    </div>
+    <div class="col-xs-9 detail-value">
+      {{$item->recordingLocation}}
+    </div>
+  </div>
+  @endif
+  @if ($item->oclcId)
+  <div class="row">
+    <div class="col-xs-3 detail-label">
+      OCLC Id
+    </div>
+    <div class="col-xs-9 detail-value">
+      {{$item->oclcId}}
+    </div>
+  </div>
+  @endif
+  @if ($item->entryDate)
+  <div class="row">
+    <div class="col-xs-3 detail-label">
+      Entry Date
+    </div>
+    <div class="col-xs-9 detail-value">
+      {{$item->entryDate}}
+    </div>
+  </div>
+  @endif
+  @if ($item->itemYear)
+  <div class="row">
+    <div class="col-xs-3 detail-label">
+      Item Year
+    </div>
+    <div class="col-xs-9 detail-value">
+      {{$item->itemYear}}
+    </div>
+  </div>
+  @endif
+  @if ($item->itemDate)
+  <div class="row">
+    <div class="col-xs-3 detail-label">
+      Item Date
+    </div>
+    <div class="col-xs-9 detail-value">
+      {{$item->itemDate}}
+    </div>
+  </div>
+  @endif
+  @if ($item->format)
   <div class="row">
     <div class="col-xs-3 detail-label">
       Format
     </div>
     <div class="col-xs-9 detail-value">
-      Audiocassette
+      {{$item->format->name}}
     </div>
   </div>
+  @endif
+  @if ($item->collection)
   <div class="row">
     <div class="col-xs-3 detail-label">
       Collection
     </div>
     <div class="col-xs-9 detail-value">
-      Alvic, Phillis
+      {{$item->collection->name}}
     </div>
   </div>
+  @endif
+  @if ($item->speed)
   <div class="row">
     <div class="col-xs-3 detail-label">
       Speed
     </div>
     <div class="col-xs-9 detail-value">
-      1.875 ips
+      {{$item->speed}}
     </div>
   </div>
-  <div class="row">
-    <div class="col-xs-3 detail-label">
-      Listening Copy
+  @endif
+  {{-- End AudioVisualItem Fields --}}
+
+  {{-- Begin Itemable Fields --}}
+  @if (get_class($itemable) == 'Junebug\Models\AudioItem')
+    <div class="row">
+      <div class="col-xs-3 detail-label">
+        Listening Copy
+      </div>
+      <div class="col-xs-9 detail-value">
+        {{$itemable->listeningCopyDisplay}}
+      </div>
     </div>
-    <div class="col-xs-9 detail-value">
-      No
+    @if ($itemable->monoStereo)
+    <div class="row">
+      <div class="col-xs-3 detail-label">
+        Mono/Stereo
+      </div>
+      <div class="col-xs-9 detail-value">
+        {{$itemable->monoStereoDisplay}}
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-3 detail-label">
-      Mono/Stereo
+    @endif
+    @if ($itemable->size)
+    <div class="row">
+      <div class="col-xs-3 detail-label">
+        Size
+      </div>
+      <div class="col-xs-9 detail-value">
+        {{$itemable->size}}
+      </div>
     </div>
-    <div class="col-xs-9 detail-value">
-      No
+    @endif
+    @if ($itemable->trackConfiguration)
+    <div class="row">
+      <div class="col-xs-3 detail-label">
+        Track Configuration
+      </div>
+      <div class="col-xs-9 detail-value">
+        {{$itemable->trackConfiguration}}
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-3 detail-label">
-      Base
+    @endif
+    @if ($itemable->base)
+    <div class="row">
+      <div class="col-xs-3 detail-label">
+        Base
+      </div>
+      <div class="col-xs-9 detail-value">
+        {{$itemable->base}}
+      </div>
     </div>
-    <div class="col-xs-9 detail-value">
-      Plastic/open reel
-    </div>
-  </div>
+    @endif
+  @endif
+  {{-- End Itemable Fields --}}
+
   <div class="row">
     <div class="col-xs-3 detail-label">
       Created On
@@ -92,6 +195,8 @@
       5/15/2016 by John Loy
     </div>
   </div>
+
+  @if (count($item->preservationMasters()) > 0 )
   <div class="row">
     <div class="col-xs-12 col-e0">
       <h6>Preservation Masters</h6>
@@ -111,26 +216,23 @@
           </tr>
         </thead>
         <tbody>
-          <tr role="button" data-id="{{14365}}">
-            <td>14365</td>
-            <td></td>
-            <td></td>
-            <td>SFC</td>
-            <td>45' 23"</td>
-            <td>Audio</td>
-          </tr> 
-          <tr role="button" data-id="{{14366}}">
-            <td>14366</td>
-            <td></td>
-            <td></td>
-            <td>SFC</td>
-            <td>9’ 19”</td>
-            <td>Audio</td>
-          </tr>                          
+          @foreach ($item->preservationMasters() as $master)
+          <tr role="button" data-id="{{$master->id}}">
+            <td>{{$master->id}}</td>
+            <td>{{$master->fileName}}</td>
+            <td>{{$master->fileLocation}}</td>
+            <td>{{$master->department->name or ''}}</td>
+            <td>{{$master->duration}}</td>
+            <td>{{$master->type}}</td>
+          </tr>
+          @endforeach
         </tbody>
       </table>
     </div>
   </div>
+  @endif
+
+  @if (count($cuts) > 0 )
   <div class="row">
     <div class="col-xs-12 col-e0">
       <h6>Cuts</h6>
@@ -150,26 +252,21 @@
           </tr>
         </thead>
         <tbody>
-          <tr role="button" data-id="{{14365}}">
-            <td>14365</td>
-            <td>1</td>
-            <td></td>
-            <td>SFC</td>
-            <td>SFC</td>
-            <td>45' 23"</td>
-          </tr> 
-          <tr role="button" data-id="{{14366}}">
-            <td>14366</td>
-            <td>2</td>
-            <td></td>
-            <td>SFC</td>
-            <td>SFC</td>
-            <td>9’ 19”</td>
-          </tr>                          
+          @foreach ($cuts as $cut)
+          <tr role="button" data-id="{{$cut->id}}">
+            <td>{{$cut->preservationMasterId}}</td>
+            <td>{{$cut->cutNumber}}</td>
+            <td>{{$cut->side}}</td>
+            <td>{{$cut->title}}</td>
+            <td>{{$cut->performerComposer}}</td>
+            <td>{{$cut->pmStartTime}}</td>
+          </tr>
+          @endforeach                       
         </tbody>
       </table>
     </div>
   </div>
+  @endif
 
 </div>
 @stop

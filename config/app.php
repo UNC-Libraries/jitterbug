@@ -200,7 +200,11 @@ return [
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
 		'Form'      => 'Illuminate\Html\FormFacade',
-		'Html'      => 'Illuminate\Html\HtmlFacade'
+		'Html'      => 'Illuminate\Html\HtmlFacade',
+
+		'AudioItem'	=> 'Junebug\Models\AudioItem',
+		'VideoItem'	=> 'Junebug\Models\VideoItem',
+		'FilmItem'	=> 'Junebug\Models\FilmItem'
 	],
 
 ];
