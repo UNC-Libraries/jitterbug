@@ -25,7 +25,7 @@
   </table>
   <div class="data-footer">
     <div class="record-count">
-      {{ $items->total() }} records
+      {{ $items->total() }} {{$items->total()==1 ? "record" : "records"}}
     </div>
     <div style="float: right;">
       <nav>

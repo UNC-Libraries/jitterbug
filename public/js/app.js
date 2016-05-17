@@ -57,23 +57,48 @@ $(function() {
 
   if (location.pathname === '/items') {
     initialize();
-    doSearch();
+    query = {};
+    if(Cookies.get('page')) {
+      query['page'] = Cookies.get('page');     
+    }
+    doSearch(query);
   }
 
 });
 
 function initialize() {
-  // Reset checkboxes on page load
-  $('#filter-panel .filter-list').each(function() {
-    var filterListCheckboxes = $(this).find(':checkbox');
-    for(var i = 0; i < filterListCheckboxes.length; i++) {
-      if(i == 0) {
-        filterListCheckboxes[i].checked = true;
-      } else {
-        filterListCheckboxes[i].checked = false;
+  
+  queryCookie = Cookies.get('q');
+  if(queryCookie != null) {
+    queryCookie = decodeURIComponent(queryCookie);
+    queryFilters = JSON.parse(queryCookie);
+    $('#search').val(queryFilters['search']);
+    $('#filter-panel .filter-list').each(function() {
+      filterListId = this.id;
+      selectedFilters = queryFilters[filterListId];
+      var filterListCheckboxes = $(this).find(':checkbox');
+      for(var i = 0; i < filterListCheckboxes.length; i++) {
+        checkbox = filterListCheckboxes[i];
+        if($.inArray(checkbox.value,selectedFilters) != -1) {
+          checkbox.checked = true;
+        } else {
+          checkbox.checked = false;
+        }
       }
-    }
-  });
+    });
+  } else {
+    // Reset checkboxes to default state if no cookie
+    $('#filter-panel .filter-list').each(function() {
+      var filterListCheckboxes = $(this).find(':checkbox');
+      for(var i = 0; i < filterListCheckboxes.length; i++) {
+        if(i == 0) {
+          filterListCheckboxes[i].checked = true;
+        } else {
+          filterListCheckboxes[i].checked = false;
+        }
+      }
+    });
+  }
 }
 
 function searchQuery() {
@@ -97,6 +122,7 @@ function doSearch(query) {
     query = {};
   }
   query['q'] = encodeURIComponent(searchQuery());
+  Cookies.set('q',query['q']);
   $.get('/items', query, function(data) {
     $('#data-container').replaceWith(data);
     $('#data tr').click(function(event) {
@@ -105,6 +131,7 @@ function doSearch(query) {
 
     // Bind click handlers to all data pagination links
     var currentPage = parseInt($('.page-item.active').text().trim());
+    Cookies.set('page',currentPage);
     $('.pagination').each(function() {
       $('.page-link').each(function() {
         if($(this).parent().hasClass('disabled') || 
