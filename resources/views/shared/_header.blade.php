@@ -1,10 +1,6 @@
       <div id="banner" class="row">
         <div class="col-md-12">
-          <!-- <div id="logo">{!! Html::image('img/junebug.png', 'Junebug logo', array('width' => 37 , 'height' => 41)) !!} &nbsp;junebug</div> -->
-          <!-- <div id="logo">{!! Html::image('img/junebug-cute.png', 'Junebug logo', array('width' => 33 , 'height' => 42)) !!} &nbsp;junebug</div> -->
-          <!-- <div id="logo">{!! Html::image('img/junebug-cute-2.png', 'Junebug logo', array('width' => 41 , 'height' => 47)) !!} &nbsp;junebug</div> -->
-          <div id="logo">{!! Html::image('img/junebug-cute-4.png', 'Junebug logo', array('width' => 43 , 'height' => 40)) !!} &nbsp;junebug</div>
-          <!-- <div id="logo">{!! Html::image('img/junebug-full.png', 'Junebug logo', array('width' => 112 , 'height' => 44)) !!}</div> -->
+          <div id="logo">{!! Html::image('img/junebug-logo.png', 'Junebug logo', array('width' => 48 , 'height' => 46)) !!} &nbsp;junebug</div>
           <div id="support-nav">
             <ul>
               <li>
@@ -22,16 +18,16 @@
           <nav>
             <ul class="">
               <li class="">
-                <a class="" href="#">Dashboard</a>
+                <a class="" href="#"><i class="fa fa-dashboard" aria-hidden="true"></i> Dashboard</a>
               </li>
               <li class="">
-                <a class="active" href="#">Audio Visual Items</a>
+                <a class="active" href="#"><i class="fa fa-headphones" aria-hidden="true"></i> Audio Visual Items</a>
               </li>
               <li class="">
-                <a class="" href="#">Preservation Masters</a>
+                <a class="" href="#"><i class="fa fa-database" aria-hidden="true"></i> Preservation Masters</a>
               </li>
               <li class="">
-                <a class="" href="#">Transfers</a>
+                <a class="" href="#"><i class="fa fa-exchange" aria-hidden="true"></i> Transfers</a>
               </li>
             </ul>
           </nav>

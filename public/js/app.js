@@ -45,6 +45,7 @@ $(function() {
     }
   });
   
+  // Page next or previous using the keyboard
   $(document).keydown(function(event) {
     // Right arrow
     if(event.which == 39) {
@@ -59,10 +60,8 @@ $(function() {
     initialize();
     query = {};
     if(Cookies.get('page') != null) {
-      query['page'] = Cookies.get('page');
-      console.log("restoring page " + Cookies.get('page'));     
+      query['page'] = Cookies.get('page');    
     }
-    console.log(query);
     doSearch(query);
   }
 
@@ -127,7 +126,8 @@ function doSearch(query) {
   Cookies.set('q',query['q']);
   $.get('/items', query, function(data) {
     $('#data-container').replaceWith(data);
-    $('#data tr').click(function(event) {
+    // Bind click handlers to all data table rows
+    $('#data tr[role="button"]').click(function(event) {
         window.location.href="/items/" + $(this).data('id');
     });
 
