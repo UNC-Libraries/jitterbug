@@ -1,0 +1,64 @@
+<dataConfig>
+    <dataSource driver="com.mysql.jdbc.Driver" type="JdbcDataSource"
+        url="jdbc:mysql://localhost:3306/junebug" user="root" password="" />
+    <document>
+        <!-- this entity is the 'root' entity. -->
+        <entity name="audio_visual_item" query="
+
+            SELECT 
+                items.id AS id,
+                items.call_number AS call_number,
+                items.title AS title,
+                items.container_note AS container_note,
+                items.recording_location AS recording_location,
+                items.item_date AS item_date,
+                items.collection_id AS collection_id,
+                items.format_id AS format_id,
+                types.id AS type_id,
+                collections.name AS collection_name,
+                formats.name AS format_name,
+                TRIM(TRAILING 'Item' FROM items.itemable_type) AS type_name
+            FROM
+                audio_visual_items AS items
+            LEFT JOIN collections ON
+                items.collection_id = collections.id
+            LEFT JOIN formats ON
+                items.format_id = formats.id
+            LEFT JOIN item_types AS types ON
+                TRIM(TRAILING 'Item' FROM items.itemable_type) = types.name;
+
+        " deltaQuery="SELECT id FROM audio_visual_items WHERE updated_at > '${dataimporter.last_index_time}'">
+
+            <field column="id" name="id" />
+            <field column="call_number" name="callNumber" />
+            <field column="title" name="title" />
+            <field column="container_note" name="containerNote" />
+            <field column="recording_location" name="recordingLocation" />
+            <field column="date" name="itemDate" />
+            <field column="collection_id" name="collectionId" />
+            <field column="collection_name" name="collectionName" />
+            <field column="format_id" name="formatId" />
+            <field column="format_name" name="formatName" />
+            <field column="type_id" name="typeId" />
+            <field column="type_name" name="typeName" />
+
+            <entity name="cut" query="
+
+                SELECT
+                    id,
+                    performer_composer,
+                    title
+                FROM
+                    cuts
+                WHERE
+                    call_number='${audio_visual_item.call_number}' ">
+
+                <field column="id" name="cutIds" />
+                <field column="performer_composer" name="cutPerformerComposers" />
+                <field column="title" name="cutTitles" />
+
+            </entity>
+
+        </entity>
+    </document>
+</dataConfig>

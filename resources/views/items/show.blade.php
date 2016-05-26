@@ -9,7 +9,7 @@
   </div>
   <div class="row">
     <div class="col-xs-12 col-e0">
-      <h6>{{$item->type}} Item</h6>
+      <h6>{{$item->type}} Item Details</h6>
     </div>
   </div>
   <div class="row">
@@ -205,7 +205,7 @@
   @if (count($item->preservationMasters()) > 0 )
   <div class="row">
     <div class="col-xs-12 col-e0">
-      <h6>Preservation Masters</h6>
+      <h6>Related Preservation Masters</h6>
     </div>
   </div>
   <div class="row first last">
@@ -241,7 +241,7 @@
   @if (count($cuts) > 0 )
   <div class="row">
     <div class="col-xs-12 col-e0">
-      <h6>Cuts</h6>
+      <h6>Related Cuts</h6>
     </div>
   </div>
   <div class="row first last">

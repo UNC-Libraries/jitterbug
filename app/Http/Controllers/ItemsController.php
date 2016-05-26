@@ -38,7 +38,7 @@ class ItemsController extends Controller
       $userQueryString = urldecode($request->query('q'));
       $userQuery = json_decode($userQueryString);
 
-      $client = new Solarium\Client(Config::get('solarium'));
+      $client = new Solarium\Client($this->solariumConfigFor('items'));
       $solariumQuery = $client->createSelect();
 
       $searchTerms = $userQuery->{'search'};
@@ -138,4 +138,18 @@ class ItemsController extends Controller
         $needleLen, strlen($haystack));
     return $needleTest == $needle;
   }
+
+  private function solariumConfigFor($core)
+  {
+    $config = Config::get('solarium');
+    $endpointKeys = array_keys($config);
+    $endpointConfig = $config[$endpointKeys[0]];
+    $hostKeys = array_keys($endpointConfig);
+    $hostConfig = $config[$endpointKeys[0]][$hostKeys[0]];
+    $path = $hostConfig['path'];
+    $config[$endpointKeys[0]][$hostKeys[0]]['path'] = $path . $core;
+    return $config;
+  }
+
+
 }

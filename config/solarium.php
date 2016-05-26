@@ -2,10 +2,10 @@
 
 return [
     'endpoint' => array(
-        env('SOLARIUM_ENDPOINT') => array(
-            'host' => env('SOLARIUM_HOST'),
-            'port' => env('SOLARIUM_PORT'),
-            'path' => env('SOLARIUM_PATH')
+        env('SOLR_ENDPOINT') => array(
+            'host' => env('SOLR_HOST'),
+            'port' => env('SOLR_PORT'),
+            'path' => env('SOLR_PATH')
         )
     )
 ];
