@@ -4598,7 +4598,7 @@ a.bg-danger:focus, a.bg-danger:hover {
   .hidden-print {
     display: none !important; } }
 
-/*        * { border: 1px solid black; }*/
+/*  * { border: 1px solid black; } */
 a:link, a:visited, a:hover, a:active {
   color: #707070;
   text-decoration: none; }
@@ -4670,7 +4670,7 @@ a:link, a:visited, a:hover, a:active {
 
 #global-nav nav li a:hover {
   text-decoration: none;
-  background-color: #4c8906; }
+  background-color: #498406; }
 
 #filter-panel {
   background-color: #f0f0f0;
@@ -4812,7 +4812,7 @@ a:link, a:visited, a:hover, a:active {
   padding-top: .3rem; }
 
 .detail .last {
-  padding-bottom: 1.5rem; }
+  padding-bottom: 2.5rem; }
 
 .detail .back {
   padding-top: .75rem;
@@ -4830,12 +4830,8 @@ a:link, a:visited, a:hover, a:active {
   padding-top: .5rem; }
 
 .detail .actions {
-  background-color: #fff;
-  text-align: right;
-  position: absolute;
-  right: 0;
-  top: .75rem;
-  z-index: 100; }
+  margin-top: .9rem;
+  background-color: #fff; }
 
 .detail table {
   font-size: .9rem;
@@ -4850,6 +4846,7 @@ a:link, a:visited, a:hover, a:active {
   text-overflow: ellipsis; }
 
 body {
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial;
   background-color: #ededed;
   min-width: 700px; }
 

@@ -1,13 +1,14 @@
 @import "node_modules/bootstrap/scss/bootstrap.scss";
 
-/*        * { border: 1px solid black; }*/
+
+/*  * { border: 1px solid black; } */
 
 $global-nav-bg:                #417505;
 $global-nav-button-bg:         lighten($global-nav-bg, 5%);
-$global-nav-button-hover-bg:   darken($global-nav-button-bg, 1%);
+$global-nav-button-hover-bg:   darken($global-nav-button-bg, 2%);
 $global-nav-button-active-bg:  #72a137;
-$global-nav-link:              #cbddb4;
-$global-nav-link-active:       #fff;
+$global-nav-color:             #cbddb4;
+$global-nav-color-active:      #fff;
 
 
 a:link, a:visited, a:hover, a:active {
@@ -76,7 +77,7 @@ a:link, a:visited, a:hover, a:active {
 
 #global-nav nav li a { 
   display: block;
-  color: $global-nav-link;
+  color: $global-nav-color;
   text-align: center;
   padding: 3px 14px;
   border-radius: 4px;
@@ -85,7 +86,7 @@ a:link, a:visited, a:hover, a:active {
 }
 
 #global-nav nav li a.active {
-  color: $global-nav-link-active;
+  color: $global-nav-color-active;
   background-color: $global-nav-button-active-bg;
 }
 
@@ -271,7 +272,7 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .detail .last {
-  padding-bottom: 1.5rem;
+  padding-bottom: 2.5rem;
 }
 
 .detail .back {
@@ -293,12 +294,8 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .detail .actions {
+  margin-top: .9rem;
   background-color: #fff;
-  text-align: right;
-  position: absolute;
-  right: 0;
-  top: .75rem;
-  z-index: 100;
 }
 
 .detail table {
@@ -317,6 +314,7 @@ a:link, a:visited, a:hover, a:active {
 }
 
 body {
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial;
   background-color: #ededed;
   min-width: 700px;
 }

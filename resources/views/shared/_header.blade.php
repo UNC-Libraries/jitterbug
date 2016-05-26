@@ -18,16 +18,16 @@
           <nav>
             <ul class="">
               <li class="">
-                <a class="" href="#"><i class="fa fa-dashboard" aria-hidden="true"></i> Dashboard</a>
+                <a class="" href="#"><i class="fa fa-dashboard fa-fw" aria-hidden="true"></i> Dashboard</a>
               </li>
               <li class="">
-                <a class="active" href="#"><i class="fa fa-headphones" aria-hidden="true"></i> Audio Visual Items</a>
+                <a class="active" href="#"><i class="fa fa-headphones fa-fw" aria-hidden="true"></i> Audio Visual Items</a>
               </li>
               <li class="">
-                <a class="" href="#"><i class="fa fa-database" aria-hidden="true"></i> Preservation Masters</a>
+                <a class="" href="#"><i class="fa fa-database fa-fw" aria-hidden="true"></i> Preservation Masters</a>
               </li>
               <li class="">
-                <a class="" href="#"><i class="fa fa-exchange" aria-hidden="true"></i> Transfers</a>
+                <a class="" href="#"><i class="fa fa-exchange fa-fw" aria-hidden="true"></i> Transfers</a>
               </li>
             </ul>
           </nav>
