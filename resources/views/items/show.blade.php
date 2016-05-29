@@ -4,7 +4,7 @@
 <div class="detail">
   <div class="row">
     <div class="col-xs-12 back">
-      <a href="/items"><i class="fa fa-caret-left" aria-hidden="true"></i> Back to Items</a>
+      <a href="{{ route('items.index') }}"><i class="fa fa-caret-left" aria-hidden="true"></i> Back to Items</a>
     </div>
   </div>
   <div class="row">
@@ -12,13 +12,8 @@
       <h6>{{$item->type}} Item Details</h6>
     </div>
   </div>
-  <div class="row">
-    <div class="col-xs-12 actions">
-      <a class="btn btn-sm btn-secondary" role="button" href="#"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
-    </div>
-  </div>
   {{-- AudioVisualItem Fields --}}
-  <div class="row first last">
+  <div class="row first detail-container">
     <div class="col-xs-6">
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
@@ -88,16 +83,6 @@
         </div>
       </div>
       @endif
-      @if ($item->entryDate)
-      <div class="row">
-        <div class="col-xs-4 col-xs-offset-1 detail-label">
-          Entry Date
-        </div>
-        <div class="col-xs-7 detail-value">
-          {{$item->entryDate}}
-        </div>
-      </div>
-      @endif
       @if ($item->itemYear)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
@@ -125,6 +110,16 @@
         </div>
         <div class="col-xs-7 detail-value">
           {{$item->speed}}
+        </div>
+      </div>
+      @endif
+      @if ($item->entryDate)
+      <div class="row">
+        <div class="col-xs-4 col-xs-offset-1 detail-label">
+          Entry Date
+        </div>
+        <div class="col-xs-7 detail-value">
+          {{$item->entryDate}}
         </div>
       </div>
       @endif
@@ -199,6 +194,16 @@
           5/15/2016 by John Loy
         </div>
       </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <hr/>
+    </div>
+  </div>
+  <div class="row last">
+    <div class="col-xs-12 actions">
+      <a class="btn btn-sm btn-secondary" role="button" href="{{ route('items.edit', $item->id) }}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
     </div>
   </div>
 
