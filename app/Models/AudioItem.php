@@ -19,6 +19,14 @@ class AudioItem extends Model {
     return $listeningCopy; 
   }
 
+  public function getMonoStereoAttribute() {
+    $monoStereo = $this->attributes['mono_stereo'];
+    if($monoStereo==null) {
+      $monoStereo = '';
+    }
+    return $monoStereo; 
+  }
+
   public function getMonoStereoDisplayAttribute()
   {
   	$monoStereo = $this->getAttribute("monoStereo");

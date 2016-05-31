@@ -127,52 +127,52 @@
     </div>
     <div class="col-xs-6">
       {{-- Begin Itemable Fields --}}
-      @if (get_class($itemable) == 'Junebug\Models\AudioItem')
+      @if (get_class($item->itemable()) == 'Junebug\Models\AudioItem')
       <div class="row">
         <div class="col-xs-4 detail-label">
           Listening Copy
         </div>
         <div class="col-xs-8 detail-value">
-          {{$itemable->listeningCopyDisplay}}
+          {{$item->itemable()->listeningCopyDisplay}}
         </div>
       </div>
-      @if ($itemable->monoStereo)
+      @if ($item->itemable()->monoStereo)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Mono/Stereo
         </div>
         <div class="col-xs-8 detail-value">
-          {{$itemable->monoStereoDisplay}}
+          {{$item->itemable()->monoStereoDisplay}}
         </div>
       </div>
       @endif
-      @if ($itemable->size)
+      @if ($item->itemable()->size)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Size
         </div>
         <div class="col-xs-8 detail-value">
-          {{$itemable->size}}
+          {{$item->itemable()->size}}
         </div>
       </div>
       @endif
-      @if ($itemable->trackConfiguration)
+      @if ($item->itemable()->trackConfiguration)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Track Configuration
         </div>
         <div class="col-xs-8 detail-value">
-          {{$itemable->trackConfiguration}}
+          {{$item->itemable()->trackConfiguration}}
         </div>
       </div>
       @endif
-      @if ($itemable->base)
+      @if ($item->itemable()->base)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Base
         </div>
         <div class="col-xs-8 detail-value">
-          {{$itemable->base}}
+          {{$item->itemable()->base}}
         </div>
       </div>
       @endif

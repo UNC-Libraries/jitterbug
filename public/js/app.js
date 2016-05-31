@@ -162,3 +162,6 @@ function doSearch(query) {
   });
 }
 
+$('.detail .input-group.date').datepicker({
+    format: "yyyy-mm-dd"
+});

@@ -33,4 +33,9 @@ class AudioVisualItem extends Model {
     return $this->morphTo()->get()[0];
   }
 
+  public function getItemableAttribute()
+  {
+    return $this->itemable();
+  }
+
 }

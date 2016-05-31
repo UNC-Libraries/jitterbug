@@ -1,11 +1,11 @@
 @import "node_modules/bootstrap/scss/bootstrap.scss";
 
 
-/* * { border: 1px solid black; } */ 
+ /* * { border: 1px solid black; } */
 
 $global-nav-bg:                #417505;
-$global-nav-button-bg:         lighten($global-nav-bg, 5%);
-$global-nav-button-hover-bg:   darken($global-nav-button-bg, 2%);
+$global-nav-button-bg:         $brand-primary;
+$global-nav-button-hover-bg:   darken($brand-primary, 2%);
 $global-nav-button-active-bg:  #72a137;
 $global-nav-color:             #cbddb4;
 $global-nav-color-active:      #fff;
@@ -115,7 +115,7 @@ a:link, a:visited, a:hover, a:active {
 }
 
 #filter-panel .checkbox {
-  margin-bottom: .4rem;
+  margin-bottom: .125rem;
 }
 
 #filter-panel .checkbox input[type=checkbox] {
@@ -172,7 +172,7 @@ a:link, a:visited, a:hover, a:active {
 }
 
 #data-panel .pagination .page-link {
-  color: #000000;
+  color: #000;
   background-color: #FFF;
 }
 
@@ -182,12 +182,12 @@ a:link, a:visited, a:hover, a:active {
 }
 
 #data-panel .pagination li.page-item a:hover {
-  color: #000000;
+  color: #000;
   background-color: #fff;
 }
 
 #data-panel .pagination li.page-item.active a {
-  color: #000000;
+  color: #000;
   background-color: #e9e9e9;
   border-radius: .3rem;
 }
@@ -204,8 +204,7 @@ a:link, a:visited, a:hover, a:active {
  */
 #content {
   background-color: #fff;
-/*      display: table;  */
-
+/* display: table; */
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5)
 }
 
@@ -218,33 +217,118 @@ a:link, a:visited, a:hover, a:active {
 /* Bootsrap overrides */
 
 .btn-sm {
-  padding: 0.25rem 0.75rem;
-  font-size: 0.875rem;
-  line-height: 1.5;
-  border-radius: 0.3rem;
+  border: none;
 }
 
-.btn-secondary {
-  color: #464646;
+.btn-primary:link, .btn-primary:visited, .btn-primary:active {
+  color: #fff;
+  background-color: $brand-primary;
+  border: none;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  color: #fff;
+  background-color: darken($brand-primary, 3%);
+  border: none;
+}
+
+.btn-primary:active:hover {
+  color: #fff;
+  background-color: darken($brand-primary, 6%);
+  border: none;
+}
+
+.btn-secondary:link, .btn-secondary:visited, .btn-secondary:active {
+  color: #707070;
   background-color: #e9e9e9;
   border: none;
 }
 
+.btn-secondary:hover {
+  color: #373a3c;
+  background-color: #e6e6e6;
+  border: none;
+}
+
+.btn-warning:link, .btn-warning:visited, .btn-warning:active {
+  color: #fff;
+  background-color: $brand-warning;
+  border: none;
+}
+
+.btn-warning:hover, .btn-warning:focus {
+  color: #fff;
+  background-color: darken($brand-warning, 3%);
+  border: none;
+}
+
+.btn-warning:active:hover {
+  color: #fff;
+  background-color: darken($brand-warning, 6%);
+  border: none;
+}
+
+.btn-danger:link, .btn-danger:visited, .btn-danger:active {
+  color: #fff;
+  background-color: $brand-danger;
+  border: none;
+}
+
+.btn-danger:hover, .btn-danger:focus {
+  color: #fff;
+  background-color: darken($brand-danger, 3%);
+  border: none;
+}
+
+.btn-danger:active:hover {
+  color: #fff;
+  background-color: darken($brand-danger, 6%);
+  border: none;
+}
+
 .form-control-sm {
-  padding: 0.275rem 0.75rem;
-  font-size: 0.875rem;
   line-height: 1.3;
-  border-radius: 0.3rem;
+}
+
+.form-group {
+  margin: 0;
 }
 
 .input-group-addon {
   padding: 0.25rem 0.75rem;
 }
 
+label {
+  margin-top: .3rem;
+  margin-bottom: 0;
+}
+
+.radio-inline {
+  vertical-align: baseline;
+}
+
+.radio-inline + .radio-inline {
+  margin-top: .3rem;
+}
+
 /* Gets rid of evil negative margins */
 .row {
   margin-left: 0;
   margin-right: 0;
+}
+
+/* This is make the datepicker plugin look a little nicer */
+.dropdown-menu {
+  padding: 5px 10px;
+}
+
+.datepicker table tr td.active.active {
+  background-image: none;
+  background-color: $brand-primary;
+}
+
+.datepicker table tr td.active:hover.active {
+  background-color: $brand-primary;
 }
 
 /* Misc */
@@ -302,6 +386,11 @@ a:link, a:visited, a:hover, a:active {
   padding-top: .5rem;
 }
 
+.detail .form-group .detail-value {
+  padding-left: .25rem;
+  padding-right: 0;
+}
+
 .detail hr {
   margin-top: 1.25rem;
 }
@@ -309,6 +398,10 @@ a:link, a:visited, a:hover, a:active {
 .detail .actions {
   margin-bottom: 2rem;
   background-color: #fff;
+}
+
+.detail .actions button {
+  margin-right: .3rem;
 }
 
 .detail table {

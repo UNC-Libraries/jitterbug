@@ -80,7 +80,7 @@
       <div style="float: right; width: 275px;">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
-          <input id="search" class="form-control form-control-sm" type="text" placeholder="Search">
+          <input id="search" class="form-control form-control-sm" type="text" placeholder="Search" autocomplete="off">
         </div>
       </div>
     </div>

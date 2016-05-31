@@ -11,7 +11,9 @@ use Junebug\Models\AudioVisualItem;
 use Junebug\Models\AudioVisualItemType;
 use Junebug\Models\AudioVisualItemCollection;
 use Junebug\Models\AudioVisualItemFormat;
+use Junebug\Models\Collection;
 use Junebug\Models\Cut;
+use Junebug\Models\Format;
 use Junebug\Support\SolariumPaginator;
 
 class ItemsController extends Controller
@@ -80,16 +82,32 @@ class ItemsController extends Controller
   public function show($id)
   {
     $item = AudioVisualItem::findOrFail($id);
-    $itemable = $item->itemable();
     $cuts = Cut::where('call_number', $item->callNumber)
                ->orderBy('preservation_master_id', 'asc')
                ->orderBy('cut_number', 'asc')
                ->get();
     $queries = DB::getQueryLog();
     $lastQuery = end($queries);
-    return view('items.show', compact('item','itemable','cuts'));
+    return view('items.show', compact('item', 'cuts'));
   }
   
+  public function edit($id)
+  {
+    $item = AudioVisualItem::findOrFail($id);
+    $cuts = Cut::where('call_number', $item->callNumber)
+               ->orderBy('preservation_master_id', 'asc')
+               ->orderBy('cut_number', 'asc')
+               ->get();
+    $collections = ['' => ''] + Collection::lists('name', 'id');
+    $formats = ['' => ''] + Format::lists('name', 'id');
+    return view('items.edit', compact('item', 'cuts', 'collections', 'formats'));
+  }
+
+  public function update(AudioVisualItem $item)
+  {
+
+  }
+
   private function createFilterQueries($solariumQuery, $userQuery)
   {
     $keys = array_keys((array)($userQuery));
