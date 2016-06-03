@@ -15,6 +15,7 @@ use Junebug\Models\AudioVisualItemFormat;
 use Junebug\Models\Collection;
 use Junebug\Models\Cut;
 use Junebug\Models\Format;
+use Junebug\Http\Requests\UpdateItemRequest;
 use Junebug\Support\SolariumPaginator;
 
 class ItemsController extends Controller
@@ -104,7 +105,7 @@ class ItemsController extends Controller
     return view('items.edit', compact('item', 'cuts', 'collections', 'formats'));
   }
 
-  public function update($id, Request $request)
+  public function update($id, UpdateItemRequest $request)
   {
     $input = $request->all();
     $item = AudioVisualItem::findOrFail($id);

@@ -4874,6 +4874,14 @@ label {
 .datepicker table tr td.active:hover.active {
   background-color: #4f8d06; }
 
+.datepicker table tr td span.active.active {
+  background-image: none;
+  background-color: #4f8d06; }
+
+.datepicker table tr td span.active:hover:hover {
+  background-color: #4f8d06; }
+
+/* need to set year, decade, and centry active */
 /* Misc */
 .col-fff {
   background-color: #fff; }
