@@ -162,6 +162,18 @@ function doSearch(query) {
   });
 }
 
+function displayAlert() {
+  alert = $('#alert');
+  if(alert.text().trim().length && alert.is(':hidden')) {
+    alert.delay(500).slideDown(200).delay(8000).slideUp(200);
+  }
+}
+
+$(function() {
+  displayAlert();
+});
+
 $('.detail .input-group.date').datepicker({
     format: "yyyy-mm-dd"
 });
+

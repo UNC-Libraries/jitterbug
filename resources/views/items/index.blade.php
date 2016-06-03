@@ -27,7 +27,7 @@
     </ul>
 
     <h6>Collection</h6>
-    <ul id="collection-filters" class="filter-list" style="height: 260px; overflow-y: scroll; overflow-x: hidden;">
+    <ul id="collection-filters" class="filter-list" style="height: 268px; overflow-y: scroll; overflow-x: hidden;">
       <li>
         <div class="checkbox">
           <label>

@@ -7,6 +7,8 @@ use Eloquence\Database\Traits\CamelCaseModel;
 class AudioItem extends Model {
   use CamelCaseModel;
 
+  protected $guarded = ['id'];
+
   public function getListeningCopyDisplayAttribute()
   {
   	$listeningCopy = $this->getAttribute("listeningCopy");

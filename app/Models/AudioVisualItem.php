@@ -6,6 +6,8 @@ use Eloquence\Database\Traits\CamelCaseModel;
 class AudioVisualItem extends Model {
   use CamelCaseModel;
 
+  protected $guarded = ['id', 'itemable', 'itemableType', 'itemableId'];
+
   public function collection()
   {
     return $this->belongsTo('Junebug\Models\Collection');

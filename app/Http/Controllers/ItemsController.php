@@ -2,9 +2,10 @@
 namespace Junebug\Http\Controllers;
 
 use DB;
-use Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Log;
+use Session;
 use Solarium;
 
 use Junebug\Models\AudioVisualItem;
@@ -103,9 +104,19 @@ class ItemsController extends Controller
     return view('items.edit', compact('item', 'cuts', 'collections', 'formats'));
   }
 
-  public function update(AudioVisualItem $item)
+  public function update($id, Request $request)
   {
+    $input = $request->all();
+    $item = AudioVisualItem::findOrFail($id);
+    $itemable = $item->itemable();
 
+    $itemable->fill($input['itemable']);
+    $item->fill($input);
+
+    Session::flash('alert', array('type' => 'success', 'message' => 
+      '<strong>Well done!</strong> Audio visual item was successfully updated'));
+
+    return redirect()->route('items.show', [$id]);
   }
 
   private function createFilterQueries($solariumQuery, $userQuery)
@@ -131,7 +142,7 @@ class ItemsController extends Controller
   
   private function filterType($filterKey)
   {
-    return substr($filterKey,0,strlen($filterKey) - strlen("-filters"));
+    return substr($filterKey,0,strlen($filterKey) - strlen('-filters'));
   }
 
   private function filterQueryFor($field, $filters)

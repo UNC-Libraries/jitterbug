@@ -19,19 +19,20 @@
   <div class="row first detail-container">
     <div class="col-xs-6">
       <div class="row">
-        <div class="form-group">
+        <div class="form-group has-danger">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('callNumber', 'Call Number') !!}
+            {!! Form::label('callNumber', 'Call Number', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::text('callNumber', null, array('class' => 'form-control form-control-sm')) !!}
+            <div class="form-control-label"><small>This field is required.</small></div>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="form-group">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('title', 'Title') !!}
+            {!! Form::label('title', 'Title', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::text('title', null, array('class' => 'form-control form-control-sm')) !!}
@@ -41,7 +42,7 @@
       <div class="row">
         <div class="form-group">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('containerNote', 'Container Note') !!}
+            {!! Form::label('containerNote', 'Container Note', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::textarea('containerNote', null, array('class' => 'form-control form-control-sm', 'rows' => 3)) !!}
@@ -51,7 +52,7 @@
       <div class="row">
         <div class="form-group">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('collectionId', 'Collection') !!}
+            {!! Form::label('collectionId', 'Collection', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::select('collectionId', $collections, $item->collectionId, array('class' => 'form-control form-control-sm')) !!}
@@ -61,7 +62,7 @@
       <div class="row">
         <div class="form-group">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('formatId', 'Format') !!}
+            {!! Form::label('formatId', 'Format', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::select('formatId', $formats, $item->formatId, array('class' => 'form-control form-control-sm')) !!}
@@ -71,7 +72,7 @@
       <div class="row">
         <div class="form-group">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('recordingLocation', 'Rec Location') !!}
+            {!! Form::label('recordingLocation', 'Rec Location', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::text('recordingLocation', null, array('class' => 'form-control form-control-sm')) !!}
@@ -81,7 +82,7 @@
       <div class="row">
         <div class="form-group">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('oclcId', 'OCLC Id') !!}
+            {!! Form::label('oclcId', 'OCLC Id', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::text('oclcId', null, array('class' => 'form-control form-control-sm')) !!}
@@ -91,7 +92,7 @@
       <div class="row">
         <div class="form-group">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('itemYear', 'Item Year') !!}
+            {!! Form::label('itemYear', 'Item Year', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::text('itemYear', null, array('class' => 'form-control form-control-sm')) !!}
@@ -101,7 +102,7 @@
       <div class="row">
         <div class="form-group">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('itemDate', 'Item Date') !!}
+            {!! Form::label('itemDate', 'Item Date', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             <div class="input-group date">
@@ -114,7 +115,7 @@
       <div class="row">
         <div class="form-group">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('speed', 'Speed') !!}
+            {!! Form::label('speed', 'Speed', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::text('speed', null, array('class' => 'form-control form-control-sm')) !!}
@@ -124,7 +125,7 @@
       <div class="row">
         <div class="form-group">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('entryDate', 'Entry Date') !!}
+            {!! Form::label('entryDate', 'Entry Date', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             <div class="input-group date">
@@ -142,7 +143,7 @@
       <div class="row">
         <div class="form-group">
           <div class="col-xs-4 detail-label">
-            {!! Form::label('itemable[listeningCopy]', 'Listening Copy') !!}
+            {!! Form::label('itemable[listeningCopy]', 'Listening Copy', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             <label class="radio-inline">
@@ -157,7 +158,7 @@
       <div class="row">
         <div class="form-group">
           <div class="col-xs-4 detail-label">
-            {!! Form::label('itemable[monoStereo]', 'Mono/Stereo') !!}
+            {!! Form::label('itemable[monoStereo]', 'Mono/Stereo', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             <label class="radio-inline">
@@ -175,30 +176,30 @@
       <div class="row">
         <div class="form-group">
           <div class="col-xs-4 detail-label">
-            {!! Form::label('size', 'Size') !!}
+            {!! Form::label('itemable[size]', 'Size', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('size', null, array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::text('itemable[size]', null, array('class' => 'form-control form-control-sm')) !!}
           </div>
         </div>
       </div>
       <div class="row">
         <div class="form-group">
           <div class="col-xs-4 detail-label">
-            {!! Form::label('trackConfiguration', 'Track Config') !!}
+            {!! Form::label('itemable[trackConfiguration]', 'Track Config', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('trackConfiguration', null, array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::text('itemable[trackConfiguration]', null, array('class' => 'form-control form-control-sm')) !!}
           </div>
         </div>
       </div>
       <div class="row">
         <div class="form-group">
           <div class="col-xs-4 detail-label">
-            {!! Form::label('base', 'Base') !!}
+            {!! Form::label('itemable[base]', 'Base', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('base', null, array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::text('itemable[base]', null, array('class' => 'form-control form-control-sm')) !!}
           </div>
         </div>
       </div>
@@ -230,8 +231,8 @@
   <div class="row last">
     <div class="col-xs-12 actions">
       <button class="btn btn-sm btn-primary" type="submit" style="outline: none;"><i class="fa fa-save" aria-hidden="true"></i> Save</button>
-      <button class="btn btn-sm btn-warning" type="submit" style="outline: none;"><i class="fa fa-ban" aria-hidden="true"></i> Cancel</button>
       <button class="btn btn-sm btn-danger" type="submit" style="outline: none;"><i class="fa fa-remove" aria-hidden="true"></i> Delete</button>
+      <a class="" href="{{ route('items.show', $item->id) }}">or Cancel</a>
     </div>
   </div>
 
