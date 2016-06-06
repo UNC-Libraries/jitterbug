@@ -4,6 +4,7 @@ namespace Junebug\Http\Controllers;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
 use Log;
 use Session;
 use Solarium;
@@ -50,7 +51,7 @@ class ItemsController extends Controller
 
       $dismax = $solariumQuery->getDisMax();
       if(strlen($searchTerms)==0) {
-        $dismax->setQueryAlternative("*:*");
+        $dismax->setQueryAlternative('*:*');
       }
       // Query fields with boost values
       $dismax->setQueryFields('callNumber^5 title^4 collectionName^3 ' .
@@ -65,6 +66,7 @@ class ItemsController extends Controller
       }
       $start = $perPage * ($currentPage - 1);
       $solariumQuery->setStart($start);
+      $solariumQuery->addSort('callNumber', $solariumQuery::SORT_ASC);
 
       $resultSet = $client->execute($solariumQuery);
 
@@ -102,7 +104,8 @@ class ItemsController extends Controller
                ->get();
     $collections = ['' => ''] + Collection::lists('name', 'id');
     $formats = ['' => ''] + Format::lists('name', 'id');
-    return view('items.edit', compact('item', 'cuts', 'collections', 'formats'));
+    return view('items.edit', 
+      compact('item', 'cuts', 'collections', 'formats'));
   }
 
   public function update($id, UpdateItemRequest $request)
@@ -111,11 +114,54 @@ class ItemsController extends Controller
     $item = AudioVisualItem::findOrFail($id);
     $itemable = $item->itemable();
 
-    $itemable->fill($input['itemable']);
     $item->fill($input);
+    $itemable->fill($input['itemable']);
+
+    // Update MySQL
+    DB::transaction(function () use ($item, $itemable) {
+      // Update call number everywhere if it has changed
+      if($item->isDirty('call_number')) {
+        $itemable->callNumber = $item->callNumber;
+
+        $origCall = $item->getOriginal()['call_number'];
+        $newCall = $item->callNumber;
+
+        DB::update('UPDATE preservation_masters SET call_number = ? 
+                    WHERE call_number = ?', [$newCall,$origCall]);
+        DB::update('UPDATE cuts SET call_number = ? 
+                    WHERE call_number = ?', [$newCall,$origCall]);
+        DB::update('UPDATE transfers SET call_number = ? 
+                    WHERE call_number = ?', [$newCall,$origCall]);
+      }
+
+      $itemable->save();
+      $item->save();
+    });
+
+    // Update Solr
+    $client = new Solarium\Client($this->solariumConfigFor('items'));
+    $update = $client->createUpdate();
+    $doc = $update->createDocument();
+
+    $doc->setKey('id', $item->id);
+    $doc->setField('title', $item->title, null, 'set');
+    $doc->setField('containerNote', $item->containerNote, null, 'set');
+    $doc->setField('callNumber', $item->callNumber, null, 'set');
+    $doc->setField('collectionId', $item->collection->id, null, 'set');
+    $doc->setField('collectionName', $item->collection->name, null, 'set');
+    $doc->setField('formatId', $item->format->id, null, 'set');
+    $doc->setField('formatName', $item->format->name, null, 'set');
+
+    $update->addDocument($doc);
+    $update->addCommit();
+
+    $result = $client->update($update);
+
+    // update audit trail
 
     Session::flash('alert', array('type' => 'success', 'message' => 
-      '<strong>Well done!</strong> Audio visual item was successfully updated'));
+        '<strong>Hooray!</strong> ' . 
+        'Audio visual item was successfully updated.'));
 
     return redirect()->route('items.show', [$id]);
   }

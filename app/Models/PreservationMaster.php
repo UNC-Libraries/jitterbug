@@ -6,6 +6,7 @@ use Eloquence\Database\Traits\CamelCaseModel;
 
 class PreservationMaster extends Model {
   use CamelCaseModel;
+  use NullFieldPreserver;
 
   public function department()
   {

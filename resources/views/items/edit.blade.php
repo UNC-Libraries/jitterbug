@@ -14,6 +14,9 @@
   </div>
 
   {!! Form::model($item, array('route' => array('items.update', $item->id), 'method' => 'put')) !!}
+  {!! Form::hidden('id') !!}
+  {!! Form::hidden('itemableType') !!}
+  {!! Form::hidden('itemableId') !!}
 
   {{-- AudioVisualItem Fields --}}
   <div class="row first detail-container">
@@ -111,7 +114,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group">
+        <div class="form-group @if ($errors->has('itemDate')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
             {!! Form::label('itemDate', 'Item Date', array('class' => 'form-control-label')) !!}
           </div>
@@ -120,6 +123,9 @@
               {!! Form::text('itemDate', null, array('class' => 'form-control form-control-sm')) !!}
               <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
             </div>
+            @if ($errors->has('itemDate'))
+              <div class="form-control-label"><small>{!! $errors->first('itemDate') !!}</small></div>
+            @endif
           </div>
         </div>
       </div>
@@ -188,12 +194,15 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group">
+        <div class="form-group @if ($errors->has('itemable.size')) has-danger @endif">
           <div class="col-xs-4 detail-label">
             {!! Form::label('itemable[size]', 'Size', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::text('itemable[size]', null, array('class' => 'form-control form-control-sm')) !!}
+            @if ($errors->has('itemable.size'))
+              <div class="form-control-label"><small>{!! $errors->first('itemable.size') !!}</small></div>
+            @endif
           </div>
         </div>
       </div>

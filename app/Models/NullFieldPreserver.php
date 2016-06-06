@@ -1,0 +1,27 @@
+<?php namespace Junebug\Models;
+
+use Log;
+
+/**
+ * Simple trait for preserving null fields in the database.
+ * Eloquent's default is to overwrite null with emtpy
+ * strings or 0 in the case of numbers.
+ */
+trait NullFieldPreserver {
+
+  protected static function boot()
+  {
+    parent::boot();
+
+    static::saving(function($model) {
+      $attributes = $model->attributes;
+      $original = $model->original;
+
+      foreach ($attributes as $key => $value) {
+        if($value=='' && $original[$key]==null) {
+       	  $model->attributes[$key]=null;
+        }
+      }
+  	});
+  }
+}

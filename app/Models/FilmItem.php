@@ -5,6 +5,5 @@ use Eloquence\Database\Traits\CamelCaseModel;
 
 class FilmItem extends Model {
 	use CamelCaseModel;
-
-
+	use NullFieldPreserver;
 }

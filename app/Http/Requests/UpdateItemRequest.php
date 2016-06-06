@@ -21,23 +21,40 @@ class UpdateItemRequest extends Request {
      */
     public function rules()
     {
-    	dd($this);
-      return [
-        'callNumber' => 'required|min:4|unique:audio_visual_items,call_number,'.$item->id,
+
+      $itemableType = $this->input('itemableType');
+      $itemableRules = array();
+      
+      if($itemableType == 'AudioItem') {
+        $itemableRules = [
+          'itemable.size' => 'required'
+        ];
+      } else if ($itemableType == 'FilmItem') {
+        $itemableRules = [];
+      } else if ($itemableType == 'VideoItem') {
+      	$itemableRules = [];
+      }
+
+      $itemRules = [
+        'callNumber' => 'required|min:4|unique:audio_visual_items,call_number,'.$this->input('id'),
         'title' => 'required|min:3',
         'collectionId' => 'required',
         'formatId' => 'required',
         'itemDate' => 'date_format:Y-m-d',
-        'entryDate' => 'required|date_format:Y-m-d',
-        'itemable.size' => 'required'
+        'entryDate' => 'required|date_format:Y-m-d'
       ];
+
+      return array_merge($itemRules,$itemableRules);
     }
 
     public function messages()
     { 
       return [
         'formatId.required' => 'The format field is required.',
-        'collectionId.required' => 'The collection field is required.'
+        'collectionId.required' => 'The collection field is required.',
+        'itemable.size.required' => 'The size field is required.',
+        'itemDate.date_format' => 'The item date does not match the format YYYY-MM-DD.',
+        'entryDate.date_format' => 'The item date does not match the format YYYY-MM-DD.'
       ];
     }
 }

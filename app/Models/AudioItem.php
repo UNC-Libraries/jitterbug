@@ -6,6 +6,7 @@ use Eloquence\Database\Traits\CamelCaseModel;
 
 class AudioItem extends Model {
   use CamelCaseModel;
+  use NullFieldPreserver;
 
   protected $guarded = ['id'];
 

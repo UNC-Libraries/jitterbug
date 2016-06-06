@@ -34,7 +34,6 @@
         </div>
       </div>
       <div class="row">
-
         @if (Session::has('alert'))
         <div id="alert" class="col-md-12 alert alert-{{Session::get('alert')['type']}}" role="alert">
           {!! Session::get('alert')['message'] !!}

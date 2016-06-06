@@ -5,6 +5,5 @@ use Eloquence\Database\Traits\CamelCaseModel;
 
 class VideoItem extends Model {
 	use CamelCaseModel;
-
-
+	use NullFieldPreserver;
 }
