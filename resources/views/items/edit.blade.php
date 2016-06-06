@@ -254,7 +254,6 @@
   <div class="row last">
     <div class="col-xs-12 actions">
       <button class="btn btn-sm btn-primary" type="submit" style="outline: none;"><i class="fa fa-save" aria-hidden="true"></i> Save</button>
-      <button class="btn btn-sm btn-danger" type="submit" style="outline: none;"><i class="fa fa-remove" aria-hidden="true"></i> Delete</button>
       <a class="" href="{{ route('items.show', $item->id) }}">or Cancel</a>
     </div>
   </div>

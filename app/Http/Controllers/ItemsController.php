@@ -166,6 +166,13 @@ class ItemsController extends Controller
     return redirect()->route('items.show', [$id]);
   }
 
+  public function destroy($id)
+  {
+    $item = AudioVisualItem::findOrFail($id);
+    
+    return redirect()->route('items.index');
+  }
+
   private function createFilterQueries($solariumQuery, $userQuery)
   {
     $keys = array_keys((array)($userQuery));
@@ -207,6 +214,7 @@ class ItemsController extends Controller
     return $filterQuery;
   }
 
+  // TODO: Use Str::endsWith instead
   private function endsWith($haystack, $needle)
   {
     $needleLen = strlen($needle);
