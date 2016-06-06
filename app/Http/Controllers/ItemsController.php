@@ -16,6 +16,7 @@ use Junebug\Models\AudioVisualItemFormat;
 use Junebug\Models\Collection;
 use Junebug\Models\Cut;
 use Junebug\Models\Format;
+use Junebug\Models\PreservationMaster;
 use Junebug\Http\Requests\UpdateItemRequest;
 use Junebug\Support\SolariumPaginator;
 
@@ -126,12 +127,12 @@ class ItemsController extends Controller
         $origCall = $item->getOriginal()['call_number'];
         $newCall = $item->callNumber;
 
-        DB::update('UPDATE preservation_masters SET call_number = ? 
-                    WHERE call_number = ?', [$newCall,$origCall]);
-        DB::update('UPDATE cuts SET call_number = ? 
-                    WHERE call_number = ?', [$newCall,$origCall]);
-        DB::update('UPDATE transfers SET call_number = ? 
-                    WHERE call_number = ?', [$newCall,$origCall]);
+        PreservationMaster::where('call_number', '=', $origCall)->
+          update(['call_number' => $newCall]);
+        Cut::where('call_number', '=', $origCall)->
+          update(['call_number' => $newCall]);
+        Transfer::where('call_number', '=', $origCall)->
+          update(['call_number' => $newCall]);
       }
 
       $itemable->save();
