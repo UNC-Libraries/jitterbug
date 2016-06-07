@@ -9,10 +9,8 @@ use Log;
  */
 trait NullFieldPreserver {
 
-  protected static function boot()
+  public static function bootNullFieldPreserver()
   {
-    parent::boot();
-
     static::saving(function($model) {
       $attributes = $model->attributes;
       $original = $model->original;
@@ -23,5 +21,6 @@ trait NullFieldPreserver {
         }
       }
   	});
+
   }
 }
