@@ -6,8 +6,14 @@ use Eloquence\Database\Traits\CamelCaseModel;
 class AudioVisualItem extends Model {
   use CamelCaseModel;
   use NullFieldPreserver;
+  use Auditable;
 
   protected $guarded = ['id', 'itemable', 'itemableType', 'itemableId'];
+
+  /*public static function boot()
+  {
+    parent::boot();
+  }*/
 
   public function collection()
   {
@@ -33,12 +39,7 @@ class AudioVisualItem extends Model {
 
   public function itemable()
   {
-    return $this->morphTo()->get()[0];
-  }
-
-  public function getItemableAttribute()
-  {
-    return $this->itemable();
+    return $this->morphTo();
   }
 
 }

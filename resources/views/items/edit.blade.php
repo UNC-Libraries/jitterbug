@@ -159,7 +159,7 @@
     </div>
     <div class="col-xs-6">
       {{-- Begin Itemable Fields --}}
-      @if (get_class($item->itemable()) == 'Junebug\Models\AudioItem')
+      @if (get_class($item->itemable) == 'Junebug\Models\AudioItem')
       <div class="row">
         <div class="form-group">
           <div class="col-xs-4 detail-label">

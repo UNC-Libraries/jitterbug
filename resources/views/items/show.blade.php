@@ -66,7 +66,7 @@
       @if ($item->recordingLocation)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
-          Recording Location
+          Rec Location
         </div>
         <div class="col-xs-7 detail-value">
           {{$item->recordingLocation}}
@@ -127,52 +127,52 @@
     </div>
     <div class="col-xs-6">
       {{-- Begin Itemable Fields --}}
-      @if (get_class($item->itemable()) == 'Junebug\Models\AudioItem')
+      @if (get_class($item->itemable) == 'Junebug\Models\AudioItem')
       <div class="row">
         <div class="col-xs-4 detail-label">
           Listening Copy
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable()->listeningCopyDisplay}}
+          {{$item->itemable->listeningCopyDisplay}}
         </div>
       </div>
-      @if ($item->itemable()->monoStereo)
+      @if ($item->itemable->monoStereo)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Mono/Stereo
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable()->monoStereoDisplay}}
+          {{$item->itemable->monoStereoDisplay}}
         </div>
       </div>
       @endif
-      @if ($item->itemable()->size)
+      @if ($item->itemable->size)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Size
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable()->size}}
+          {{$item->itemable->size}}
         </div>
       </div>
       @endif
-      @if ($item->itemable()->trackConfiguration)
+      @if ($item->itemable->trackConfiguration)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Track Configuration
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable()->trackConfiguration}}
+          {{$item->itemable->trackConfiguration}}
         </div>
       </div>
       @endif
-      @if ($item->itemable()->base)
+      @if ($item->itemable->base)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Base
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable()->base}}
+          {{$item->itemable->base}}
         </div>
       </div>
       @endif

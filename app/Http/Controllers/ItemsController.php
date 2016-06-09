@@ -16,6 +16,7 @@ use Junebug\Models\AudioVisualItemFormat;
 use Junebug\Models\Collection;
 use Junebug\Models\Cut;
 use Junebug\Models\Format;
+use Junebug\Models\Transfer;
 use Junebug\Models\PreservationMaster;
 use Junebug\Http\Requests\UpdateItemRequest;
 use Junebug\Support\SolariumPaginator;
@@ -113,7 +114,7 @@ class ItemsController extends Controller
   {
     $input = $request->all();
     $item = AudioVisualItem::findOrFail($id);
-    $itemable = $item->itemable();
+    $itemable = $item->itemable;
 
     $item->fill($input);
     $itemable->fill($input['itemable']);
@@ -171,6 +172,10 @@ class ItemsController extends Controller
   {
     $item = AudioVisualItem::findOrFail($id);
     
+    Session::flash('alert', array('type' => 'success', 'message' => 
+        '<strong>Whoa!</strong> ' . 
+        'Audio visual item was successfully deleted.'));
+
     return redirect()->route('items.index');
   }
 
