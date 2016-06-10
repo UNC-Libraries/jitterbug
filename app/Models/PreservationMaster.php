@@ -3,10 +3,14 @@
 use Log;
 use Illuminate\Database\Eloquent\Model;
 use Eloquence\Database\Traits\CamelCaseModel;
+use Venturecraft\Revisionable\RevisionableTrait;
 
 class PreservationMaster extends Model {
   use CamelCaseModel;
   use NullFieldPreserver;
+  use RevisionableTrait;
+
+  protected $revisionCreationsEnabled = true;
 
   public function department()
   {
@@ -39,4 +43,5 @@ class PreservationMaster extends Model {
     }
     return $duration;
   }
+  
 }

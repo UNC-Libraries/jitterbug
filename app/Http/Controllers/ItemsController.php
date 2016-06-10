@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Log;
 use Session;
 use Solarium;
+use Uuid;
 
 use Junebug\Models\AudioVisualItem;
 use Junebug\Models\AudioVisualItemType;
@@ -121,6 +122,9 @@ class ItemsController extends Controller
 
     // Update MySQL
     DB::transaction(function () use ($item, $itemable) {
+      $transactionId = Uuid::uuid1();
+      DB::statement("set @transaction_id = '$transactionId';");
+
       // Update call number everywhere if it has changed
       if($item->isDirty('call_number')) {
         $itemable->callNumber = $item->callNumber;
@@ -128,16 +132,38 @@ class ItemsController extends Controller
         $origCall = $item->getOriginal()['call_number'];
         $newCall = $item->callNumber;
 
-        PreservationMaster::where('call_number', '=', $origCall)->
-          update(['call_number' => $newCall]);
-        Cut::where('call_number', '=', $origCall)->
-          update(['call_number' => $newCall]);
-        Transfer::where('call_number', '=', $origCall)->
-          update(['call_number' => $newCall]);
+        // Yes, it would be nice if we could use the batch
+        // update syntax for this, rather than fetching and
+        // iterating over the results, then calling save.
+        // Unfortunately, the batch update syntax doesn't
+        // fire model events, which we need for auditing.
+        $masters = PreservationMaster::where('call_number', '=', 
+                                              $origCall)->get();
+        foreach ($masters as $master) {
+          $master->callNumber = $newCall;
+          $master->save();
+        }
+
+        $cuts = Cut::where('call_number', '=', $origCall)->get();
+
+        foreach ($cuts as $cut) {
+          $cut->callNumber = $newCall;
+          $cut->save();
+        }
+
+        $transfers = Transfer::where('call_number', '=', $origCall)->get();
+
+        foreach ($transfers as $transfer) {
+          $transfer->callNumber = $newCall;
+          $transfer->save();
+        }
+
       }
 
       $itemable->save();
       $item->save();
+
+      DB::statement('set @transaction_id = null;');      
     });
 
     // Update Solr
@@ -158,8 +184,6 @@ class ItemsController extends Controller
     $update->addCommit();
 
     $result = $client->update($update);
-
-    // update audit trail
 
     Session::flash('alert', array('type' => 'success', 'message' => 
         '<strong>Hooray!</strong> ' . 

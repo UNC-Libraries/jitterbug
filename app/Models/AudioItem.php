@@ -3,12 +3,15 @@
 use Log;
 use Illuminate\Database\Eloquent\Model;
 use Eloquence\Database\Traits\CamelCaseModel;
+use Venturecraft\Revisionable\RevisionableTrait;
 
 class AudioItem extends Model {
   use CamelCaseModel;
   use NullFieldPreserver;
-  use Auditable;
+  use RevisionableTrait;
 
+  protected $revisionCreationsEnabled = true;
+  
   protected $guarded = ['id'];
 
   public function getListeningCopyDisplayAttribute()

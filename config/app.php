@@ -135,7 +135,7 @@ return [
 		'Illuminate\Translation\TranslationServiceProvider',
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
-                'Illuminate\Html\HtmlServiceProvider',
+		'Illuminate\Html\HtmlServiceProvider',
 
 		/*
 		 * Third-party Service Providers
@@ -202,9 +202,15 @@ return [
 		'Form'      => 'Illuminate\Html\FormFacade',
 		'Html'      => 'Illuminate\Html\HtmlFacade',
 
-		'AudioItem'	=> 'Junebug\Models\AudioItem',
-		'VideoItem'	=> 'Junebug\Models\VideoItem',
-		'FilmItem'	=> 'Junebug\Models\FilmItem'
+		'AudioVisualItem'	    => 'Junebug\Models\AudioVisualItem',
+		'AudioItem'	            => 'Junebug\Models\AudioItem',
+		'VideoItem'	            => 'Junebug\Models\VideoItem',
+		'FilmItem'	            => 'Junebug\Models\FilmItem',
+		'PreservationMaster'	=> 'Junebug\Models\PreservationMaster',
+		'Cut'                   => 'Junebug\Models\Cut',
+		'Transfer'              => 'Junebug\Models\Transfer',
+
+        'Uuid'      => 'Rhumsaa\Uuid\Uuid',
 	],
 
 ];

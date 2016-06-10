@@ -205,7 +205,7 @@
     <div class="col-xs-12 actions">
       <a class="btn btn-sm btn-secondary" role="button" href="{{ route('items.edit', $item->id) }}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
       {!! Form::open(array('route' => array('items.destroy', $item->id), 'method' => 'delete', 'style' => 'display: inline;')) !!}
-        <button class="btn btn-sm btn-secondary" type="submit" style="outline: none; float: right;"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></button>
+        <button class="btn btn-sm btn-secondary" type="submit" style="outline: none; float: right;" data-confirm="Are you sure you want to delete this item?"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></button>
       {!! Form::close() !!}
     </div>
   </div>

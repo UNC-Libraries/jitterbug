@@ -1,19 +1,18 @@
 <?php namespace Junebug\Models;
 
+use Log;
 use Illuminate\Database\Eloquent\Model;
 use Eloquence\Database\Traits\CamelCaseModel;
+use Venturecraft\Revisionable\RevisionableTrait;
 
 class AudioVisualItem extends Model {
   use CamelCaseModel;
   use NullFieldPreserver;
-  use Auditable;
+  use RevisionableTrait;
 
+  protected $revisionCreationsEnabled = true;
+  
   protected $guarded = ['id', 'itemable', 'itemableType', 'itemableId'];
-
-  /*public static function boot()
-  {
-    parent::boot();
-  }*/
 
   public function collection()
   {

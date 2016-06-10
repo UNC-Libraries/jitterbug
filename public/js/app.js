@@ -177,3 +177,13 @@ $('.detail .input-group.date').datepicker({
     format: "yyyy-mm-dd"
 });
 
+
+$(function() {
+  $('a[data-confirm], input[data-confirm], button[data-confirm]').
+                                                  click(function() {
+    if (!confirm($(this).attr('data-confirm'))) {
+      return false;
+    }
+  });
+});
+
