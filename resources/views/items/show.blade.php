@@ -73,13 +73,13 @@
         </div>
       </div>
       @endif
-      @if ($item->oclcId)
+      @if ($item->oclc)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
           OCLC Id
         </div>
         <div class="col-xs-7 detail-value">
-          {{$item->oclcId}}
+          {{$item->oclc}}
         </div>
       </div>
       @endif
@@ -196,6 +196,9 @@
       </div>
     </div>
   </div>
+
+  @include('shared._revisions')
+
   <div class="row">
     <div class="col-xs-12">
       <hr/>

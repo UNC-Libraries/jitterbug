@@ -1,5 +1,6 @@
 <?php namespace Junebug\Models;
 
+use Log;
 use Illuminate\Database\Eloquent\Model;
 use Eloquence\Database\Traits\CamelCaseModel;
 
@@ -9,5 +10,10 @@ class Format extends Model {
     public function audioVisualItems()
     {
         return $this->hasMany('Junebug\Models\AudioVisualItem');
+    }
+
+    public function identifiableName()
+    {
+    	return $this->name;
     }
 }

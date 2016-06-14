@@ -11,39 +11,50 @@ class AudioItem extends Model {
   use RevisionableTrait;
 
   protected $revisionCreationsEnabled = true;
-  
+
+  protected $revisionFormattedFields = array(
+    'size' => 'isEmpty:nothing|%s',
+    'track_configuration' => 'isEmpty:nothing|%s',
+    'mono_stereo' => 'isEmpty:nothing|%s',
+    'base' => 'isEmpty:nothing|%s',
+  );
+
+  protected $revisionFormattedFieldNames = array(
+    'call_number' => 'call number',
+    'listening_copy' => 'listening copy',
+    'track_configuration' => 'track configuration',
+    'mono_stereo' => 'mono/stereo',
+  );
+
   protected $guarded = ['id'];
 
-  public function getListeningCopyDisplayAttribute()
+  public function getListeningCopyDisplayAttribute($value)
   {
-  	$listeningCopy = $this->getAttribute("listeningCopy");
-
-    if($listeningCopy=='N') {
-      $listeningCopy = 'No';
+    $listeningCopy = ($value==null ? $this->listeningCopy : $value);
+    if($listeningCopy) {
+      return 'Yes';
     } else {
-      $listeningCopy = 'Yes';
+      return 'No';
     }
-    return $listeningCopy; 
   }
 
-  public function getMonoStereoAttribute() {
-    $monoStereo = $this->attributes['mono_stereo'];
-    if($monoStereo==null) {
-      $monoStereo = '';
-    }
-    return $monoStereo; 
-  }
-
-  public function getMonoStereoDisplayAttribute()
+  public function getMonoStereoAttribute($value)
   {
-  	$monoStereo = $this->getAttribute("monoStereo");
+    if($value==null) {
+      return '';
+    }
+    return $value;
+  }
 
+  public function getMonoStereoDisplayAttribute($value)
+  {
+    $monoStereo = ($value==null ? $this->monoStereo : $value);
     if($monoStereo=='M') {
       $monoStereo = 'Mono';
     } else if($monoStereo=='S')  {
       $monoStereo = 'Stereo';
     } else {
-      $monoStereo = null;
+      $monoStereo = '';
     }
     return $monoStereo; 
   }

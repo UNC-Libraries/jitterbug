@@ -10,4 +10,9 @@ class Collection extends Model {
   {
     return $this->hasMany('Junebug\Models\AudioVisualItem');
   }
+
+  public function identifiableName()
+  {
+    return $this->name;
+  }
 }

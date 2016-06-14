@@ -96,10 +96,10 @@
       <div class="row">
         <div class="form-group">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('oclcId', 'OCLC Id', array('class' => 'form-control-label')) !!}
+            {!! Form::label('oclc', 'OCLC Id', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('oclcId', null, array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::text('oclc', null, array('class' => 'form-control form-control-sm')) !!}
           </div>
         </div>
       </div>
@@ -167,10 +167,10 @@
           </div>
           <div class="col-xs-7 detail-value">
             <label class="radio-inline">
-              {!! Form::radio('itemable[listeningCopy]', 'Y') !!} Yes
+              {!! Form::radio('itemable[listeningCopy]', '1') !!} Yes
             </label>
             <label class="radio-inline">
-              {!! Form::radio('itemable[listeningCopy]', 'N') !!} No
+              {!! Form::radio('itemable[listeningCopy]', '0') !!} No
             </label>
           </div>
         </div>
@@ -246,21 +246,9 @@
       </div>
     </div>
   </div>
-
-  {{-- 
-  <div class="row">
-    <div class="col-xs-12">
-      <ul>
-        @foreach ($item->auditRecords()->get() as $audit)
-        <li>
-          {{$audit->render()}}
-        </li>
-        @endforeach
-      </ul>
-    </div>
-  </div>
-  --}}
   
+  @include('shared._revisions')
+
   <div class="row">
     <div class="col-xs-12">
       <hr/>

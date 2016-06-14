@@ -1,7 +1,7 @@
 @import "node_modules/bootstrap/scss/bootstrap.scss";
 
 
- /* * { border: 1px solid black; } */
+/*  * { border: 1px solid black; } */
 
 $global-nav-bg:                #417505;
 $global-nav-button-bg:         $brand-primary;
@@ -399,6 +399,28 @@ label {
   margin-right: .975rem;
   margin-top: .975rem;
   background-color: #f5f5f5;
+}
+
+.detail .revision-history-title {
+  font-weight: bold;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  margin-left: .975rem;
+  margin-right: .975rem;
+  margin-top: .975rem;
+  background-color: #f5f5f5;
+}
+
+.detail .revision-history-title a {
+  color: #373a3c;
+}
+
+.detail .revision-history {
+  padding-bottom: .5rem;
+  margin-left: .975rem;
+  margin-right: .975rem;
+  background-color: #f5f5f5;
+  display: none;
 }
 
 .detail .detail-label {

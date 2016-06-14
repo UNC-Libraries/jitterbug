@@ -2085,7 +2085,7 @@
             "source": {
                 "type": "git",
                 "url": "git@gitlab.lib.unc.edu:cappdev/revisionable.git",
-                "reference": "7febe6626c6c91744bb97329d0a783b11963c954"
+                "reference": "293e5324606109f58ee579c885b632ad49885e34"
             },
             "require": {
                 "illuminate/support": "~4.0|~5.0|~5.1",
@@ -2122,7 +2122,7 @@
                 "issues": "https://github.com/VentureCraft/revisionable/issues",
                 "source": "https://github.com/VentureCraft/revisionable"
             },
-            "time": "2016-06-10 18:07:55"
+            "time": "2016-06-13 19:03:28"
         },
         {
             "name": "vlucas/phpdotenv",

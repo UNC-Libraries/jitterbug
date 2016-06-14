@@ -187,3 +187,17 @@ $(function() {
   });
 });
 
+$(function() {
+  $('.revision-history-title').click(function() {
+    var icon = $('.revision-history-title i');
+    if(icon.hasClass('fa-caret-right')) {
+      icon.removeClass('fa-caret-right');
+      icon.addClass('fa-caret-down');
+    } else {
+      icon.removeClass('fa-caret-down');
+      icon.addClass('fa-caret-right');
+    }
+    $('.revision-history').slideToggle(200);
+  });
+});
+
