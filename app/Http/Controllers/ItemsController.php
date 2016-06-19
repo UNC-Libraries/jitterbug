@@ -14,12 +14,15 @@ use Junebug\Models\AudioVisualItem;
 use Junebug\Models\AudioVisualItemType;
 use Junebug\Models\AudioVisualItemCollection;
 use Junebug\Models\AudioVisualItemFormat;
+use Junebug\Models\AudioItem;
+use Junebug\Models\FilmItem;
+use Junebug\Models\VideoItem;
 use Junebug\Models\Collection;
 use Junebug\Models\Cut;
 use Junebug\Models\Format;
 use Junebug\Models\Transfer;
 use Junebug\Models\PreservationMaster;
-use Junebug\Http\Requests\UpdateItemRequest;
+use Junebug\Http\Requests\ItemRequest;
 use Junebug\Support\SolariumPaginator;
 
 class ItemsController extends Controller
@@ -98,6 +101,46 @@ class ItemsController extends Controller
     return view('items.show', compact('item', 'cuts'));
   }
   
+  public function create() {
+    $item = new AudioVisualItem;
+    $collections = ['' => 
+              'Select a collection'] + Collection::lists('name', 'id');
+    $formats = ['' => 'Select a format'] + Format::lists('name', 'id');
+    return view('items.create', compact('item', 'collections', 'formats'));
+  }
+
+  public function store(ItemRequest $request) {
+    $input = $request->all();
+    $itemable = $this->newItemableInstance($request);
+    $itemable->callNumber = $input['callNumber'];
+    $itemable->fill($input['itemable']);
+
+    $item = new AudioVisualItem;
+    $item->fill($input);
+    $item->itemableType = $input['itemableType'];
+
+    // Update MySQL
+    DB::transaction(function () use ($item, $itemable) {
+      $transactionId = Uuid::uuid1();
+      DB::statement("set @transaction_id = '$transactionId';");
+      $itemable->save();
+
+      $item->itemableId = $itemable->id;
+      $item->save();
+
+      DB::statement('set @transaction_id = null;');      
+    });
+
+    // Update Solr
+    $this->updateSolr($item);
+
+    Session::flash('alert', array('type' => 'success', 'message' => 
+        '<strong>Yesss!</strong> ' . 
+        'Audio visual item was successfully created.'));
+
+    return redirect()->route('items.show', [$item->id]);
+  }
+
   public function edit($id)
   {
     $item = AudioVisualItem::findOrFail($id);
@@ -105,13 +148,14 @@ class ItemsController extends Controller
                ->orderBy('preservation_master_id', 'asc')
                ->orderBy('cut_number', 'asc')
                ->get();
-    $collections = ['' => ''] + Collection::lists('name', 'id');
-    $formats = ['' => ''] + Format::lists('name', 'id');
+    $collections = ['' => 
+              'Select a collection'] + Collection::lists('name', 'id');
+    $formats = ['' => 'Select a format'] + Format::lists('name', 'id');
     return view('items.edit', 
       compact('item', 'cuts', 'collections', 'formats'));
   }
 
-  public function update($id, UpdateItemRequest $request)
+  public function update($id, ItemRequest $request)
   {
     $input = $request->all();
     $item = AudioVisualItem::findOrFail($id);
@@ -167,23 +211,7 @@ class ItemsController extends Controller
     });
 
     // Update Solr
-    $client = new Solarium\Client($this->solariumConfigFor('items'));
-    $update = $client->createUpdate();
-    $doc = $update->createDocument();
-
-    $doc->setKey('id', $item->id);
-    $doc->setField('title', $item->title, null, 'set');
-    $doc->setField('containerNote', $item->containerNote, null, 'set');
-    $doc->setField('callNumber', $item->callNumber, null, 'set');
-    $doc->setField('collectionId', $item->collection->id, null, 'set');
-    $doc->setField('collectionName', $item->collection->name, null, 'set');
-    $doc->setField('formatId', $item->format->id, null, 'set');
-    $doc->setField('formatName', $item->format->name, null, 'set');
-
-    $update->addDocument($doc);
-    $update->addCommit();
-
-    $result = $client->update($update);
+    $this->updateSolr($item);
 
     Session::flash('alert', array('type' => 'success', 'message' => 
         '<strong>Hooray!</strong> ' . 
@@ -244,6 +272,22 @@ class ItemsController extends Controller
     return $filterQuery;
   }
 
+  private function newItemableInstance(Request $request)
+  {
+    $itemable = null;
+    $itemableType = $request->itemableType;
+    if($itemableType=='AudioItem') {
+      $itemable = new AudioItem;
+    } else if ($itemableType=='FilmItem') {
+      $itemable = new FilmItem;
+    } else if ($itemableType=='VideoItem') {
+      $itemable = new VideoItem;
+    } else {
+      throw new Exception('Unknown item type: ' . $itemableType);
+    }
+    return $itemable;
+  }
+
   // TODO: Use Str::endsWith instead
   private function endsWith($haystack, $needle)
   {
@@ -265,5 +309,25 @@ class ItemsController extends Controller
     return $config;
   }
 
+  private function updateSolr($item)
+  {
+    $client = new Solarium\Client($this->solariumConfigFor('items'));
+    $update = $client->createUpdate();
+    $doc = $update->createDocument();
+
+    $doc->setKey('id', $item->id);
+    $doc->setField('title', $item->title, null, 'set');
+    $doc->setField('containerNote', $item->containerNote, null, 'set');
+    $doc->setField('callNumber', $item->callNumber, null, 'set');
+    $doc->setField('collectionId', $item->collection->id, null, 'set');
+    $doc->setField('collectionName', $item->collection->name, null, 'set');
+    $doc->setField('formatId', $item->format->id, null, 'set');
+    $doc->setField('formatName', $item->format->name, null, 'set');
+
+    $update->addDocument($doc);
+    $update->addCommit();
+
+    return $client->update($update);
+  }
 
 }

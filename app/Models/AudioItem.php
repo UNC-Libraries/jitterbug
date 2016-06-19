@@ -26,7 +26,8 @@ class AudioItem extends Model {
     'mono_stereo' => 'mono/stereo',
   );
 
-  protected $guarded = ['id'];
+  protected $fillable = ['callNumber','listeningCopy','audioMonoStereo',
+                         'trackConfiguration','size','audioBase'];
 
   public function getListeningCopyDisplayAttribute($value)
   {
@@ -36,14 +37,6 @@ class AudioItem extends Model {
     } else {
       return 'No';
     }
-  }
-
-  public function getMonoStereoAttribute($value)
-  {
-    if($value==null) {
-      return '';
-    }
-    return $value;
   }
 
   public function getMonoStereoDisplayAttribute($value)
@@ -57,6 +50,30 @@ class AudioItem extends Model {
       $monoStereo = '';
     }
     return $monoStereo; 
+  }
+
+  public function getMonoStereoAttribute($value)
+  {
+    if($value==null) {
+      return '';
+    }
+    return $value;
+  }
+
+  public function getAudioMonoStereoAttribute($value) {
+    return $value==null ? $this->monoStereo : $value;
+  }
+
+  public function setAudioMonoStereoAttribute($value) {
+    $this->monoStereo = $value;
+  }
+
+  public function getAudioBaseAttribute($value) {
+    return $value==null ? $this->base : $value;
+  }
+
+  public function setAudioBaseAttribute($value) {
+    $this->base = $value;
   }
 
 }

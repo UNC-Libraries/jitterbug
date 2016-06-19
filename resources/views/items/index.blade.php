@@ -74,7 +74,7 @@
   <div id="data-panel" class="col-md-9 panel">
     <div class="top-controls">
       <div style="float: left;">
-        <a class="btn btn-sm btn-secondary" style="margin-right: 5px;" href="#" role="button"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
+        <a class="btn btn-sm btn-secondary" style="margin-right: 5px;" href="{{ route('items.create') }}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
         <a class="btn btn-sm btn-secondary" href="#" role="button"><i class="fa fa-upload" aria-hidden="true"></i> Export</a>
       </div>
       <div style="float: right; width: 275px;">

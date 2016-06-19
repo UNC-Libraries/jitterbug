@@ -173,10 +173,27 @@ $(function() {
   displayAlert();
 });
 
-$('.detail .input-group.date').datepicker({
-    format: "yyyy-mm-dd"
+$('#detail .input-group.date').datepicker({
+  format: "yyyy-mm-dd"
 });
 
+$(function() {
+  $('#detail #item-type-controls :radio').click(function(event) {
+    if($(this).val()=='AudioItem') {
+      $('#audio-form').show();
+      $('#film-form').hide();
+      $('#video-form').hide();
+    } else if($(this).val()=='FilmItem') {
+      $('#audio-form').hide();
+      $('#film-form').show();
+      $('#video-form').hide();
+    } else if($(this).val()=='VideoItem') {
+      $('#audio-form').hide();
+      $('#film-form').hide();
+      $('#video-form').show();
+    }
+  });
+});
 
 $(function() {
   $('a[data-confirm], input[data-confirm], button[data-confirm]').
@@ -200,4 +217,6 @@ $(function() {
     $('.revision-history').slideToggle(200);
   });
 });
+
+
 

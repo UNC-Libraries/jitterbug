@@ -19,21 +19,27 @@ class AudioVisualItem extends Model {
     'item_year' => 'isEmpty:nothing|%s',
     'item_date' => 'isEmpty:nothing|%s',
     'speed' => 'isEmpty:nothing|%s',
-    'entry_date' => 'isEmpty:nothing|%s',     
+    'entry_date' => 'isEmpty:nothing|%s',
   );
 
   protected $revisionFormattedFieldNames = array(
     'container_note' => 'container note',
     'call_number' => 'call number',
-    'entry_date' => 'entry date',
     'recording_location' => 'recording location',
     'item_year' => 'item year',
     'item_date' => 'item date',
     'entry_date' => 'entry date',
-    'oclc_id' => 'OCLC Id',
+    'oclc' => 'OCLC Id',
   );
 
   protected $guarded = ['id', 'itemable', 'itemableType', 'itemableId'];
+
+  public function __construct()
+  {
+    $this->itemableType = 'AudioItem';
+    $this->entryDate = (new \DateTime())->format('Y-m-d');
+    parent::__construct();
+  }
 
   public function collection()
   {

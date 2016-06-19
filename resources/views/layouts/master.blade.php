@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  @include('shared._head', [$title => $title])
+  @include('shared._head', ['title' => $title])
 </head>
 
 <body>

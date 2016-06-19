@@ -4889,35 +4889,43 @@ label {
 .col-e0 {
   background-color: #e0e0e0; }
 
-.detail {
+#detail {
   font-size: .9rem; }
 
-.detail h6 {
+#detail h6 {
   background-color: #e0e0e0;
   padding-top: 8px;
   font-weight: bold;
   font-size: .95rem; }
 
-.detail .first {
+#detail .preform {
+  margin-top: 1.25rem; }
+
+#detail .preform .divider {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  border-right: 1px solid #e0e0e0; }
+
+#detail .first {
   padding-top: 1rem; }
 
-.detail .last {
+#detail .last {
   padding-bottom: 2rem; }
 
-.detail .back {
+#detail .back {
   padding-top: .75rem;
   padding-bottom: 1.5rem;
   font-size: .95rem;
   background-color: #fff; }
 
-.detail .detail-container {
+#detail .detail-container {
   padding-bottom: 1.5rem;
   margin-left: .975rem;
   margin-right: .975rem;
   margin-top: .975rem;
   background-color: #f5f5f5; }
 
-.detail .revision-history-title {
+#detail .revision-history-title {
   font-weight: bold;
   padding-top: .5rem;
   padding-bottom: .5rem;
@@ -4926,47 +4934,50 @@ label {
   margin-top: .975rem;
   background-color: #f5f5f5; }
 
-.detail .revision-history-title a {
+#detail .revision-history-title a {
   color: #373a3c; }
 
-.detail .revision-history {
+#detail .revision-history {
   padding-bottom: .5rem;
   margin-left: .975rem;
   margin-right: .975rem;
   background-color: #f5f5f5;
   display: none; }
 
-.detail .detail-label {
+#detail .detail-label {
   padding-top: .5rem;
   padding-right: .4rem;
   font-weight: bold;
   text-align: right; }
 
-.detail .detail-value {
+#detail .detail-value {
   padding-top: .5rem; }
 
-.detail .form-group .detail-value {
+#detail .form-group .detail-value {
   padding-left: .25rem;
   padding-right: 0; }
 
-.detail hr {
+#detail hr.before {
+  margin-top: .75rem; }
+
+#detail hr.after {
   margin-top: 1.25rem; }
 
-.detail .actions {
+#detail .actions {
   margin-bottom: 2rem;
   background-color: #fff; }
 
-.detail .actions button {
+#detail .actions button {
   margin-right: .3rem; }
 
-.detail table {
+#detail table {
   font-size: .9rem;
   table-layout: fixed; }
 
-.detail table th {
+#detail table th {
   border-top: none; }
 
-.detail table td {
+#detail table td {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis; }

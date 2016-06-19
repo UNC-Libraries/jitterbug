@@ -2,7 +2,7 @@
 
 use Junebug\Http\Requests\Request;
 
-class UpdateItemRequest extends Request {
+class ItemRequest extends Request {
 
     /**
      * Determine if the user is authorized to make this request.
