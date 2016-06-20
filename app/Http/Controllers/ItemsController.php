@@ -323,6 +323,7 @@ class ItemsController extends Controller
     $doc->setField('collectionName', $item->collection->name, null, 'set');
     $doc->setField('formatId', $item->format->id, null, 'set');
     $doc->setField('formatName', $item->format->name, null, 'set');
+    $doc->setField('typeName', $item->type, null, 'set');
 
     $update->addDocument($doc);
     $update->addCommit();

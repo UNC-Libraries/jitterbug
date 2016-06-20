@@ -1,13 +1,18 @@
 <?php namespace Junebug\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 use Eloquence\Database\Traits\CamelCaseModel;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Transfer extends Model {
-	use CamelCaseModel;
-	use NullFieldPreserver;
-	use RevisionableTrait;
+  use CamelCaseModel;
+  use NullFieldPreserver;
+  use RevisionableTrait;
+  use SoftDeletes;
 
-    protected $revisionCreationsEnabled = true;
+  protected $dates = ['deleted_at'];
+
+  protected $revisionCreationsEnabled = true;
 }
