@@ -22,6 +22,11 @@ class PreservationMaster extends Model {
     return $this->belongsTo('Junebug\Models\Department');
   }
 
+  public function masterable()
+  {
+    return $this->morphTo();
+  }
+
   public function getTypeAttribute()
   {
   	$fullType = $this->getAttribute("masterableType");

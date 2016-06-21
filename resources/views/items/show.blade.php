@@ -159,7 +159,7 @@
       @if ($item->itemable->trackConfiguration)
       <div class="row">
         <div class="col-xs-4 detail-label">
-          Track Configuration
+          Track Config
         </div>
         <div class="col-xs-8 detail-value">
           {{$item->itemable->trackConfiguration}}
@@ -207,9 +207,32 @@
   <div class="row last">
     <div class="col-xs-12 actions">
       <a class="btn btn-sm btn-secondary" role="button" href="{{ route('items.edit', $item->id) }}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+      <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target=".confirm-delete-modal" style="outline: none; float: right;"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></button>
+
       {!! Form::open(array('route' => array('items.destroy', $item->id), 'method' => 'delete', 'style' => 'display: inline;')) !!}
-        <button class="btn btn-sm btn-secondary" type="submit" style="outline: none; float: right;" data-confirm="Are you sure you want to delete this item?"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></button>
+      <div class="modal fade confirm-delete-modal" tabindex="-1" role="dialog" aria-labelledby="confirmDelete" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 id="confirmDelete" class="modal-title">Confirm Delete</h4>
+            </div>
+            <div class="modal-body">
+              <strong>Yikes! Are you sure?</strong> @if (count($item->preservationMasters()) > 0 )This item has related preservation masters and possibly other related records.@endif Do you want to delete just this item, or do you want to delete this item <strong>and all</strong> associated records? This cannot be undone.
+            </div>
+            <div class="modal-footer">
+              <button name="deleteCommand" value="item" type="submit" class="btn btn-sm btn-warning" style="outline: none;"><i class="fa fa-trash" aria-hidden="true"></i> Delete Item Only</button>
+              <button name="deleteCommand" value="all" type="submit" class="btn btn-sm btn-danger" style="outline: none;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Delete All</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
       {!! Form::close() !!}
+
     </div>
   </div>
 

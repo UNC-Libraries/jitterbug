@@ -331,6 +331,38 @@ label {
   padding: 0;
 }
 
+/* Gets rid of the modal animation (but keeps the fade) */
+.modal.fade, .modal.fade .modal-dialog {
+  -webkit-transition: none;
+  -moz-transition: none;
+  -ms-transition: none;
+  -o-transition: none;
+  transition: none;
+}
+
+.modal-dialog {
+  margin: 150px auto;
+}
+
+.modal-header {
+  padding-left: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.modal-header .close {
+  margin: 0;
+}
+
+.modal-footer {
+  text-align: left;
+}
+
+h4 {
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
 /* This is to make the datepicker plugin look a little nicer */
 .dropdown-menu {
   padding: 5px 10px;

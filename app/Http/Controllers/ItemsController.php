@@ -132,7 +132,7 @@ class ItemsController extends Controller
     });
 
     // Update Solr
-    $this->updateSolr($item);
+    $this->solrUpdate($item);
 
     Session::flash('alert', array('type' => 'success', 'message' => 
         '<strong>Yesss!</strong> ' . 
@@ -211,7 +211,7 @@ class ItemsController extends Controller
     });
 
     // Update Solr
-    $this->updateSolr($item);
+    $this->solrUpdate($item);
 
     Session::flash('alert', array('type' => 'success', 'message' => 
         '<strong>Hooray!</strong> ' . 
@@ -220,13 +220,52 @@ class ItemsController extends Controller
     return redirect()->route('items.show', [$id]);
   }
 
-  public function destroy($id)
+  public function destroy($id, Request $request)
   {
     $item = AudioVisualItem::findOrFail($id);
-    
+    $itemable = $item->itemable;
+
+    $command = $request['deleteCommand'];
+
+    // Update MySQL
+    DB::transaction(function () use ($command, $item, $itemable) {
+      $transactionId = Uuid::uuid1();
+      DB::statement("set @transaction_id = '$transactionId';");
+      
+      $call = $item->callNumber;
+      if($command=='all') {
+        $masters = PreservationMaster::where('call_number', '=', 
+                                              $call)->get();
+        foreach ($masters as $master) {
+          $master->masterable->delete();
+          $master->delete();
+        }
+
+        $cuts = Cut::where('call_number', '=', $call)->get();
+
+        foreach ($cuts as $cut) {
+          $cut->delete();
+        }
+
+        $transfers = Transfer::where('call_number', '=', $call)->get();
+
+        foreach ($transfers as $transfer) {
+          $transfer->transferable->delete();
+          $transfer->delete();
+        }
+      }
+
+      $item->delete();
+      $itemable->delete();
+
+      DB::statement('set @transaction_id = null;');      
+    });
+
+    $this->solrDelete($item);
+
     Session::flash('alert', array('type' => 'success', 'message' => 
-        '<strong>Whoa!</strong> ' . 
-        'Audio visual item was successfully deleted.'));
+        '<strong>It\'s done!</strong> ' . 
+        "$item->type item was successfully deleted."));
 
     return redirect()->route('items.index');
   }
@@ -309,7 +348,7 @@ class ItemsController extends Controller
     return $config;
   }
 
-  private function updateSolr($item)
+  private function solrUpdate($item)
   {
     $client = new Solarium\Client($this->solariumConfigFor('items'));
     $update = $client->createUpdate();
@@ -329,6 +368,15 @@ class ItemsController extends Controller
     $update->addCommit();
 
     return $client->update($update);
+  }
+
+  private function solrDelete($item) {
+    $client = new Solarium\Client($this->solariumConfigFor('items'));
+    $update = $client->createUpdate();
+    $update->addDeleteById($item->id);
+    $update->addCommit();
+
+    $result = $client->update($update);
   }
 
 }

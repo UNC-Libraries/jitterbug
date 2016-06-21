@@ -20,6 +20,7 @@ elixir(function(mix) {
     mix.sass('app.scss');
 
     mix.scripts([
-      'node_modules/js-cookie/src/js.cookie.js'
+      'node_modules/js-cookie/src/js.cookie.js',
+      'node_modules/bootstrap/dist/js/bootstrap.min.js'
     ], 'public/js/vendor.js', './');
 });

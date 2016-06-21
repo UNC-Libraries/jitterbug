@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Eloquence\Database\Traits\CamelCaseModel;
 use Venturecraft\Revisionable\RevisionableTrait;
 
-class Transfer extends Model {
+class AudioTransfer extends Model {
   use CamelCaseModel;
   use NullFieldPreserver;
   use RevisionableTrait;
@@ -16,8 +16,4 @@ class Transfer extends Model {
 
   protected $revisionCreationsEnabled = true;
 
-  public function transferable()
-  {
-    return $this->morphTo();
-  }
 }
