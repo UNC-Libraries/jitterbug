@@ -5004,6 +5004,31 @@ h4 {
   overflow: hidden;
   text-overflow: ellipsis; }
 
+.autocomplete-suggestions {
+  border: 1px solid #999;
+  background: #FFF;
+  overflow: auto;
+  font-size: .9rem; }
+
+.autocomplete-suggestion {
+  padding: 2px 5px;
+  white-space: nowrap;
+  overflow: hidden; }
+
+.autocomplete-selected {
+  background: #F0F0F0; }
+
+.autocomplete-suggestions strong {
+  font-weight: normal;
+  color: #3399FF; }
+
+.autocomplete-group {
+  padding: 2px 5px; }
+
+.autocomplete-group strong {
+  display: block;
+  border-bottom: 1px solid #000; }
+
 body {
   font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial;
   background-color: #ededed;

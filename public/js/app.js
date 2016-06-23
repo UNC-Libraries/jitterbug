@@ -219,4 +219,14 @@ $(function() {
 });
 
 
+$('#track-configuration').autocomplete({
+  serviceUrl: '/suggestions/track-configurations',
+  deferRequestBy: 100
+});
+
+$('#audio-base').autocomplete({
+  serviceUrl: '/suggestions/audio-bases',
+  deferRequestBy: 100
+});
+
 

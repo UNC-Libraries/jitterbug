@@ -22,7 +22,7 @@
             {!! Form::label('itemable[element]', 'Element', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('itemable[element]', null, array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::text('itemable[element]', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. Dub')) !!}
           </div>
         </div>
       </div>
@@ -32,7 +32,7 @@
             {!! Form::label('itemable[color]', 'Color', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('itemable[color]', null, array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::text('itemable[color]', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. B/W')) !!}
           </div>
         </div>
       </div>
@@ -42,7 +42,7 @@
             {!! Form::label('itemable[recordingStandard]', 'Recording Standard', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('itemable[recordingStandard]', null, array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::text('itemable[recordingStandard]', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. NTSC')) !!}
           </div>
         </div>
       </div>

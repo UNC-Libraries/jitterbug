@@ -370,7 +370,8 @@ class ItemsController extends Controller
     return $client->update($update);
   }
 
-  private function solrDelete($item) {
+  private function solrDelete($item)
+  {
     $client = new Solarium\Client($this->solariumConfigFor('items'));
     $update = $client->createUpdate();
     $update->addDeleteById($item->id);

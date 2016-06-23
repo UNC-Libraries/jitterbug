@@ -67,7 +67,7 @@
             {!! Form::label('recordingLocation', 'Rec Location', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('recordingLocation', null, array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::text('recordingLocation', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. New Orleans, LA')) !!}
           </div>
         </div>
       </div>
@@ -87,7 +87,7 @@
             {!! Form::label('itemYear', 'Item Year', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('itemYear', null, array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::text('itemYear', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. Item year or range')) !!}
           </div>
         </div>
       </div>
@@ -113,7 +113,7 @@
             {!! Form::label('speed', 'Speed', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('speed', null, array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::text('speed', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. 7.5 ips, 24 fps')) !!}
           </div>
         </div>
       </div>

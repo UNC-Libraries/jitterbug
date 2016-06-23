@@ -13,7 +13,15 @@
 
 Route::get('/', 'WelcomeController@index');
 
+Route::group(['prefix' => 'suggestions'], function () {
+  Route::get('track-configurations', 'SuggestionsController@trackConfigurations');
+  Route::get('audio-bases', 'SuggestionsController@audioBases');
+});
+
 Route::resource('items', 'ItemsController');
+
+
+
 
 
 // Display all SQL executed in Eloquent
