@@ -5,6 +5,12 @@ use Junebug\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
+/**
+ * Controller for producing form level autocomplete suggestions for
+ * the devbridge autocomplete jQuery plugin 
+ * (https://github.com/devbridge/jQuery-Autocomplete). JSON results are
+ * formatted per plugin requirements.
+ */
 class SuggestionsController extends Controller {
 
   public function trackConfigurations(Request $request)

@@ -33,7 +33,8 @@ $(function() {
         filterListCheckboxes[0].checked = true;
       }
     }
-
+    
+    Cookies.remove('itemSelection');
     doSearch();
   });
 
@@ -41,6 +42,8 @@ $(function() {
   $('#search').keypress(function(event) {
     if(event.which == 13) {
       event.preventDefault();
+
+      Cookies.remove('itemSelection');
       doSearch();
     }
   });
@@ -126,9 +129,84 @@ function doSearch(query) {
   Cookies.set('q',query['q']);
   $.get('/items', query, function(data) {
     $('#data-container').replaceWith(data);
+    renderSelection();
+
+    // Disable text selection of data table row text
+    var dataTableRows = $('#data tr[role="button"]');
+    dataTableRows.bind('selectstart dragstart', function(event) {
+      event.preventDefault();
+      return;
+    });
     // Bind click handlers to all data table rows
-    $('#data tr[role="button"]').click(function(event) {
-        window.location.href="/items/" + $(this).data('id');
+    dataTableRows.click(function(event) {
+      var itemSelection = Cookies.get('itemSelection');
+      var rowIndex = $(this).data('index');
+
+      // If user is "shift-clicking" a row (i.e. selecting multiple rows)
+      if(event.shiftKey) {
+        if (itemSelection == null) {
+          itemSelection = {'begin':rowIndex,
+                             'end':rowIndex,
+                      'inclusions':[],
+                      'exclusions':[]};
+        } else {
+          itemSelection = JSON.parse(itemSelection);
+          if(itemSelection['begin']==null) {
+            itemSelection['begin'] = rowIndex;
+          }
+          itemSelection['end'] = rowIndex;
+          itemSelection['inclusions'] = [];
+          itemSelection['exclusions'] = [];
+        }
+        Cookies.set('itemSelection', itemSelection);
+        
+        renderSelection();
+        return;
+      }
+      // If user is "command-clicking" (Mac) (or control on Windows) 
+      // a row (i.e. selecting/deselecting single row)
+      if(event.ctrlKey || event.metaKey) {
+        if (itemSelection == null) {
+          itemSelection = {'begin':null,
+                             'end':null,
+                      'inclusions':[rowIndex],
+                      'exclusions':[]};
+        } else {
+          itemSelection = JSON.parse(itemSelection);
+          var begin = itemSelection['begin'];
+          var end = itemSelection['end']
+          var inclusions = itemSelection['inclusions'];
+          var exclusions = itemSelection['exclusions'];
+
+          // User is clicking within the defined range
+          if(isInRange(rowIndex,begin,end)) {
+            var result = $.inArray(rowIndex, exclusions);
+            // Add row index to exclusions
+            if(result == -1) {
+              exclusions.push(rowIndex);
+            } else {
+              exclusions.splice(result, 1);
+            }
+          // User is clicking outside the range
+          } else {
+            var result = $.inArray(rowIndex, inclusions);
+            // Add row index to inclusions
+            if(result == -1) {
+              inclusions.push(rowIndex);
+            } else {
+              inclusions.splice(result, 1);
+            }
+          }
+        }
+        Cookies.set('itemSelection', itemSelection);
+        
+        renderSelection();
+        return;
+      }
+
+      // User is singly clicking on a data table row
+      Cookies.remove('itemSelection');
+      window.location.href="/items/" + $(this).data('id');
     });
 
     // Bind click handlers to all data pagination links
@@ -160,6 +238,49 @@ function doSearch(query) {
       });
     }
   });
+}
+
+function renderSelection() {
+  var itemSelection = Cookies.get('itemSelection');
+  if (itemSelection == null) {
+    return;
+  } else {
+    itemSelection = JSON.parse(itemSelection);
+  }
+  $('#data tr[role="button"]').each(function() {
+    var rowIndex = $(this).data('index');
+    if(isRowSelected(rowIndex, itemSelection)) {
+      $(this).addClass('selected');
+    } else {
+      $(this).removeClass('selected');
+    }
+  });
+}
+
+function isRowSelected(rowIndex,itemSelection) {
+  var begin = itemSelection['begin'];
+  var end = itemSelection['end'];
+  var inclusions = itemSelection['inclusions'];
+  var exclusions = itemSelection['exclusions'];
+  if((isInRange(rowIndex, begin, end) && 
+       $.inArray(rowIndex, exclusions) == -1) || 
+       $.inArray(rowIndex, inclusions) != -1) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function isInRange(number,begin,end) {
+  if(number==null || begin==null || end==null) {
+    return false;
+  }
+  if(number >= Math.min(begin, end) && 
+     number <= Math.max(begin, end)) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 function displayAlert() {
@@ -228,5 +349,4 @@ $('#audio-base').autocomplete({
   serviceUrl: '/suggestions/audio-bases',
   deferRequestBy: 100
 });
-
 

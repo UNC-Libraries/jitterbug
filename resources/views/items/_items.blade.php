@@ -11,8 +11,9 @@
       </tr>
     </thead>
     <tbody>
+      <?php $index = 0; ?>
       @foreach ($items as $item)
-      <tr role="button" data-id="{{ $item->id }}">
+      <tr role="button" data-id="{{ $item->id }}" data-index="{{ $start + $index }}">
         <td>{{ $item->callNumber }}</td>
         <td title="{{ $item->title }}">{{ $item->title }}</td>
         <td title="{{ $item->containerNote }}">{{ $item->containerNote }}</td>
@@ -20,6 +21,7 @@
         <td>{{ $item->formatName }}</td>
         <td>{{ $item->typeName }}</td>
       </tr>
+      <?php $index++; ?>
       @endforeach                          
     </tbody>
   </table>

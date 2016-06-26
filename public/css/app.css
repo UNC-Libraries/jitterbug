@@ -4718,6 +4718,9 @@ a:link, a:visited, a:hover, a:active {
   overflow: hidden;
   text-overflow: ellipsis; }
 
+#data-panel table tr.selected {
+  background-color: #e8e8e8; }
+
 #data-panel .top-controls {
   margin-top: 12px;
   margin-bottom: 60px; }

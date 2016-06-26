@@ -49,7 +49,7 @@ class ItemsController extends Controller
       $userQueryString = urldecode($request->query('q'));
       $userQuery = json_decode($userQueryString);
 
-      $client = new Solarium\Client($this->solariumConfigFor('items'));
+      $client = new Solarium\Client($this->solariumConfigFor('junebug-items'));
       $solariumQuery = $client->createSelect();
 
       $searchTerms = $userQuery->{'search'};
@@ -75,10 +75,10 @@ class ItemsController extends Controller
       $solariumQuery->addSort('callNumber', $solariumQuery::SORT_ASC);
 
       $resultSet = $client->execute($solariumQuery);
-
+      
       $items = new SolariumPaginator($resultSet,$perPage,$currentPage);
 
-      return view('items._items', compact('items'));
+      return view('items._items', compact('items', 'start'));
     }
 
     $types = AudioVisualItemType::all();
@@ -350,7 +350,7 @@ class ItemsController extends Controller
 
   private function solrUpdate($item)
   {
-    $client = new Solarium\Client($this->solariumConfigFor('items'));
+    $client = new Solarium\Client($this->solariumConfigFor('junebug-items'));
     $update = $client->createUpdate();
     $doc = $update->createDocument();
 
@@ -372,7 +372,7 @@ class ItemsController extends Controller
 
   private function solrDelete($item)
   {
-    $client = new Solarium\Client($this->solariumConfigFor('items'));
+    $client = new Solarium\Client($this->solariumConfigFor('junebug-items'));
     $update = $client->createUpdate();
     $update->addDeleteById($item->id);
     $update->addCommit();
