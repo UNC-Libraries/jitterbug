@@ -13,6 +13,14 @@ use Illuminate\Http\Request;
  */
 class SuggestionsController extends Controller {
 
+  public function recordingLocations(Request $request)
+  {
+    $query = $request->query('query');
+    $suggestions = $this->getAutocompleteSuggestions(
+                                      'AudioVisualItem','recording_location',$query);
+    return response()->json($suggestions);
+  }
+
   public function trackConfigurations(Request $request)
   {
     $query = $request->query('query');

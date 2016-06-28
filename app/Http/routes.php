@@ -14,9 +14,14 @@
 Route::get('/', 'WelcomeController@index');
 
 Route::group(['prefix' => 'suggestions'], function () {
+  Route::get('recording-locations', 'SuggestionsController@recordingLocations');
   Route::get('track-configurations', 'SuggestionsController@trackConfigurations');
   Route::get('audio-bases', 'SuggestionsController@audioBases');
 });
+
+Route::get('items/edit', [
+    'as' => 'items.editBatch', 'uses' => 'ItemsController@editBatch'
+]);
 
 Route::resource('items', 'ItemsController');
 

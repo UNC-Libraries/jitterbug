@@ -155,6 +155,15 @@ class ItemsController extends Controller
       compact('item', 'cuts', 'collections', 'formats'));
   }
 
+  public function editBatch()
+  {
+    // run solarium query to get result set
+    // get user selection from query string
+    // merge values
+    // display
+    dd("Batch edit");
+  }
+
   public function update($id, ItemRequest $request)
   {
     $input = $request->all();

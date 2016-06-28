@@ -34,7 +34,7 @@ $(function() {
       }
     }
     
-    Cookies.remove('itemSelection');
+    localStorage.removeItem('itemSelection');
     doSearch();
   });
 
@@ -43,7 +43,7 @@ $(function() {
     if(event.which == 13) {
       event.preventDefault();
 
-      Cookies.remove('itemSelection');
+      localStorage.removeItem('itemSelection');
       doSearch();
     }
   });
@@ -62,8 +62,8 @@ $(function() {
   if (location.pathname === '/items') {
     initialize();
     query = {};
-    if(Cookies.get('page') != null) {
-      query['page'] = Cookies.get('page');    
+    if(localStorage.getItem('page') != null) {
+      query['page'] = localStorage.getItem('page');    
     }
     doSearch(query);
   }
@@ -72,10 +72,9 @@ $(function() {
 
 function initialize() {
   
-  queryCookie = Cookies.get('q');
-  if(queryCookie != null) {
-    queryCookie = decodeURIComponent(queryCookie);
-    queryFilters = JSON.parse(queryCookie);
+  queryString = localStorage.getItem('q');
+  if(queryString != null) {
+    queryFilters = JSON.parse(queryString);
     $('#search').val(queryFilters['search']);
     $('#filter-panel .filter-list').each(function() {
       filterListId = this.id;
@@ -91,7 +90,7 @@ function initialize() {
       }
     });
   } else {
-    // Reset checkboxes to default state if no cookie
+    // Reset checkboxes to default state if not in storage
     $('#filter-panel .filter-list').each(function() {
       var filterListCheckboxes = $(this).find(':checkbox');
       for(var i = 0; i < filterListCheckboxes.length; i++) {
@@ -125,8 +124,9 @@ function doSearch(query) {
   if(query==null) {
     query = {};
   }
-  query['q'] = encodeURIComponent(searchQuery());
-  Cookies.set('q',query['q']);
+  var queryString = searchQuery();
+  localStorage.setItem('q',queryString);
+  query['q'] = encodeURIComponent(queryString);
   $.get('/items', query, function(data) {
     $('#data-container').replaceWith(data);
     renderSelection();
@@ -139,26 +139,26 @@ function doSearch(query) {
     });
     // Bind click handlers to all data table rows
     dataTableRows.click(function(event) {
-      var itemSelection = Cookies.get('itemSelection');
+      var selection = localStorage.getItem('itemSelection');
       var rowIndex = $(this).data('index');
 
       // If user is "shift-clicking" a row (i.e. selecting multiple rows)
       if(event.shiftKey) {
-        if (itemSelection == null) {
-          itemSelection = {'begin':rowIndex,
-                             'end':rowIndex,
-                      'inclusions':[],
-                      'exclusions':[]};
+        if (selection == null) {
+          selection = {'begin':rowIndex,
+                         'end':rowIndex,
+                    'excludes':[],
+                    'includes':[]};
         } else {
-          itemSelection = JSON.parse(itemSelection);
-          if(itemSelection['begin']==null) {
-            itemSelection['begin'] = rowIndex;
+          selection = JSON.parse(selection);
+          if(selection['begin']==null) {
+            selection['begin'] = rowIndex;
           }
-          itemSelection['end'] = rowIndex;
-          itemSelection['inclusions'] = [];
-          itemSelection['exclusions'] = [];
+          selection['end'] = rowIndex;
+          selection['excludes'] = [];
+          selection['includes'] = [];
         }
-        Cookies.set('itemSelection', itemSelection);
+        localStorage.setItem('itemSelection', JSON.stringify(selection));
         
         renderSelection();
         return;
@@ -166,53 +166,53 @@ function doSearch(query) {
       // If user is "command-clicking" (Mac) (or control on Windows) 
       // a row (i.e. selecting/deselecting single row)
       if(event.ctrlKey || event.metaKey) {
-        if (itemSelection == null) {
-          itemSelection = {'begin':null,
-                             'end':null,
-                      'inclusions':[rowIndex],
-                      'exclusions':[]};
+        if (selection == null) {
+          selection = {'begin':null,
+                         'end':null,
+                    'excludes':[rowIndex],
+                    'includes':[]};
         } else {
-          itemSelection = JSON.parse(itemSelection);
-          var begin = itemSelection['begin'];
-          var end = itemSelection['end']
-          var inclusions = itemSelection['inclusions'];
-          var exclusions = itemSelection['exclusions'];
+          selection = JSON.parse(selection);
+          var begin = selection['begin'];
+          var end = selection['end'];
+          var excludes = selection['excludes'];
+          var includes = selection['includes'];
 
           // User is clicking within the defined range
           if(isInRange(rowIndex,begin,end)) {
-            var result = $.inArray(rowIndex, exclusions);
-            // Add row index to exclusions
+            var result = $.inArray(rowIndex, excludes);
+            // Add row index to excludes
             if(result == -1) {
-              exclusions.push(rowIndex);
+              excludes.push(rowIndex);
             } else {
-              exclusions.splice(result, 1);
+              excludes.splice(result, 1);
             }
           // User is clicking outside the range
           } else {
-            var result = $.inArray(rowIndex, inclusions);
-            // Add row index to inclusions
+            var result = $.inArray(rowIndex, includes);
+            // Add row index to includes
             if(result == -1) {
-              inclusions.push(rowIndex);
+              includes.push(rowIndex);
             } else {
-              inclusions.splice(result, 1);
+              includes.splice(result, 1);
             }
           }
         }
-        Cookies.set('itemSelection', itemSelection);
+        localStorage.setItem('itemSelection', JSON.stringify(selection));
         
         renderSelection();
         return;
       }
 
       // User is singly clicking on a data table row
-      Cookies.remove('itemSelection');
+      localStorage.removeItem('itemSelection');
       window.location.href="/items/" + $(this).data('id');
     });
 
     // Bind click handlers to all data pagination links
     if($('.pagination').length) {
       var currentPage = parseInt($('.page-item.active').text().trim());
-      Cookies.set('page',currentPage);
+      localStorage.setItem('page',currentPage);
       $('.pagination').each(function() {
         $('.page-link').each(function() {
           if($(this).parent().hasClass('disabled') || 
@@ -241,15 +241,15 @@ function doSearch(query) {
 }
 
 function renderSelection() {
-  var itemSelection = Cookies.get('itemSelection');
-  if (itemSelection == null) {
+  var selection = localStorage.getItem('itemSelection');
+  if (selection == null) {
     return;
   } else {
-    itemSelection = JSON.parse(itemSelection);
+    selection = JSON.parse(selection);
   }
   $('#data tr[role="button"]').each(function() {
     var rowIndex = $(this).data('index');
-    if(isRowSelected(rowIndex, itemSelection)) {
+    if(isRowSelected(rowIndex, selection)) {
       $(this).addClass('selected');
     } else {
       $(this).removeClass('selected');
@@ -257,14 +257,14 @@ function renderSelection() {
   });
 }
 
-function isRowSelected(rowIndex,itemSelection) {
-  var begin = itemSelection['begin'];
-  var end = itemSelection['end'];
-  var inclusions = itemSelection['inclusions'];
-  var exclusions = itemSelection['exclusions'];
+function isRowSelected(rowIndex,selection) {
+  var begin = selection['begin'];
+  var end = selection['end'];
+  var excludes = selection['excludes'];
+  var includes = selection['includes'];
   if((isInRange(rowIndex, begin, end) && 
-       $.inArray(rowIndex, exclusions) == -1) || 
-       $.inArray(rowIndex, inclusions) != -1) {
+       $.inArray(rowIndex, excludes) == -1) || 
+       $.inArray(rowIndex, includes) != -1) {
     return true;
   } else {
     return false;
@@ -340,6 +340,11 @@ $(function() {
 });
 
 
+$('#recording-location').autocomplete({
+  serviceUrl: '/suggestions/recording-locations',
+  deferRequestBy: 100
+});
+
 $('#track-configuration').autocomplete({
   serviceUrl: '/suggestions/track-configurations',
   deferRequestBy: 100
@@ -349,4 +354,131 @@ $('#audio-base').autocomplete({
   serviceUrl: '/suggestions/audio-bases',
   deferRequestBy: 100
 });
+
+
+/*
+ * A TableSelection contains indices of solarium search results, 
+ * not a collection of record ids, because the ids are
+ * potentially not known at the time of selection (i.e. in the
+ * case where a user selects a few records, and then pages over
+ * multiple pages, skipping a pages in between.)
+ * 'selector' = jQuery selector for the table rows
+ * 'begin' = beginning index of the selection range
+ * 'end' = ending index of the selection range
+ * 'excludes' = ids within the selection range to be excluded
+ * 'includes' = ids outside of the selection range to be included
+ */
+function TableSelection(params) {
+  var selector = params.selector;
+  var begin = params.begin;
+  var end = params.end;
+  var excludes = params.excludes;
+  var includes = params.includes;
+
+  var init = function() {
+    // Disable text selection of data table row text
+    var dataTableRows = $(selector);
+    dataTableRows.bind('selectstart dragstart', function(event) {
+      event.preventDefault();
+      return;
+    });
+  }
+
+  var selected = function(rowIndex) {
+    if((inRange(rowIndex) && 
+      $.inArray(rowIndex, excludes) == -1) || 
+      $.inArray(rowIndex, includes) != -1) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  var render = function() {
+    var that = this;
+    $(selector).each(function() {
+      var rowIndex = $(this).data('index');
+      if(that.selected(rowIndex)) {
+        $(this).addClass('selected');
+      } else {
+        $(this).removeClass('selected');
+      }
+    });
+  };
+
+  var toggle = function(rowIndex) {
+    // User is clicking within the defined range
+    if(isInRange(rowIndex)) {
+      var result = $.inArray(rowIndex, excludes);
+      // Add row index to excludes
+      if(result == -1) {
+        excludes.push(rowIndex);
+      } else {
+        excludes.splice(result, 1);
+      }
+    // User is clicking outside the range
+    } else {
+      var result = $.inArray(rowIndex, includes);
+      // Add row index to includes
+      if(result == -1) {
+        includes.push(rowIndex);
+      } else {
+        includes.splice(result, 1);
+      }
+    }
+  }
+
+  var inRange = function(rowIndex) {
+    if(rowIndex==null || begin==null || end==null) {
+      return false;
+    }
+    if(rowIndex >= Math.min(begin, end) && 
+      rowIndex <= Math.max(begin, end)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  var store = function(key, location) {
+    if (location=='local') {
+      localStorage.setItem(key, toString());
+    } else if (location=='session') {
+      sessionStorage.setItem(key, toString());
+    }
+  }
+
+  var toString = function() {
+    return JSON.stringify({
+      selector:selector,
+      begin:begin,
+      end:end,
+      excludes:excludes,
+      includes:includes
+    });
+  };
+
+  return {
+    init: init,
+    selected: selected,
+    render: render,
+    toggle: toggle,
+    store: store,
+    toString: toString
+  };
+
+};
+
+TableSelection.load = function(key, location) {
+  var object;
+  if (location=='local') {
+    object = JSON.parse(localStorage.getItem(key));
+  } else if (location=='session') {
+    object = JSON.parse(sessionStorage.getItem(key));
+  }
+  return new Selection(object);
+}
+
+
+
 

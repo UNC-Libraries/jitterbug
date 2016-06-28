@@ -75,9 +75,16 @@
     <div class="top-controls">
       <div style="float: left;">
         <a class="btn btn-sm btn-secondary" style="margin-right: 5px;" href="{{ route('items.create') }}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
-        <a class="btn btn-sm btn-secondary" href="#" role="button"><i class="fa fa-upload" aria-hidden="true"></i> Export</a>
+        <div class="btn-group">
+          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cubes" data-toggle="dropdown" aria-hidden="true"></i> Batch</button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Edit</a>
+            <a class="dropdown-item" href="#">Export</a>
+            <a class="dropdown-item" href="#">Delete</a>
+          </div>
+        </div>
       </div>
-      <div style="float: right; width: 275px;">
+      <div class="search-container">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
           <input id="search" class="form-control form-control-sm" type="text" placeholder="Search" autocomplete="off">

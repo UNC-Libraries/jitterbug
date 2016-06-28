@@ -164,6 +164,16 @@ a:link, a:visited, a:hover, a:active {
   margin-bottom: 60px;
 }
 
+#data-panel .dropdown-menu {
+  padding: 0;
+  font-size: .9rem;
+}
+
+#data-panel .search-container {
+  float: right;
+  width: 275px;
+}
+
 #data-panel .data-footer .record-count {
   font-size: .9rem;
   font-weight: bold;
@@ -209,7 +219,7 @@ a:link, a:visited, a:hover, a:active {
 #content {
   background-color: #fff;
 /* display: table; */
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5)
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.5)
 }
 
 #content .panel {
@@ -517,15 +527,56 @@ h4 {
   text-overflow: ellipsis;
 }
 
-.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; font-size: .9rem; }
-.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
-.autocomplete-selected { background: #F0F0F0; }
-.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
-.autocomplete-group { padding: 2px 5px; }
-.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+.autocomplete-suggestions {
+  border: 1px solid #999;
+  background: #FFF;
+  overflow: auto;
+  font-size: .9rem;
+}
+
+.autocomplete-suggestion {
+  padding: 2px 5px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.autocomplete-selected {
+  background: #F0F0F0;
+}
+
+.autocomplete-suggestions strong {
+  font-weight: normal;
+  color: #3399FF;
+}
+
+.autocomplete-group {
+  padding: 2px 5px;
+}
+
+.autocomplete-group strong {
+  display: block;
+  border-bottom: 1px solid #000;
+}
 
 body {
   font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial;
   background-color: #ededed;
   min-width: 700px;
+}
+
+@media(max-width:992px){
+  #data-panel .search-container {
+    width: 200px;
+  }
+}
+
+/* Get rid of borders around focused elements in Firefox */
+*:focus, *:visited, *:active, *:hover  { outline:0 !important;}
+*::-moz-focus-inner {border:0;}
+
+div {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }

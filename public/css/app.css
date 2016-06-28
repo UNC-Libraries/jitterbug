@@ -4725,6 +4725,14 @@ a:link, a:visited, a:hover, a:active {
   margin-top: 12px;
   margin-bottom: 60px; }
 
+#data-panel .dropdown-menu {
+  padding: 0;
+  font-size: .9rem; }
+
+#data-panel .search-container {
+  float: right;
+  width: 275px; }
+
 #data-panel .data-footer .record-count {
   font-size: .9rem;
   font-weight: bold;
@@ -4762,7 +4770,7 @@ a:link, a:visited, a:hover, a:active {
 #content {
   background-color: #fff;
   /* display: table; */
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); }
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.5); }
 
 #content .panel {
   float: none;
@@ -5036,5 +5044,22 @@ body {
   font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial;
   background-color: #ededed;
   min-width: 700px; }
+
+@media (max-width: 992px) {
+  #data-panel .search-container {
+    width: 200px; } }
+
+/* Get rid of borders around focused elements in Firefox */
+*:focus, *:visited, *:active, *:hover {
+  outline: 0 !important; }
+
+*::-moz-focus-inner {
+  border: 0; }
+
+div {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
 
 /*# sourceMappingURL=app.css.map */
