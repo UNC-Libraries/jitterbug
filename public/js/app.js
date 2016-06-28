@@ -34,7 +34,7 @@ $(function() {
       }
     }
     
-    localStorage.removeItem('itemSelection');
+    TableSelection.load('itemSelection','session').clear();
     doSearch();
   });
 
@@ -43,7 +43,7 @@ $(function() {
     if(event.which == 13) {
       event.preventDefault();
 
-      localStorage.removeItem('itemSelection');
+      TableSelection.load('itemSelection','session').clear();
       doSearch();
     }
   });
@@ -71,7 +71,19 @@ $(function() {
 });
 
 function initialize() {
-  
+  itemSelection = TableSelection.load('itemSelection','session');
+  if(itemSelection==null) {
+    itemSelection = 
+      new TableSelection({
+        key:'itemSelection',
+        location:'session',
+        selector:'#data tr[role="button"]'});
+    itemSelection.init();
+    itemSelection.store();
+  } else {
+    itemSelection.render();
+  }
+
   queryString = localStorage.getItem('q');
   if(queryString != null) {
     queryFilters = JSON.parse(queryString);
@@ -129,83 +141,14 @@ function doSearch(query) {
   query['q'] = encodeURIComponent(queryString);
   $.get('/items', query, function(data) {
     $('#data-container').replaceWith(data);
-    renderSelection();
 
-    // Disable text selection of data table row text
-    var dataTableRows = $('#data tr[role="button"]');
-    dataTableRows.bind('selectstart dragstart', function(event) {
-      event.preventDefault();
-      return;
-    });
+    itemSelection = TableSelection.load('itemSelection','session');
+    itemSelection.init();
+    itemSelection.render();
+
     // Bind click handlers to all data table rows
-    dataTableRows.click(function(event) {
-      var selection = localStorage.getItem('itemSelection');
-      var rowIndex = $(this).data('index');
-
-      // If user is "shift-clicking" a row (i.e. selecting multiple rows)
-      if(event.shiftKey) {
-        if (selection == null) {
-          selection = {'begin':rowIndex,
-                         'end':rowIndex,
-                    'excludes':[],
-                    'includes':[]};
-        } else {
-          selection = JSON.parse(selection);
-          if(selection['begin']==null) {
-            selection['begin'] = rowIndex;
-          }
-          selection['end'] = rowIndex;
-          selection['excludes'] = [];
-          selection['includes'] = [];
-        }
-        localStorage.setItem('itemSelection', JSON.stringify(selection));
-        
-        renderSelection();
-        return;
-      }
-      // If user is "command-clicking" (Mac) (or control on Windows) 
-      // a row (i.e. selecting/deselecting single row)
-      if(event.ctrlKey || event.metaKey) {
-        if (selection == null) {
-          selection = {'begin':null,
-                         'end':null,
-                    'excludes':[rowIndex],
-                    'includes':[]};
-        } else {
-          selection = JSON.parse(selection);
-          var begin = selection['begin'];
-          var end = selection['end'];
-          var excludes = selection['excludes'];
-          var includes = selection['includes'];
-
-          // User is clicking within the defined range
-          if(isInRange(rowIndex,begin,end)) {
-            var result = $.inArray(rowIndex, excludes);
-            // Add row index to excludes
-            if(result == -1) {
-              excludes.push(rowIndex);
-            } else {
-              excludes.splice(result, 1);
-            }
-          // User is clicking outside the range
-          } else {
-            var result = $.inArray(rowIndex, includes);
-            // Add row index to includes
-            if(result == -1) {
-              includes.push(rowIndex);
-            } else {
-              includes.splice(result, 1);
-            }
-          }
-        }
-        localStorage.setItem('itemSelection', JSON.stringify(selection));
-        
-        renderSelection();
-        return;
-      }
-
-      // User is singly clicking on a data table row
-      localStorage.removeItem('itemSelection');
+    $('#data tr[role="button"]').click(function(event) {
+      itemSelection.clear();
       window.location.href="/items/" + $(this).data('id');
     });
 
@@ -238,49 +181,6 @@ function doSearch(query) {
       });
     }
   });
-}
-
-function renderSelection() {
-  var selection = localStorage.getItem('itemSelection');
-  if (selection == null) {
-    return;
-  } else {
-    selection = JSON.parse(selection);
-  }
-  $('#data tr[role="button"]').each(function() {
-    var rowIndex = $(this).data('index');
-    if(isRowSelected(rowIndex, selection)) {
-      $(this).addClass('selected');
-    } else {
-      $(this).removeClass('selected');
-    }
-  });
-}
-
-function isRowSelected(rowIndex,selection) {
-  var begin = selection['begin'];
-  var end = selection['end'];
-  var excludes = selection['excludes'];
-  var includes = selection['includes'];
-  if((isInRange(rowIndex, begin, end) && 
-       $.inArray(rowIndex, excludes) == -1) || 
-       $.inArray(rowIndex, includes) != -1) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-function isInRange(number,begin,end) {
-  if(number==null || begin==null || end==null) {
-    return false;
-  }
-  if(number >= Math.min(begin, end) && 
-     number <= Math.max(begin, end)) {
-    return true;
-  } else {
-    return false;
-  }
 }
 
 function displayAlert() {
@@ -356,12 +256,16 @@ $('#audio-base').autocomplete({
 });
 
 
-/*
- * A TableSelection contains indices of solarium search results, 
+/**
+ * A TableSelection contains indices of search results, 
  * not a collection of record ids, because the ids are
  * potentially not known at the time of selection (i.e. in the
  * case where a user selects a few records, and then pages over
  * multiple pages, skipping a pages in between.)
+ *
+ * Constructor params are as follows:
+ * 'key' = storage key under which the serialized selection is stored
+ * 'location' = storage location (can be 'session' or 'local')
  * 'selector' = jQuery selector for the table rows
  * 'begin' = beginning index of the selection range
  * 'end' = ending index of the selection range
@@ -369,11 +273,13 @@ $('#audio-base').autocomplete({
  * 'includes' = ids outside of the selection range to be included
  */
 function TableSelection(params) {
+  var key = params.key;
+  var location = params.location;
   var selector = params.selector;
   var begin = params.begin;
   var end = params.end;
-  var excludes = params.excludes;
-  var includes = params.includes;
+  var excludes = params.excludes != null ? params.excludes : [];
+  var includes = params.includes != null ? params.includes : [];
 
   var init = function() {
     // Disable text selection of data table row text
@@ -382,7 +288,34 @@ function TableSelection(params) {
       event.preventDefault();
       return;
     });
+    // Bind click handlers to all data table rows
+    dataTableRows.click(function(event) {
+      // The index of the Solr search result, not the table
+      var rowIndex = $(this).data('index');
+
+      // If user is "shift-clicking" a row (i.e. selecting a range of rows)
+      if(event.shiftKey) {
+        setRange(rowIndex);
+        finalizeEvent(event);
+        return;
+      }
+
+      // If user is "command-clicking" (Mac) (or control on Windows) 
+      // a row (i.e. selecting/deselecting single row)
+      if(event.ctrlKey || event.metaKey) {
+        toggle(rowIndex);
+        finalizeEvent(event);
+        return;
+      }
+
+    });
   }
+
+  var finalizeEvent = function(event) {
+    store();
+    render();
+    event.stopImmediatePropagation();
+  };
 
   var selected = function(rowIndex) {
     if((inRange(rowIndex) && 
@@ -395,10 +328,9 @@ function TableSelection(params) {
   };
 
   var render = function() {
-    var that = this;
     $(selector).each(function() {
       var rowIndex = $(this).data('index');
-      if(that.selected(rowIndex)) {
+      if(selected(rowIndex)) {
         $(this).addClass('selected');
       } else {
         $(this).removeClass('selected');
@@ -406,9 +338,20 @@ function TableSelection(params) {
     });
   };
 
+  var setRange = function(rowIndex) {
+    if (begin == null) {
+      begin = rowIndex;
+      end = rowIndex;
+    } else {
+      end = rowIndex;
+    }
+    excludes = [];
+    includes = [];
+  }
+
   var toggle = function(rowIndex) {
     // User is clicking within the defined range
-    if(isInRange(rowIndex)) {
+    if(inRange(rowIndex)) {
       var result = $.inArray(rowIndex, excludes);
       // Add row index to excludes
       if(result == -1) {
@@ -440,16 +383,41 @@ function TableSelection(params) {
     }
   };
 
-  var store = function(key, location) {
-    if (location=='local') {
+  var store = function() {
+    if (location=='local' || location==null) {
       localStorage.setItem(key, toString());
     } else if (location=='session') {
       sessionStorage.setItem(key, toString());
     }
   }
 
+  var remove = function() {
+    if (location=='local' || location==null) {
+      localStorage.removeItem(key);
+    } else if (location=='session') {
+      sessionStorage.removeItem(key);
+    }
+  };
+
+  var clear = function() {
+    begin = null;
+    end = null;
+    excludes = [];
+    includes = [];
+    store();
+  };
+
+  var count = function() {
+    var max = Math.max(begin, end);
+    var min = Math.min(begin, end);
+    var total = (max - min) - excludes.length + includes.length + 1;
+    return total;
+  };
+
   var toString = function() {
     return JSON.stringify({
+      key:key,
+      location:location,
       selector:selector,
       begin:begin,
       end:end,
@@ -462,21 +430,27 @@ function TableSelection(params) {
     init: init,
     selected: selected,
     render: render,
-    toggle: toggle,
     store: store,
+    clear: clear,
+    count: count,
     toString: toString
   };
 
 };
 
 TableSelection.load = function(key, location) {
-  var object;
-  if (location=='local') {
-    object = JSON.parse(localStorage.getItem(key));
+  var string;
+  if (location=='local' || location==null) {
+    string = localStorage.getItem(key);
   } else if (location=='session') {
-    object = JSON.parse(sessionStorage.getItem(key));
+    string = sessionStorage.getItem(key);
   }
-  return new Selection(object);
+  if(string==null) {
+    return null;
+  }
+  params = JSON.parse(string);
+
+  return new TableSelection(params);
 }
 
 
