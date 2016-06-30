@@ -73,8 +73,7 @@ $(function() {
 function initialize() {
   itemSelection = TableSelection.load('itemSelection','session');
   if(itemSelection==null) {
-    itemSelection = 
-      new TableSelection({
+    itemSelection = new TableSelection({
         key:'itemSelection',
         location:'session',
         selector:'#data tr[role="button"]'});
@@ -217,15 +216,6 @@ $(function() {
 });
 
 $(function() {
-  $('a[data-confirm], input[data-confirm], button[data-confirm]').
-                                                  click(function() {
-    if (!confirm($(this).attr('data-confirm'))) {
-      return false;
-    }
-  });
-});
-
-$(function() {
   $('.revision-history-title').click(function() {
     var icon = $('.revision-history-title i');
     if(icon.hasClass('fa-caret-right')) {
@@ -257,37 +247,51 @@ $('#audio-base').autocomplete({
 
 
 /**
- * A TableSelection contains indices of search results, 
- * not a collection of record ids, because the ids are
- * potentially not known at the time of selection (i.e. in the
- * case where a user selects a few records, and then pages over
- * multiple pages, skipping a pages in between.)
+ * A TableSelection models a user's selection of multiple
+ * rows of a table by 'shift-clicking' or 'command-clicking'
+ * on rows to make the selection, rather than using form
+ * checkboxes.
+ * 
+ * Rows of the table must have the data attribute 'data-index'
+ * on them that reflects the index of the record in the table,
+ * not the id of the record in the database. Internally,
+ * TableSelection stores a range selection (beginning and 
+ * ending indices), an array of indices that should be
+ * excluded from the range (produced by a user 'command-clicking')
+ * within the range, and an array of indices that should be 
+ * included in the selection, also produced by a user
+ * command clicking, but outside of the range.
+ *
+ * If storage parameters are supplied (storage key and location),
+ * the table selection will persist itself when the selection
+ * changes.
  *
  * Constructor params are as follows:
  * 'key' = storage key under which the serialized selection is stored
  * 'location' = storage location (can be 'session' or 'local')
- * 'selector' = jQuery selector for the table rows
+ * 'selector' = jQuery selector for the table rows *required
  * 'begin' = beginning index of the selection range
  * 'end' = ending index of the selection range
  * 'excludes' = ids within the selection range to be excluded
  * 'includes' = ids outside of the selection range to be included
  */
 function TableSelection(params) {
-  var key = params.key;
-  var location = params.location;
-  var selector = params.selector;
-  var begin = params.begin;
-  var end = params.end;
-  var excludes = params.excludes != null ? params.excludes : [];
-  var includes = params.includes != null ? params.includes : [];
+  var key = params.key,
+      location = params.location,
+      selector = params.selector,
+      begin = params.begin,
+      end = params.end,
+      excludes = params.excludes != null ? params.excludes : [],
+      includes = params.includes != null ? params.includes : [];
 
   var init = function() {
-    // Disable text selection of data table row text
     var dataTableRows = $(selector);
-    dataTableRows.bind('selectstart dragstart', function(event) {
+
+    // Prevent the user from selecting text in the data table
+    dataTableRows.on('selectstart dragstart', function(event) {
       event.preventDefault();
-      return;
     });
+
     // Bind click handlers to all data table rows
     dataTableRows.click(function(event) {
       // The index of the Solr search result, not the table
@@ -343,7 +347,12 @@ function TableSelection(params) {
       begin = rowIndex;
       end = rowIndex;
     } else {
+      var beforeCount = count();
       end = rowIndex;
+      // Allows user to deselect a range
+      if(count()==1 && beforeCount==1) {
+        clear();
+      }
     }
     excludes = [];
     includes = [];
@@ -369,6 +378,9 @@ function TableSelection(params) {
         includes.splice(result, 1);
       }
     }
+    if(count()==0) {
+      clear();
+    }
   }
 
   var inRange = function(rowIndex) {
@@ -384,18 +396,22 @@ function TableSelection(params) {
   };
 
   var store = function() {
-    if (location=='local' || location==null) {
-      localStorage.setItem(key, toString());
-    } else if (location=='session') {
-      sessionStorage.setItem(key, toString());
+    if (key != null) {
+      if (location=='local' || location==null) {
+        localStorage.setItem(key, toString());
+      } else if (location=='session') {
+        sessionStorage.setItem(key, toString());
+      }
     }
   }
 
   var remove = function() {
-    if (location=='local' || location==null) {
-      localStorage.removeItem(key);
-    } else if (location=='session') {
-      sessionStorage.removeItem(key);
+    if (key != null) {
+      if (location=='local' || location==null) {
+        localStorage.removeItem(key);
+      } else if (location=='session') {
+        sessionStorage.removeItem(key);
+      }
     }
   };
 
@@ -410,7 +426,12 @@ function TableSelection(params) {
   var count = function() {
     var max = Math.max(begin, end);
     var min = Math.min(begin, end);
-    var total = (max - min) - excludes.length + includes.length + 1;
+    if(begin==null) {
+      rangeCount = 0;
+    } else {
+      rangeCount = max - min + 1;
+    }
+    var total = rangeCount - excludes.length + includes.length;
     return total;
   };
 
@@ -439,6 +460,10 @@ function TableSelection(params) {
 };
 
 TableSelection.load = function(key, location) {
+  if(key==null) {
+    console.log('Could not load table selection. Key is null');
+    return null;
+  }
   var string;
   if (location=='local' || location==null) {
     string = localStorage.getItem(key);

@@ -4,8 +4,9 @@
 <head>
   @include('shared._head', ['title' => $title])
 </head>
-
-<body>
+{{-- $controller and $action are injected in the AppServiceProvider 
+and are used to route JavaScript in router.js --}}
+<body data-controller="{{$controller}}" data-action="{{$action}}">
   <div class="container" style="min-width: 768px !important;">
 
     <header id="header">
