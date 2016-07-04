@@ -3,7 +3,7 @@
 JUNEBUG = {
   common: {
     init: function() {
-      // application-wide code
+      displayAlert();
     }
   },
 
@@ -13,19 +13,24 @@ JUNEBUG = {
     },
 
     index: function() {
-      // action-specific code
+      initItemIndex();
+      initTableKeyboardShortcuts();
     },
 
     show: function() {
-      // action-specific code
+      initRevisionHistory();
     },
 
     create: function() {
-      // action-specific code
+      initItemTypeControls();
+      initDatepicker();
+      initItemSuggestions();
     },
 
     edit: function() {
-      // action-specific code
+      initDatepicker();
+      initItemSuggestions();
+      initRevisionHistory();
     }
   }
 };

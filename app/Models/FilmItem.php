@@ -15,5 +15,9 @@ class FilmItem extends Model {
   protected $dates = ['deleted_at'];
 
   protected $revisionCreationsEnabled = true;
+
+  protected $fillable = ['callNumber','element','base', 'color',
+        'soundType','lengthInFeet','filmStock','edgeCode',
+        'shrinkagePercent','canNumber','filmContentDescription'];
 }
 
