@@ -3,7 +3,7 @@
 JUNEBUG = {
   common: {
     init: function() {
-      displayAlert();
+      junebug.displayAlert();
     }
   },
 
@@ -13,24 +13,24 @@ JUNEBUG = {
     },
 
     index: function() {
-      initItemIndex();
-      initTableKeyboardShortcuts();
+      junebug.initItemIndex();
+      junebug.initTableKeyboardShortcuts();
     },
 
     show: function() {
-      initRevisionHistory();
+      junebug.initRevisionHistory();
     },
 
     create: function() {
-      initItemTypeControls();
-      initDatepicker();
-      initItemSuggestions();
+      junebug.initItemTypeControls();
+      junebug.initDatepicker();
+      junebug.initItemSuggestions();
     },
 
     edit: function() {
-      initDatepicker();
-      initItemSuggestions();
-      initRevisionHistory();
+      junebug.initDatepicker();
+      junebug.initItemSuggestions();
+      junebug.initRevisionHistory();
     }
   }
 };
