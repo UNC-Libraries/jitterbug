@@ -118,7 +118,8 @@ junebug = {
       tableSelection = new junebug.TableSelection({
           key:'itemTableSelection',
           location:'session',
-          selector:'#data tr[role="button"]'});
+          selector:'#data tr[role="button"]',
+          countSelector:'.selection-count'});
       tableSelection.init();
       tableSelection.store();
     } else {
@@ -584,6 +585,7 @@ junebug = {
     var key = params.key,
         location = params.location,
         selector = params.selector,
+        countSelector = params.countSelector,
         begin = params.begin,
         end = params.end,
         excludes = params.excludes != null ? params.excludes : [],
@@ -655,6 +657,11 @@ junebug = {
           $(this).removeClass('selected');
         }
       });
+      if(count() > 0) {
+        $(countSelector).text('(' + count() + ' selected)');
+      } else {
+        $(countSelector).text('');
+      }
     },
 
     setRange = function(rowIndex) {
@@ -745,6 +752,7 @@ junebug = {
         key:key,
         location:location,
         selector:selector,
+        countSelector:countSelector,
         begin:begin,
         end:end,
         excludes:excludes,
