@@ -27,6 +27,12 @@
       @if (get_class($item->itemable) == 'Junebug\Models\AudioItem')
         @include('items._form-audio')
       @endif
+      @if (get_class($item->itemable) == 'Junebug\Models\FilmItem')
+        @include('items._form-film')
+      @endif
+      @if (get_class($item->itemable) == 'Junebug\Models\VideoItem')
+        @include('items._form-video')
+      @endif
       {{-- End Itemable Fields --}}
       <div class="row">
         <div class="col-xs-4 detail-label">

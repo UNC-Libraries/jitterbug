@@ -1,30 +1,33 @@
        <div class="row">
         <div class="form-group">
           <div class="col-xs-4 detail-label">
-            {!! Form::label('itemable[element]', 'Element', array('class' => 'form-control-label')) !!}
+            {!! Form::label('itemable[filmElement]', 'Element', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('itemable[element]', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. Negative')) !!}
+            {!! Form::text('itemable[filmElement]', null, array('id' => 'film-element', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. Negative')) !!}
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group @if ($errors->has('itemable.filmBase')) has-danger @endif">
+          <div class="col-xs-4 detail-label">
+            {!! Form::label('itemable[filmBase]', 'Base', array('class' => 'form-control-label')) !!}
+          </div>
+          <div class="col-xs-7 detail-value">
+            {!! Form::text('itemable[filmBase]', null, array('id' => 'film-base', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. Polyester')) !!}
+            @if ($errors->has('itemable.filmBase'))
+              <div class="form-control-label"><small>{!! $errors->first('itemable.filmBase') !!}</small></div>
+            @endif
           </div>
         </div>
       </div>
       <div class="row">
         <div class="form-group">
           <div class="col-xs-4 detail-label">
-            {!! Form::label('itemable[base]', 'Base', array('class' => 'form-control-label')) !!}
+            {!! Form::label('itemable[filmColor]', 'Color', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('itemable[base]', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. Polyester')) !!}
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="form-group">
-          <div class="col-xs-4 detail-label">
-            {!! Form::label('itemable[color]', 'Color', array('class' => 'form-control-label')) !!}
-          </div>
-          <div class="col-xs-7 detail-value">
-            {!! Form::text('itemable[color]', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. B/W')) !!}
+            {!! Form::text('itemable[filmColor]', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. B/W')) !!}
           </div>
         </div>
       </div>
@@ -34,17 +37,21 @@
             {!! Form::label('itemable[soundType]', 'Sound Type', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('itemable[soundType]', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. Magnetic')) !!}
+            {!! Form::select('itemable[soundType]',
+              array('' => 'Select a type', 'Magnetic' => 'Magnetic', 'Optical' => 'Optical', 'Silent' => 'Silent'), $item->itemable == null ? null : $item->itemable->soundType, array('class' => 'form-control form-control-sm')) !!}
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="form-group">
+        <div class="form-group @if ($errors->has('itemable.lengthInFeet')) has-danger @endif">
           <div class="col-xs-4 detail-label">
             {!! Form::label('itemable[lengthInFeet]', 'Length in Feet', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::text('itemable[lengthInFeet]', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. 400')) !!}
+            @if ($errors->has('itemable.lengthInFeet'))
+              <div class="form-control-label"><small>{!! $errors->first('itemable.lengthInFeet') !!}</small></div>
+            @endif
           </div>
         </div>
       </div>
@@ -91,10 +98,10 @@
       <div class="row">
         <div class="form-group">
           <div class="col-xs-4 detail-label">
-            {!! Form::label('itemable[contentDescription]', 'Content Description', array('class' => 'form-control-label')) !!}
+            {!! Form::label('itemable[filmContentDescription]', 'Content Description', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::textarea('itemable[contentDescription]', null, array('class' => 'form-control form-control-sm', 'rows' => 3)) !!}
+            {!! Form::textarea('itemable[filmContentDescription]', null, array('class' => 'form-control form-control-sm', 'rows' => 3)) !!}
           </div>
         </div>
       </div>

@@ -17,6 +17,8 @@ Route::group(['prefix' => 'suggestions'], function () {
   Route::get('recording-locations', 'SuggestionsController@recordingLocations');
   Route::get('track-configurations', 'SuggestionsController@trackConfigurations');
   Route::get('audio-bases', 'SuggestionsController@audioBases');
+  Route::get('film-elements', 'SuggestionsController@filmElements');
+  Route::get('film-bases', 'SuggestionsController@filmBases');
 });
 
 Route::get('items/edit', [

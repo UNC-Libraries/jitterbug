@@ -79,6 +79,16 @@ junebug = {
       serviceUrl: '/suggestions/audio-bases',
       deferRequestBy: 100
     });
+
+    $('#film-element').autocomplete({
+      serviceUrl: '/suggestions/film-elements',
+      deferRequestBy: 100
+    });
+
+    $('#film-base').autocomplete({
+      serviceUrl: '/suggestions/film-bases',
+      deferRequestBy: 100
+    });
   },
 
   initItemIndex: function() {

@@ -1,204 +1,26 @@
-$(function() {
-  // Bind click handlers to search filters
-  $('#filter-panel :checkbox').click(function(event) {
-    // Find all the sibling checkboxes including the one clicked
-    var filterListCheckboxes = $(this).closest('.filter-list').find(':checkbox');
-    // If this is an 'Any' checkbox
-    if($(this).is(filterListCheckboxes[0])) {
+var junebug = {};
 
-      // Prevent unchecking if it's already checked
-      if (!$(this).is(':checked')) {
-        event.preventDefault();
-        return false;
-      }
-
-      // Uncheck the other filters
-      for(var i = 1; i < filterListCheckboxes.length; i++) {
-        filterListCheckboxes[i].checked = false;
-      }
-    } else {
-      // Check if at least one non-Any filter is checked
-      var oneIsChecked = false;
-      for(var i = 1; i < filterListCheckboxes.length; i++) {
-        if(filterListCheckboxes[i].checked == true) {
-            oneIsChecked = true;
-            break;
-        }
-      }
-
-      // If one is checked, turn off the Any filter
-      if(oneIsChecked) {
-        filterListCheckboxes[0].checked = false;
-      } else {
-        filterListCheckboxes[0].checked = true;
-      }
-    }
-    
-    TableSelection.load('itemSelection','session').clear();
-    doSearch();
-  });
-
-  // Handle "enter" keypress on search input
-  $('#search').keypress(function(event) {
-    if(event.which == 13) {
-      event.preventDefault();
-
-      TableSelection.load('itemSelection','session').clear();
-      doSearch();
-    }
-  });
-  
-  // Page next or previous using the keyboard
-  $(document).keydown(function(event) {
-    // Right arrow
-    if(event.which == 39) {
-      $('.next-page').first().trigger("click");
-    // Left arrow
-    } else if (event.which == 37) {
-      $('.prev-page').first().trigger("click");
-    }
-  });
-
-  if (location.pathname === '/items') {
-    initialize();
-    query = {};
-    if(localStorage.getItem('page') != null) {
-      query['page'] = localStorage.getItem('page');    
-    }
-    doSearch(query);
-  }
-
-});
-
-function initialize() {
-  var itemSelection = TableSelection.load('itemSelection','session');
-  if(itemSelection==null) {
-    itemSelection = new TableSelection({
-        key:'itemSelection',
-        location:'session',
-        selector:'#data tr[role="button"]'});
-    itemSelection.init();
-    itemSelection.store();
-  } else {
-    itemSelection.render();
-  }
-
-  queryString = localStorage.getItem('q');
-  if(queryString != null) {
-    queryFilters = JSON.parse(queryString);
-    $('#search').val(queryFilters['search']);
-    $('#filter-panel .filter-list').each(function() {
-      filterListId = this.id;
-      selectedFilters = queryFilters[filterListId];
-      var filterListCheckboxes = $(this).find(':checkbox');
-      for(var i = 0; i < filterListCheckboxes.length; i++) {
-        checkbox = filterListCheckboxes[i];
-        if($.inArray(checkbox.value,selectedFilters) != -1) {
-          checkbox.checked = true;
-        } else {
-          checkbox.checked = false;
-        }
-      }
-    });
-  } else {
-    // Reset checkboxes to default state if not in storage
-    $('#filter-panel .filter-list').each(function() {
-      var filterListCheckboxes = $(this).find(':checkbox');
-      for(var i = 0; i < filterListCheckboxes.length; i++) {
-        if(i == 0) {
-          filterListCheckboxes[i].checked = true;
-        } else {
-          filterListCheckboxes[i].checked = false;
-        }
-      }
-    });
-  }
+junebug.clearStorage = function() {
+  localStorage.removeItem('itemSearchField');
+  localStorage.removeItem('itemFilterPanel');
+  sessionStorage.removeItem('itemTableSelection');
+  localStorage.removeItem('itemTableParams');
 }
 
-function searchQuery() {
-  // Find all selected filters
-  var queryFilters = {};
-  queryFilters['search'] = $('#search').val();
-  $('#filter-panel .filter-list').each(function() {
-    var checkedFilters = $(this).find('input:checked');
-    var values = [];
-    for(var i=0; i < checkedFilters.length; i++) {
-      values.push(checkedFilters[i].value);
-    }
-    queryFilters[this.id] = values;
-
-  });
-  return JSON.stringify(queryFilters);
-}
-
-function doSearch(query) {
-  if(query==null) {
-    query = {};
-  }
-  var queryString = searchQuery();
-  localStorage.setItem('q',queryString);
-  query['q'] = encodeURIComponent(queryString);
-  $.get('/items', query, function(data) {
-    $('#data-container').replaceWith(data);
-
-    var itemSelection = TableSelection.load('itemSelection','session');
-    itemSelection.init();
-
-    $.publish('dataLoaded');
-
-    // Bind click handlers to all data table rows
-    $('#data tr[role="button"]').click(function(event) {
-      itemSelection.clear();
-      window.location.href="/items/" + $(this).data('id');
-    });
-
-    // Bind click handlers to all data pagination links
-    if($('.pagination').length) {
-      var currentPage = parseInt($('.page-item.active').text().trim());
-      localStorage.setItem('page',currentPage);
-      $('.pagination').each(function() {
-        $('.page-link').each(function() {
-          if($(this).parent().hasClass('disabled') || 
-             $(this).parent().hasClass('active')) {
-            return;
-          } else if($(this).hasClass('prev-page')) {
-            $(this).click(function(){
-              query['page'] = currentPage - 1;
-              doSearch(query);
-            });
-          } else if($(this).hasClass('next-page')) {
-            $(this).click(function(){
-              query['page'] = currentPage + 1;
-              doSearch(query);
-            });
-          } else {
-            $(this).click(function(){
-              query['page'] = $(this).text().trim();
-              doSearch(query);
-            });
-          }
-        })
-      });
-    }
-  });
-}
-
-function displayAlert() {
+junebug.displayAlert = function() {
   alert = $('#alert');
   if(alert.text().trim().length && alert.is(':hidden')) {
     alert.delay(500).slideDown(200).delay(8000).slideUp(200);
   }
 }
 
-$(function() {
-  displayAlert();
-});
+junebug.initDatePicker = function() {
+  $('#detail .input-group.date').datepicker({
+    format: "yyyy-mm-dd"
+  });
+}
 
-$('#detail .input-group.date').datepicker({
-  format: "yyyy-mm-dd"
-});
-
-$(function() {
+junebug.initItemTypeControls = function() {
   $('#detail #item-type-controls :radio').click(function(event) {
     if($(this).val()=='AudioItem') {
       $('#audio-form').show();
@@ -214,9 +36,22 @@ $(function() {
       $('#video-form').show();
     }
   });
-});
+}
 
-$(function() {
+junebug.initTableKeyboardShortcuts = function() {
+  // Page next or previous using the keyboard
+  $(document).keydown(function(event) {
+    // Right arrow
+    if(event.which == 39) {
+      $('.next-page').first().trigger("click");
+    // Left arrow
+    } else if (event.which == 37) {
+      $('.prev-page').first().trigger("click");
+    }
+  });
+}
+
+junebug.initRevisionHistory = function() {
   $('.revision-history-title').click(function() {
     var icon = $('.revision-history-title i');
     if(icon.hasClass('fa-caret-right')) {
@@ -228,69 +63,101 @@ $(function() {
     }
     $('.revision-history').slideToggle(200);
   });
-});
+}
 
-$('#recording-location').autocomplete({
-  serviceUrl: '/suggestions/recording-locations',
-  deferRequestBy: 100
-});
+junebug.initItemSuggestions = function() {
+  $('#recording-location').autocomplete({
+    serviceUrl: '/suggestions/recording-locations',
+    deferRequestBy: 100
+  });
 
-$('#track-configuration').autocomplete({
-  serviceUrl: '/suggestions/track-configurations',
-  deferRequestBy: 100
-});
+  $('#track-configuration').autocomplete({
+    serviceUrl: '/suggestions/track-configurations',
+    deferRequestBy: 100
+  });
 
-$('#audio-base').autocomplete({
-  serviceUrl: '/suggestions/audio-bases',
-  deferRequestBy: 100
-});
+  $('#audio-base').autocomplete({
+    serviceUrl: '/suggestions/audio-bases',
+    deferRequestBy: 100
+  });
+}
 
-function itemsIndex() {
-  var searchField = SearchField.load('itemSearchField');
+/**
+ * Used to deserialize all models from storage.
+ */
+junebug.loader = function(key, location) {
+  if(key==null) {
+    console.log("Could not load object. Param 'key' is null.");
+    return null;
+  }
+  var string = null;
+  if (location=='local' || location==null) {
+    string = localStorage.getItem(key);
+  } else if (location=='session') {
+    string = sessionStorage.getItem(key);
+  }
+  if(string==null) {
+    return null;
+  }
+  params = JSON.parse(string);
+  var className = this.name;
+  return new (eval(className))(params);
+}
+
+junebug.initItemIndex = function() {
+  var searchField = junebug.SearchField.load('itemSearchField');
   if(searchField==null) {
-    searchField = new SearchField({
-        key:'itemsSearchField',
+    searchField = new junebug.SearchField({
+        key:'itemSearchField',
         selector:'#search'});
     searchField.init();
     searchField.store();
+  } else {
+    searchField.init();
   }
 
-  var filterPanel = FilterPanel.load('itemFilterPanel');
+  var filterPanel = junebug.FilterPanel.load('itemFilterPanel');
   if(filterPanel==null) {
-    filterPanel = new FilterPanel({
-        key:'itemsFilterPanel',
+    filterPanel = new junebug.FilterPanel({
+        key:'itemFilterPanel',
         selector:'#filter-panel',
         listSelector: '.filter-list'});
     filterPanel.init();
-    filterPanel.setDefault();
     filterPanel.store();
+  } else {
+    filterPanel.init();
   }
 
-  var tableParams = TableParams.load('itemTableParams');
+  var tableParams = junebug.TableParams.load('itemTableParams');
   if(tableParams==null) {
-    tableParams = new TableParams({
-        key:'itemsTableParams'});
+    tableParams = new junebug.TableParams({
+        key:'itemTableParams'});
+    tableParams.store();
   }
 
-  var tableSelection = TableSelection.load('itemTableSelection','session');
+  var tableSelection = 
+    junebug.TableSelection.load('itemTableSelection','session');
   if(tableSelection==null) {
-    tableSelection = new TableSelection({
+    tableSelection = new junebug.TableSelection({
         key:'itemTableSelection',
         location:'session',
         selector:'#data tr[role="button"]'});
     tableSelection.init();
     tableSelection.store();
   } else {
+    tableSelection.init();
     tableSelection.render();
   }
 
   var queryManager = 
-    new QueryManager(searchField, filterPanel, tableParams, tableSelection);
+    new junebug.QueryManager(searchField, filterPanel, 
+                              tableParams, tableSelection);
+  queryManager.init();
 
   queryManager.executeQuery();
 }
 
-function QueryManager(searchFieldInstance, filterPanelInstance,
+junebug.QueryManager = function(searchFieldInstance, filterPanelInstance,
                       tableParamsInstance, tableSelectionInstance) {
   var searchField = searchFieldInstance,
       filterPanel = filterPanelInstance,
@@ -298,42 +165,45 @@ function QueryManager(searchFieldInstance, filterPanelInstance,
       tableParams = tableParamsInstance,
 
   init = function() {
-    $.subscribe('filterPanelChanged', handleFilterChanged(event, object));
-    $.subscribe('searchSubmitted', handleSearchChanged(event, object));
+    $.subscribe('filterPanelChanged', handleFilterPanelChanged);
+    $.subscribe('searchSubmitted', handleSearchSubmitted);
   },
 
-  handleFilterPanelChanged = function(event, object) {
-    console.log('filter panel changed');
+  handleFilterPanelChanged = function(event) {
     tableSelection.clear();
+    tableParams.setPage(1);
     executeQuery();
   },
 
-  handleSearchSubmitted = function(event, object) {
-    console.log('search submitted');
+  handleSearchSubmitted = function(event) {
     tableSelection.clear();
+    tableParams.setPage(1);
     executeQuery();
   },
 
   queryString = function() {
     var query = {};
-    query['search'] = searchField.value();
+    query['search'] = searchField.elementValue();
     query = $.extend(query, filterPanel.selectedFilters());
-    query = $.extend(query, tableParams.allParams());
     return JSON.stringify(query);
   },
   
   executeQuery = function() {
-    var query = encodeURIComponent(queryString());
+    var query = {};
+    query['q'] = encodeURIComponent(queryString());
+    query['page'] = tableParams.getPage();
+    query['perPage'] = tableParams.getPerPage();
+
     $.get('/items', query, function(data) {
       $('#data-container').replaceWith(data);
 
-      itemSelection.init();
+      tableSelection.init();
 
       $.publish('dataLoaded');
 
       // Bind click handlers to all data table rows
       $('#data tr[role="button"]').click(function(event) {
-        itemSelection.clear();
+        tableSelection.clear();
         window.location.href="/items/" + $(this).data('id');
       });
 
@@ -375,17 +245,35 @@ function QueryManager(searchFieldInstance, filterPanelInstance,
   };
 }
 
-function TableParams(params) {
+junebug.TableParams = function(params) {
   var key = params.key,
       location = params.location,
       page = params.page == null ? 1 : params.page,
-      perPage = params.perPage == null ? 20 : params.page,
+      perPage = params.perPage == null ? 20 : params.perPage,
 
   allParams = function() {
     return {
       page:page,
       perPage:perPage
     };
+  },
+
+  getPage = function() {
+    return page;
+  },
+
+  setPage = function(pageNum) {
+    page = pageNum;
+    store();
+  },
+
+  getPerPage = function() {
+    return perPage;
+  },
+
+  setPerPage = function(perPageNum) {
+    perPage = perPageNum;
+    store();
   },
 
   store = function() {
@@ -398,16 +286,6 @@ function TableParams(params) {
     }
   },
 
-  setPage = function(pageNum) {
-    page = pageNum;
-    store();
-  },
-
-  setPerPage = function(perPageNum) {
-    perPage = perPageNum;
-    store();
-  },
-
   toJson = function() {
     return {
       key:key,
@@ -418,24 +296,25 @@ function TableParams(params) {
   },
 
   toString = function() {
-    JSON.stringify(toJson());
+    return JSON.stringify(toJson());
   };
 
   return {
     allParams:allParams,
+    getPage:getPage,
     setPage:setPage,
+    getPerPage:getPerPage,
     setPerPage:setPerPage,
     store:store,
-    toJson:toJson,
     toString:toString
   };
 }
 
-TableParams.load = loader;
+junebug.TableParams.load = junebug.loader;
 
-function SearchField(params) {
+junebug.SearchField = function(params) {
   if(params==null || params.selector == null) {
-    throw new IllegalArgumentException("Param 'selector' " +
+    throw new junebug.IllegalArgumentException("Param 'selector' " +
       "is required.");
   }
 
@@ -446,16 +325,16 @@ function SearchField(params) {
       lastValue = params.lastValue,
 
   init = function() {
-    $(selector).val(lastValue);
+    $(selector).val(value);
 
     // Handle "enter" keypress on search input
     $(selector).keypress(function(event) {
       if(enterKey(event)) {
         event.preventDefault();
-        lastValue = value();
+        lastValue = elementValue();
         store();
 
-        $.publish('searchSubmitted', toJson());
+        $.publish('searchSubmitted');
       }
     });
     // Handle "delete" key on search input
@@ -464,9 +343,9 @@ function SearchField(params) {
         if(searchTermsRemoved()) {
           store();
 
-          $.publish('searchSubmitted', toJson());
+          $.publish('searchSubmitted');
         }
-        lastValue = value();
+        lastValue = elementValue();
       }
     }); 
   },
@@ -480,10 +359,10 @@ function SearchField(params) {
   },
 
   searchTermsRemoved = function() {
-   return lastValue != null && lastValue != '' && value() == '';
+   return lastValue != null && lastValue != '' && elementValue() == '';
   },
 
-  value = function() {
+  elementValue = function() {
     return $(selector).val();
   },
 
@@ -503,7 +382,7 @@ function SearchField(params) {
       location: location,
       selector: selector,
       lastValue: lastValue,
-      value:value()
+      value:elementValue()
     };
   },
 
@@ -513,19 +392,18 @@ function SearchField(params) {
 
   return {
     init: init,
-    value: value,
+    elementValue: elementValue,
     store: store,
-    toJson: toJson,
     toString: toString
   };
 
 }
 
-SearchField.load = loader;
+junebug.SearchField.load = junebug.loader;
 
-function FilterPanel(params) {
+junebug.FilterPanel = function(params) {
   if(params==null || params.selector == null || params.listSelector == null) {
-    throw new IllegalArgumentException("Params 'selector' " +
+    throw new junebug.IllegalArgumentException("Params 'selector' " +
       "and 'listSelector' are required.");
   }
 
@@ -533,7 +411,7 @@ function FilterPanel(params) {
       location = params.location,
       selector = params.selector,
       listSelector = params.listSelector,
-      selected = params.selectedFilters;
+      selected = params.selectedFilters,
       lists = [],
 
   init = function() {
@@ -543,6 +421,8 @@ function FilterPanel(params) {
 
       if(selected != null && selected[list.listType()] != null) {
         list.setSelected(selected[list.listType()]);
+      } else {
+        list.setDefault();
       }
 
       lists.push(list);
@@ -552,7 +432,7 @@ function FilterPanel(params) {
 
   handleFilterChanged = function(event) {
     store();
-    $.publish('filterPanelChanged',toJson());
+    $.publish('filterPanelChanged');
   },
 
   setDefault = function() {
@@ -602,15 +482,15 @@ function FilterPanel(params) {
     setDefault: setDefault,
     filterLists: filterLists,
     selectedFilters: selectedFilters,
-    toJson: toJson,
+    store:store,
     toString: toString
   };
 }
 
-FilterPanel.load = loader;
+junebug.FilterPanel.load = junebug.loader;
 
 
-function FilterList(listElement) {
+junebug.FilterList = function(listElement) {
   var list = listElement,
       checkboxes = $(list).find(':checkbox'),
   
@@ -654,7 +534,6 @@ function FilterList(listElement) {
   },
 
   setSelected = function(selectedFilters) {
-// filterPanel = new FilterPanel({selector:'#filter-panel',listSelector:'.filter-list',selectedFilters: {"type-filters":['1','2'],"collection-filters":['20012'],"format-filters":['0']}});
     $.each(checkboxes, function(i, checkbox) {
       if($.inArray(checkbox.value,selectedFilters) != -1) {
         checkbox.checked = true;
@@ -727,9 +606,9 @@ function FilterList(listElement) {
  * 'excludes' = ids within the selection range to be excluded
  * 'includes' = ids outside of the selection range to be included
  */
-function TableSelection(params) {
+junebug.TableSelection = function(params) {
   if(params==null) {
-    throw new IllegalArgumentException("Param 'selector' " +
+    throw new junebug.IllegalArgumentException("Param 'selector' " +
       "is required.");
   }
 
@@ -743,6 +622,7 @@ function TableSelection(params) {
 
   init = function() {
 
+    // Prevent multiple subscriptions after data load
     $.unsubscribe('dataLoaded');
     
     var dataTableRows = $(selector);
@@ -784,7 +664,6 @@ function TableSelection(params) {
   },
 
   dataLoaded = function(event) {
-    console.log('dataLoaded handler called');
     render();
   },
 
@@ -915,62 +794,14 @@ function TableSelection(params) {
     clear: clear,
     count: count,
     store: store,
-    toJson: toJson,
     toString: toString
   };
 
 }
 
-TableSelection.load = loader;
+junebug.TableSelection.load = junebug.loader;
 
-function loader(key, location) {
-  if(key==null) {
-    console.log("Could not load object. Param 'key' is null.");
-    return null;
-  }
-  var string = null;
-  if (location=='local' || location==null) {
-    string = localStorage.getItem(key);
-  } else if (location=='session') {
-    string = sessionStorage.getItem(key);
-  }
-  if(string==null) {
-    return null;
-  }
-  params = JSON.parse(string);
-  var className = this.name;
-  return new (eval(className))(params);
-}
-
-function Persistable(key, location) {
-
-  var store = function() {
-    if (key != null) {
-      if (location=='local' || location==null) {
-        localStorage.setItem(key, toString());
-      } else if (location=='session') {
-        sessionStorage.setItem(key, toString());
-      }
-    }
-  };
-
-  var remove = function() {
-    if (key != null) {
-      if (location=='local' || location==null) {
-        localStorage.removeItem(key);
-      } else if (location=='session') {
-        sessionStorage.removeItem(key);
-      }
-    }
-  };
-
-  return {
-    store,
-    remove
-  };
-}
-
-function IllegalArgumentException(message) {
+junebug.IllegalArgumentException = function(message) {
    this.message = message;
 }
 

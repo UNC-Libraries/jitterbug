@@ -177,6 +177,108 @@
       </div>
       @endif
       @endif
+      @if (get_class($item->itemable) == 'Junebug\Models\FilmItem')
+      @if ($item->itemable->element)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Element
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$item->itemable->element}}
+        </div>
+      </div>
+      @endif
+      @if ($item->itemable->base)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Base
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$item->itemable->base}}
+        </div>
+      </div>
+      @endif
+      @if ($item->itemable->color)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Color
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$item->itemable->color}}
+        </div>
+      </div>
+      @endif
+      @if ($item->itemable->soundType)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Sound Type
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$item->itemable->soundType}}
+        </div>
+      </div>
+      @endif
+      @if ($item->itemable->lengthInFeet)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Length in Feet
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$item->itemable->lengthInFeet}}
+        </div>
+      </div>
+      @endif
+      @if ($item->itemable->filmStock)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Film Stock
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$item->itemable->filmStock}}
+        </div>
+      </div>
+      @endif
+      @if ($item->itemable->edgeCode)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Edge Code
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$item->itemable->edgeCode}}
+        </div>
+      </div>
+      @endif
+      @if ($item->itemable->shrinkagePercent)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Shrinkage Percent
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$item->itemable->shrinkagePercent}}
+        </div>
+      </div>
+      @endif
+      @if ($item->itemable->canNumber)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Can Number
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$item->itemable->canNumber}}
+        </div>
+      </div>
+      @endif
+      @if ($item->itemable->contentDescription)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Content Description
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$item->itemable->contentDescription}}
+        </div>
+      </div>
+      @endif
+      @endif
       {{-- End Itemable Fields --}}
       <div class="row">
         <div class="col-xs-4 detail-label">

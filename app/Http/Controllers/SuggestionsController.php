@@ -36,6 +36,20 @@ class SuggestionsController extends Controller {
     return response()->json($suggestions);
   }
 
+  public function filmElements(Request $request)
+  {
+    $query = $request->query('query');
+    $suggestions = $this->getAutocompleteSuggestions('FilmItem','element',$query);
+    return response()->json($suggestions);
+  }
+
+  public function filmBases(Request $request)
+  {
+    $query = $request->query('query');
+    $suggestions = $this->getAutocompleteSuggestions('FilmItem','base',$query);
+    return response()->json($suggestions);
+  }
+
   private function getAutocompleteSuggestions($modelClass,$field,$query)
   {
     $results = $modelClass::select($field)->distinct()->
