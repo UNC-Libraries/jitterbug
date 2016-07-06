@@ -30,6 +30,7 @@ class FilmItem extends Model {
   );
 
   protected $revisionFormattedFieldNames = array(
+    'call_number' => 'call number',
     'sound_type' => 'sound type',
     'length_in_feet' => 'length in feet',
     'film_stock' => 'film stock',
@@ -43,35 +44,43 @@ class FilmItem extends Model {
         'soundType','lengthInFeet','filmStock','edgeCode',
         'shrinkagePercent','canNumber','filmContentDescription'];
 
-  public function getFilmColorAttribute($value) {
+  public function getFilmColorAttribute($value)
+  {
     return $value==null ? $this->color : $value;
   }
 
-  public function setFilmColorAttribute($value) {
+  public function setFilmColorAttribute($value)
+  {
     $this->color = $value;
   }
 
-  public function getFilmElementAttribute($value) {
+  public function getFilmElementAttribute($value)
+  {
     return $value==null ? $this->element : $value;
   }
 
-  public function setFilmElementAttribute($value) {
+  public function setFilmElementAttribute($value)
+  {
     $this->element = $value;
   }
 
-  public function getFilmBaseAttribute($value) {
+  public function getFilmBaseAttribute($value)
+  {
     return $value==null ? $this->base : $value;
   }
 
-  public function setFilmBaseAttribute($value) {
+  public function setFilmBaseAttribute($value)
+  {
     $this->base = $value;
   }
 
-  public function getFilmContentDescriptionAttribute($value) {
+  public function getFilmContentDescriptionAttribute($value)
+  {
     return $value==null ? $this->contentDescription : $value;
   }
 
-  public function setFilmContentDescriptionAttribute($value) {
+  public function setFilmContentDescriptionAttribute($value)
+  {
     $this->contentDescription = $value;
   }
 }

@@ -279,6 +279,58 @@
       </div>
       @endif
       @endif
+      @if (get_class($item->itemable) == 'Junebug\Models\VideoItem')
+      @if ($item->itemable->monoStereoDisplay)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Mono/Stereo
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$item->itemable->monoStereoDisplay}}
+        </div>
+      </div>
+      @endif
+      @if ($item->itemable->element)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Element
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$item->itemable->element}}
+        </div>
+      </div>
+      @endif
+      @if ($item->itemable->color)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Color
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$item->itemable->color}}
+        </div>
+      </div>
+      @endif
+      @if ($item->itemable->recordingStandard)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Recording Standard
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$item->itemable->recordingStandard}}
+        </div>
+      </div>
+      @endif
+      @if ($item->itemable->contentDescription)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Content Description
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$item->itemable->contentDescription}}
+        </div>
+      </div>
+      @endif
+      @endif
       {{-- End Itemable Fields --}}
       <div class="row">
         <div class="col-xs-4 detail-label">
