@@ -13,6 +13,9 @@
 
 Route::get('/', 'WelcomeController@index');
 
+Route::get('alerts', 'AlertsController@index');
+Route::delete('alerts', 'AlertsController@destroy');
+
 Route::group(['prefix' => 'suggestions'], function () {
   Route::get('recording-locations', 'SuggestionsController@recordingLocations');
   Route::get('track-configurations', 'SuggestionsController@trackConfigurations');
@@ -21,12 +24,15 @@ Route::group(['prefix' => 'suggestions'], function () {
   Route::get('film-bases', 'SuggestionsController@filmBases');
 });
 
-Route::get('items/edit', [
+Route::get('items/batch/edit', [
     'as' => 'items.editBatch', 'uses' => 'ItemsController@editBatch'
 ]);
 
-Route::resource('items', 'ItemsController');
+Route::put('items/batch', [
+    'as' => 'items.updateBatch', 'uses' => 'ItemsController@updateBatch'
+]);
 
+Route::resource('items', 'ItemsController');
 
 
 

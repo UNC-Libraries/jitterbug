@@ -4,12 +4,17 @@
             {!! Form::label('itemable[listeningCopy]', 'Listening Copy', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            <label class="radio-inline">
-              {!! Form::radio('itemable[listeningCopy]', '1') !!} Yes
-            </label>
-            <label class="radio-inline">
-              {!! Form::radio('itemable[listeningCopy]', '0', true) !!} No
-            </label>
+            @if (!$item->batch() || $item->itemable->listeningCopy !== '<mixed>')
+              <label class="radio-inline">
+                {!! Form::radio('itemable[listeningCopy]', '1') !!} Yes
+              </label>
+              <label class="radio-inline">
+                {!! Form::radio('itemable[listeningCopy]', '0', true) !!} No
+              </label>
+            @else
+              {!! Form::select('itemable[listeningCopy]',
+              array('1' => 'Yes', '0' => 'No', '<mixed>' => '<mixed>'), $item->itemable->listeningCopy, array('class' => 'form-control form-control-sm')) !!}
+            @endif
           </div>
         </div>
       </div>
@@ -19,15 +24,20 @@
             {!! Form::label('itemable[audioMonoStereo]', 'Mono/Stereo', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            <label class="radio-inline">
-              {!! Form::radio('itemable[audioMonoStereo]', 'M') !!} Mono
-            </label>
-            <label class="radio-inline">
-              {!! Form::radio('itemable[audioMonoStereo]', 'S') !!} Stereo
-            </label>
-            <label class="radio-inline">
-              {!! Form::radio('itemable[audioMonoStereo]', '', true) !!} N/A
-            </label>
+            @if (!$item->batch() || $item->itemable->audioMonoStereo !== '<mixed>')
+              <label class="radio-inline">
+                {!! Form::radio('itemable[audioMonoStereo]', 'M') !!} Mono
+              </label>
+              <label class="radio-inline">
+                {!! Form::radio('itemable[audioMonoStereo]', 'S') !!} Stereo
+              </label>
+              <label class="radio-inline">
+                {!! Form::radio('itemable[audioMonoStereo]', '', true) !!} N/A
+              </label>
+            @else
+              {!! Form::select('itemable[audioMonoStereo]',
+              array('M' => 'Mono', 'S' => 'Stereo', '' => 'N/A', '<mixed>' => '<mixed>'), $item->itemable->audioMonoStereo, array('class' => 'form-control form-control-sm')) !!}
+            @endif
           </div>
         </div>
       </div>

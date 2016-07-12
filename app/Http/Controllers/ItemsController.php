@@ -15,11 +15,13 @@ use Junebug\Models\AudioVisualItemType;
 use Junebug\Models\AudioVisualItemCollection;
 use Junebug\Models\AudioVisualItemFormat;
 use Junebug\Models\AudioItem;
+use Junebug\Models\BatchAudioVisualItem;
 use Junebug\Models\FilmItem;
 use Junebug\Models\VideoItem;
 use Junebug\Models\Collection;
 use Junebug\Models\Cut;
 use Junebug\Models\Format;
+use Junebug\Models\TableSelection;
 use Junebug\Models\Transfer;
 use Junebug\Models\PreservationMaster;
 use Junebug\Http\Requests\ItemRequest;
@@ -39,45 +41,24 @@ class ItemsController extends Controller
     $this->middleware('guest');
   }
   
+  /**
+   * Show the list of items and a search interface for
+   * filtering and searching.
+   */
   public function index(Request $request)
   {
-    
-    $perPage = 20;
     $items = array();
 
     if ($request->ajax()) {
       $userQueryString = urldecode($request->query('q'));
       $userQuery = json_decode($userQueryString);
 
-      $client = new Solarium\Client($this->solariumConfigFor('junebug-items'));
-      $solariumQuery = $client->createSelect();
+      $page = $request->query('page');
+      $perPage = $request->query('perPage');
+      $start = $perPage * ($page - 1);
 
-      $searchTerms = $userQuery->{'search'};
-      $solariumQuery->setQuery($searchTerms);
-
-      $dismax = $solariumQuery->getDisMax();
-      if(strlen($searchTerms)==0) {
-        $dismax->setQueryAlternative('*:*');
-      }
-      // Query fields with boost values
-      $dismax->setQueryFields('callNumber^5 title^4 collectionName^3 ' .
-        'containerNote^2 cutTitles cutPerformerComposers formatName');
-
-      $this->createFilterQueries($solariumQuery,$userQuery);
-
-      $solariumQuery->setRows($perPage);
-      $currentPage = $request->query('page');
-      if($currentPage == null) {
-        $currentPage = 1;
-      }
-      $start = $perPage * ($currentPage - 1);
-      $solariumQuery->setStart($start);
-      $solariumQuery->addSort('callNumber', $solariumQuery::SORT_ASC);
-
-      $resultSet = $client->execute($solariumQuery);
-      
-      $items = new SolariumPaginator($resultSet,$perPage,$currentPage);
-
+      $resultSet = $this->solrQuery($userQuery,$start,$perPage);     
+      $items = new SolariumPaginator($resultSet,$page,$perPage);
       return view('items._items', compact('items', 'start'));
     }
 
@@ -89,6 +70,9 @@ class ItemsController extends Controller
         compact('types', 'collections', 'formats'));
   }
   
+  /**
+   * Display the details of an item.
+   */
   public function show($id)
   {
     $item = AudioVisualItem::findOrFail($id);
@@ -101,7 +85,11 @@ class ItemsController extends Controller
     return view('items.show', compact('item', 'cuts'));
   }
   
-  public function create() {
+  /**
+   * Display the form for creating a new audio, video, or film item.
+   */
+  public function create()
+  {
     $item = new AudioVisualItem;
     $collections = ['' => 
               'Select a collection'] + Collection::lists('name', 'id');
@@ -109,7 +97,11 @@ class ItemsController extends Controller
     return view('items.create', compact('item', 'collections', 'formats'));
   }
 
-  public function store(ItemRequest $request) {
+  /**
+   * Save the details of an item and its itemable, the update solr.
+   */
+  public function store(ItemRequest $request)
+  {
     $input = $request->all();
     $itemable = $this->newItemableInstance($request);
     $itemable->callNumber = $input['callNumber'];
@@ -134,13 +126,16 @@ class ItemsController extends Controller
     // Update Solr
     $this->solrUpdate($item);
 
-    Session::flash('alert', array('type' => 'success', 'message' => 
+    $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>Yesss!</strong> ' . 
         'Audio visual item was successfully created.'));
 
     return redirect()->route('items.show', [$item->id]);
   }
 
+  /**
+   * Display the form for editing an item.
+   */
   public function edit($id)
   {
     $item = AudioVisualItem::findOrFail($id);
@@ -155,13 +150,87 @@ class ItemsController extends Controller
       compact('item', 'cuts', 'collections', 'formats'));
   }
 
-  public function editBatch()
+  /**
+   * Display the form for editing multiple items at a time. Exactly which ids
+   * of the items to edit are unknown when this method is called. The
+   * solr query parameters are passed in the query string which is used
+   * to reconstruct the solr result set, from which the ids can be fetched.
+   * And a table selection is passed when denotes which items are selected
+   * for editing.
+   */
+  public function editBatch(Request $request)
   {
-    // run solarium query to get result set
-    // get user selection from query string
-    // merge values
-    // display
-    dd("Batch edit");
+    $max = 500;
+
+    $userQuery = json_decode(urldecode($request->query('q')));
+    $selection = json_decode($request->query('s'));
+    $tableSelection = new TableSelection($selection->begin,$selection->end,
+                                  $selection->excludes, $selection->includes);
+    if($tableSelection->selectionCount() > $max) {
+      $request->session()->put('alert', array('type' => 'danger', 'message' => 
+        '<strong>Whoa there!</strong> ' . 
+        'Batch editing is limited to ' . $max . ' items. Please narrow your selection.'));
+      return redirect()->route('items.index');
+    }
+
+    $start = $tableSelection->indexMin();
+    $rows = $tableSelection->indexCount();
+    $resultSet = $this->solrQuery($userQuery,$start,$rows);
+    
+    // Iterate through Solr resultSet, getting item ids, while validating
+    // that all records are of the same type.
+    $itemIds = array();
+    $itemTypes = array();
+    $queryIndex = $start;
+    foreach ($resultSet as $item) {
+      if($tableSelection->selected($queryIndex)) {
+        array_push($itemIds,$item->id);
+        $type = $item->typeName;
+        $itemTypes[$type] = $type;
+        if(count($itemTypes) > 1) {
+          $request->session()->put('alert', 
+            array('type' => 'danger', 'message' => 
+            '<strong>Oops! There\'s a problem.</strong> ' . 
+            'Batch editing can only be done with items of the same type. Please change your selection.'));
+          return redirect()->route('items.index');
+        }
+      }
+      $queryIndex++;
+    }
+    
+    $items = AudioVisualItem::whereIn('id',$itemIds)->get();
+    $itemableType = $items->first()->itemableType;
+    $itemableIds = array();
+    foreach($items as $item) {
+      array_push($itemableIds, $item->itemable->id);
+    }
+    $itemables = $itemableType::whereIn('id', $itemableIds)->get();
+
+    $item = new BatchAudioVisualItem($items,$itemables);
+
+    $collections = array();
+    if($item->collectionId === '<mixed>') {
+      $collections = ['' => 'Select a collection'] + 
+                     ['<mixed>' => '<mixed>'] +
+                     Collection::lists('name', 'id');
+    } else {
+      $collections = ['' => 'Select a collection'] + 
+                     Collection::lists('name', 'id');
+    }
+
+    $formats = array();
+    if($item->formatId === '<mixed>') {
+      $formats = ['' => 'Select a format'] + 
+                 ['<mixed>' => '<mixed>'] +
+                 Format::lists('name', 'id');
+    } else {
+      $formats = ['' => 'Select a format'] + 
+                 Format::lists('name', 'id');
+    }
+
+    return view('items.edit', 
+      compact('item', 'collections', 'formats'));
+
   }
 
   public function update($id, ItemRequest $request)
@@ -222,12 +291,51 @@ class ItemsController extends Controller
     // Update Solr
     $this->solrUpdate($item);
 
-    Session::flash('alert', array('type' => 'success', 'message' => 
+    $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>Hooray!</strong> ' . 
         'Audio visual item was successfully updated.'));
 
     return redirect()->route('items.show', [$id]);
   }
+
+
+  public function updateBatch(ItemRequest $request)
+  {
+    $input = $request->allWithoutMixed();
+    $itemIds = explode(',', $input['ids']);
+    unset($input['ids']);
+    $items = AudioVisualItem::whereIn('id',$itemIds)->get();
+
+    // Update MySQL
+    DB::transaction(function () use ($items, $input) {
+      $transactionId = Uuid::uuid1();
+      DB::statement("set @transaction_id = '$transactionId';");
+      
+      foreach ($items as $item) {
+        $item->fill($input);
+        $itemable=$item->itemable;
+        $itemable->fill($input['itemable']);
+
+        $itemable->save();
+        $item->save();
+      }
+
+      DB::statement('set @transaction_id = null;');      
+    });    
+    
+    // Update Solr
+    foreach ($items as $item) {
+      $this->solrUpdate($item);
+    }
+
+    $request->session()->put('alert', array('type' => 'success', 'message' => 
+        '<strong>That was handy!</strong> ' . 
+        'Audio visual items were successfully updated.'));
+
+    return redirect()->route('items.index');
+
+  }
+
 
   public function destroy($id, Request $request)
   {
@@ -272,11 +380,36 @@ class ItemsController extends Controller
 
     $this->solrDelete($item);
 
-    Session::flash('alert', array('type' => 'success', 'message' => 
+    $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>It\'s done!</strong> ' . 
         "$item->type item was successfully deleted."));
 
     return redirect()->route('items.index');
+  }
+
+  private function newItemableInstance(Request $request)
+  {
+    $itemable = null;
+    $itemableType = $request->itemableType;
+    if($itemableType=='AudioItem') {
+      $itemable = new AudioItem;
+    } else if ($itemableType=='FilmItem') {
+      $itemable = new FilmItem;
+    } else if ($itemableType=='VideoItem') {
+      $itemable = new VideoItem;
+    } else {
+      throw new Exception('Unknown item type: ' . $itemableType);
+    }
+    return $itemable;
+  }
+
+  // TODO: Use Str::endsWith instead
+  private function endsWith($haystack, $needle)
+  {
+    $needleLen = strlen($needle);
+    $needleTest = substr($haystack, strlen($haystack) - 
+        $needleLen, strlen($haystack));
+    return $needleTest == $needle;
   }
 
   private function createFilterQueries($solariumQuery, $userQuery)
@@ -320,31 +453,6 @@ class ItemsController extends Controller
     return $filterQuery;
   }
 
-  private function newItemableInstance(Request $request)
-  {
-    $itemable = null;
-    $itemableType = $request->itemableType;
-    if($itemableType=='AudioItem') {
-      $itemable = new AudioItem;
-    } else if ($itemableType=='FilmItem') {
-      $itemable = new FilmItem;
-    } else if ($itemableType=='VideoItem') {
-      $itemable = new VideoItem;
-    } else {
-      throw new Exception('Unknown item type: ' . $itemableType);
-    }
-    return $itemable;
-  }
-
-  // TODO: Use Str::endsWith instead
-  private function endsWith($haystack, $needle)
-  {
-    $needleLen = strlen($needle);
-    $needleTest = substr($haystack, strlen($haystack) - 
-        $needleLen, strlen($haystack));
-    return $needleTest == $needle;
-  }
-
   private function solariumConfigFor($core)
   {
     $config = Config::get('solarium');
@@ -355,6 +463,33 @@ class ItemsController extends Controller
     $path = $hostConfig['path'];
     $config[$endpointKeys[0]][$hostKeys[0]]['path'] = $path . $core;
     return $config;
+  }
+
+  private function solrQuery($userQuery,$start,$rows)
+  {
+    $client = new Solarium\Client($this->solariumConfigFor('junebug-items'));
+    $solariumQuery = $client->createSelect();
+
+    $searchTerms = $userQuery->{'search'};
+    $solariumQuery->setQuery($searchTerms);
+
+    $dismax = $solariumQuery->getDisMax();
+    if(strlen($searchTerms)==0) {
+      $dismax->setQueryAlternative('*:*');
+    }
+    // Query fields with boost values
+    $dismax->setQueryFields('callNumber^5 title^4 collectionName^3 ' .
+      'containerNote^2 cutTitles cutPerformerComposers formatName');
+
+    $this->createFilterQueries($solariumQuery,$userQuery);
+
+    $solariumQuery->setStart($start);
+    $solariumQuery->setRows($rows);
+    $solariumQuery->addSort('callNumber', $solariumQuery::SORT_ASC);
+
+    $resultSet = $client->execute($solariumQuery);
+
+    return $resultSet;
   }
 
   private function solrUpdate($item)

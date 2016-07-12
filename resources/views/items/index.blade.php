@@ -74,13 +74,13 @@
   <div id="data-panel" class="col-md-9 panel">
     <div class="top-controls">
       <div style="float: left;">
-        <a class="btn btn-sm btn-secondary" style="margin-right: 5px;" href="{{ route('items.create') }}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
+        <a id="items-new" class="btn btn-sm btn-secondary" style="margin-right: 5px;" href="{{ route('items.create') }}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
         <div class="btn-group">
           <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cubes" data-toggle="dropdown" aria-hidden="true"></i> Batch</button>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Edit</a>
-            <a class="dropdown-item" href="#">Export</a>
-            <a class="dropdown-item" href="#">Delete</a>
+            <a id="items-batch-edit" class="dropdown-item" href="#">Edit</a>
+            <a id="items-batch-export" class="dropdown-item" href="#">Export</a>
+            <a id="items-batch-delete" class="dropdown-item" href="#">Delete</a>
           </div>
         </div>
       </div>

@@ -46,6 +46,11 @@ class AudioVisualItem extends Model {
     parent::__construct();
   }
 
+  public function batch()
+  {
+    return false;
+  }
+
   public function collection()
   {
     return $this->belongsTo('Junebug\Models\Collection');

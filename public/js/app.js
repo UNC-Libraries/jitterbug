@@ -6,10 +6,32 @@ junebug = {
     localStorage.removeItem('itemTableParams');
   },
 
+  initAjax: function() {
+    $.ajaxSetup({
+      headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+    });
+  },
+
+  getAlert: function() {
+    $.get('/alerts', function(data) {
+      if (!$.isEmptyObject(data)) {
+        var alert = document.createElement('div');
+        alert.setAttribute('id', 'alert');
+        alert.setAttribute('class', 'col-md-12 alert alert-' + data['type']);
+        alert.setAttribute('role', 'alert');
+        alert.innerHTML = data['message'];
+        $('#alert').replaceWith(alert);
+        junebug.displayAlert();
+      }
+    });
+  },
+
   displayAlert: function() {
-    alert = $('#alert');
+    var alert = $('#alert');
     if(alert.text().trim().length && alert.is(':hidden')) {
-      alert.delay(500).slideDown(200).delay(8000).slideUp(200);
+      alert.delay(500).slideDown(200).delay(8000).slideUp(200, function() {
+        $.ajax({url: '/alerts', type: 'delete'});
+      });
     }
   },
 
@@ -21,15 +43,15 @@ junebug = {
 
   initItemTypeControls: function() {
     $('#detail #item-type-controls :radio').click(function(event) {
-      if($(this).val()=='AudioItem') {
+      if ($(this).val()=='AudioItem') {
         $('#audio-form').show();
         $('#film-form').hide();
         $('#video-form').hide();
-      } else if($(this).val()=='FilmItem') {
+      } else if ($(this).val()=='FilmItem') {
         $('#audio-form').hide();
         $('#film-form').show();
         $('#video-form').hide();
-      } else if($(this).val()=='VideoItem') {
+      } else if ($(this).val()=='VideoItem') {
         $('#audio-form').hide();
         $('#film-form').hide();
         $('#video-form').show();
@@ -37,11 +59,94 @@ junebug = {
     });
   },
 
+  initItemsNewButton: function() {
+    $('#items-new').click(function(event) {
+      junebug.TableSelection.load('itemTableSelection','session').clear();
+    });
+  },
+
+  initItemsBatchMenu: function() {
+    $('#items-batch-edit').click(function(event) {
+      var selection = 
+          junebug.TableSelection.load('itemTableSelection','session');
+      var search = junebug.SearchField.load('itemSearchField');
+      var filters = junebug.FilterPanel.load('itemFilterPanel');
+      var query = new junebug.QueryManager(search,filters).queryString();
+      if (selection.count() == 0) {
+        // alert please make a selection
+        return;
+      }
+
+      json = selection.toJson();
+      var selectionParams = {begin:json['begin'],
+                             end:json['end'],
+                             excludes:json['excludes'],
+                             includes:json['includes']};
+      window.location.href="/items/batch/edit?q=" + query + "&" + 
+                                      "s=" + JSON.stringify(selectionParams);
+
+    });
+  },
+  
+  // When a user batch edits records, some fields will
+  // be set to a value of <mixed>, meaning that those
+  // fields differ across the batch. When a user
+  // changes one of the <mixed> fields to something
+  // else, we want to give them an easy way to reset
+  // the field back to the magic value, which we will
+  // do with the addition of a 'reset' icon after they 
+  // have changed the value.
+  initBatchEditMixed: function() {
+    $("input[value='<mixed>']").change(function() {
+      junebug.handleMixedValueChange(this);
+    });
+
+    $('textarea').filter(function () {
+      return $(this).val() === '<mixed>';
+    }).change(function() {
+      junebug.handleMixedValueChange(this);
+    });
+
+    $('select:has(option[value="<mixed>"]:selected)').change(function() {
+      junebug.handleMixedValueChange(this);
+    });
+  },
+
+  sequence: 0,
+
+  handleMixedValueChange: function(that) {
+    var input = $(that);
+    var parent = $(that).closest('.detail-value');
+    if ($(that).val() !== '<mixed>' && parent.hasClass('col-xs-7')) {
+      parent.removeClass('col-xs-7');
+      parent.addClass('col-xs-6');
+      var divId = junebug.sequence++, linkId = junebug.sequence++;
+      parent.after('\
+        <div id=' + divId + ' class="col-xs-1 detail-value">\
+          <a id=' + linkId + ' href="#" title="Reset">\
+            <i class="fa fa-reply" aria-hidden="true"></i>\
+          </a>\
+        </div>\
+      ');
+      $('#' + linkId + '').click(function(event) {
+        $('#' + divId + '').remove();
+        parent.removeClass('col-xs-6');
+        parent.addClass('col-xs-7');
+        input.val('<mixed>');
+        event.preventDefault();
+      });
+    } else if ($(that).val() === '<mixed>' && parent.hasClass('col-xs-6')) {
+      parent.next().remove();
+      parent.removeClass('col-xs-6');
+      parent.addClass('col-xs-7');
+    }
+  },
+
   initTableKeyboardShortcuts: function() {
     // Page next or previous using the keyboard
     $(document).keydown(function(event) {
       // Right arrow
-      if(event.which == 39) {
+      if (event.which == 39) {
         $('.next-page').first().trigger("click");
       // Left arrow
       } else if (event.which == 37) {
@@ -53,7 +158,7 @@ junebug = {
   initRevisionHistory: function() {
     $('.revision-history-title').click(function() {
       var icon = $('.revision-history-title i');
-      if(icon.hasClass('fa-caret-right')) {
+      if (icon.hasClass('fa-caret-right')) {
         icon.removeClass('fa-caret-right');
         icon.addClass('fa-caret-down');
       } else {
@@ -91,9 +196,9 @@ junebug = {
     });
   },
 
-  initItemIndex: function() {
+  initItemsIndex: function() {
     var searchField = junebug.SearchField.load('itemSearchField');
-    if(searchField==null) {
+    if (searchField==null) {
       searchField = new junebug.SearchField({
           key:'itemSearchField',
           selector:'#search'});
@@ -104,7 +209,7 @@ junebug = {
     }
 
     var filterPanel = junebug.FilterPanel.load('itemFilterPanel');
-    if(filterPanel==null) {
+    if (filterPanel==null) {
       filterPanel = new junebug.FilterPanel({
           key:'itemFilterPanel',
           selector:'#filter-panel',
@@ -116,7 +221,7 @@ junebug = {
     }
 
     var tableParams = junebug.TableParams.load('itemTableParams');
-    if(tableParams==null) {
+    if (tableParams==null) {
       tableParams = new junebug.TableParams({
           key:'itemTableParams'});
       tableParams.store();
@@ -124,7 +229,7 @@ junebug = {
 
     var tableSelection = 
       junebug.TableSelection.load('itemTableSelection','session');
-    if(tableSelection==null) {
+    if (tableSelection==null) {
       tableSelection = new junebug.TableSelection({
           key:'itemTableSelection',
           location:'session',
@@ -195,20 +300,20 @@ junebug = {
         });
 
         // Bind click handlers to all data pagination links
-        if($('.pagination').length) {
+        if ($('.pagination').length) {
           var currentPage = parseInt($('.page-item.active').text().trim());
           tableParams.setPage(currentPage);
           $('.pagination').each(function() {
             $('.page-link').each(function() {
-              if($(this).parent().hasClass('disabled') || 
+              if ($(this).parent().hasClass('disabled') || 
                  $(this).parent().hasClass('active')) {
                 return;
-              } else if($(this).hasClass('prev-page')) {
+              } else if ($(this).hasClass('prev-page')) {
                 $(this).click(function(){
                   tableParams.setPage(currentPage - 1);
                   executeQuery();
                 });
-              } else if($(this).hasClass('next-page')) {
+              } else if ($(this).hasClass('next-page')) {
                 $(this).click(function(){
                   tableParams.setPage(currentPage + 1);
                   executeQuery();
@@ -298,7 +403,7 @@ junebug = {
   },
 
   SearchField: function(params) {
-    if(params==null || params.selector == null) {
+    if (params==null || params.selector == null) {
       throw new junebug.IllegalArgumentException("Param 'selector' " +
         "is required.");
     }
@@ -314,7 +419,7 @@ junebug = {
 
       // Handle "enter" keypress on search input
       $(selector).keypress(function(event) {
-        if(enterKey(event)) {
+        if (enterKey(event)) {
           event.preventDefault();
           lastValue = elementValue();
           store();
@@ -324,8 +429,8 @@ junebug = {
       });
       // Handle "delete" key on search input
       $(selector).keyup(function(event){
-        if(deleteKey(event)) {
-          if(searchTermsRemoved()) {
+        if (deleteKey(event)) {
+          if (searchTermsRemoved()) {
             store();
 
             $.publish('searchSubmitted');
@@ -384,8 +489,12 @@ junebug = {
 
   },
 
+  /**
+   * A FilterPanel is composed of one or more FilterLists, instantiated
+   * when the FilterPanel.init() method is called.
+   */
   FilterPanel: function(params) {
-    if(params==null || params.selector == null || params.listSelector == null) {
+    if (params==null || params.selector == null || params.listSelector == null) {
       throw new junebug.IllegalArgumentException("Params 'selector' " +
         "and 'listSelector' are required.");
     }
@@ -402,7 +511,7 @@ junebug = {
         var list = new junebug.FilterList(this);
         list.init();
 
-        if(selected != null && selected[list.listType()] != null) {
+        if (selected != null && selected[list.listType()] != null) {
           list.setSelected(selected[list.listType()]);
         } else {
           list.setDefault();
@@ -430,6 +539,15 @@ junebug = {
 
     selectedFilters = function() {
       allSelected = {};
+      // If lists is empty, make sure there are indeed no lists, 
+      // init() may not have been called yet
+      if(!lists.length) {
+        $(selector).find(listSelector).each(function() {
+          var list = new junebug.FilterList(this);
+          // We're not calling list.init() here on purpose
+          lists.push(list);
+        });
+      }
       $.each(lists, function(i, list) {
         allSelected[list.listType()] = list.selectedFilters();
       });
@@ -478,7 +596,7 @@ junebug = {
       $.each(checkboxes, function(i, checkbox) {
         $(checkbox).click(function(event) {
           // If this is an 'Any' checkbox
-          if($(this).is(checkboxes[0])) {
+          if ($(this).is(checkboxes[0])) {
 
             // Prevent unchecking if it's already checked
             if (!$(this).is(':checked')) {
@@ -487,21 +605,21 @@ junebug = {
             }
 
             // Uncheck the other filters
-            for(var i = 1; i < checkboxes.length; i++) {
+            for (var i = 1; i < checkboxes.length; i++) {
               checkboxes[i].checked = false;
             }
           } else {
             // Check if at least one non-Any filter is checked
             var oneIsChecked = false;
-            for(var i = 1; i < checkboxes.length; i++) {
-              if(checkboxes[i].checked == true) {
+            for (var i = 1; i < checkboxes.length; i++) {
+              if (checkboxes[i].checked == true) {
                 oneIsChecked = true;
                 break;
               }
             }
 
             // If one is checked, turn off the Any filter
-            if(oneIsChecked) {
+            if (oneIsChecked) {
               checkboxes[0].checked = false;
             } else {
               checkboxes[0].checked = true;
@@ -515,7 +633,7 @@ junebug = {
 
     setSelected = function(selectedFilters) {
       $.each(checkboxes, function(i, checkbox) {
-        if($.inArray(checkbox.value,selectedFilters) != -1) {
+        if ($.inArray(checkbox.value,selectedFilters) != -1) {
           checkbox.checked = true;
         } else {
           checkbox.checked = false;
@@ -525,7 +643,7 @@ junebug = {
 
     setDefault = function() {
       $.each(checkboxes, function(i, value) {
-        if(i == 0) {
+        if (i == 0) {
           checkboxes[i].checked = true;
         } else {
           checkboxes[i].checked = false;
@@ -540,7 +658,7 @@ junebug = {
     selectedFilters = function() {
       var selected = $(list).find('input:checked');
       var values = [];
-      for(var i=0; i < selected.length; i++) {
+      for (var i=0; i < selected.length; i++) {
         values.push(selected[i].value);
       }
       return values;
@@ -567,11 +685,11 @@ junebug = {
    * (or in the search result if data is paginated across multiple
    * tables) not the id of the record in the database. Internally,
    * TableSelection stores a range selection (beginning and 
-   * ending indices), an array of indices that should be
-   * excluded from the range (produced by a user 'command-clicking'
-   * within the range), and an array of indices that should be 
-   * included in the selection, also produced by a user
-   * command clicking, but outside of the range.
+   * ending indices, produced by 'shift-clicking'), an array of 
+   * indices that should be excluded from the range (produced by
+   * a user 'command-clicking' within the range), and an array of
+   * indices that should be included in the selection, also 
+   * produced by a user command clicking, but outside of the range.
    *
    * If storage parameters are supplied (storage key and location),
    * the table selection will persist itself to local storage when 
@@ -587,7 +705,7 @@ junebug = {
    * 'includes' = ids outside of the selection range to be included
    */
   TableSelection: function(params) {
-    if(params==null) {
+    if (params==null) {
       throw new junebug.IllegalArgumentException("Param 'selector' " +
         "is required.");
     }
@@ -619,7 +737,7 @@ junebug = {
         var rowIndex = $(this).data('index');
 
         // If user is "shift-clicking" a row (i.e. selecting a range of rows)
-        if(event.shiftKey) {
+        if (event.shiftKey) {
           setRange(rowIndex);
           finalizeEvent(event);
           return;
@@ -627,7 +745,7 @@ junebug = {
 
         // If user is "command-clicking" (Mac) (or control on Windows) 
         // a row (i.e. selecting/deselecting single row)
-        if(event.ctrlKey || event.metaKey) {
+        if (event.ctrlKey || event.metaKey) {
           toggle(rowIndex);
           finalizeEvent(event);
           return;
@@ -649,7 +767,7 @@ junebug = {
     },
 
     selected = function(rowIndex) {
-      if((inRange(rowIndex) && 
+      if ((inRange(rowIndex) && 
         $.inArray(rowIndex, excludes) == -1) || 
         $.inArray(rowIndex, includes) != -1) {
         return true;
@@ -661,13 +779,13 @@ junebug = {
     render = function() {
       $(selector).each(function() {
         var rowIndex = $(this).data('index');
-        if(selected(rowIndex)) {
+        if (selected(rowIndex)) {
           $(this).addClass('selected');
         } else {
           $(this).removeClass('selected');
         }
       });
-      if(count() > 0) {
+      if (count() > 0) {
         $(countSelector).text('(' + count() + ' selected)');
       } else {
         $(countSelector).text('');
@@ -682,7 +800,7 @@ junebug = {
         var beforeCount = count();
         end = rowIndex;
         // Allows user to deselect a range
-        if(count()==1 && beforeCount==1) {
+        if (count()==1 && beforeCount==1) {
           clear();
         }
       }
@@ -692,10 +810,10 @@ junebug = {
 
     toggle = function(rowIndex) {
       // User is clicking within the defined range
-      if(inRange(rowIndex)) {
+      if (inRange(rowIndex)) {
         var result = $.inArray(rowIndex, excludes);
         // Add row index to excludes
-        if(result == -1) {
+        if (result == -1) {
           excludes.push(rowIndex);
         } else {
           excludes.splice(result, 1);
@@ -704,22 +822,22 @@ junebug = {
       } else {
         var result = $.inArray(rowIndex, includes);
         // Add row index to includes
-        if(result == -1) {
+        if (result == -1) {
           includes.push(rowIndex);
         } else {
           includes.splice(result, 1);
         }
       }
-      if(count()==0) {
+      if (count()==0) {
         clear();
       }
     },
 
     inRange = function(rowIndex) {
-      if(rowIndex==null || begin==null || end==null) {
+      if (rowIndex==null || begin==null || end==null) {
         return false;
       }
-      if(rowIndex >= Math.min(begin, end) && 
+      if (rowIndex >= Math.min(begin, end) && 
         rowIndex <= Math.max(begin, end)) {
         return true;
       } else {
@@ -736,9 +854,10 @@ junebug = {
     },
 
     count = function() {
-      var max = Math.max(begin, end);
-      var min = Math.min(begin, end);
-      if(begin==null) {
+      var max = Math.max(begin, end),
+          min = Math.min(begin, end),
+          rangeCount;
+      if (begin==null) {
         rangeCount = 0;
       } else {
         rangeCount = max - min + 1;
@@ -781,6 +900,7 @@ junebug = {
       clear: clear,
       count: count,
       store: store,
+      toJson: toJson,
       toString: toString
     };
 
@@ -794,7 +914,7 @@ junebug = {
    * Used to deserialize all models from storage.
    */
   loader: function(key, location) {
-    if(key==null) {
+    if (key==null) {
       console.log("Could not load object. Param 'key' is null.");
       return null;
     }
@@ -804,12 +924,11 @@ junebug = {
     } else if (location=='session') {
       string = sessionStorage.getItem(key);
     }
-    if(string==null) {
+    if (string==null) {
       return null;
     }
     params = JSON.parse(string);
-    var className = this.name;
-    return new (eval('junebug.' + className))(params);
+    return new this(params);
   }
 };
 

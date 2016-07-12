@@ -3,7 +3,8 @@
 JUNEBUG = {
   common: {
     init: function() {
-      junebug.displayAlert();
+      junebug.initAjax();
+      junebug.getAlert();
     }
   },
 
@@ -13,8 +14,10 @@ JUNEBUG = {
     },
 
     index: function() {
-      junebug.initItemIndex();
+      junebug.initItemsIndex();
       junebug.initTableKeyboardShortcuts();
+      junebug.initItemsNewButton();
+      junebug.initItemsBatchMenu();
     },
 
     show: function() {
@@ -31,6 +34,12 @@ JUNEBUG = {
       junebug.initDatepicker();
       junebug.initItemSuggestions();
       junebug.initRevisionHistory();
+    },
+
+    editBatch: function() {
+      junebug.initBatchEditMixed();
+      junebug.initDatepicker();
+      junebug.initItemSuggestions();
     }
   }
 };

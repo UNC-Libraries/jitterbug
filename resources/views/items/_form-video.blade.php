@@ -4,15 +4,20 @@
             {!! Form::label('itemable[videoMonoStereo]', 'Mono/Stereo', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            <label class="radio-inline">
-              {!! Form::radio('itemable[videoMonoStereo]', 'M') !!} Mono
-            </label>
-            <label class="radio-inline">
-              {!! Form::radio('itemable[videoMonoStereo]', 'S') !!} Stereo
-            </label>
-            <label class="radio-inline">
-              {!! Form::radio('itemable[videoMonoStereo]', '', true) !!} N/A
-            </label>
+            @if (!$item->batch() || $item->itemable->videoMonoStereo !== '<mixed>')
+              <label class="radio-inline">
+                {!! Form::radio('itemable[videoMonoStereo]', 'M') !!} Mono
+              </label>
+              <label class="radio-inline">
+                {!! Form::radio('itemable[videoMonoStereo]', 'S') !!} Stereo
+              </label>
+              <label class="radio-inline">
+                {!! Form::radio('itemable[videoMonoStereo]', '', true) !!} N/A
+              </label>
+            @else
+              {!! Form::select('itemable[videoMonoStereo]',
+              array('M' => 'Mono', 'S' => 'Stereo', '' => 'N/A', '<mixed>' => '<mixed>'), $item->itemable->videoMonoStereo, array('class' => 'form-control form-control-sm')) !!}
+            @endif
           </div>
         </div>
       </div>

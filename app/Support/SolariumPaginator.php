@@ -44,7 +44,7 @@ class SolariumPaginator implements \IteratorAggregate, \Countable {
 	protected $perPage;
 
 
-	public function __construct(Result $resultSet, $perPage, $currentPage)
+	public function __construct(Result $resultSet, $currentPage, $perPage)
 	{
         $this->resultSet = $resultSet;
 		$this->perPage = $perPage;

@@ -37,8 +37,13 @@
             {!! Form::label('itemable[soundType]', 'Sound Type', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::select('itemable[soundType]',
-              array('' => 'Select a type', 'Magnetic' => 'Magnetic', 'Optical' => 'Optical', 'Silent' => 'Silent'), $item->itemable == null ? null : $item->itemable->soundType, array('class' => 'form-control form-control-sm')) !!}
+            @if (!$item->batch() || $item->itemable->soundType !== '<mixed>')
+              {!! Form::select('itemable[soundType]',
+                array('' => 'Select a type', 'Magnetic' => 'Magnetic', 'Optical' => 'Optical', 'Silent' => 'Silent'), $item->itemable == null ? null : $item->itemable->soundType, array('class' => 'form-control form-control-sm')) !!}
+            @else
+              {!! Form::select('itemable[soundType]',
+                array('' => 'Select a type', '<mixed>' => '<mixed>', 'Magnetic' => 'Magnetic', 'Optical' => 'Optical', 'Silent' => 'Silent'), $item->itemable == null ? null : $item->itemable->soundType, array('class' => 'form-control form-control-sm')) !!}
+            @endif
           </div>
         </div>
       </div>

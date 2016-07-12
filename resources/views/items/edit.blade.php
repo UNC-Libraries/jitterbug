@@ -9,14 +9,24 @@
   </div>
   <div class="row">
     <div class="col-xs-12 col-e0">
-      <h6>{{$item->type}} Item Details</h6>
+      @if ($item->batch())
+        <h6>{{$item->type}} Item Details (editing {{$item->count()}} items)</h6>
+      @else
+        <h6>{{$item->type}} Item Details</h6>
+      @endif
     </div>
   </div>
 
-  {!! Form::model($item, array('route' => array('items.update', $item->id), 'method' => 'put')) !!}
-  {!! Form::hidden('id') !!}
-  {!! Form::hidden('itemableType') !!}
-  {!! Form::hidden('itemableId') !!}
+  @if ($item->batch())
+    {!! Form::model($item, array('route' => array('items.updateBatch'), 'method' => 'put')) !!}
+    {!! Form::hidden('ids') !!}
+    {!! Form::hidden('itemableType') !!}
+  @else
+    {!! Form::model($item, array('route' => array('items.update', $item->id), 'method' => 'put')) !!}
+    {!! Form::hidden('id') !!}
+    {!! Form::hidden('itemableType') !!}
+    {!! Form::hidden('itemableId') !!}
+  @endif
 
   <div class="row first detail-container">
     <div class="col-xs-6">
@@ -53,7 +63,9 @@
     </div>
   </div>
   
-  @include('shared._revisions', ['revisionable' => $item])
+  @if (!$item->batch())
+    @include('shared._revisions', ['revisionable' => $item])
+  @endif
 
   <div class="row">
     <div class="col-xs-12">
@@ -63,13 +75,19 @@
   <div class="row last">
     <div class="col-xs-12 actions">
       <button class="btn btn-sm btn-primary" type="submit" style="outline: none;"><i class="fa fa-save" aria-hidden="true"></i> Save</button>
-      <a class="" href="{{ route('items.show', $item->id) }}">or Cancel</a>
+      @if (!$item->batch())
+        <a class="" href="{{ route('items.show', $item->id) }}">or Cancel</a>
+      @else
+        <a class="" href="{{ route('items.index') }}">or Cancel</a>
+      @endif
     </div>
   </div>
 
   {!! Form::close() !!}
 
-  @include('items._related')
+  @if (!$item->batch())
+    @include('items._related')
+  @endif
 
 </div>
 @stop

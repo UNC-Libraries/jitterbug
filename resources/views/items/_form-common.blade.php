@@ -5,9 +5,13 @@
             {!! Form::label('callNumber', 'Call Number', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('callNumber', null, array('class' => 'form-control form-control-sm')) !!}
-            @if ($errors->has('callNumber'))
-              <div class="form-control-label"><small>{!! $errors->first('callNumber') !!}</small></div>
+            @if (!$item->batch())
+              {!! Form::text('callNumber', null, array('class' => 'form-control form-control-sm')) !!}
+              @if ($errors->has('callNumber'))
+                <div class="form-control-label"><small>{!! $errors->first('callNumber') !!}</small></div>
+              @endif
+            @else
+              {!! Form::text('callNumber', null, array('class' => 'form-control form-control-sm', 'readonly' => 'readonly')) !!}
             @endif
           </div>
         </div>
