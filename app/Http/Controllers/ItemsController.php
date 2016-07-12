@@ -98,7 +98,7 @@ class ItemsController extends Controller
   }
 
   /**
-   * Save the details of an item and its itemable, the update solr.
+   * Save the details of an item and its itemable, then update solr.
    */
   public function store(ItemRequest $request)
   {
@@ -151,11 +151,11 @@ class ItemsController extends Controller
   }
 
   /**
-   * Display the form for editing multiple items at a time. Exactly which ids
+   * Display the form for editing multiple items at a time. The ids
    * of the items to edit are unknown when this method is called. The
    * solr query parameters are passed in the query string which is used
    * to reconstruct the solr result set, from which the ids can be fetched.
-   * And a table selection is passed when denotes which items are selected
+   * And a table selection is passed which denotes the items that are selected
    * for editing.
    */
   public function editBatch(Request $request)

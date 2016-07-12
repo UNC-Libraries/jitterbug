@@ -15,23 +15,21 @@ junebug = {
   getAlert: function() {
     $.get('/alerts', function(data) {
       if (!$.isEmptyObject(data)) {
-        var alert = document.createElement('div');
-        alert.setAttribute('id', 'alert');
-        alert.setAttribute('class', 'col-md-12 alert alert-' + data['type']);
-        alert.setAttribute('role', 'alert');
-        alert.innerHTML = data['message'];
-        $('#alert').replaceWith(alert);
-        junebug.displayAlert();
+        $.ajax({url: '/alerts', type: 'delete'});
+        junebug.displayAlert(data['type'],data['message']);
       }
     });
   },
 
-  displayAlert: function() {
-    var alert = $('#alert');
-    if(alert.text().trim().length && alert.is(':hidden')) {
-      alert.delay(500).slideDown(200).delay(8000).slideUp(200, function() {
-        $.ajax({url: '/alerts', type: 'delete'});
-      });
+  displayAlert: function(type, message) {
+    if (type.length && message.length) {
+      var alert = document.createElement('div');
+      alert.setAttribute('id', 'alert');
+      alert.setAttribute('class', 'col-md-12 alert alert-' + type);
+      alert.setAttribute('role', 'alert');
+      alert.innerHTML = message;
+      $('#alert').replaceWith(alert);
+      $('#alert').delay(500).slideDown(200).delay(8000).slideUp(200);
     }
   },
 
@@ -73,7 +71,10 @@ junebug = {
       var filters = junebug.FilterPanel.load('itemFilterPanel');
       var query = new junebug.QueryManager(search,filters).queryString();
       if (selection.count() == 0) {
-        // alert please make a selection
+        junebug.displayAlert('warning',
+          '<strong>Sorry!</strong> Batch actions require a table selection. \
+          Make a selection by \'shift-clicking\' or \'command-clicking\' \
+          on rows of the table.');
         return;
       }
 
