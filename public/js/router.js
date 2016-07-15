@@ -26,6 +26,7 @@ JUNEBUG = {
 
     create: function() {
       junebug.initItemTypeControls();
+      junebug.initItemCallNumberGeneration();
       junebug.initDatepicker();
       junebug.initItemSuggestions();
     },

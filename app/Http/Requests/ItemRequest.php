@@ -50,7 +50,6 @@ class ItemRequest extends Request {
       $itemableType = $this->input('itemableType');
       $itemableRules = array();
       if($itemableType == 'AudioItem') {
-        Log::info('AudioItem!!!');
         $this->addRuleIfNotMixed($itemableRules,'itemable.size','required');
       } else if ($itemableType == 'FilmItem') {
         $this->addRuleIfNotMixed($itemableRules,'itemable.filmBase','required');

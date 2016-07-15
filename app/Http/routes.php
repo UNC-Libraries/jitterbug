@@ -16,6 +16,8 @@ Route::get('/', 'WelcomeController@index');
 Route::get('alerts', 'AlertsController@index');
 Route::delete('alerts', 'AlertsController@destroy');
 
+Route::get('call-numbers/generate', 'CallNumbersController@generate');
+
 Route::group(['prefix' => 'suggestions'], function () {
   Route::get('recording-locations', 'SuggestionsController@recordingLocations');
   Route::get('track-configurations', 'SuggestionsController@trackConfigurations');

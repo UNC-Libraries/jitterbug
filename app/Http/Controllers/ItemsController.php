@@ -16,6 +16,7 @@ use Junebug\Models\AudioVisualItemCollection;
 use Junebug\Models\AudioVisualItemFormat;
 use Junebug\Models\AudioItem;
 use Junebug\Models\BatchAudioVisualItem;
+use Junebug\Models\CallNumberSequence;
 use Junebug\Models\FilmItem;
 use Junebug\Models\VideoItem;
 use Junebug\Models\Collection;
@@ -92,8 +93,9 @@ class ItemsController extends Controller
   {
     $item = new AudioVisualItem;
     $collections = ['' => 
-              'Select a collection'] + Collection::lists('name', 'id');
-    $formats = ['' => 'Select a format'] + Format::lists('name', 'id');
+             'Select a collection'] + Collection::lists('name', 'id');
+    $formats = ['' => 
+             'Select a format'] + Format::withFutureUse()->lists('name', 'id');
     return view('items.create', compact('item', 'collections', 'formats'));
   }
 
@@ -103,34 +105,56 @@ class ItemsController extends Controller
   public function store(ItemRequest $request)
   {
     $input = $request->all();
-    $itemable = $this->newItemableInstance($request);
-    $itemable->callNumber = $input['callNumber'];
-    $itemable->fill($input['itemable']);
+    $batch = isset($input['batch']) ? true : false;
+    $batchSize = $input['batchSize'];
 
-    $item = new AudioVisualItem;
-    $item->fill($input);
-    $item->itemableType = $input['itemableType'];
+    $itemId = null;
 
     // Update MySQL
-    DB::transaction(function () use ($item, $itemable) {
+    DB::transaction(
+               function () use ($request, $input, $batch, $batchSize, &$itemId) {
       $transactionId = Uuid::uuid1();
       DB::statement("set @transaction_id = '$transactionId';");
-      $itemable->save();
+      
+      // Get a fresh sequence just to be sure the one we used isn't now stale
+      $sequence = 
+        CallNumberSequence::next($input['collectionId'], $input['formatId']);
 
+      $itemable = $this->newItemableInstance($request);
+      $itemable->callNumber = $sequence->callNumber();
+      $itemable->fill($input['itemable']);
+
+      $item = new AudioVisualItem;
+      $item->fill($input);
+      $item->callNumber = $sequence->callNumber();
+      $item->itemableType = $input['itemableType'];
+
+      $itemable->save();
       $item->itemableId = $itemable->id;
       $item->save();
+      $itemId = $item->id;
+
+      $sequence->increase();
+
+      // Update Solr
+      $this->solrUpdate($item);
 
       DB::statement('set @transaction_id = null;');      
     });
 
-    // Update Solr
-    $this->solrUpdate($item);
+    if ($batch) {
+      $request->session()->put('alert', array('type' => 'success', 'message' => 
+        '<strong>Yesss!</strong> ' . 
+        'Audio visual items were successfully created.'));
 
-    $request->session()->put('alert', array('type' => 'success', 'message' => 
+      return redirect()->route('items.index');
+    } else {
+      $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>Yesss!</strong> ' . 
         'Audio visual item was successfully created.'));
 
-    return redirect()->route('items.show', [$item->id]);
+      return redirect()->route('items.show', [$itemId]);
+    }
   }
 
   /**
@@ -145,7 +169,8 @@ class ItemsController extends Controller
                ->get();
     $collections = ['' => 
               'Select a collection'] + Collection::lists('name', 'id');
-    $formats = ['' => 'Select a format'] + Format::lists('name', 'id');
+    $formats = ['' => 
+              'Select a format'] + Format::lists('name', 'id');
     return view('items.edit', 
       compact('item', 'cuts', 'collections', 'formats'));
   }
@@ -497,7 +522,7 @@ class ItemsController extends Controller
     $client = new Solarium\Client($this->solariumConfigFor('junebug-items'));
     $update = $client->createUpdate();
     $doc = $update->createDocument();
-
+    
     $doc->setKey('id', $item->id);
     $doc->setField('title', $item->title, null, 'set');
     $doc->setField('containerNote', $item->containerNote, null, 'set');

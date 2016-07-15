@@ -33,6 +33,19 @@
       </span>
       <span class="divider"></span>
       <span style="margin-right: .75rem">
+        {!! Form::label('batch', 'Create Batch: ', array('class' => 'form-control-label')) !!}
+      </span>
+      <label style="margin-right: 1.25rem">
+        {!! Form::checkbox('batch', '1') !!}
+      </label>
+      <span style="margin-right: .75rem">
+        {!! Form::label('batchSize', 'Batch Size: ', array('class' => 'form-control-label')) !!}
+      </span>
+      <label>
+        {!! Form::text('batchSize', null, array('class' => 'form-control form-control-sm', 'style' => 'display: inline; width: 50px; padding: 0.2rem 0.5rem;', 'maxlength' => '3')) !!}
+      </label>
+      <span class="divider"></span>
+      <span style="margin-right: .75rem">
         {!! Form::label('favorite', 'Add to Favorites: ', array('class' => 'form-control-label')) !!}
       </span>
       <label>

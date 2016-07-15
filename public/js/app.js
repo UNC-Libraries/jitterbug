@@ -57,6 +57,26 @@ junebug = {
     });
   },
 
+  initItemCallNumberGeneration: function() {
+    $('#collection-id, #format-id').change(function() {
+      var collectionId = $('#collection-id').val();
+      var formatId = $('#format-id').val();
+      if (collectionId.length && formatId.length) {
+        query = {};
+        query['format'] = formatId;
+        query['collection'] = collectionId;
+        $.get('/call-numbers/generate', query, function(data) {
+          $('#call-number').val(data['callNumber']);
+        }).fail(function() {
+          console.log('Call number generation failure.');
+          $('#call-number').val('');
+        });
+      } else {
+        $('#call-number').val('');
+      }
+    });
+  },
+
   initItemsNewButton: function() {
     $('#items-new').click(function(event) {
       junebug.TableSelection.load('itemTableSelection','session').clear();
@@ -89,7 +109,7 @@ junebug = {
     });
   },
   
-  // When a user batch edits records, some fields will
+  // When a user batch edits records, some form fields will
   // be set to a value of <mixed>, meaning that those
   // fields differ across the batch. When a user
   // changes one of the <mixed> fields to something

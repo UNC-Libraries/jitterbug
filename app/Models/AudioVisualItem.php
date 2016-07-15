@@ -37,7 +37,10 @@ class AudioVisualItem extends Model {
     'oclc' => 'OCLC Id',
   );
 
-  protected $guarded = ['id', 'itemable', 'itemableType', 'itemableId'];
+  protected $fillable = ['callNumber', 'title', 'recordingLocation', 'itemYear', 
+                         'itemDate', 'collectionId', 'containerNote',
+                         'conditionNote', 'oclc', 'formatId', 'entryDate', 
+                         'speed'];
 
   public function __construct()
   {

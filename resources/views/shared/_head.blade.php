@@ -9,7 +9,7 @@
   <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,600italic' rel='stylesheet' type='text/css'>
   <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" >
 
-  <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
-  <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
+  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />
 
   <title>Junebug | {{ $title }}</title>
