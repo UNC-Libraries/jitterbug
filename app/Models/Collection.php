@@ -11,20 +11,6 @@ class Collection extends Model {
     return $this->hasMany('Junebug\Models\AudioVisualItem');
   }
 
-  public function legacy()
-  {
-    return $this->legacy == 1;
-  }
-  
-  public function hasCallNumberException($prefix)
-  {
-    $exceptions = array();
-    if($this->callNumberExceptions != null) {
-      $exceptions = explode(',', $this->callNumberExceptions);
-    }
-    return in_array($prefix , $exceptions);
-  }
-
   /**
    * Used by Revisionable to get a display name for the model.
    */

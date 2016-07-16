@@ -116,28 +116,33 @@ class ItemsController extends Controller
       $transactionId = Uuid::uuid1();
       DB::statement("set @transaction_id = '$transactionId';");
       
-      // Get a fresh sequence just to be sure the one we used isn't now stale
-      $sequence = 
-        CallNumberSequence::next($input['collectionId'], $input['formatId']);
+      $batchIndex = 0;
 
-      $itemable = $this->newItemableInstance($request);
-      $itemable->callNumber = $sequence->callNumber();
-      $itemable->fill($input['itemable']);
+      do {
+        // Get a fresh sequence just to be sure the one we used isn't now stale
+        $sequence = 
+          CallNumberSequence::next($input['collectionId'], $input['formatId']);
 
-      $item = new AudioVisualItem;
-      $item->fill($input);
-      $item->callNumber = $sequence->callNumber();
-      $item->itemableType = $input['itemableType'];
+        $itemable = $this->newItemableInstance($request);
+        $itemable->callNumber = $sequence->callNumber();
+        $itemable->fill($input['itemable']);
 
-      $itemable->save();
-      $item->itemableId = $itemable->id;
-      $item->save();
-      $itemId = $item->id;
+        $item = new AudioVisualItem;
+        $item->fill($input);
+        $item->callNumber = $sequence->callNumber();
+        $item->itemableType = $input['itemableType'];
 
-      $sequence->increase();
+        $itemable->save();
+        $item->itemableId = $itemable->id;
+        $item->save();
+        $itemId = $item->id;
 
-      // Update Solr
-      $this->solrUpdate($item);
+        $sequence->increase();
+
+        // Update Solr
+        $this->solrUpdate($item);
+
+      } while ($batch && ++$batchIndex < $batchSize);
 
       DB::statement('set @transaction_id = null;');      
     });
@@ -522,7 +527,7 @@ class ItemsController extends Controller
     $client = new Solarium\Client($this->solariumConfigFor('junebug-items'));
     $update = $client->createUpdate();
     $doc = $update->createDocument();
-    
+
     $doc->setKey('id', $item->id);
     $doc->setField('title', $item->title, null, 'set');
     $doc->setField('containerNote', $item->containerNote, null, 'set');

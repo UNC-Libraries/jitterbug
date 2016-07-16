@@ -38,10 +38,10 @@
       <label style="margin-right: 1.25rem">
         {!! Form::checkbox('batch', '1') !!}
       </label>
-      <span style="margin-right: .75rem">
+      <span @if ($errors->has('batchSize')) class='has-danger' @endif style="margin-right: .75rem">
         {!! Form::label('batchSize', 'Batch Size: ', array('class' => 'form-control-label')) !!}
       </span>
-      <label>
+      <label @if ($errors->has('batchSize')) class='has-danger' @endif>
         {!! Form::text('batchSize', null, array('class' => 'form-control form-control-sm', 'style' => 'display: inline; width: 50px; padding: 0.2rem 0.5rem;', 'maxlength' => '3')) !!}
       </label>
       <span class="divider"></span>

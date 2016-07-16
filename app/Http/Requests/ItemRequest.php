@@ -1,6 +1,10 @@
 <?php namespace Junebug\Http\Requests;
 
 use Log;
+
+use Illuminate\Validation\Validator;
+use Illuminate\Http\Exception\HttpResponseException;
+
 use Junebug\Http\Requests\Request;
 
 class ItemRequest extends Request {
@@ -61,6 +65,7 @@ class ItemRequest extends Request {
       }
 
       $itemRules = array();
+      $itemRules['batchSize'] = 'required_if:batch,1|integer|between:2,100';
       $this->addRuleIfNotMixed($itemRules,'callNumber',
         'required|min:4|unique:audio_visual_items,call_number,'.
          $this->input('id'));
@@ -96,4 +101,20 @@ class ItemRequest extends Request {
         'itemable.lengthInFeet.required' => 'The length in feet field is required.'
       ];
     }
+
+    protected function failedValidation(Validator $validator)
+    {
+      // Since there's not really a good place for this message on the form,
+      // we're going to flash a message at the top of the page.
+      if ($validator->errors()->has('batchSize')) {
+        $this->session()->put('alert', array('type' => 'danger', 'message' => 
+            '<strong>Oops!</strong> ' . 
+            'Please provide a batch size between 2 and 100 items.'));
+      }
+
+      throw new HttpResponseException($this->response(
+            $this->formatErrors($validator)
+      ));
+    }
+
 }
