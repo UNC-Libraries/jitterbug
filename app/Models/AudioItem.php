@@ -22,6 +22,7 @@ class AudioItem extends Model {
     'track_configuration' => 'isEmpty:nothing|%s',
     'mono_stereo' => 'isEmpty:nothing|%s',
     'base' => 'isEmpty:nothing|%s',
+    'content_description' => 'isEmpty:nothing|%s',
   );
 
   protected $revisionFormattedFieldNames = array(
@@ -29,10 +30,12 @@ class AudioItem extends Model {
     'listening_copy' => 'listening copy',
     'track_configuration' => 'track configuration',
     'mono_stereo' => 'mono/stereo',
+    'content_description' => 'content description',
   );
 
   protected $fillable = ['callNumber','listeningCopy','audioMonoStereo',
-                         'trackConfiguration','size','audioBase'];
+                         'trackConfiguration','size','audioBase',
+                         'audioContentDescription'];
 
   public function getListeningCopyDisplayAttribute($value)
   {
@@ -79,6 +82,16 @@ class AudioItem extends Model {
 
   public function setAudioBaseAttribute($value) {
     $this->base = $value;
+  }
+
+  public function getAudioContentDescriptionAttribute($value)
+  {
+    return $value==null ? $this->contentDescription : $value;
+  }
+
+  public function setAudioContentDescriptionAttribute($value)
+  {
+    $this->contentDescription = $value;
   }
 
 }

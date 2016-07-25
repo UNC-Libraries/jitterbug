@@ -74,3 +74,13 @@
           </div>
         </div>
       </div>
+      <div class="row">
+        <div class="form-group">
+          <div class="col-xs-4 detail-label">
+            {!! Form::label('itemable[audioContentDescription]', 'Content Description', array('class' => 'form-control-label')) !!}
+          </div>
+          <div class="col-xs-7 detail-value">
+            {!! Form::textarea('itemable[audioContentDescription]', null, array('class' => 'form-control form-control-sm', 'rows' => 3)) !!}
+          </div>
+        </div>
+      </div>

@@ -176,6 +176,16 @@
         </div>
       </div>
       @endif
+      @if ($item->itemable->contentDescription)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Content Description
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$item->itemable->contentDescription}}
+        </div>
+      </div>
+      @endif
       @endif
       @if (get_class($item->itemable) == 'Junebug\Models\FilmItem')
       @if ($item->itemable->element)
