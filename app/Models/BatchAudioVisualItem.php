@@ -24,6 +24,7 @@ class BatchAudioVisualItem extends AudioVisualItem {
     $this->itemables = $itemables;
 
     $this->aggregateItem = new AudioVIsualItem();
+    $this->aggregateItem->entryDate = null;
     $itemableType = $this->items->first()->itemableType;
     $this->aggregateItem->itemableType = $itemableType;
     $this->aggregateItemable = new $itemableType;
