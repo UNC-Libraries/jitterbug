@@ -92,7 +92,7 @@ junebug = {
       var query = new junebug.QueryManager(search,filters).queryString();
       if (selection.count() == 0) {
         junebug.displayAlert('warning',
-          '<strong>Here\'s a tip.</strong> Batch actions require a table selection. \
+          '<strong>Here\'s a tip:</strong> Batch actions require a table selection. \
           Make a selection by \'shift-clicking\' or \'command-clicking\' \
           on rows of the table.');
         return;

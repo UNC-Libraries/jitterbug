@@ -380,7 +380,7 @@ class ItemsController extends Controller
       DB::statement("set @transaction_id = '$transactionId';");
       
       $call = $item->callNumber;
-      if($command=='all') {
+      if($command==='all') {
         $masters = PreservationMaster::where('call_number', '=', 
                                               $call)->get();
         foreach ($masters as $master) {
@@ -421,11 +421,11 @@ class ItemsController extends Controller
   {
     $itemable = null;
     $itemableType = $request->itemableType;
-    if($itemableType=='AudioItem') {
+    if($itemableType==='AudioItem') {
       $itemable = new AudioItem;
-    } else if ($itemableType=='FilmItem') {
+    } else if ($itemableType==='FilmItem') {
       $itemable = new FilmItem;
-    } else if ($itemableType=='VideoItem') {
+    } else if ($itemableType==='VideoItem') {
       $itemable = new VideoItem;
     } else {
       throw new Exception('Unknown item type: ' . $itemableType);
@@ -439,7 +439,7 @@ class ItemsController extends Controller
     $needleLen = strlen($needle);
     $needleTest = substr($haystack, strlen($haystack) - 
         $needleLen, strlen($haystack));
-    return $needleTest == $needle;
+    return $needleTest === $needle;
   }
 
   private function createFilterQueries($solariumQuery, $userQuery)
@@ -515,7 +515,7 @@ class ItemsController extends Controller
 
     $solariumQuery->setStart($start);
     $solariumQuery->setRows($rows);
-    $solariumQuery->addSort('callNumber', $solariumQuery::SORT_ASC);
+    $solariumQuery->addSort('updatedAt', $solariumQuery::SORT_DESC);
 
     $resultSet = $client->execute($solariumQuery);
 
@@ -538,6 +538,8 @@ class ItemsController extends Controller
     $doc->setField('formatName', $item->format->name, null, 'set');
     $doc->setField('typeName', $item->type, null, 'set');
     $doc->setField('typeId', $item->typeId, null, 'set');
+    $doc->setField('createdAt', $item->createdAt, null, 'set');
+    $doc->setField('updatedAt', $item->updatedAt, null, 'set');
 
     $update->addDocument($doc);
     $update->addCommit();

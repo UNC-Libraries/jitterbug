@@ -14,6 +14,8 @@
                 items.item_date AS item_date,
                 items.collection_id AS collection_id,
                 items.format_id AS format_id,
+                items.created_at AS created_at,
+                items.updated_at AS updated_at,
                 types.id AS type_id,
                 collections.name AS collection_name,
                 formats.name AS format_name,
@@ -24,10 +26,12 @@
                 items.collection_id = collections.id
             LEFT JOIN formats ON
                 items.format_id = formats.id
-            LEFT JOIN item_types AS types ON
-                TRIM(TRAILING 'Item' FROM items.itemable_type) = types.name;
+            LEFT JOIN media_types AS types ON
+                TRIM(TRAILING 'Item' FROM items.itemable_type) = types.name
+            WHERE
+                items.deleted_at is null;
 
-        " deltaQuery="SELECT id FROM audio_visual_items WHERE updated_at > '${dataimporter.last_index_time}'">
+        ">
 
             <field column="id" name="id" />
             <field column="call_number" name="callNumber" />
@@ -41,6 +45,8 @@
             <field column="format_name" name="formatName" />
             <field column="type_id" name="typeId" />
             <field column="type_name" name="typeName" />
+            <field column="created_at" name="createdAt" />
+            <field column="updated_at" name="updatedAt" />
 
             <entity name="cut" query="
 

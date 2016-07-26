@@ -32,11 +32,11 @@ class ItemRequest extends Request {
         // Itemable attributes will come in a nested array
         if(is_array($value)) {
           foreach ($value as $innerKey => $innerValue) {
-            if (trim($innerValue)=='<mixed>') {
+            if (trim($innerValue)==='<mixed>') {
               unset($attributes[$key][$innerKey]);
             }
           }
-        } else if (trim($value)=='<mixed>') {
+        } else if (trim($value)==='<mixed>') {
           unset($attributes[$key]);
         }
       }
@@ -53,13 +53,13 @@ class ItemRequest extends Request {
     {
       $itemableType = $this->input('itemableType');
       $itemableRules = array();
-      if($itemableType == 'AudioItem') {
+      if($itemableType === 'AudioItem') {
         $this->addRuleIfNotMixed($itemableRules,'itemable.size','required');
-      } else if ($itemableType == 'FilmItem') {
+      } else if ($itemableType === 'FilmItem') {
         $this->addRuleIfNotMixed($itemableRules,'itemable.filmBase','required');
         $this->
           addRuleIfNotMixed($itemableRules,'itemable.lengthInFeet','required');
-      } else if ($itemableType == 'VideoItem') {
+      } else if ($itemableType === 'VideoItem') {
         // No rules yet for video items
       	$itemableRules = [];
       }
@@ -81,7 +81,7 @@ class ItemRequest extends Request {
     public function addRuleIfNotMixed(&$rules, $attributeName, $rule)
     {
       $input = trim($this->input($attributeName));
-      if($input == '<mixed>') {
+      if($input === '<mixed>') {
         return;
       } else {
         $rules[$attributeName] = $rule;

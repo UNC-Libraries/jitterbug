@@ -43,12 +43,12 @@ class BatchAudioVisualItem extends AudioVisualItem {
     $attributeNames = array_keys($collection->first()->getAttributes());
     $memberIndex = 0;
     foreach($collection as $member) {
-      foreach($attributeNames as $attributeName) {
-        if (!in_array($attributeName, $this->batchGuarded)) {
-          if (($target->$attributeName===null || $target->$attributeName=='')  && $memberIndex==0) {
-            $target->$attributeName=$member->$attributeName;
-          } else if ($target->$attributeName != $member->$attributeName) {
-            $target->$attributeName='<mixed>';
+      foreach($attributeNames as $attribute) {
+        if (!in_array($attribute, $this->batchGuarded)) {
+          if (($target->$attribute===null || $target->$attribute==='')  && $memberIndex==0) {
+            $target->$attribute = $member->$attribute;
+          } else if ($target->$attribute !== $member->$attribute) {
+            $target->$attribute = '<mixed>';
           }
         }
       }

@@ -124,7 +124,8 @@
    <field name="formatName" type="text_general" indexed="true" stored="true" required="false" />
    <field name="typeId" type="string" indexed="true" stored="true" required="false" />
    <field name="typeName" type="string" indexed="true" stored="true" required="false" />
-
+   <field name="createdAt" type="date" indexed="false" stored="true" required="false" />
+   <field name="updatedAt" type="date" indexed="false" stored="true" required="false" />
    <field name="cutIds" type="string" indexed="false" stored="true" required="false" multiValued="true" />
    <field name="cutPerformerComposers" type="text_general" indexed="true" stored="true" required="false" multiValued="true" />
    <field name="cutTitles" type="text_general" indexed="true" stored="true" required="false" multiValued="true" />
