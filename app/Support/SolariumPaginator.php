@@ -48,7 +48,7 @@ class SolariumPaginator implements \IteratorAggregate, \Countable {
 	{
         $this->resultSet = $resultSet;
 		$this->perPage = $perPage;
-		$this->currentPage = $currentPage == null ? 1 : $currentPage;
+		$this->currentPage = $currentPage === null ? 1 : $currentPage;
 		$this->total = $resultSet->getNumFound();
 		$this->lastPage = (int) ceil($this->total / $perPage);
 	}

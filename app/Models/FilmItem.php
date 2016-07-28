@@ -46,7 +46,7 @@ class FilmItem extends Model {
 
   public function getFilmColorAttribute($value)
   {
-    return $value==null ? $this->color : $value;
+    return $value===null ? $this->color : $value;
   }
 
   public function setFilmColorAttribute($value)
@@ -56,7 +56,7 @@ class FilmItem extends Model {
 
   public function getFilmElementAttribute($value)
   {
-    return $value==null ? $this->element : $value;
+    return $value===null ? $this->element : $value;
   }
 
   public function setFilmElementAttribute($value)
@@ -66,7 +66,7 @@ class FilmItem extends Model {
 
   public function getFilmBaseAttribute($value)
   {
-    return $value==null ? $this->base : $value;
+    return $value===null ? $this->base : $value;
   }
 
   public function setFilmBaseAttribute($value)
@@ -76,7 +76,7 @@ class FilmItem extends Model {
 
   public function getFilmContentDescriptionAttribute($value)
   {
-    return $value==null ? $this->contentDescription : $value;
+    return $value===null ? $this->contentDescription : $value;
   }
 
   public function setFilmContentDescriptionAttribute($value)

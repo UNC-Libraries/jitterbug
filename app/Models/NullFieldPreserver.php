@@ -16,7 +16,7 @@ trait NullFieldPreserver {
       $original = $model->original;
 
       foreach ($attributes as $key => $value) {
-        if($value=='') {
+        if($value==='') {
        	  $model->attributes[$key]=null;
         }
       }

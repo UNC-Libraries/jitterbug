@@ -75,11 +75,11 @@ class AudioVisualItem extends Model {
   {
     // Rather than doing a query, we'll just return hardcoded values
     $type = $this->getAttribute("type");
-    if($type=='Audio') {
+    if($type==='Audio') {
       return 1;
-    } else if ($type=='Film') {
+    } else if ($type==='Film') {
       return 2;
-    } else if ($type=='Video') {
+    } else if ($type==='Video') {
       return 3;
     }
   }

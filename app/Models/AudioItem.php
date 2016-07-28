@@ -39,7 +39,7 @@ class AudioItem extends Model {
 
   public function getListeningCopyDisplayAttribute($value)
   {
-    $listeningCopy = ($value==null ? $this->listeningCopy : $value);
+    $listeningCopy = ($value===null ? $this->listeningCopy : $value);
     if($listeningCopy) {
       return 'Yes';
     } else {
@@ -49,10 +49,10 @@ class AudioItem extends Model {
 
   public function getMonoStereoDisplayAttribute($value)
   {
-    $monoStereo = ($value==null ? $this->monoStereo : $value);
-    if($monoStereo=='M') {
+    $monoStereo = ($value===null ? $this->monoStereo : $value);
+    if($monoStereo==='M') {
       $monoStereo = 'Mono';
-    } else if($monoStereo=='S')  {
+    } else if($monoStereo==='S')  {
       $monoStereo = 'Stereo';
     } else {
       $monoStereo = '';
@@ -62,14 +62,14 @@ class AudioItem extends Model {
 
   public function getMonoStereoAttribute($value)
   {
-    if($value==null) {
+    if($value===null) {
       return '';
     }
     return $value;
   }
 
   public function getAudioMonoStereoAttribute($value) {
-    return $value==null ? $this->monoStereo : $value;
+    return $value===null ? $this->monoStereo : $value;
   }
 
   public function setAudioMonoStereoAttribute($value) {
@@ -77,7 +77,7 @@ class AudioItem extends Model {
   }
 
   public function getAudioBaseAttribute($value) {
-    return $value==null ? $this->base : $value;
+    return $value===null ? $this->base : $value;
   }
 
   public function setAudioBaseAttribute($value) {
@@ -86,7 +86,7 @@ class AudioItem extends Model {
 
   public function getAudioContentDescriptionAttribute($value)
   {
-    return $value==null ? $this->contentDescription : $value;
+    return $value===null ? $this->contentDescription : $value;
   }
 
   public function setAudioContentDescriptionAttribute($value)

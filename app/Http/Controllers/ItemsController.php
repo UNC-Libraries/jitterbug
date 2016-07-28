@@ -26,11 +26,14 @@ use Junebug\Models\TableSelection;
 use Junebug\Models\Transfer;
 use Junebug\Models\PreservationMaster;
 use Junebug\Http\Requests\ItemRequest;
+use Junebug\Support\SolariumProxy;
 use Junebug\Support\SolariumPaginator;
 
 class ItemsController extends Controller
 {
   
+  protected $solrItems;
+
   /**
    * Create a new controller instance.
    *
@@ -38,7 +41,7 @@ class ItemsController extends Controller
    */
   public function __construct()
   {
-    DB::enableQueryLog();
+    $this->solrItems = new SolariumProxy('junebug-items');
     $this->middleware('guest');
   }
   
@@ -51,14 +54,16 @@ class ItemsController extends Controller
     $items = array();
 
     if ($request->ajax()) {
-      $userQueryString = urldecode($request->query('q'));
-      $userQuery = json_decode($userQueryString);
+      // The query string consists of search terms and an array of
+      // selected filters for each filter list
+      $queryString = urldecode($request->query('q'));
+      $queryParams = json_decode($queryString);
 
       $page = $request->query('page');
       $perPage = $request->query('perPage');
       $start = $perPage * ($page - 1);
 
-      $resultSet = $this->solrQuery($userQuery,$start,$perPage);     
+      $resultSet = $this->solrItems->query($queryParams,$start,$perPage);
       $items = new SolariumPaginator($resultSet,$page,$perPage);
       return view('items._items', compact('items', 'start'));
     }
@@ -81,8 +86,6 @@ class ItemsController extends Controller
                ->orderBy('preservation_master_id', 'asc')
                ->orderBy('cut_number', 'asc')
                ->get();
-    $queries = DB::getQueryLog();
-    $lastQuery = end($queries);
     return view('items.show', compact('item', 'cuts'));
   }
   
@@ -140,7 +143,7 @@ class ItemsController extends Controller
         $sequence->increase();
 
         // Update Solr
-        $this->solrUpdate($item);
+        $this->solrItems->update($item);
 
       } while ($batch && ++$batchIndex < $batchSize);
 
@@ -192,7 +195,7 @@ class ItemsController extends Controller
   {
     $max = 500;
 
-    $userQuery = json_decode(urldecode($request->query('q')));
+    $queryParams = json_decode(urldecode($request->query('q')));
     $selection = json_decode($request->query('s'));
     $tableSelection = new TableSelection($selection->begin,$selection->end,
                                   $selection->excludes, $selection->includes);
@@ -205,7 +208,7 @@ class ItemsController extends Controller
 
     $start = $tableSelection->indexMin();
     $rows = $tableSelection->indexCount();
-    $resultSet = $this->solrQuery($userQuery,$start,$rows);
+    $resultSet = $this->solrItems->query($queryParams,$start,$rows);
     
     // Iterate through Solr resultSet, getting item ids, while validating
     // that all records are of the same type.
@@ -319,7 +322,8 @@ class ItemsController extends Controller
     });
 
     // Update Solr
-    $this->solrUpdate($item);
+    // TODO Update masters and transfers if call number has changed
+    $this->solrItems->update($item);
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>Hooray!</strong> ' . 
@@ -355,7 +359,7 @@ class ItemsController extends Controller
     
     // Update Solr
     foreach ($items as $item) {
-      $this->solrUpdate($item);
+      $this->solrItems->update($item);
     }
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
@@ -408,7 +412,7 @@ class ItemsController extends Controller
       DB::statement('set @transaction_id = null;');      
     });
 
-    $this->solrDelete($item);
+    $this->solrItems->delete($item);
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>It\'s done!</strong> ' . 
@@ -431,130 +435,6 @@ class ItemsController extends Controller
       throw new Exception('Unknown item type: ' . $itemableType);
     }
     return $itemable;
-  }
-
-  // TODO: Use Str::endsWith instead
-  private function endsWith($haystack, $needle)
-  {
-    $needleLen = strlen($needle);
-    $needleTest = substr($haystack, strlen($haystack) - 
-        $needleLen, strlen($haystack));
-    return $needleTest === $needle;
-  }
-
-  private function createFilterQueries($solariumQuery, $userQuery)
-  {
-    $keys = array_keys((array)($userQuery));
-    foreach ($keys as $key) {
-      if($this->endsWith($key, 'filters')) {
-        $filters = $userQuery->{$key};
-        if($this->hasFilters($filters)) {
-          $filterType = $this->filterType($key);
-          $filterQuery = $this->filterQueryFor($filterType . 'Id', $filters);
-          $solariumQuery->
-            createFilterQuery($filterType . 's')->setQuery($filterQuery);
-        }
-      }
-    }
-  }
-
-  private function hasFilters($filterArray)
-  {
-    return $filterArray[0] != 0;
-  }
-  
-  private function filterType($filterKey)
-  {
-    return substr($filterKey,0,strlen($filterKey) - strlen('-filters'));
-  }
-
-  private function filterQueryFor($field, $filters)
-  {
-    $filterQuery = $field . ':(';
-    $numFilters = count($filters);
-    for ($i = 0; $i < $numFilters; $i++) {
-      $filter = $filters[$i];
-      if ($i != $numFilters - 1) {
-        $filterQuery = $filterQuery . $filter . ' OR ';
-      } else {
-        $filterQuery = $filterQuery . $filter . ')';
-      }
-    }
-    return $filterQuery;
-  }
-
-  private function solariumConfigFor($core)
-  {
-    $config = Config::get('solarium');
-    $endpointKeys = array_keys($config);
-    $endpointConfig = $config[$endpointKeys[0]];
-    $hostKeys = array_keys($endpointConfig);
-    $hostConfig = $config[$endpointKeys[0]][$hostKeys[0]];
-    $path = $hostConfig['path'];
-    $config[$endpointKeys[0]][$hostKeys[0]]['path'] = $path . $core;
-    return $config;
-  }
-
-  private function solrQuery($userQuery,$start,$rows)
-  {
-    $client = new Solarium\Client($this->solariumConfigFor('junebug-items'));
-    $solariumQuery = $client->createSelect();
-
-    $searchTerms = $userQuery->{'search'};
-    $solariumQuery->setQuery($searchTerms);
-
-    $dismax = $solariumQuery->getDisMax();
-    if(strlen($searchTerms)==0) {
-      $dismax->setQueryAlternative('*:*');
-    }
-    // Query fields with boost values
-    $dismax->setQueryFields('callNumber^5 title^4 collectionName^3 ' .
-      'containerNote^2 cutTitles cutPerformerComposers formatName');
-
-    $this->createFilterQueries($solariumQuery,$userQuery);
-
-    $solariumQuery->setStart($start);
-    $solariumQuery->setRows($rows);
-    $solariumQuery->addSort('updatedAt', $solariumQuery::SORT_DESC);
-
-    $resultSet = $client->execute($solariumQuery);
-
-    return $resultSet;
-  }
-
-  private function solrUpdate($item)
-  {
-    $client = new Solarium\Client($this->solariumConfigFor('junebug-items'));
-    $update = $client->createUpdate();
-    $doc = $update->createDocument();
-
-    $doc->setKey('id', $item->id);
-    $doc->setField('title', $item->title, null, 'set');
-    $doc->setField('containerNote', $item->containerNote, null, 'set');
-    $doc->setField('callNumber', $item->callNumber, null, 'set');
-    $doc->setField('collectionId', $item->collection->id, null, 'set');
-    $doc->setField('collectionName', $item->collection->name, null, 'set');
-    $doc->setField('formatId', $item->format->id, null, 'set');
-    $doc->setField('formatName', $item->format->name, null, 'set');
-    $doc->setField('typeName', $item->type, null, 'set');
-    $doc->setField('typeId', $item->typeId, null, 'set');
-    $doc->setField('createdAt', $item->createdAt, null, 'set');
-    $doc->setField('updatedAt', $item->updatedAt, null, 'set');
-
-    $update->addDocument($doc);
-    $update->addCommit();
-
-    return $client->update($update);
-  }
-
-  private function solrDelete($item)
-  {
-    $client = new Solarium\Client($this->solariumConfigFor('junebug-items'));
-    $update = $client->createUpdate();
-    $update->addDeleteById($item->id);
-    $update->addCommit();
-
-    $result = $client->update($update);
   }
 
 }

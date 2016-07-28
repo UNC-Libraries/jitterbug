@@ -1,9 +1,15 @@
 junebug = {
   clearStorage: function() {
+    // clear items state
     localStorage.removeItem('itemSearchField');
     localStorage.removeItem('itemFilterPanel');
     sessionStorage.removeItem('itemTableSelection');
     localStorage.removeItem('itemTableParams');
+    // clear masters state
+    localStorage.removeItem('masterSearchField');
+    localStorage.removeItem('masterFilterPanel');
+    sessionStorage.removeItem('masterTableSelection');
+    localStorage.removeItem('masterTableParams');
   },
 
   initAjax: function() {
@@ -85,12 +91,12 @@ junebug = {
 
   initItemsBatchMenu: function() {
     $('#items-batch-edit').click(function(event) {
-      var selection = 
+      var tableSelection = 
           junebug.TableSelection.load('itemTableSelection','session');
       var search = junebug.SearchField.load('itemSearchField');
       var filters = junebug.FilterPanel.load('itemFilterPanel');
       var query = new junebug.QueryManager(search,filters).queryString();
-      if (selection.count() == 0) {
+      if (tableSelection.count() == 0) {
         junebug.displayAlert('warning',
           '<strong>Here\'s a tip:</strong> Batch actions require a table selection. \
           Make a selection by \'shift-clicking\' or \'command-clicking\' \
@@ -98,11 +104,12 @@ junebug = {
         return;
       }
 
-      json = selection.toJson();
+      json = tableSelection.toJson();
       var selectionParams = {begin:json['begin'],
                              end:json['end'],
                              excludes:json['excludes'],
                              includes:json['includes']};
+      tableSelection.clear();
       window.location.href="/items/batch/edit?q=" + query + "&" + 
                                       "s=" + JSON.stringify(selectionParams);
 
@@ -264,18 +271,72 @@ junebug = {
     }
 
     var queryManager = new junebug.QueryManager(searchField, filterPanel, 
-                                tableParams, tableSelection);
+                                tableParams, tableSelection, 'items');
+    queryManager.init();
+
+    queryManager.executeQuery();
+  },
+
+  initMastersIndex: function() {
+    var searchField = junebug.SearchField.load('masterSearchField');
+    if (searchField==null) {
+      searchField = new junebug.SearchField({
+          key:'masterSearchField',
+          selector:'#search'});
+      searchField.init();
+      searchField.store();
+    } else {
+      searchField.init();
+    }
+
+    var filterPanel = junebug.FilterPanel.load('masterFilterPanel');
+    if (filterPanel==null) {
+      filterPanel = new junebug.FilterPanel({
+          key:'masterFilterPanel',
+          selector:'#filter-panel',
+          listSelector: '.filter-list'});
+      filterPanel.init();
+      filterPanel.store();
+    } else {
+      filterPanel.init();
+    }
+
+    var tableParams = junebug.TableParams.load('masterTableParams');
+    if (tableParams==null) {
+      tableParams = new junebug.TableParams({
+          key:'masterTableParams'});
+      tableParams.store();
+    }
+
+    var tableSelection = 
+      junebug.TableSelection.load('masterTableSelection','session');
+    if (tableSelection==null) {
+      tableSelection = new junebug.TableSelection({
+          key:'masterTableSelection',
+          location:'session',
+          selector:'#data tr[role="button"]',
+          countSelector:'.selection-count'});
+      tableSelection.init();
+      tableSelection.store();
+    } else {
+      tableSelection.init();
+      tableSelection.render();
+    }
+
+    var queryManager = new junebug.QueryManager(searchField, filterPanel, 
+                                tableParams, tableSelection, 'masters');
     queryManager.init();
 
     queryManager.executeQuery();
   },
 
   QueryManager: function(searchFieldInstance, filterPanelInstance,
-                        tableParamsInstance, tableSelectionInstance) {
+             tableParamsInstance, tableSelectionInstance, resourceName) {
     var searchField = searchFieldInstance,
         filterPanel = filterPanelInstance,
         tableSelection = tableSelectionInstance,
         tableParams = tableParamsInstance,
+        resource = resourceName,
 
     init = function() {
       $.subscribe('filterPanelChanged', handleFilterPanelChanged);
@@ -307,7 +368,7 @@ junebug = {
       query['page'] = tableParams.getPage();
       query['perPage'] = tableParams.getPerPage();
 
-      $.get('/items', query, function(data) {
+      $.get('/' + resource, query, function(data) {
         $('#data-container').replaceWith(data);
 
         tableSelection.init();
@@ -317,7 +378,7 @@ junebug = {
         // Bind click handlers to all data table rows
         $('#data tr[role="button"]').click(function(event) {
           tableSelection.clear();
-          window.location.href="/items/" + $(this).data('id');
+          window.location.href='/' + resource + '/' + $(this).data('id');
         });
 
         // Bind click handlers to all data pagination links

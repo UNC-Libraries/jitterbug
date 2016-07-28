@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title' => 'Create Audio Visual Item'])
+@extends('layouts.master', ['title' => 'Audio Visual Items', 'section' => 'items'])
 
 @section('content')
 <div id="detail">
@@ -66,13 +66,13 @@
     </div>
     <div class="col-xs-6">
       {{-- Begin Itemable Fields --}}
-      <div id="audio-form" @if (Form::old('itemableType') != null && Form::old('itemableType') != 'AudioItem') style="display: none" @endif>
+      <div id="audio-form" @if (Form::old('itemableType') !== null && Form::old('itemableType') !== 'AudioItem') style="display: none" @endif>
         @include('items._form-audio')
       </div>
-      <div id="film-form" @if (Form::old('itemableType') != 'FilmItem') style="display: none" @endif>
+      <div id="film-form" @if (Form::old('itemableType') !== 'FilmItem') style="display: none" @endif>
         @include('items._form-film')
       </div>
-      <div id="video-form" @if (Form::old('itemableType') != 'VideoItem') style="display: none" @endif>
+      <div id="video-form" @if (Form::old('itemableType') !== 'VideoItem') style="display: none" @endif>
         @include('items._form-video')
       </div>
       {{-- End Itemable Fields --}}

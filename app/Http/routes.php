@@ -36,6 +36,8 @@ Route::put('items/batch', [
 
 Route::resource('items', 'ItemsController');
 
+Route::resource('masters', 'MastersController');
+
 
 
 

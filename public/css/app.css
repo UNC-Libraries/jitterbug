@@ -4696,7 +4696,9 @@ a:link, a:visited, a:hover, a:active {
   font-size: .9rem;
   padding-left: 15px;
   padding-right: 15px;
-  margin-bottom: .5rem; }
+  margin-bottom: .5rem;
+  overflow-y: scroll;
+  overflow-x: hidden; }
 
 .filter-count {
   font-size: .6rem;

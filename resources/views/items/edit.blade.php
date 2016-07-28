@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title' => "Edit $item->type Item"])
+@extends('layouts.master', ['title' => 'Audio Visual Items', 'section' => 'items'])
 
 @section('content')
 <div id="detail">
@@ -34,13 +34,13 @@
     </div>
     <div class="col-xs-6">
       {{-- Begin Itemable Fields --}}
-      @if (get_class($item->itemable) == 'Junebug\Models\AudioItem')
+      @if (get_class($item->itemable) === 'Junebug\Models\AudioItem')
         @include('items._form-audio')
       @endif
-      @if (get_class($item->itemable) == 'Junebug\Models\FilmItem')
+      @if (get_class($item->itemable) === 'Junebug\Models\FilmItem')
         @include('items._form-film')
       @endif
-      @if (get_class($item->itemable) == 'Junebug\Models\VideoItem')
+      @if (get_class($item->itemable) === 'Junebug\Models\VideoItem')
         @include('items._form-video')
       @endif
       {{-- End Itemable Fields --}}

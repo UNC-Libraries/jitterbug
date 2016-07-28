@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title' => "$item->type Item"])
+@extends('layouts.master', ['title' => 'Audio Visual Items', 'section' => 'items'])
 
 @section('content')
 <div id="detail">
@@ -127,7 +127,7 @@
     </div>
     <div class="col-xs-6">
       {{-- Begin Itemable Fields --}}
-      @if (get_class($item->itemable) == 'Junebug\Models\AudioItem')
+      @if (get_class($item->itemable) === 'Junebug\Models\AudioItem')
       <div class="row">
         <div class="col-xs-4 detail-label">
           Listening Copy
@@ -187,7 +187,7 @@
       </div>
       @endif
       @endif
-      @if (get_class($item->itemable) == 'Junebug\Models\FilmItem')
+      @if (get_class($item->itemable) === 'Junebug\Models\FilmItem')
       @if ($item->itemable->element)
       <div class="row">
         <div class="col-xs-4 detail-label">
@@ -289,7 +289,7 @@
       </div>
       @endif
       @endif
-      @if (get_class($item->itemable) == 'Junebug\Models\VideoItem')
+      @if (get_class($item->itemable) === 'Junebug\Models\VideoItem')
       @if ($item->itemable->monoStereoDisplay)
       <div class="row">
         <div class="col-xs-4 detail-label">

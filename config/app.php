@@ -201,6 +201,7 @@ return [
 		'View'      => 'Illuminate\Support\Facades\View',
 		'Form'      => 'Illuminate\Html\FormFacade',
 		'Html'      => 'Illuminate\Html\HtmlFacade',
+        'Str'       => 'Illuminate\Support\Str',
 
 		'AudioVisualItem'	        => 'Junebug\Models\AudioVisualItem',
 		'AudioItem'	                => 'Junebug\Models\AudioItem',

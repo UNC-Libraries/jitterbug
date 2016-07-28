@@ -42,6 +42,17 @@ JUNEBUG = {
       junebug.initDatepicker();
       junebug.initItemSuggestions();
     }
+  },
+
+  masters: {
+    init: function() {
+      // controller-wide code 
+    },
+
+    index: function() {
+      junebug.initMastersIndex();
+      junebug.initTableKeyboardShortcuts();
+    },
   }
 };
 

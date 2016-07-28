@@ -17,7 +17,7 @@ class CallNumberSequence extends Model {
 
     $sequence = NewCallNumberSequence::where('prefix', '=', $prefix)->
                   where('collection_id', '=', $collectionId)->get()->first();
-    if ($sequence == null) {
+    if ($sequence === null) {
       if (in_array($prefix, self::ALWAYS_USE_NEW_STYLE)) {
         $sequence = new NewCallNumberSequence();
         $sequence->prefix = $prefix;
@@ -30,7 +30,7 @@ class CallNumberSequence extends Model {
       }
     }
 
-    if ($sequence == null) {
+    if ($sequence === null) {
       Log::error('No new or legacy sequence found for prefix \'' . $prefix . 
         '\'' . ' with collection id ' . $collectionId);
     }
@@ -46,7 +46,7 @@ class CallNumberSequence extends Model {
   public function increase()
   {
     $reservedIds = array();
-    if ($this->reserved != null) {
+    if ($this->reserved !== null) {
       $reservedIds = explode(',', $this->reserved);
     }
     $this->next++;
