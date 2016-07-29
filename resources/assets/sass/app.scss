@@ -140,6 +140,10 @@ a:link, a:visited, a:hover, a:active {
 
 #data-panel {
   background-color: #fff;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 #data-panel table {
@@ -183,7 +187,8 @@ a:link, a:visited, a:hover, a:active {
 }
 
 #data-panel .data-footer .selection-count {
-  font-weight: 300;
+  font-size: 90%;
+  font-weight: normal;
 }
 
 #data-panel .pagination {
@@ -579,10 +584,3 @@ body {
 /* Get rid of borders around focused elements in Firefox */
 *:focus, *:visited, *:active, *:hover  { outline:0 !important;}
 *::-moz-focus-inner {border:0;}
-
-div {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}

@@ -781,6 +781,8 @@ junebug = {
    * 'key' = storage key under which the serialized selection is stored
    * 'location' = storage location (can be 'session' or 'local')
    * 'selector' = jQuery selector for the table rows *required
+   * 'countSelector' = jQuery selector for the element containing 
+   *  the count of selected items
    * 'begin' = beginning index of the selection range
    * 'end' = ending index of the selection range
    * 'excludes' = ids within the selection range to be excluded
@@ -868,9 +870,16 @@ junebug = {
         }
       });
       if (count() > 0) {
-        $(countSelector).text('(' + count() + ' selected)');
+        $(countSelector).html(count() + ' selected' + 
+          ' <a id="clear-selection" href="#" style="color: #fff">\
+              <i class="fa fa-times-circle" aria-hidden="true"></i>\
+            </a>');
+        $('#clear-selection').click(function(event) {
+          clear();
+          render();
+        });
       } else {
-        $(countSelector).text('');
+        $(countSelector).html('');
       }
     },
 
@@ -960,14 +969,14 @@ junebug = {
 
     toJson = function() {
       return {
-        key:key,
-        location:location,
-        selector:selector,
-        countSelector:countSelector,
-        begin:begin,
-        end:end,
-        excludes:excludes,
-        includes:includes
+        key: key,
+        location: location,
+        selector: selector,
+        countSelector: countSelector,
+        begin: begin,
+        end: end,
+        excludes: excludes,
+        includes: includes
       };
     },
 
@@ -983,7 +992,7 @@ junebug = {
       count: count,
       store: store,
       toJson: toJson,
-      toString: toString
+      toString: toString      
     };
 
   },

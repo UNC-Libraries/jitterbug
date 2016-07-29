@@ -4706,7 +4706,11 @@ a:link, a:visited, a:hover, a:active {
   margin-left: .1rem; }
 
 #data-panel {
-  background-color: #fff; }
+  background-color: #fff;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
 
 #data-panel table {
   font-size: .9rem;
@@ -4741,7 +4745,8 @@ a:link, a:visited, a:hover, a:active {
   float: left; }
 
 #data-panel .data-footer .selection-count {
-  font-weight: 300; }
+  font-size: 90%;
+  font-weight: normal; }
 
 #data-panel .pagination {
   margin-top: 0;
@@ -5060,11 +5065,5 @@ body {
 
 *::-moz-focus-inner {
   border: 0; }
-
-div {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none; }
 
 /*# sourceMappingURL=app.css.map */
