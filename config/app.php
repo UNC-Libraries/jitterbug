@@ -115,6 +115,7 @@ return [
 		 */
 		'Illuminate\Foundation\Providers\ArtisanServiceProvider',
 		'Illuminate\Auth\AuthServiceProvider',
+		'Illuminate\Broadcasting\BroadcastServiceProvider',
 		'Illuminate\Bus\BusServiceProvider',
 		'Illuminate\Cache\CacheServiceProvider',
 		'Illuminate\Foundation\Providers\ConsoleSupportServiceProvider',
@@ -147,8 +148,6 @@ return [
 		 * Application Service Providers...
 		 */
 		'Junebug\Providers\AppServiceProvider',
-		'Junebug\Providers\BusServiceProvider',
-		'Junebug\Providers\ConfigServiceProvider',
 		'Junebug\Providers\EventServiceProvider',
 		'Junebug\Providers\RouteServiceProvider',
 

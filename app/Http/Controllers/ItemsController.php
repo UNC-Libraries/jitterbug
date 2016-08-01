@@ -81,6 +81,7 @@ class ItemsController extends Controller
    */
   public function show(Request $request, $id)
   {
+    dd($request->cookie());
     $item = AudioVisualItem::findOrFail($id);
     $cuts = Cut::where('call_number', $item->callNumber)
                ->orderBy('preservation_master_id', 'asc')
@@ -96,9 +97,10 @@ class ItemsController extends Controller
   {
     $item = new AudioVisualItem;
     $collections = ['' => 
-             'Select a collection'] + Collection::lists('name', 'id');
+             'Select a collection'] + Collection::lists('name', 'id')->all();
     $formats = ['' => 
-             'Select a format'] + Format::withFutureUse()->lists('name', 'id');
+             'Select a format'] + Format::withFutureUse()->
+                                                  lists('name', 'id')->all();
     return view('items.create', compact('item', 'collections', 'formats'));
   }
 
@@ -176,9 +178,9 @@ class ItemsController extends Controller
                ->orderBy('cut_number', 'asc')
                ->get();
     $collections = ['' => 
-              'Select a collection'] + Collection::lists('name', 'id');
+              'Select a collection'] + Collection::lists('name', 'id')->all();
     $formats = ['' => 
-              'Select a format'] + Format::lists('name', 'id');
+              'Select a format'] + Format::lists('name', 'id')->all();
     return view('items.edit', 
       compact('item', 'cuts', 'collections', 'formats'));
   }
@@ -245,20 +247,20 @@ class ItemsController extends Controller
     if($item->collectionId === '<mixed>') {
       $collections = ['' => 'Select a collection'] + 
                      ['<mixed>' => '<mixed>'] +
-                     Collection::lists('name', 'id');
+                     Collection::lists('name', 'id')->all();
     } else {
       $collections = ['' => 'Select a collection'] + 
-                     Collection::lists('name', 'id');
+                     Collection::lists('name', 'id')->all();
     }
 
     $formats = array();
     if($item->formatId === '<mixed>') {
       $formats = ['' => 'Select a format'] + 
                  ['<mixed>' => '<mixed>'] +
-                 Format::lists('name', 'id');
+                 Format::lists('name', 'id')->all();
     } else {
       $formats = ['' => 'Select a format'] + 
-                 Format::lists('name', 'id');
+                 Format::lists('name', 'id')->all();
     }
 
     return view('items.edit', 

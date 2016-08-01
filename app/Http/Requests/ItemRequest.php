@@ -2,7 +2,7 @@
 
 use Log;
 
-use Illuminate\Validation\Validator;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exception\HttpResponseException;
 
 use Junebug\Http\Requests\Request;

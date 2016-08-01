@@ -65,7 +65,7 @@ class PreservationMaster extends Model {
     $masterableRevisionHistory = $this->masterable->revisionHistory()->get();
     $completeRevisionHistory = $masterRevisionHistory->
                                merge($masterableRevisionHistory);
-    $completeRevisionHistory->sortBy('created_at');
+    $completeRevisionHistory = $completeRevisionHistory->sortBy('created_at');
 
     $compositeKeys = array();
     foreach ($completeRevisionHistory as $key => $history) {
@@ -77,7 +77,7 @@ class PreservationMaster extends Model {
         array_push($compositeKeys,$compositeKey);
       }
     }
-    
+
     return $completeRevisionHistory;
   }
   

@@ -63,6 +63,17 @@ class AudioVisualItem extends Model {
   {
     return $this->belongsTo('Junebug\Models\Format');
   }
+  
+  /**
+   * Added to overcome an exception that was being thrown after the upgrade to
+   * Laravel 5.1.40. With Laravel 5.0, no batch attribute was needed on this
+   * model when displaying the creation form, which includes a batch (true or 
+   * false) checkbox bound to this model.
+   */
+  public function getBatchAttribute()
+  {
+    return $this->batch();
+  }
 
   public function getTypeAttribute()
   {
@@ -101,7 +112,7 @@ class AudioVisualItem extends Model {
     $itemableRevisionHistory = $this->itemable->revisionHistory()->get();
     $completeRevisionHistory = $itemRevisionHistory->
                                merge($itemableRevisionHistory);
-    $completeRevisionHistory->sortBy('created_at');
+    $completeRevisionHistory = $completeRevisionHistory->sortBy('created_at');
 
     // Revisions that appear to be duplicate to the user are possible 
     // in the case of a call number update, which updates the call 
