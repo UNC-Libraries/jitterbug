@@ -81,7 +81,6 @@ class ItemsController extends Controller
    */
   public function show(Request $request, $id)
   {
-    dd($request->cookie());
     $item = AudioVisualItem::findOrFail($id);
     $cuts = Cut::where('call_number', $item->callNumber)
                ->orderBy('preservation_master_id', 'asc')
