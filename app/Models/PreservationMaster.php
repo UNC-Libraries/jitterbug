@@ -22,6 +22,11 @@ class PreservationMaster extends Model {
     return $this->belongsTo('Junebug\Models\Department');
   }
 
+  public function cuts()
+  {
+    return $this->hasMany('Junebug\Models\Cut', 'call_number');
+  }
+
   public function masterable()
   {
     return $this->morphTo();
@@ -52,6 +57,28 @@ class PreservationMaster extends Model {
       }
     }
     return $duration;
+  }
+
+  public function completeRevisionHistory()
+  {
+    $masterRevisionHistory = $this->revisionHistory()->get();
+    $masterableRevisionHistory = $this->masterable->revisionHistory()->get();
+    $completeRevisionHistory = $masterRevisionHistory->
+                               merge($masterableRevisionHistory);
+    $completeRevisionHistory->sortBy('created_at');
+
+    $compositeKeys = array();
+    foreach ($completeRevisionHistory as $key => $history) {
+      $compositeKey = $history->transaction_id.$history->field.
+                      $history->old_value.$history->new_value;
+      if(in_array($compositeKey,$compositeKeys)) {
+        $completeRevisionHistory->pull($key);
+      } else {
+        array_push($compositeKeys,$compositeKey);
+      }
+    }
+    
+    return $completeRevisionHistory;
   }
   
 }

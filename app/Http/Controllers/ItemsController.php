@@ -79,7 +79,7 @@ class ItemsController extends Controller
   /**
    * Display the details of an item.
    */
-  public function show($id)
+  public function show(Request $request, $id)
   {
     $item = AudioVisualItem::findOrFail($id);
     $cuts = Cut::where('call_number', $item->callNumber)

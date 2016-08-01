@@ -224,6 +224,12 @@ junebug = {
     });
   },
 
+  initItemPreservationMasters: function() {
+    $('#related-masters tr[role="button"]').click(function(event) {
+      window.location.href='/masters/' + $(this).data('id');
+    });
+  },
+
   initItemsIndex: function() {
     var searchField = junebug.SearchField.load('itemSearchField');
     if (searchField==null) {
@@ -378,6 +384,8 @@ junebug = {
         // Bind click handlers to all data table rows
         $('#data tr[role="button"]').click(function(event) {
           tableSelection.clear();
+          Cookies.set('referrer', {path: window.location.pathname, 
+                                                    resource: resource});
           window.location.href='/' + resource + '/' + $(this).data('id');
         });
 

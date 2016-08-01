@@ -16,4 +16,19 @@ class AudioPreservationMaster extends Model {
 
   protected $revisionCreationsEnabled = true;
 
+  public function tapeBrand()
+  {
+    return $this->belongsTo('Junebug\Models\TapeBrand');
+  }
+
+  public function pmSpeed()
+  {
+    return $this->belongsTo('Junebug\Models\PmSpeed');
+  }
+
+  public function samplingRate()
+  {
+    return $this->belongsTo('Junebug\Models\SamplingRate');
+  }
+
 }

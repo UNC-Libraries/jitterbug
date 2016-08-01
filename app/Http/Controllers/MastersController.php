@@ -6,6 +6,9 @@ use Log;
 
 use Junebug\Http\Requests;
 use Junebug\Http\Controllers\Controller;
+use Junebug\Models\AudioVisualItem;
+use Junebug\Models\Cut;
+use Junebug\Models\PreservationMaster;
 use Junebug\Models\PreservationMasterType;
 use Junebug\Models\PreservationMasterCollection;
 use Junebug\Models\PreservationMasterFormat;
@@ -58,6 +61,28 @@ class MastersController extends Controller {
 
     return view('masters.index', 
         compact('types', 'collections', 'formats', 'departments'));
+  }
+
+  /**
+   * Display the details of an item.
+   */
+  public function show($id)
+  {
+    $master = PreservationMaster::findOrFail($id);
+    $item = AudioVisualItem::where('call_number', 
+    	$master->callNumber)->get()->first();
+    $cuts = Cut::where('call_number', $master->callNumber)
+               ->orderBy('preservation_master_id', 'asc')
+               ->orderBy('cut_number', 'asc')
+               ->get();
+    return view('masters.show', compact('master', 'cuts', 'item'));
+  }
+
+  public function destroy($id, Request $request)
+  {
+    
+
+    return redirect()->route('masters.index');
   }
 
 }

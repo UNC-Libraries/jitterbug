@@ -6,7 +6,7 @@
   </div>
   <div class="row first last">
     <div class="col-xs-12 col-fff">
-      <table class="table table-sm table-hover">
+      <table id="related-masters" class="table table-sm table-hover">
         <thead>
           <tr>
             <th width="12%">#</th>
@@ -42,7 +42,7 @@
   </div>
   <div class="row first last">
     <div class="col-xs-12 col-fff">
-      <table class="table table-sm table-hover">
+      <table id="related-cuts" class="table table-sm table-hover">
         <thead>
           <tr>
             <th width="10%">PM #</th>

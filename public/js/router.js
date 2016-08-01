@@ -22,6 +22,7 @@ JUNEBUG = {
 
     show: function() {
       junebug.initRevisionHistory();
+      junebug.initItemPreservationMasters();
     },
 
     create: function() {
@@ -52,6 +53,10 @@ JUNEBUG = {
     index: function() {
       junebug.initMastersIndex();
       junebug.initTableKeyboardShortcuts();
+    },
+
+    show: function() {
+      junebug.initRevisionHistory();
     },
   }
 };
