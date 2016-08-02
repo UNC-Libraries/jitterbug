@@ -96,10 +96,10 @@ class ItemsController extends Controller
   {
     $item = new AudioVisualItem;
     $collections = ['' => 
-             'Select a collection'] + Collection::lists('name', 'id')->all();
+             'Select a collection'] + Collection::pluck('name', 'id')->all();
     $formats = ['' => 
              'Select a format'] + Format::withFutureUse()->
-                                                  lists('name', 'id')->all();
+                                                  pluck('name', 'id')->all();
     return view('items.create', compact('item', 'collections', 'formats'));
   }
 
@@ -177,9 +177,9 @@ class ItemsController extends Controller
                ->orderBy('cut_number', 'asc')
                ->get();
     $collections = ['' => 
-              'Select a collection'] + Collection::lists('name', 'id')->all();
+              'Select a collection'] + Collection::pluck('name', 'id')->all();
     $formats = ['' => 
-              'Select a format'] + Format::lists('name', 'id')->all();
+              'Select a format'] + Format::pluck('name', 'id')->all();
     return view('items.edit', 
       compact('item', 'cuts', 'collections', 'formats'));
   }
@@ -246,20 +246,20 @@ class ItemsController extends Controller
     if($item->collectionId === '<mixed>') {
       $collections = ['' => 'Select a collection'] + 
                      ['<mixed>' => '<mixed>'] +
-                     Collection::lists('name', 'id')->all();
+                     Collection::pluck('name', 'id')->all();
     } else {
       $collections = ['' => 'Select a collection'] + 
-                     Collection::lists('name', 'id')->all();
+                     Collection::pluck('name', 'id')->all();
     }
 
     $formats = array();
     if($item->formatId === '<mixed>') {
       $formats = ['' => 'Select a format'] + 
                  ['<mixed>' => '<mixed>'] +
-                 Format::lists('name', 'id')->all();
+                 Format::pluck('name', 'id')->all();
     } else {
       $formats = ['' => 'Select a format'] + 
-                 Format::lists('name', 'id')->all();
+                 Format::pluck('name', 'id')->all();
     }
 
     return view('items.edit', 
