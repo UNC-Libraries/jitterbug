@@ -104,6 +104,13 @@ class AudioVisualItem extends Model {
     return $this->morphTo();
   }
 
+  /**
+   * Merges the revision histories of the audio visual item and the
+   * associated audio/film/video item since they should appear as one
+   * to the end user.
+   * 
+   * @return Collection
+   */
   public function completeRevisionHistory()
   {
     $itemRevisionHistory = $this->revisionHistory()->get();

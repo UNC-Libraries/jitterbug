@@ -59,6 +59,13 @@ class PreservationMaster extends Model {
     return $duration;
   }
 
+  /**
+   * Merges the revision histories of the preservation master and the
+   * associated audio/film/video master since they should appear as one
+   * to the end user.
+   * 
+   * @return Collection
+   */
   public function completeRevisionHistory()
   {
     $masterRevisionHistory = $this->revisionHistory()->get();

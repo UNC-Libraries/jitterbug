@@ -4881,6 +4881,23 @@ label {
   padding-bottom: 10px;
   display: none; }
 
+#detail .back {
+  padding-top: .75rem;
+  padding-bottom: 1.5rem;
+  font-size: .95rem;
+  background-color: #fff; }
+
+#detail .breadcrumb {
+  margin: 0;
+  padding-top: .75rem;
+  padding-left: 0;
+  padding-bottom: 1.5rem;
+  font-size: .95rem;
+  background-color: #fff; }
+
+#detail .breadcrumb .active {
+  color: #707070; }
+
 .form-control-label {
   padding: 0; }
 
@@ -4924,7 +4941,7 @@ h4 {
 .datepicker table tr td span.active:hover:hover {
   background-color: #4f8d06; }
 
-/* need to set year, decade, and centry active */
+/* need to set year, decade, and century active */
 /* Misc */
 .col-fff {
   background-color: #fff; }
@@ -4954,12 +4971,6 @@ h4 {
 
 #detail .last {
   padding-bottom: 2rem; }
-
-#detail .back {
-  padding-top: .75rem;
-  padding-bottom: 1.5rem;
-  font-size: .95rem;
-  background-color: #fff; }
 
 #detail .detail-container {
   padding-bottom: 1.5rem;

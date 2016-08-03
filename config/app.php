@@ -152,9 +152,12 @@ return [
 
 		/*
 		 * Third-party Service Providers
-		 * Comes from kirkbushell/eloquence (1.1.3)
 		 */
+
+		// Comes from kirkbushell/eloquence (1.1.5)
 		'Eloquence\EloquenceServiceProvider',
+		// Comes from davejamesmiller/laravel-breadcrumbs (3.0)
+		'DaveJamesMiller\Breadcrumbs\ServiceProvider',
 
 		/*
 		 * Application Service Providers...
@@ -225,7 +228,8 @@ return [
 		'AudioTransfer'             => 'Junebug\Models\AudioTransfer',
 		'Transfer'                  => 'Junebug\Models\Transfer',
 
-        'Uuid'      => 'Rhumsaa\Uuid\Uuid',
+        'Breadcrumbs' => 'DaveJamesMiller\Breadcrumbs\Facade',
+		'Uuid'        => 'Rhumsaa\Uuid\Uuid',
 	],
 
 ];

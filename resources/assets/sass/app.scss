@@ -10,9 +10,10 @@ $global-nav-button-active-bg:  #72a137;
 $global-nav-color:             #cbddb4;
 $global-nav-color-active:      #fff;
 
+$link-color:                   #707070;
 
 a:link, a:visited, a:hover, a:active {
-  color: #707070;
+  color: $link-color;
   text-decoration: none;
 }
 
@@ -352,6 +353,26 @@ label {
   display: none;
 }
 
+#detail .back {
+  padding-top: .75rem;
+  padding-bottom: 1.5rem;
+  font-size: .95rem;
+  background-color: #fff;
+}
+
+#detail .breadcrumb {
+  margin: 0;
+  padding-top: .75rem;
+  padding-left: 0;
+  padding-bottom: 1.5rem;
+  font-size: .95rem;
+  background-color: #fff;
+}
+
+#detail .breadcrumb .active {
+  color: $link-color;
+}
+
 .form-control-label {
   padding: 0;
 }
@@ -411,7 +432,7 @@ h4 {
   background-color: $brand-primary;
 }
 
-/* need to set year, decade, and centry active */
+/* need to set year, decade, and century active */
 
 
 /* Misc */
@@ -451,13 +472,6 @@ h4 {
 
 #detail .last {
   padding-bottom: 2rem;
-}
-
-#detail .back {
-  padding-top: .75rem;
-  padding-bottom: 1.5rem;
-  font-size: .95rem;
-  background-color: #fff;
 }
 
 #detail .detail-container {

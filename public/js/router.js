@@ -36,6 +36,7 @@ JUNEBUG = {
       junebug.initDatepicker();
       junebug.initItemSuggestions();
       junebug.initRevisionHistory();
+      junebug.initItemPreservationMasters();
     },
 
     editBatch: function() {

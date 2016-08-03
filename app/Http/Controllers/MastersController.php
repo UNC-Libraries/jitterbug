@@ -64,15 +64,14 @@ class MastersController extends Controller {
   }
 
   /**
-   * Display the details of an item.
+   * Display the details of a master.
    */
   public function show($id)
   {
     $master = PreservationMaster::findOrFail($id);
     $item = AudioVisualItem::where('call_number', 
     	$master->callNumber)->get()->first();
-    $cuts = Cut::where('call_number', $master->callNumber)
-               ->orderBy('preservation_master_id', 'asc')
+    $cuts = Cut::where('preservation_master_id', $master->id)
                ->orderBy('cut_number', 'asc')
                ->get();
     return view('masters.show', compact('master', 'cuts', 'item'));

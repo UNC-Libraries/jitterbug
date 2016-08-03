@@ -3,8 +3,8 @@
 @section('content')
 <div id="detail">
   <div class="row">
-    <div class="col-xs-12 back">
-      <a href="{{ route('masters.index') }}"><i class="fa fa-caret-left" aria-hidden="true"></i> Back to Masters</a>
+    <div class="col-xs-12">
+      {!! Breadcrumbs::render('masters.show', $master) !!}
     </div>
   </div>
   <div class="row">
