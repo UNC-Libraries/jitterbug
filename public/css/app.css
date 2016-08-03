@@ -4881,23 +4881,6 @@ label {
   padding-bottom: 10px;
   display: none; }
 
-#detail .back {
-  padding-top: .75rem;
-  padding-bottom: 1.5rem;
-  font-size: .95rem;
-  background-color: #fff; }
-
-#detail .breadcrumb {
-  margin: 0;
-  padding-top: .75rem;
-  padding-left: 0;
-  padding-bottom: 1.5rem;
-  font-size: .95rem;
-  background-color: #fff; }
-
-#detail .breadcrumb .active {
-  color: #707070; }
-
 .form-control-label {
   padding: 0; }
 
@@ -4957,6 +4940,17 @@ h4 {
   padding-top: 8px;
   font-weight: bold;
   font-size: .95rem; }
+
+#detail .breadcrumb {
+  margin: 0;
+  padding-top: .75rem;
+  padding-left: 0;
+  padding-bottom: 1.5rem;
+  font-size: .95rem;
+  background-color: #fff; }
+
+#detail .breadcrumb .active {
+  color: #707070; }
 
 #detail .preform {
   margin-top: 1.25rem; }
