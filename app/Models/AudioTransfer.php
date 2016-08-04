@@ -3,11 +3,10 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-use Eloquence\Database\Traits\CamelCaseModel;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class AudioTransfer extends Model {
-  use CamelCaseModel;
+  use CamelCasing;
   use NullFieldPreserver;
   use RevisionableTrait;
   use SoftDeletes;

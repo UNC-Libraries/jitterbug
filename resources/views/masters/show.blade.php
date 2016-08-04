@@ -107,6 +107,7 @@
     </div>
     <div class="col-xs-6">
       {{-- Begin Masterable Fields --}}
+
       @if (get_class($master->masterable) === 'Junebug\Models\AudioPreservationMaster')
       @if ($master->masterable->tapeBrand)
       <div class="row">

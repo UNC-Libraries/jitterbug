@@ -4,11 +4,10 @@ use Log;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-use Eloquence\Database\Traits\CamelCaseModel;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class AudioItem extends Model {
-  use CamelCaseModel;
+  use CamelCasing;
   use NullFieldPreserver;
   use RevisionableTrait;
   use SoftDeletes;

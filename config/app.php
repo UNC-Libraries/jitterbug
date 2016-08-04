@@ -154,8 +154,6 @@ return [
 		 * Third-party Service Providers
 		 */
 
-		// Comes from kirkbushell/eloquence (1.1.5)
-		'Eloquence\EloquenceServiceProvider',
 		// Comes from davejamesmiller/laravel-breadcrumbs (3.0)
 		'DaveJamesMiller\Breadcrumbs\ServiceProvider',
 
@@ -229,7 +227,7 @@ return [
 		'Transfer'                  => 'Junebug\Models\Transfer',
 
         'Breadcrumbs' => 'DaveJamesMiller\Breadcrumbs\Facade',
-		'Uuid'        => 'Rhumsaa\Uuid\Uuid',
+		'Uuid'        => 'Ramsey\Uuid\Uuid',
 	],
 
 ];

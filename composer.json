@@ -13,10 +13,10 @@
 	"require": {
 		"laravel/framework": "5.2.*",
 		"laravelcollective/html": "5.2.*",
-		"kirkbushell/eloquence": "1.1.5",
 		"solarium/solarium": "^3.6",
 		"venturecraft/revisionable": "dev-master",
-		"davejamesmiller/laravel-breadcrumbs": "^3.0"
+		"davejamesmiller/laravel-breadcrumbs": "^3.0",
+		"ramsey/uuid": "^3.5"
 	},
 	"require-dev": {
         "fzaninotto/faker": "~1.4",

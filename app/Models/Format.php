@@ -2,10 +2,9 @@
 
 use Log;
 use Illuminate\Database\Eloquent\Model;
-use Eloquence\Database\Traits\CamelCaseModel;
 
 class Format extends Model {
-	use CamelCaseModel;
+	use CamelCasing;
     
     // Filters out formats that will not be used for new items
     public function scopeWithFutureUse($query)

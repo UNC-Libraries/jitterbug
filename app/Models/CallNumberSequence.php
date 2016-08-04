@@ -3,10 +3,8 @@
 use Log;
 use Illuminate\Database\Eloquent\Model;
 
-use Eloquence\Database\Traits\CamelCaseModel;
-
 class CallNumberSequence extends Model {
-  use CamelCaseModel;
+  use CamelCasing;
 
   const ALWAYS_USE_NEW_STYLE = array('F', 'VM', 'VT');
 

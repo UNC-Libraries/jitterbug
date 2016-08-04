@@ -1,10 +1,9 @@
 <?php namespace Junebug\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Eloquence\Database\Traits\CamelCaseModel;
 
 class Department extends Model {
-	use CamelCaseModel;
+	use CamelCasing;
     
     public function preservationMasters()
     {
