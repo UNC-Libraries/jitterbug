@@ -19,6 +19,11 @@ class ItemRequest extends Request {
       return true;
 	  }
 
+    /**
+     * Get all attributes except those with the value of '<mixed>'.
+     *
+     * @return array
+     */
     public function allWithoutMixed()
     {
       // Attbributes for batch edits are given a magic value of

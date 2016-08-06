@@ -33,6 +33,7 @@ class ItemsController extends Controller
 {
   
   protected $solrItems;
+  protected $solrMasters;
 
   /**
    * Create a new controller instance.
@@ -42,6 +43,8 @@ class ItemsController extends Controller
   public function __construct()
   {
     $this->solrItems = new SolariumProxy('junebug-items');
+    $this->solrMasters = new SolariumProxy('junebug-masters');
+    // $this->solrTransfers = new SolariumProxy('junebug-transfers');
     $this->middleware('guest');
   }
   
@@ -104,7 +107,7 @@ class ItemsController extends Controller
   }
 
   /**
-   * Save the details of an item and its itemable, then update solr.
+   * Save the details of a new item and its itemable, then update solr.
    */
   public function store(ItemRequest $request)
   {
@@ -113,10 +116,15 @@ class ItemsController extends Controller
     $batchSize = $input['batchSize'];
 
     $itemId = null;
+    $items = array();
 
     // Update MySQL
     DB::transaction(
-               function () use ($request, $input, $batch, $batchSize, &$itemId) {
+      function () use ($request, $input, $batch, $batchSize, 
+                                                   &$itemId, &$items) {
+      // The transaction id will be used used by the 'revisionable' package
+      // when a model event is fired. We are passing it down via a connection
+      // variable since we don't have have api access to that code.
       $transactionId = Uuid::uuid1();
       DB::statement("set @transaction_id = '$transactionId';");
       
@@ -140,16 +148,17 @@ class ItemsController extends Controller
         $item->itemableId = $itemable->id;
         $item->save();
         $itemId = $item->id;
+        array_push($items, $item);
 
         $sequence->increase();
-
-        // Update Solr
-        $this->solrItems->update($item);
 
       } while ($batch && ++$batchIndex < $batchSize);
 
       DB::statement('set @transaction_id = null;');      
     });
+
+    // Update Solr
+    $this->solrItems->update($items);
 
     if ($batch) {
       $request->session()->put('alert', array('type' => 'success', 'message' => 
@@ -191,6 +200,16 @@ class ItemsController extends Controller
    * to reconstruct the solr result set, from which the ids can be fetched.
    * And a table selection is passed which denotes the items that are selected
    * for editing.
+   *
+   * Note: There is a concurrency bug here which could result in the wrong
+   * items being modififed. If between the time the user makes their selection 
+   * and the time they acutally choose to batch edit (when the selection is 
+   * resolved to a set of item ids), if another user makes a change to the data 
+   * such that the first user's solr search result would change, and therefore 
+   * search indices would be changed, the wrong items could be selected for 
+   * editing. To avoid this edge case, the item ids would need to be immediately 
+   * resolved at the time the selection is made by the user, which in many cases 
+   * would reqire an ajax call and potentially slower UI performance.
    */
   public function editBatch(Request $request)
   {
@@ -276,6 +295,12 @@ class ItemsController extends Controller
     $item->fill($input);
     $itemable->fill($input['itemable']);
 
+    $updateSolrMastersAndTransfers = false;
+    if ($item->isDirty('call_number') || $item->isDirty('collection_id') ||
+                                         $item->isDirty('format_id')) {
+      $updateSolrMastersAndTransfers = true;
+    }  
+
     // Update MySQL
     DB::transaction(function () use ($item, $itemable) {
       $transactionId = Uuid::uuid1();
@@ -285,29 +310,29 @@ class ItemsController extends Controller
       if($item->isDirty('call_number')) {
         $itemable->callNumber = $item->callNumber;
 
-        $origCall = $item->getOriginal()['call_number'];
+        $origCall = $item->getOriginal()['callNumber'];
         $newCall = $item->callNumber;
 
-        // Yes, it would be nice if we could use the batch
-        // update syntax for this, rather than fetching and
-        // iterating over the results, then calling save.
-        // Unfortunately, the batch update syntax doesn't
-        // fire model events, which we need for auditing.
-        $masters = PreservationMaster::where('call_number', '=', 
-                                              $origCall)->get();
+        // Yes, it would be nice (and more performant) if we 
+        // could use the batch update syntax for this, rather
+        // than fetching and iterating over the results, then
+        // calling save. Unfortunately, the batch update 
+        // syntax doesn't fire model events, which we need for 
+        // auditing.
+        $masters = PreservationMaster::where('call_number', $origCall)->get();
         foreach ($masters as $master) {
           $master->callNumber = $newCall;
           $master->save();
         }
 
-        $cuts = Cut::where('call_number', '=', $origCall)->get();
+        $cuts = Cut::where('call_number', $origCall)->get();
 
         foreach ($cuts as $cut) {
           $cut->callNumber = $newCall;
           $cut->save();
         }
 
-        $transfers = Transfer::where('call_number', '=', $origCall)->get();
+        $transfers = Transfer::where('call_number', $origCall)->get();
 
         foreach ($transfers as $transfer) {
           $transfer->callNumber = $newCall;
@@ -323,8 +348,19 @@ class ItemsController extends Controller
     });
 
     // Update Solr
-    // TODO Update masters and transfers if call number has changed
     $this->solrItems->update($item);
+    if ($updateSolrMastersAndTransfers) {
+      $masters = PreservationMaster::where('call_number', 
+                                                  $item->callNumber)->get();
+      if ($masters != null) {
+        $this->solrMasters->update($masters);
+      }
+
+      // $transfers = Transfer::where('call_number', $item->callNumber)->get();
+      // if ($transfers != null) {
+      //   $this->solrTransfers->update($transfers);
+      // }
+    }
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>Hooray!</strong> ' . 
@@ -333,7 +369,9 @@ class ItemsController extends Controller
     return redirect()->route('items.show', [$id]);
   }
 
-
+  /**
+   * Update multple items at once.
+   */
   public function updateBatch(ItemRequest $request)
   {
     $input = $request->allWithoutMixed();
@@ -341,8 +379,15 @@ class ItemsController extends Controller
     unset($input['ids']);
     $items = AudioVisualItem::whereIn('id',$itemIds)->get();
 
+    // Here we will track items that have had their collection or format
+    // updated. Their related preservation masters and transfers will also
+    // need to be updated in Solr, since collection and format details are
+    // in those cores as well.
+    $collectionOrFormatUpdated = array();
+
     // Update MySQL
-    DB::transaction(function () use ($items, $input) {
+    DB::transaction(function () use ($items, $input, 
+                                              &$collectionOrFormatUpdated) {
       $transactionId = Uuid::uuid1();
       DB::statement("set @transaction_id = '$transactionId';");
       
@@ -350,6 +395,11 @@ class ItemsController extends Controller
         $item->fill($input);
         $itemable=$item->itemable;
         $itemable->fill($input['itemable']);
+
+        if ($item->isDirty('collection_id') ||
+            $item->isDirty('format_id')) {
+          array_push($collectionOrFormatUpdated, $item);
+        }
 
         $itemable->save();
         $item->save();
@@ -359,8 +409,18 @@ class ItemsController extends Controller
     });    
     
     // Update Solr
-    foreach ($items as $item) {
-      $this->solrItems->update($item);
+    $this->solrItems->update($items);
+    foreach ($collectionOrFormatUpdated as $item) {
+      $masters = 
+        PreservationMaster::where('call_number', $item->callNumber)->get();
+      if($masters != null) {
+        $this->solrMasters->update($masters);
+      }
+      // $transfers = 
+      //   Transfer::where('call_number', $item->callNumber)->get();
+      // if($transfers != null) {
+      //   $this->solrTransfers->update($transfers);
+      // }     
     }
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
@@ -379,13 +439,17 @@ class ItemsController extends Controller
 
     $command = $request['deleteCommand'];
 
+    $masters;
+    $transfers;
+
     // Update MySQL
-    DB::transaction(function () use ($command, $item, $itemable) {
+    DB::transaction(function () use ($command, $item, $itemable, 
+                                                   &$masters, &$transfers) {
       $transactionId = Uuid::uuid1();
       DB::statement("set @transaction_id = '$transactionId';");
       
       $call = $item->callNumber;
-      if($command==='all') {
+      if ($command==='all') {
         $masters = PreservationMaster::where('call_number', '=', 
                                               $call)->get();
         foreach ($masters as $master) {
@@ -413,7 +477,16 @@ class ItemsController extends Controller
       DB::statement('set @transaction_id = null;');      
     });
 
+    // Update Solr
     $this->solrItems->delete($item);
+    if ($command==='all') {
+      if ($masters != null) {
+        $this->solrMasters->delete($masters);
+      }
+      if ($transfers != null) {
+        //$this->solrTransfers->delete($transfers);
+      }
+    }
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>It\'s done!</strong> ' . 

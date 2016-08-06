@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Config;
 use Log;
 use Solarium;
 
+use Junebug\Models\AudioVisualItem;
+
 class SolariumProxy {
 
   protected $client;
@@ -45,8 +47,8 @@ class SolariumProxy {
       'containerNote^2 cutTitles cutPerformerComposers formatName');
 
     } else if ($this->core==='junebug-masters') {
-      $dismax->setQueryFields('callNumber^5 fileName^4 collectionName^3 ' .
-      'cutTitles cutPerformerComposers');
+      $dismax->setQueryFields('id, callNumber^5 fileName^4 collectionName^3 ' .
+      'cutTitles cutPerformerComposers formatName departmentName');
     }
 
     $this->createFilterQueries($solariumQuery,$queryParams);
@@ -60,26 +62,63 @@ class SolariumProxy {
     return $resultSet;
   }
 
-  public function update($model)
+  /**
+   * Update the Solr index for the given model or array (or collection)
+   * of models.
+   * 
+   * @param mixed $modelOrModels
+   * @return mixed
+   */
+  public function update($modelOrModels)
   {
     $result;
+    $iterable = is_array($modelOrModels) || 
+                             $modelOrModels instanceof \IteratorAggregate;
     if ($this->core==='junebug-items') {
-      $result = $this->updateItem($model);
+      if ($iterable) {
+        $result = array();
+        foreach ($modelOrModels as $item) {
+          array_push($result, $this->updateItem($item));
+        }
+      } else {
+        $result = $this->updateItem($modelOrModels);
+      }
     } else if ($this->core==='junebug-masters') {
-      $result = $this->updateMaster($model);
+      if ($iterable) {
+        $result = array();
+        foreach ($modelOrModels as $master) {
+          array_push($result, $this->updateMaster($master));
+        }
+      } else {
+        $result = $this->updateMaster($modelOrModels);
+      }
+    } else if ($this->core==='junebug-transfers') {
+      if ($iterable) {
+        $result = array();
+        foreach ($modelOrModels as $transfer) {
+          array_push($result, $this->updateTransfer($transfer));
+        }
+      } else {
+        $result = $this->updateTransfer($modelOrModels);
+      }
     }
     return $result;
   }
 
+  /**
+   * Updates the Solr index for the given AudioVisualItem.
+   *
+   * @param AudioVisualItem $item
+   */
   protected function updateItem($item)
   {
     $update = $this->client->createUpdate();
     $doc = $update->createDocument();
 
     $doc->setKey('id', $item->id);
+    $doc->setField('callNumber', $item->callNumber, null, 'set');
     $doc->setField('title', $item->title, null, 'set');
     $doc->setField('containerNote', $item->containerNote, null, 'set');
-    $doc->setField('callNumber', $item->callNumber, null, 'set');
     $doc->setField('collectionId', $item->collection->id, null, 'set');
     $doc->setField('collectionName', $item->collection->name, null, 'set');
     $doc->setField('formatId', $item->format->id, null, 'set');
@@ -95,13 +134,69 @@ class SolariumProxy {
     return $this->client->update($update);
   }
 
-  public function delete($model)
+  /**
+   * Updates the Solr index for the given PreservationMaster.
+   *
+   * @param PreservationMaster $master
+   */
+  protected function updateMaster($master)
+  {
+    $update = $this->client->createUpdate();
+    $doc = $update->createDocument();
+
+    $doc->setKey('id', $master->id);
+    $doc->setField('callNumber', $master->callNumber, null, 'set');
+    $doc->setField('fileName', $master->fileName, null, 'set');
+    $doc->setField('durationInSeconds', $master->durationInSeconds, null, 'set');
+    $doc->setField('typeName', $master->type, null, 'set');
+    $doc->setField('typeId', $master->typeId, null, 'set');
+    $doc->setField('createdAt', $master->createdAt, null, 'set');
+    $doc->setField('updatedAt', $master->updatedAt, null, 'set');
+    
+    // Get other fields from the associated audio visual item since that's where
+    // they reside, not on the master
+    $item = 
+      AudioVisualItem::where('call_number', $master->callNumber)->get()->first();
+    $doc->setField('collectionId', $item->collection->id, null, 'set');
+    $doc->setField('collectionName', $item->collection->name, null, 'set');
+    $doc->setField('formatId', $item->format->id, null, 'set');
+    $doc->setField('formatName', $item->format->name, null, 'set');
+
+    $update->addDocument($doc);
+    $update->addCommit();
+
+    return $this->client->update($update);
+  }
+
+  protected function updateTransfer($transfer)
+  {
+    // pending
+  }
+
+  public function delete($modelOrModels)
+  {
+    $result;
+    $iterable = is_array($modelOrModels) || 
+                            $modelOrModels instanceof \IteratorAggregate;
+    if ($iterable) {
+      $result = array();
+      foreach ($modelOrModels as $model) {
+        array_push($result, $this->deleteOne($model));
+      }
+    } else {
+      $result = $this->deleteOne($modelOrModels);
+    }
+
+    return $result;
+  }
+
+  private function deleteOne($model)
   {
     $update = $this->client->createUpdate();
     $update->addDeleteById($model->id);
     $update->addCommit();
 
-    $result = $this->client->update($update);
+    return $this->client->update($update);
   }
 
   protected function createFilterQueries($solariumQuery, $queryParams)
