@@ -34,7 +34,7 @@ class SolariumProxy {
   {
     $solariumQuery = $this->client->createSelect();
 
-    $searchTerms = $queryParams->{'search'};
+    $searchTerms = $queryParams->search;
     $solariumQuery->setQuery($searchTerms);
 
     $dismax = $solariumQuery->getDisMax();

@@ -30,10 +30,10 @@ junebug = {
   displayAlert: function(type, message) {
     if (type.length && message.length) {
       var alert = document.createElement('div');
-      alert.setAttribute('id', 'alert');
-      alert.setAttribute('class', 'col-md-12 alert alert-' + type);
-      alert.setAttribute('role', 'alert');
-      alert.innerHTML = message;
+      $(alert).attr('id', 'alert');
+      $(alert).attr('class', 'col-md-12 alert alert-' + type);
+      $(alert).attr('role', 'alert');
+      $(alert).html(message);
       $('#alert').replaceWith(alert);
       $('#alert').delay(500).slideDown(200).delay(8000).slideUp(200);
     }
@@ -93,9 +93,6 @@ junebug = {
     $('#items-batch-edit').click(function(event) {
       var tableSelection = 
           junebug.TableSelection.load('itemTableSelection','session');
-      var search = junebug.SearchField.load('itemSearchField');
-      var filters = junebug.FilterPanel.load('itemFilterPanel');
-      var query = new junebug.QueryManager(search,filters).queryString();
       if (tableSelection.count() == 0) {
         junebug.displayAlert('warning',
           '<strong>Here\'s a tip:</strong> Batch actions require a table selection. \
@@ -104,15 +101,18 @@ junebug = {
         return;
       }
 
-      json = tableSelection.toJson();
-      var selectionParams = {begin:json['begin'],
-                             end:json['end'],
-                             excludes:json['excludes'],
-                             includes:json['includes']};
-      tableSelection.clear();
-      window.location.href="/items/batch/edit?q=" + query + "&" + 
-                                      "s=" + JSON.stringify(selectionParams);
-
+      var form = $(document.createElement('form'));
+      form.attr('action', '/items/batch/edit');
+      form.attr('method', 'post');
+      $('<input>').attr('type', 'hidden')
+        .attr('name', 'ids')
+        .attr('value', tableSelection.ids)
+        .appendTo(form);
+      $('<input>').attr('type', 'hidden')
+        .attr('name', '_token')
+        .attr('value', $('meta[name="csrf-token"]').attr('content'))
+        .appendTo(form);                              
+      form.appendTo(document.body).submit().remove();
     });
   },
   
@@ -267,6 +267,7 @@ junebug = {
       tableSelection = new junebug.TableSelection({
           key:'itemTableSelection',
           location:'session',
+          resource: 'items',
           selector:'#data tr[role="button"]',
           countSelector:'.selection-count'});
       tableSelection.init();
@@ -278,8 +279,9 @@ junebug = {
 
     var queryManager = new junebug.QueryManager(searchField, filterPanel, 
                                 tableParams, tableSelection, 'items');
-    queryManager.init();
+    tableSelection.setQueryManager(queryManager);
 
+    queryManager.init();
     queryManager.executeQuery();
   },
 
@@ -319,6 +321,7 @@ junebug = {
     if (tableSelection==null) {
       tableSelection = new junebug.TableSelection({
           key:'masterTableSelection',
+          resource: 'masters',
           location:'session',
           selector:'#data tr[role="button"]',
           countSelector:'.selection-count'});
@@ -331,8 +334,9 @@ junebug = {
 
     var queryManager = new junebug.QueryManager(searchField, filterPanel, 
                                 tableParams, tableSelection, 'masters');
-    queryManager.init();
+    tableSelection.setQueryManager(queryManager);
 
+    queryManager.init();
     queryManager.executeQuery();
   },
 
@@ -768,16 +772,10 @@ junebug = {
    * on the rows to make the selection, rather than using form
    * checkboxes.
    * 
-   * Rows of the table must have the data attribute 'data-index'
-   * on them that reflects the index of the record in the table
-   * (or in the search result if data is paginated across multiple
-   * tables) not the id of the record in the database. Internally,
-   * TableSelection stores a range selection (beginning and 
-   * ending indices, produced by 'shift-clicking'), an array of 
-   * indices that should be excluded from the range (produced by
-   * a user 'command-clicking' within the range), and an array of
-   * indices that should be included in the selection, also 
-   * produced by a user command clicking, but outside of the range.
+   * Rows of the table must have the data attributes 'data-index'
+   * and 'data-id' on them that reflects the index of the record
+   * in the table and the id of the record in the database,
+   * respectively.
    *
    * If storage parameters are supplied (storage key and location),
    * the table selection will persist itself to local storage when 
@@ -785,29 +783,32 @@ junebug = {
    *
    * Constructor params are as follows:
    * 'key' = storage key under which the serialized selection is stored
-   * 'location' = storage location (can be 'session' or 'local')
+   * 'location' = Storage location (can be 'session' or 'local')
+   * 'resource' = The type of entity being displayed in the table
    * 'selector' = jQuery selector for the table rows *required
    * 'countSelector' = jQuery selector for the element containing 
    *  the count of selected items
-   * 'begin' = beginning index of the selection range
-   * 'end' = ending index of the selection range
-   * 'excludes' = ids within the selection range to be excluded
-   * 'includes' = ids outside of the selection range to be included
+   * 'beginIndex' = Beginning index of the selection range
+   * 'beginId' = Database id for the record at beginIndex
+   * 'ids' = Ids that are currently selected
    */
   TableSelection: function(params) {
-    if (params==null) {
-      throw new junebug.IllegalArgumentException("Param 'selector' " +
-        "is required.");
+    if (params==null || params.resource == null || params.selector == null || 
+                                              params.countSelector == null) {
+      throw new junebug.IllegalArgumentException("Params 'resource', " +
+                            "'selector' and 'countSelector' are required.");
     }
 
     var key = params.key,
         location = params.location,
+        resource = params.resource,
         selector = params.selector,
         countSelector = params.countSelector,
-        begin = params.begin,
-        end = params.end,
-        excludes = params.excludes != null ? params.excludes : [],
-        includes = params.includes != null ? params.includes : [],
+        beginIndex = params.beginIndex,
+        beginId = params.beginId,
+        ids = params.ids != null ? params.ids : [],
+        queryManager = null,
+        cache = {},
 
     init = function() {
 
@@ -824,11 +825,13 @@ junebug = {
       // Bind click handlers to all data table rows
       dataTableRows.click(function(event) {
         // The index of the Solr search result
-        var rowIndex = $(this).data('index');
+        var index = $(this).data('index');
+        // The id of the record at the index
+        var id = $(this).data('id');
 
         // If user is "shift-clicking" a row (i.e. selecting a range of rows)
         if (event.shiftKey) {
-          setRange(rowIndex);
+          resolveRange(index, id);
           finalizeEvent(event);
           return;
         }
@@ -836,7 +839,7 @@ junebug = {
         // If user is "command-clicking" (Mac) (or control on Windows) 
         // a row (i.e. selecting/deselecting single row)
         if (event.ctrlKey || event.metaKey) {
-          toggle(rowIndex);
+          toggle(id);
           finalizeEvent(event);
           return;
         }
@@ -853,23 +856,27 @@ junebug = {
     },
 
     dataLoaded = function(event) {
+      // Cache the loaded indices & ids
+      $(selector).each(function() {
+        var index = $(this).data('index'),
+        id = $(this).data('id');
+        cache[index] = id;
+        // Refresh beginIndex in case it's gotten out of sync
+        if (id == beginId) {
+          beginIndex = index;
+        }
+      });
       render();
     },
 
-    selected = function(rowIndex) {
-      if ((inRange(rowIndex) && 
-        $.inArray(rowIndex, excludes) == -1) || 
-        $.inArray(rowIndex, includes) != -1) {
-        return true;
-      } else {
-        return false;
-      }
+    selected = function(id) {
+      return $.inArray(id, ids) != -1;
     },
 
     render = function() {
       $(selector).each(function() {
-        var rowIndex = $(this).data('index');
-        if (selected(rowIndex)) {
+        var id = $(this).data('id');
+        if (selected(id)) {
           $(this).addClass('selected');
         } else {
           $(this).removeClass('selected');
@@ -889,78 +896,137 @@ junebug = {
       }
     },
 
-    setRange = function(rowIndex) {
-      if (begin == null) {
-        begin = rowIndex;
-        end = rowIndex;
+    // Resolve a range selection to an array of ids
+    resolveRange = function(endIndex, endId) {
+      if (beginIndex == null || beginId == null) {
+        beginIndex = endIndex;
+        beginId = endId;
+        ids = [beginId];
       } else {
         var beforeCount = count();
-        end = rowIndex;
+
+        // Check if full range is currently within the table on screen
+        if (rangeInTable(beginIndex, endIndex)) {
+          console.log('Getting range from table');
+          var firstIndex = Math.min(beginIndex, endIndex),
+          lastIndex = Math.max(beginIndex, endIndex);
+          ids = [];
+          $(selector).each(function() {
+            var thisIndex = $(this).data('index'),
+            thisId = $(this).data('id');
+            if (thisIndex >= firstIndex && thisIndex <= lastIndex) {
+              ids.push(thisId);
+            }
+          });
+        // Full range is not in the table, so check to see if it's in cache
+        } else if (rangeInCache(beginIndex, endIndex)) {
+          console.log('Getting range from cache');
+          ids = idsFromCache(beginIndex, endIndex);
+          // Not in table or cache, so go to the server to get ids from Solr
+        } else {
+          if (queryManager != null) {
+            console.log('Getting range from server');
+            var query = {};
+            query['q'] = encodeURIComponent(queryManager.queryString());
+            var range = JSON.stringify({beginIndex: beginIndex, 
+              beginId: beginId, endIndex: endIndex, endId: endId});
+            query['r'] = encodeURIComponent(range);
+
+            $.ajax({
+              url: '/' + resource + '/resolve-range',
+              data: query,
+              success: function(data) {
+                ids = data['ids'].map(Number);
+                store();
+                render();
+              },
+              statusCode: {
+                400: function() {
+                  junebug.displayAlert('danger',
+                    '<strong>Sorry to interrupt!</strong> It appears someone \
+                    has changed the data you\'re viewing. Please reload your \
+                    page and try your selection again.');
+                  clear();
+                  render();
+                }
+              },
+              error: function() {
+                console.log('Could not resolve selection range');
+              }
+            });
+          } else {
+            console.log('QueryManager is null. \
+              Could not resolve selection range');
+          }
+        }
+
         // Allows user to deselect a range
-        if (count()==1 && beforeCount==1) {
+        if (count()==1 && beforeCount==1 && beginIndex==endIndex) {
           clear();
         }
       }
-      excludes = [];
-      includes = [];
     },
 
-    toggle = function(rowIndex) {
-      // User is clicking within the defined range
-      if (inRange(rowIndex)) {
-        var result = $.inArray(rowIndex, excludes);
-        // Add row index to excludes
-        if (result == -1) {
-          excludes.push(rowIndex);
-        } else {
-          excludes.splice(result, 1);
+    rangeInCache = function(begin, end) {
+      var first = Math.min(begin, end),
+      last = Math.max(begin, end);
+      for(i = first; i <= last; i++) {
+        if(cache[i] == null) {
+          return false;
         }
-      // User is clicking outside the range
+      }
+      return true;
+    },
+
+    idsFromCache = function(begin, end) {
+      var first = Math.min(begin, end),
+      last = Math.max(begin, end),
+      cacheIds = [];
+      for(i = first; i <= last; i++) {
+        cacheIds.push(cache[i]);
+      }
+      return cacheIds;
+    },
+
+    rangeInTable = function(begin, end) {
+      var table = tableToObject();
+      return table[begin] != null && table[end] != null;
+    },
+
+    tableToObject = function() {
+      var table = {};
+      $(selector).each(function() {
+        table[$(this).data('index')] = $(this).data('id');
+      });
+      return table;
+    },
+
+    toggle = function(id) {
+      var result = $.inArray(id, ids);
+      if (result == -1) {
+        ids.push(id);
       } else {
-        var result = $.inArray(rowIndex, includes);
-        // Add row index to includes
-        if (result == -1) {
-          includes.push(rowIndex);
-        } else {
-          includes.splice(result, 1);
-        }
+        ids.splice(result, 1);
       }
       if (count()==0) {
         clear();
       }
     },
 
-    inRange = function(rowIndex) {
-      if (rowIndex==null || begin==null || end==null) {
-        return false;
-      }
-      if (rowIndex >= Math.min(begin, end) && 
-        rowIndex <= Math.max(begin, end)) {
-        return true;
-      } else {
-        return false;
-      }
+    setQueryManager = function(manager) {
+      queryManager = manager;
     },
 
     clear = function() {
-      begin = null;
-      end = null;
-      excludes = [];
-      includes = [];
+      beginIndex = null;
+      beginId = null;
+      ids = [];
+      cache = {};
       store();
     },
 
     count = function() {
-      var max = Math.max(begin, end),
-          min = Math.min(begin, end),
-          rangeCount;
-      if (begin==null) {
-        rangeCount = 0;
-      } else {
-        rangeCount = max - min + 1;
-      }
-      var total = rangeCount - excludes.length + includes.length;
-      return total;
+      return ids.length;
     },
 
     store = function() {
@@ -977,12 +1043,12 @@ junebug = {
       return {
         key: key,
         location: location,
+        resource: resource,
         selector: selector,
         countSelector: countSelector,
-        begin: begin,
-        end: end,
-        excludes: excludes,
-        includes: includes
+        beginIndex: beginIndex,
+        beginId: beginId,
+        ids: ids
       };
     },
 
@@ -993,9 +1059,11 @@ junebug = {
     return {
       init: init,
       selected: selected,
+      ids: ids,
       render: render,
       clear: clear,
       count: count,
+      setQueryManager: setQueryManager,
       store: store,
       toJson: toJson,
       toString: toString      

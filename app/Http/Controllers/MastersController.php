@@ -77,11 +77,17 @@ class MastersController extends Controller {
     return view('masters.show', compact('master', 'cuts', 'item'));
   }
 
+  public function resolveRange(Request $request)
+  {
+  	return parent::rangeFor($request, $this->solrMasters);
+  }
+
   public function destroy($id, Request $request)
   {
     
 
     return redirect()->route('masters.index');
   }
+
 
 }

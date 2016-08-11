@@ -122,7 +122,7 @@ class ItemsController extends Controller
     DB::transaction(
       function () use ($request, $input, $batch, $batchSize, 
                                                    &$itemId, &$items) {
-      // The transaction id will be used used by the 'revisionable' package
+      // The transaction id will be used by the 'revisionable' package
       // when a model event is fired. We are passing it down via a connection
       // variable since we don't have have api access to that code.
       $transactionId = Uuid::uuid1();
@@ -194,72 +194,43 @@ class ItemsController extends Controller
   }
 
   /**
-   * Display the form for editing multiple items at a time. The ids
-   * of the items to edit are unknown when this method is called. The
-   * solr query parameters are passed in the query string which is used
-   * to reconstruct the solr result set, from which the ids can be fetched.
-   * And a table selection is passed which denotes the items that are selected
-   * for editing.
-   *
-   * Note: There is a concurrency bug here which could result in the wrong
-   * items being modififed. If between the time the user makes their selection 
-   * and the time they acutally choose to batch edit (when the selection is 
-   * resolved to a set of item ids), if another user makes a change to the data 
-   * such that the first user's solr search result would change, and therefore 
-   * search indices would be changed, the wrong items could be selected for 
-   * editing. To avoid this edge case, the item ids would need to be immediately 
-   * resolved at the time the selection is made by the user, which in many cases 
-   * would reqire an ajax call and potentially slower UI performance.
+   * Display the form for editing multiple items at a time.
    */
   public function editBatch(Request $request)
   {
     $max = 500;
 
-    $queryParams = json_decode(urldecode($request->query('q')));
-    $selection = json_decode($request->query('s'));
-    $tableSelection = new TableSelection($selection->begin,$selection->end,
-                                  $selection->excludes, $selection->includes);
-    if($tableSelection->selectionCount() > $max) {
+    $itemIds = explode(',', $request->input('ids'));
+    $itemIdsCount = count($itemIds);
+
+    if($itemIdsCount > $max) {
       $request->session()->put('alert', array('type' => 'danger', 'message' => 
         '<strong>Whoa there!</strong> ' . 
-        'Batch editing is limited to ' . $max . ' items. Please narrow your selection.'));
+        'Batch editing is limited to ' . $max . ' items. Please narrow ' .
+        'your selection.'));
+      return redirect()->route('items.index');
+    }
+    
+    $first = AudioVisualItem::find($itemIds[0]);
+    $itemableType = $first->itemableType;
+
+    $items = AudioVisualItem::whereIn('id', $itemIds)
+                            ->where('itemable_type', $itemableType)->get();
+    if($itemIdsCount!=$items->count()) {
+      $request->session()->put('alert', array('type' => 'danger', 'message' => 
+        '<strong>Oops! There\'s a problem.</strong> ' . 
+        'Batch editing can only be done with items of the same type. ' .
+        'Please change your selection.'));
       return redirect()->route('items.index');
     }
 
-    $start = $tableSelection->indexMin();
-    $rows = $tableSelection->indexCount();
-    $resultSet = $this->solrItems->query($queryParams,$start,$rows);
-    
-    // Iterate through Solr resultSet, getting item ids, while validating
-    // that all records are of the same type.
-    $itemIds = array();
-    $itemTypes = array();
-    $queryIndex = $start;
-    foreach ($resultSet as $item) {
-      if($tableSelection->selected($queryIndex)) {
-        array_push($itemIds,$item->id);
-        $type = $item->typeName;
-        $itemTypes[$type] = $type;
-        if(count($itemTypes) > 1) {
-          $request->session()->put('alert', 
-            array('type' => 'danger', 'message' => 
-            '<strong>Oops! There\'s a problem.</strong> ' . 
-            'Batch editing can only be done with items of the same type. Please change your selection.'));
-          return redirect()->route('items.index');
-        }
-      }
-      $queryIndex++;
-    }
-    
-    $items = AudioVisualItem::whereIn('id',$itemIds)->get();
-    $itemableType = $items->first()->itemableType;
     $itemableIds = array();
     foreach($items as $item) {
       array_push($itemableIds, $item->itemable->id);
     }
     $itemables = $itemableType::whereIn('id', $itemableIds)->get();
 
-    $item = new BatchAudioVisualItem($items,$itemables);
+    $item = new BatchAudioVisualItem($items, $itemables);
 
     $collections = array();
     if($item->collectionId === '<mixed>') {
@@ -284,6 +255,14 @@ class ItemsController extends Controller
     return view('items.edit', 
       compact('item', 'collections', 'formats'));
 
+  }
+
+  /**
+   * Given Solr query parameters
+   */
+  public function resolveRange(Request $request)
+  {
+    return parent::rangeFor($request, $this->solrItems);
   }
 
   public function update($id, ItemRequest $request)

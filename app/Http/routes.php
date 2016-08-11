@@ -26,7 +26,9 @@ Route::group(['prefix' => 'suggestions'], function () {
   Route::get('film-bases', 'SuggestionsController@filmBases');
 });
 
-Route::get('items/batch/edit', [
+Route::get('items/resolve-range', 'ItemsController@resolveRange');
+
+Route::post('items/batch/edit', [
     'as' => 'items.editBatch', 'uses' => 'ItemsController@editBatch'
 ]);
 
@@ -35,6 +37,8 @@ Route::put('items/batch', [
 ]);
 
 Route::resource('items', 'ItemsController');
+
+Route::get('masters/resolve-range', 'MastersController@resolveRange');
 
 Route::resource('masters', 'MastersController');
 
