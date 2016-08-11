@@ -31,7 +31,7 @@
     </div>
     <div style="float: right;">
       <nav>
-        @include('shared._ajax-pagination', ['paginator' => $items])
+        @include('shared._pagination', ['paginator' => $items])
       </nav>
     </div>
   </div>

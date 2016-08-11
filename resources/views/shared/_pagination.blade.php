@@ -1,7 +1,7 @@
 @if ($paginator->lastPage() > 1)
     <ul class="pagination pagination-sm">
         <li class="{{ ($paginator->currentPage() == 1) ? 'page-item disabled' : 'page-item' }}">
-            <a class="page-link" href="{{ $paginator->previousPageUrl() }}" aria-label="Previous">
+            <a class="page-link prev-page" href="#page-link" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
                 <span class="sr-only">Previous</span>
             </a>
@@ -26,15 +26,14 @@
 
         @for ($i = $from; $i <= $to; $i++)
         <li class="{{ ($paginator->currentPage() == $i) ? 'page-item active' : 'page-item' }}">
-            <a class="page-link" href="{{ $paginator->url($i) }}">{{ $i }}</a>
+            <a class="page-link" href="#page-link">{{ $i }}</a>
         </li>
         @endfor
         <li class="{{ ($paginator->currentPage() == $paginator->lastPage()) ? 'page-item disabled' : 'page-item' }}">
-            <a class="page-link" href="{{ $paginator->nextPageUrl() }}" aria-label="Next">
+            <a class="page-link next-page" href="#page-link" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
                 <span class="sr-only">Next</span>
             </a>
         </li>
     </ul>
 @endif
-

@@ -22,7 +22,6 @@ use Junebug\Models\VideoItem;
 use Junebug\Models\Collection;
 use Junebug\Models\Cut;
 use Junebug\Models\Format;
-use Junebug\Models\TableSelection;
 use Junebug\Models\Transfer;
 use Junebug\Models\PreservationMaster;
 use Junebug\Http\Requests\ItemRequest;
