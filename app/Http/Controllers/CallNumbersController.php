@@ -11,6 +11,17 @@ use Junebug\Models\CallNumberSequence;
  */
 class CallNumbersController extends Controller {
 
+
+  /**
+   * Create a new controller instance.
+   *
+   * @return void
+   */
+  public function __construct()
+  {
+    $this->middleware('guest');
+  }
+
   public function generate(Request $request)
   {
     $formatId = $request->query('format');

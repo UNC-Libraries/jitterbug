@@ -41,10 +41,10 @@ class ItemsController extends Controller
    */
   public function __construct()
   {
+    $this->middleware('guest');
     $this->solrItems = new SolariumProxy('junebug-items');
     $this->solrMasters = new SolariumProxy('junebug-masters');
     // $this->solrTransfers = new SolariumProxy('junebug-transfers');
-    $this->middleware('guest');
   }
   
   /**

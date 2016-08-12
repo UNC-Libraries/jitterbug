@@ -27,8 +27,8 @@ class MastersController extends Controller {
    */
   public function __construct()
   {
-    $this->solrMasters = new SolariumProxy('junebug-masters');
     $this->middleware('guest');
+    $this->solrMasters = new SolariumProxy('junebug-masters');
   }
 
   /**

@@ -43,10 +43,12 @@ Route::get('masters/resolve-range', 'MastersController@resolveRange');
 Route::resource('masters', 'MastersController');
 
 
-
-
 // Display all SQL executed in Eloquent
 // Event::listen('illuminate.query', function($query)
 // {
 //     var_dump($query);
 // });
+
+Route::auth();
+
+Route::get('/home', 'HomeController@index');

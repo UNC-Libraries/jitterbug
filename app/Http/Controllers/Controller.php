@@ -1,12 +1,14 @@
 <?php namespace Junebug\Http\Controllers;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesResources;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
 abstract class Controller extends BaseController {
-  use DispatchesJobs, ValidatesRequests;
+  use AuthorizesRequests, AuthorizesResources, DispatchesJobs, ValidatesRequests;
 
 
   public function rangeFor(Request $request, $proxy)
