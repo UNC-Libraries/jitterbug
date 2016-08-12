@@ -93,7 +93,7 @@ return [
 
 	'key' => env('APP_KEY'),
 
-    'cipher' => 'AES-256-CBC',
+	'cipher' => 'AES-256-CBC',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -211,7 +211,7 @@ return [
 		'URL'       => 'Illuminate\Support\Facades\URL',
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
-        'Str'       => 'Illuminate\Support\Str',
+		'Str'       => 'Illuminate\Support\Str',
 
 		'Form'      => 'Collective\Html\FormFacade',
 		'Html'      => 'Collective\Html\HtmlFacade',
@@ -226,7 +226,7 @@ return [
 		'AudioTransfer'             => 'Junebug\Models\AudioTransfer',
 		'Transfer'                  => 'Junebug\Models\Transfer',
 
-        'Breadcrumbs' => 'DaveJamesMiller\Breadcrumbs\Facade',
+		'Breadcrumbs' => 'DaveJamesMiller\Breadcrumbs\Facade',
 		'Uuid'        => 'Ramsey\Uuid\Uuid',
 	],
 
