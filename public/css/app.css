@@ -4926,6 +4926,9 @@ h4 {
 
 /* need to set year, decade, and century active */
 /* Misc */
+.centered {
+  text-align: center; }
+
 .col-fff {
   background-color: #fff; }
 
@@ -5057,8 +5060,20 @@ h4 {
 
 body {
   font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial;
-  background-color: #ededed;
-  min-width: 700px; }
+  background-color: #ededed; }
+
+#sign-in-panel {
+  max-width: 430px;
+  margin: 0 auto;
+  padding: 2.5rem 4rem;
+  background-color: #fff;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5); }
+
+#sign-in-panel h4 {
+  font-family: 'Yanone Kaffeesatz', 'YanoneKaffeesatz-Light', sans-serif;
+  font-weight: 300;
+  font-size: 2.3rem;
+  color: #4a4a4a; }
 
 @media (max-width: 992px) {
   #data-panel .search-container {

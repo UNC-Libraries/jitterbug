@@ -16,7 +16,8 @@
 		"solarium/solarium": "^3.6",
 		"venturecraft/revisionable": "dev-master",
 		"davejamesmiller/laravel-breadcrumbs": "^3.0",
-		"ramsey/uuid": "^3.5"
+		"ramsey/uuid": "^3.5",
+		"adldap2/adldap2-laravel": "2.1.*"
 	},
 	"require-dev": {
         "fzaninotto/faker": "~1.4",

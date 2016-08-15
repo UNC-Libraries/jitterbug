@@ -156,6 +156,7 @@ return [
 
 		// Comes from davejamesmiller/laravel-breadcrumbs (3.0)
 		'DaveJamesMiller\Breadcrumbs\ServiceProvider',
+		'Adldap\Laravel\AdldapServiceProvider',
 
 		/*
 		 * Application Service Providers...
@@ -164,6 +165,7 @@ return [
         'Junebug\Providers\AuthServiceProvider',
 		'Junebug\Providers\EventServiceProvider',
 		'Junebug\Providers\RouteServiceProvider',
+
 
 	],
 
@@ -230,6 +232,8 @@ return [
 
 		'Breadcrumbs' => 'DaveJamesMiller\Breadcrumbs\Facade',
 		'Uuid'        => 'Ramsey\Uuid\Uuid',
+		'Adldap'      => 'Adldap\Laravel\Facades\Adldap',
+
 	],
 
 ];
