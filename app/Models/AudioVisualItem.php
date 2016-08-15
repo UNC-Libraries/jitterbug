@@ -18,6 +18,8 @@ class AudioVisualItem extends Model {
 
   protected $revisionFormattedFields = array(
     'title' => 'isEmpty:nothing|%s',
+    'collection_id' => 'isEmpty:nothing|%s',
+    'format_id' => 'isEmpty:nothing|%s',
     'recording_location' => 'isEmpty:nothing|%s',
     'oclc' => 'isEmpty:nothing|%s',
     'item_year' => 'isEmpty:nothing|%s',
