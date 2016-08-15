@@ -203,6 +203,11 @@ junebug = {
       deferRequestBy: 100
     });
 
+    $('#speed').autocomplete({
+      serviceUrl: '/suggestions/speeds',
+      deferRequestBy: 100
+    });
+
     $('#track-configuration').autocomplete({
       serviceUrl: '/suggestions/track-configurations',
       deferRequestBy: 100

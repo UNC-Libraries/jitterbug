@@ -121,7 +121,7 @@
             {!! Form::label('speed', 'Speed', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('speed', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. 7.5 ips, 24 fps')) !!}
+            {!! Form::text('speed', null, array('id' => 'speed', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. 7.5 ips, 24 fps')) !!}
           </div>
         </div>
       </div>
