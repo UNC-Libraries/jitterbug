@@ -22,7 +22,8 @@ JUNEBUG = {
 
     show: function() {
       junebug.initRevisionHistory();
-      junebug.initItemPreservationMasters();
+      junebug.initRelatedPreservationMasters();
+      junebug.initRelatedCuts();
     },
 
     create: function() {
@@ -36,7 +37,8 @@ JUNEBUG = {
       junebug.initDatepicker();
       junebug.initItemSuggestions();
       junebug.initRevisionHistory();
-      junebug.initItemPreservationMasters();
+      junebug.initRelatedPreservationMasters();
+      junebug.initRelatedCuts();
     },
 
     editBatch: function() {
@@ -58,8 +60,20 @@ JUNEBUG = {
 
     show: function() {
       junebug.initRevisionHistory();
+      junebug.initRelatedCuts();
+    },
+  },
+
+  cuts: {
+    init: function() {
+      // controller-wide code 
+    },
+
+    show: function() {
+      junebug.initRevisionHistory();
     },
   }
+
 };
 
 ROUTER = {

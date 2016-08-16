@@ -41,7 +41,6 @@ class ItemsController extends Controller
    */
   public function __construct()
   {
-    $this->middleware('guest');
     $this->solrItems = new SolariumProxy('junebug-items');
     $this->solrMasters = new SolariumProxy('junebug-masters');
     // $this->solrTransfers = new SolariumProxy('junebug-transfers');
@@ -81,7 +80,7 @@ class ItemsController extends Controller
   /**
    * Display the details of an item.
    */
-  public function show(Request $request, $id)
+  public function show($id)
   {
     $item = AudioVisualItem::findOrFail($id);
     $cuts = Cut::where('call_number', $item->callNumber)

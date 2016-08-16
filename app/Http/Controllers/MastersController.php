@@ -13,6 +13,7 @@ use Junebug\Models\PreservationMasterType;
 use Junebug\Models\PreservationMasterCollection;
 use Junebug\Models\PreservationMasterFormat;
 use Junebug\Models\PreservationMasterDepartment;
+use Junebug\Models\Transfer;
 use Junebug\Support\SolariumProxy;
 use Junebug\Support\SolariumPaginator;
 
@@ -27,7 +28,6 @@ class MastersController extends Controller {
    */
   public function __construct()
   {
-    $this->middleware('guest');
     $this->solrMasters = new SolariumProxy('junebug-masters');
   }
 
@@ -69,12 +69,11 @@ class MastersController extends Controller {
   public function show($id)
   {
     $master = PreservationMaster::findOrFail($id);
-    $item = AudioVisualItem::where('call_number', 
-    	$master->callNumber)->get()->first();
+    $transfers = Transfer::where('preservation_master_id', $master->id)->get();
     $cuts = Cut::where('preservation_master_id', $master->id)
                ->orderBy('cut_number', 'asc')
                ->get();
-    return view('masters.show', compact('master', 'cuts', 'item'));
+    return view('masters.show', compact('master', 'transfers', 'cuts'));
   }
 
   public function resolveRange(Request $request)

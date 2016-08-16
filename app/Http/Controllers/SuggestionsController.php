@@ -26,9 +26,9 @@ use Illuminate\Http\Request;
  * the input element a css id name. e.g. #speed, or #recording-location,
  * etc.
  *
- * 4. In app.js, add a define a jQuery selector using the id you
- * created in step 3, then call autocomplete. The serviceUrl should
- * correspond to teh route you created in step 2. For example:
+ * 4. In app.js, add a jQuery selector using the id you created in step 3,
+ * then call autocomplete. The serviceUrl should correspond to teh route
+ * you created in step 2. For example:
  * 
  *  $('#speed').autocomplete({
  *    serviceUrl: '/suggestions/speeds',

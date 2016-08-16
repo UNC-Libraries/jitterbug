@@ -14,4 +14,19 @@ class Cut extends Model {
   protected $dates = ['deleted_at'];
 
   protected $revisionCreationsEnabled = true;
+
+  public function transfer()
+  {
+    return $this->hasOne('Junebug\Models\Transfer');
+  }
+
+  /**
+   * Returns the revision history for the Cut.
+   * 
+   * @return Collection
+   */
+  public function completeRevisionHistory()
+  {
+    return $this->revisionHistory()->get();
+  }
 }

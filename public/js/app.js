@@ -229,9 +229,16 @@ junebug = {
     });
   },
 
-  initItemPreservationMasters: function() {
+  initRelatedPreservationMasters: function() {
     $('#related-masters tr[role="button"]').click(function(event) {
       window.location.href='/masters/' + $(this).data('id');
+    });
+  },
+
+  initRelatedCuts: function() {
+    $('#related-cuts tr[role="button"]').click(function(event) {
+      window.location.href='/masters/' + $(this).data('master') + 
+      '/cuts/' + $(this).data('id');
     });
   },
 

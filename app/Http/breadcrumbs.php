@@ -39,3 +39,10 @@ Breadcrumbs::register('masters.show', function($breadcrumbs, $master)
     $breadcrumbs->parent('masters.index');
     $breadcrumbs->push('View Master', route('masters.show', $master->id));
 });
+
+// Masters / View Master / View Cut
+Breadcrumbs::register('masters.cuts.show', function($breadcrumbs, $master, $cut)
+{
+    $breadcrumbs->parent('masters.show', $master);
+    $breadcrumbs->push('View Cut', route('masters.cuts.show', [$master->id, $cut->id]));
+});

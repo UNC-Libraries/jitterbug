@@ -42,6 +42,7 @@ Route::resource('items', 'ItemsController');
 Route::get('masters/resolve-range', 'MastersController@resolveRange');
 
 Route::resource('masters', 'MastersController');
+Route::resource('masters.cuts', 'CutsController', ['except' => ['index']]);
 
 
 // Display all SQL executed in Eloquent

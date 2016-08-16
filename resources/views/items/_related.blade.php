@@ -55,7 +55,7 @@
         </thead>
         <tbody>
           @foreach ($cuts as $cut)
-          <tr role="button" data-id="{{$cut->id}}">
+          <tr role="button" data-master="{{$cut->preservationMasterId}}" data-id="{{$cut->id}}">
             <td>{{$cut->preservationMasterId}}</td>
             <td>{{$cut->cutNumber}}</td>
             <td>{{$cut->side}}</td>
