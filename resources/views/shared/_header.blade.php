@@ -7,7 +7,7 @@
                 <a href="#">Admin</a>
               </li>
               <li class="last">
-                <a href="#">Sign Out</a>
+                <a href="/logout">Sign Out</a>
               </li>
             </ul>
           </div>

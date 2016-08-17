@@ -600,6 +600,11 @@ body {
   color: #4a4a4a;
 }
 
+.failed-login {
+  color: $brand-danger;
+  margin-bottom: .5rem;
+}
+
 @media(max-width:992px){
   #data-panel .search-container {
     width: 200px;

@@ -3,27 +3,31 @@
 @section('panel')
 <div id="sign-in-panel">
   <h4>Good Morning!</h4>
-  <form role="form" method="post" action="{{ url('/login') }}">
-    {{ csrf_field() }}
+  {!! Form::open(array('url' => '/login')) !!}
     <div style="margin-top: 2rem">
-      <div class="input-group">
+      @if ($errors->has('failedLogin'))
+      <div class="failed-login">
+        {!! $errors->first('failedLogin') !!}
+      </div>
+      @endif
+      <div class="input-group @if ($errors->has('username')) has-danger @endif">
         <div class="input-group-addon">
           <i class="fa fa-fw fa-user" aria-hidden="true"></i>
         </div>
-        <input id="username" type="text" class="form-control" name="username" value="{{ old('username') }}" placeholder="Onyen">
+        {!! Form::text('username', null, array('class'=>'form-control', 'placeholder'=>'Onyen')) !!}
       </div>
     </div>
     <div style="margin-top: .75rem">
-      <div class="input-group">
+      <div class="input-group @if ($errors->has('password')) has-danger @endif">
         <div class="input-group-addon">
           <i class="fa fa-fw fa-lock" aria-hidden="true"></i>
         </div>
-        <input id="password" type="password" class="form-control" name="password" value="{{ old('password') }}" placeholder="Password">
+        {!! Form::password('password', array('class'=>'form-control', 'placeholder'=>'Password')) !!}
       </div>
       <div style="margin-top: 1.5rem; margin-bottom: 1.5rem">
         <button type="submit" class="btn btn-primary btn-block" style="border: none">Sign In</button>
       </div>
     </div>
-  </form>
+  {!! Form::close() !!}
 </div>
 @endsection

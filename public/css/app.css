@@ -5075,6 +5075,10 @@ body {
   font-size: 2.3rem;
   color: #4a4a4a; }
 
+.failed-login {
+  color: #d16642;
+  margin-bottom: .5rem; }
+
 @media (max-width: 992px) {
   #data-panel .search-container {
     width: 200px; } }

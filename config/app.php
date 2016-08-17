@@ -151,20 +151,20 @@ return [
 		'Collective\Html\HtmlServiceProvider',
 
 		/*
-		 * Third-party Service Providers
-		 */
-
-		// Comes from davejamesmiller/laravel-breadcrumbs (3.0)
-		'DaveJamesMiller\Breadcrumbs\ServiceProvider',
-		'Adldap\Laravel\AdldapServiceProvider',
-
-		/*
 		 * Application Service Providers...
 		 */
 		'Junebug\Providers\AppServiceProvider',
         'Junebug\Providers\AuthServiceProvider',
 		'Junebug\Providers\EventServiceProvider',
 		'Junebug\Providers\RouteServiceProvider',
+
+		/*
+		 * Third-party Service Providers
+		 */
+		// Comes from davejamesmiller/laravel-breadcrumbs (3.0)
+		'DaveJamesMiller\Breadcrumbs\ServiceProvider',
+		'Adldap\Laravel\AdldapServiceProvider',
+		'Adldap\Laravel\AdldapAuthServiceProvider',
 
 
 	],

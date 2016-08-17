@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.master', ['title' => 'Home', 'section' => 'home'])
 
 @section('content')
 <div class="container">
@@ -8,7 +8,7 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                    You are logged in!
+                    You are logged in! {{ Auth::user() }}
                 </div>
             </div>
         </div>

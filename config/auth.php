@@ -33,7 +33,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'adldap',
         ],
         'api' => [
             'driver' => 'token',
@@ -57,6 +57,10 @@ return [
     |
     */
     'providers' => [
+        'adldap' => [
+            'driver' => 'adldap',
+            'model' => Junebug\Models\User::class,
+        ],
         'users' => [
             'driver' => 'eloquent',
             'model' => Junebug\Models\User::class,

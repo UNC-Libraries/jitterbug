@@ -51,6 +51,9 @@ Route::resource('masters.cuts', 'CutsController', ['except' => ['index']]);
 //     var_dump($query);
 // });
 
-Route::auth();
+// Authentication Routes...
+Route::get('login', 'Auth\AuthController@showLoginForm')->name('loginForm');
+Route::post('login', 'Auth\AuthController@login')->name('login');
+Route::get('logout', 'Auth\AuthController@logout')->name('logout');
 
 Route::get('/home', 'HomeController@index');
