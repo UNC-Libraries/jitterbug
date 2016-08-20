@@ -49,6 +49,11 @@ class SolariumProxy {
     } else if ($this->core==='junebug-masters') {
       $dismax->setQueryFields('id, callNumber^5 fileName^4 collectionName^3 ' .
       'cutTitles cutPerformerComposers formatName departmentName');
+
+    } else if ($this->core==='junebug-transfers') {
+      $dismax->setQueryFields('id, callNumber^5 engineerFirstName^4 ' . 
+      ' engineerLastName^4 collectionName^3 cutTitle cutPerformerComposer ' .
+      ' formatName departmentName');
     }
 
     $this->createFilterQueries($solariumQuery,$queryParams);

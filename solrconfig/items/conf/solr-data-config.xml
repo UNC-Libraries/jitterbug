@@ -57,7 +57,9 @@
                 FROM
                     cuts
                 WHERE
-                    call_number='${audio_visual_item.call_number}' ">
+                    call_number='${audio_visual_item.call_number}
+                ORDER BY
+                    id' ">
 
                 <field column="id" name="cutIds" />
                 <field column="performer_composer" name="cutPerformerComposers" />

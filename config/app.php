@@ -224,7 +224,7 @@ return [
 		'AudioItem'	                => 'Junebug\Models\AudioItem',
 		'VideoItem'	                => 'Junebug\Models\VideoItem',
 		'FilmItem'	                => 'Junebug\Models\FilmItem',
-		'AudioPreservationMaster'	=> 'Junebug\Models\AudioPreservationMaster',
+		'AudioMaster'	            => 'Junebug\Models\AudioMaster',
 		'PreservationMaster'	    => 'Junebug\Models\PreservationMaster',
 		'Cut'                       => 'Junebug\Models\Cut',
 		'AudioTransfer'             => 'Junebug\Models\AudioTransfer',

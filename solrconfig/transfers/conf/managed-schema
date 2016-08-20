@@ -29,7 +29,7 @@
  http://wiki.apache.org/solr/SchemaXml
 -->
 
-<schema name="items" version="1.6">
+<schema name="transfers" version="1.6">
   <!-- attribute "name" is the name of this schema and is only used for display purposes.
        version="x.y" is Solr's version number for the schema syntax and 
        semantics.  It should not normally be changed by applications.
@@ -114,22 +114,24 @@
 
    <!-- Junebug specific fields -->
    <field name="callNumber" type="string" indexed="true" stored="true" required="false" />
-   <field name="title" type="text_general" indexed="true" stored="true" required="false" />
-   <field name="containerNote" type="text_general" indexed="true" stored="true" required="false" />
-   <field name="recordingLocation" type="text_general" indexed="true" stored="true" required="false" />
-   <field name="itemDate" type="date" indexed="true" stored="true" required="false" />
+   <field name="transferDate" type="string" indexed="true" stored="true" required="false" />
+   <field name="preservationMasterId" type="string" indexed="true" stored="true" required="false" />
+   <field name="vendorId" type="string" indexed="true" stored="true" required="false" />
+   <field name="vendorName" type="text_general" indexed="true" stored="true" required="false" />
+   <field name="engineerId" type="string" indexed="true" stored="true" required="false" />
+   <field name="engineerFirstName" type="string" indexed="true" stored="true" required="false" />
+   <field name="engineerLastName" type="string" indexed="true" stored="true" required="false" />
    <field name="collectionId" type="string" indexed="true" stored="true" required="false" />
    <field name="collectionName" type="text_general" indexed="true" stored="true" required="false" />
    <field name="formatId" type="string" indexed="true" stored="true" required="false" />
    <field name="formatName" type="text_general" indexed="true" stored="true" required="false" />
+   <field name="cutId" type="string" indexed="true" stored="true" required="false" />
+   <field name="cutPerformerComposer" type="text_general" indexed="true" stored="true" required="false" />
+   <field name="cutTitle" type="text_general" indexed="true" stored="true" required="false" />
    <field name="typeId" type="string" indexed="true" stored="true" required="false" />
    <field name="typeName" type="string" indexed="true" stored="true" required="false" />
    <field name="createdAt" type="date" indexed="false" stored="true" required="false" />
    <field name="updatedAt" type="date" indexed="false" stored="true" required="false" />
-   <field name="cutIds" type="string" indexed="false" stored="true" required="false" multiValued="true" />
-   <field name="cutPerformerComposers" type="text_general" indexed="true" stored="true" required="false" multiValued="true" />
-   <field name="cutTitles" type="text_general" indexed="true" stored="true" required="false" multiValued="true" />
-
 
    <!-- Dynamic field definitions allow using convention over configuration
        for fields via the specification of patterns to match field names. 

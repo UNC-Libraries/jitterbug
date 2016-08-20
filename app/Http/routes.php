@@ -13,10 +13,12 @@
 
 Route::get('/', 'WelcomeController@index');
 
+// Alerts
+
 Route::get('alerts', 'AlertsController@index');
 Route::delete('alerts', 'AlertsController@destroy');
 
-Route::get('call-numbers/generate', 'CallNumbersController@generate');
+// Suggestions
 
 Route::group(['prefix' => 'suggestions'], function () {
   Route::get('recording-locations', 'SuggestionsController@recordingLocations');
@@ -26,6 +28,10 @@ Route::group(['prefix' => 'suggestions'], function () {
   Route::get('film-elements', 'SuggestionsController@filmElements');
   Route::get('film-bases', 'SuggestionsController@filmBases');
 });
+
+// Audio Visual Items
+
+Route::get('call-numbers/generate', 'CallNumbersController@generate');
 
 Route::get('items/resolve-range', 'ItemsController@resolveRange');
 
@@ -39,19 +45,21 @@ Route::put('items/batch', [
 
 Route::resource('items', 'ItemsController');
 
+// Preservation Masters
+
 Route::get('masters/resolve-range', 'MastersController@resolveRange');
 
 Route::resource('masters', 'MastersController');
 Route::resource('masters.cuts', 'CutsController', ['except' => ['index']]);
 
+// Transfers
 
-// Display all SQL executed in Eloquent
-// Event::listen('illuminate.query', function($query)
-// {
-//     var_dump($query);
-// });
+Route::get('transfers/resolve-range', 'MastersController@resolveRange');
 
-// Authentication Routes...
+Route::resource('transfers', 'TransfersController');
+
+// Authentication
+
 Route::get('login', 'Auth\AuthController@showLoginForm')->name('loginForm');
 Route::post('login', 'Auth\AuthController@login')->name('login');
 Route::get('logout', 'Auth\AuthController@logout')->name('logout');

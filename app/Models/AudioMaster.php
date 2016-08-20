@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Venturecraft\Revisionable\RevisionableTrait;
 
-class AudioPreservationMaster extends Model {
+class AudioMaster extends Model {
   use CamelCasing;
   use NullFieldPreserver;
   use RevisionableTrait;

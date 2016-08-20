@@ -1,21 +1,41 @@
 junebug = {
   clearStorage: function() {
     // clear items state
-    localStorage.removeItem('itemSearchField');
-    localStorage.removeItem('itemFilterPanel');
-    sessionStorage.removeItem('itemTableSelection');
-    localStorage.removeItem('itemTableParams');
+    localStorage.removeItem('itemsSearchField');
+    localStorage.removeItem('itemsFilterPanel');
+    sessionStorage.removeItem('itemsTableSelection');
+    localStorage.removeItem('itemsTableParams');
     // clear masters state
-    localStorage.removeItem('masterSearchField');
-    localStorage.removeItem('masterFilterPanel');
-    sessionStorage.removeItem('masterTableSelection');
-    localStorage.removeItem('masterTableParams');
+    localStorage.removeItem('mastersSearchField');
+    localStorage.removeItem('mastersFilterPanel');
+    sessionStorage.removeItem('mastersTableSelection');
+    localStorage.removeItem('mastersTableParams');
+    // clear transfers state
+    localStorage.removeItem('transfersSearchField');
+    localStorage.removeItem('transfersFilterPanel');
+    sessionStorage.removeItem('transfersTableSelection');
+    localStorage.removeItem('transfersTableParams');
   },
 
   initAjax: function() {
     $.ajaxSetup({
       headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
     });
+  },
+
+  initGreeting: function() {
+    var hour = new Date().getHours(),
+    greeting;
+    if (hour > 17) {
+      greeting = 'Good Evening!';
+    } else if (hour > 11) {
+      greeting = 'Good Afternoon!';
+    } else if (hour > 0) {
+      greeting = 'Good Morning!';
+    } else {
+      greeting = 'Welcome!';
+    }
+    $('#greeting').text(greeting);
   },
 
   getAlert: function() {
@@ -85,14 +105,14 @@ junebug = {
 
   initItemsNewButton: function() {
     $('#items-new').click(function(event) {
-      junebug.TableSelection.load('itemTableSelection','session').clear();
+      junebug.TableSelection.load('itemsTableSelection','session').clear();
     });
   },
 
   initItemsBatchMenu: function() {
     $('#items-batch-edit').click(function(event) {
       var tableSelection = 
-          junebug.TableSelection.load('itemTableSelection','session');
+          junebug.TableSelection.load('itemsTableSelection','session');
       if (tableSelection.count() == 0) {
         junebug.displayAlert('warning',
           '<strong>Here\'s a tip:</strong> Batch actions require a table selection. \
@@ -242,11 +262,11 @@ junebug = {
     });
   },
 
-  initItemsIndex: function() {
-    var searchField = junebug.SearchField.load('itemSearchField');
+  initIndexPage: function(resourceName) {
+    var searchField = junebug.SearchField.load(resourceName + 'SearchField');
     if (searchField==null) {
       searchField = new junebug.SearchField({
-          key:'itemSearchField',
+          key:resourceName + 'SearchField',
           selector:'#search'});
       searchField.init();
       searchField.store();
@@ -254,10 +274,10 @@ junebug = {
       searchField.init();
     }
 
-    var filterPanel = junebug.FilterPanel.load('itemFilterPanel');
+    var filterPanel = junebug.FilterPanel.load(resourceName + 'FilterPanel');
     if (filterPanel==null) {
       filterPanel = new junebug.FilterPanel({
-          key:'itemFilterPanel',
+          key:resourceName + 'FilterPanel',
           selector:'#filter-panel',
           listSelector: '.filter-list'});
       filterPanel.init();
@@ -266,73 +286,18 @@ junebug = {
       filterPanel.init();
     }
 
-    var tableParams = junebug.TableParams.load('itemTableParams');
+    var tableParams = junebug.TableParams.load(resourceName + 'TableParams');
     if (tableParams==null) {
       tableParams = new junebug.TableParams({
-          key:'itemTableParams'});
+          key:resourceName + 'TableParams'});
       tableParams.store();
     }
 
     var tableSelection = 
-      junebug.TableSelection.load('itemTableSelection','session');
+      junebug.TableSelection.load(resourceName + 'TableSelection','session');
     if (tableSelection==null) {
       tableSelection = new junebug.TableSelection({
-          key:'itemTableSelection',
-          location:'session',
-          resource: 'items',
-          selector:'#data tr[role="button"]',
-          countSelector:'.selection-count'});
-      tableSelection.init();
-      tableSelection.store();
-    } else {
-      tableSelection.init();
-      tableSelection.render();
-    }
-
-    var queryManager = new junebug.QueryManager(searchField, filterPanel, 
-                                tableParams, tableSelection, 'items');
-    tableSelection.setQueryManager(queryManager);
-
-    queryManager.init();
-    queryManager.executeQuery();
-  },
-
-  initMastersIndex: function() {
-    var searchField = junebug.SearchField.load('masterSearchField');
-    if (searchField==null) {
-      searchField = new junebug.SearchField({
-          key:'masterSearchField',
-          selector:'#search'});
-      searchField.init();
-      searchField.store();
-    } else {
-      searchField.init();
-    }
-
-    var filterPanel = junebug.FilterPanel.load('masterFilterPanel');
-    if (filterPanel==null) {
-      filterPanel = new junebug.FilterPanel({
-          key:'masterFilterPanel',
-          selector:'#filter-panel',
-          listSelector: '.filter-list'});
-      filterPanel.init();
-      filterPanel.store();
-    } else {
-      filterPanel.init();
-    }
-
-    var tableParams = junebug.TableParams.load('masterTableParams');
-    if (tableParams==null) {
-      tableParams = new junebug.TableParams({
-          key:'masterTableParams'});
-      tableParams.store();
-    }
-
-    var tableSelection = 
-      junebug.TableSelection.load('masterTableSelection','session');
-    if (tableSelection==null) {
-      tableSelection = new junebug.TableSelection({
-          key:'masterTableSelection',
+          key:resourceName + 'TableSelection',
           resource: 'masters',
           location:'session',
           selector:'#data tr[role="button"]',
@@ -345,11 +310,23 @@ junebug = {
     }
 
     var queryManager = new junebug.QueryManager(searchField, filterPanel, 
-                                tableParams, tableSelection, 'masters');
+                                tableParams, tableSelection, resourceName);
     tableSelection.setQueryManager(queryManager);
 
     queryManager.init();
     queryManager.executeQuery();
+  },
+
+  initItemsIndex: function() {
+    junebug.initIndexPage('items');
+  },
+
+  initMastersIndex: function() {
+    junebug.initIndexPage('masters');
+  },
+
+  initTransfersIndex: function() {
+    junebug.initIndexPage('transfers');
   },
 
   QueryManager: function(searchFieldInstance, filterPanelInstance,

@@ -23,7 +23,7 @@ class Transfer extends Model {
   public function getEngineerNameAttribute()
   {
     $name = null;
-    if ($this->engineer != null) {
+    if ($this->engineer !== null) {
       $firstName = $this->engineer->firstName;
       $lastName = $this->engineer->lastName;
     } else {

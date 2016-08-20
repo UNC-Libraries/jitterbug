@@ -9,7 +9,7 @@
   </div>
   <div class="row">
     <div class="col-xs-12 col-e0">
-      <h6>{{$master->type}} Preservation Master Details</h6>
+      <h6>{{$master->type}} Master Details</h6>
     </div>
   </div>
   {{-- Preservation Master Fields --}}
@@ -108,7 +108,7 @@
     <div class="col-xs-6">
       {{-- Begin Masterable Fields --}}
 
-      @if (get_class($master->masterable) === 'Junebug\Models\AudioPreservationMaster')
+      @if (get_class($master->masterable) === 'Junebug\Models\AudioMaster')
       @if ($master->masterable->tapeBrand)
       <div class="row">
         <div class="col-xs-4 detail-label">
@@ -150,10 +150,10 @@
       </div>
       @endif
       @endif
-      @if (get_class($master->masterable) === 'Junebug\Models\FilmPreservationMasters')
+      @if (get_class($master->masterable) === 'Junebug\Models\FilmMaster')
 
       @endif
-      @if (get_class($master->masterable) === 'Junebug\Models\VideoPreservationMasters')
+      @if (get_class($master->masterable) === 'Junebug\Models\VideoMaster')
 
       @endif
       {{-- End Masterable Fields --}}

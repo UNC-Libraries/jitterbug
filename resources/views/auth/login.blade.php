@@ -2,7 +2,7 @@
 
 @section('panel')
 <div id="sign-in-panel">
-  <h4>Good Morning!</h4>
+  <h4 id='greeting'></h4>
   {!! Form::open(array('url' => '/login')) !!}
     <div style="margin-top: 2rem">
       @if ($errors->has('failedLogin'))

@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 
 use Log;
 
-use Junebug\Http\Requests;
 use Junebug\Http\Controllers\Controller;
 use Junebug\Models\AudioVisualItem;
 use Junebug\Models\Cut;

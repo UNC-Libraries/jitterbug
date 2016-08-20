@@ -8,6 +8,12 @@ JUNEBUG = {
     }
   },
 
+  auth: {
+    showLoginForm: function() {
+      junebug.initGreeting();
+    }
+  },
+
   items: {
     init: function() {
       // controller-wide code 
@@ -61,7 +67,7 @@ JUNEBUG = {
     show: function() {
       junebug.initRevisionHistory();
       junebug.initRelatedCuts();
-    },
+    }
   },
 
   cuts: {
@@ -71,8 +77,20 @@ JUNEBUG = {
 
     show: function() {
       junebug.initRevisionHistory();
+    }
+  },
+
+  transfers: {
+    init: function() {
+      // controller-wide code 
     },
-  }
+
+    index: function() {
+      junebug.initTransfersIndex();
+      junebug.initTableKeyboardShortcuts();
+    }
+
+  },
 
 };
 

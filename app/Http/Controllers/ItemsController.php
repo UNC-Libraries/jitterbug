@@ -329,12 +329,12 @@ class ItemsController extends Controller
     if ($updateSolrMastersAndTransfers) {
       $masters = PreservationMaster::where('call_number', 
                                                   $item->callNumber)->get();
-      if ($masters != null) {
+      if ($masters !== null) {
         $this->solrMasters->update($masters);
       }
 
       // $transfers = Transfer::where('call_number', $item->callNumber)->get();
-      // if ($transfers != null) {
+      // if ($transfers !== null) {
       //   $this->solrTransfers->update($transfers);
       // }
     }
@@ -390,12 +390,12 @@ class ItemsController extends Controller
     foreach ($collectionOrFormatUpdated as $item) {
       $masters = 
         PreservationMaster::where('call_number', $item->callNumber)->get();
-      if($masters != null) {
+      if($masters !== null) {
         $this->solrMasters->update($masters);
       }
       // $transfers = 
       //   Transfer::where('call_number', $item->callNumber)->get();
-      // if($transfers != null) {
+      // if($transfers !== null) {
       //   $this->solrTransfers->update($transfers);
       // }     
     }
@@ -457,10 +457,10 @@ class ItemsController extends Controller
     // Update Solr
     $this->solrItems->delete($item);
     if ($command==='all') {
-      if ($masters != null) {
+      if ($masters !== null) {
         $this->solrMasters->delete($masters);
       }
-      if ($transfers != null) {
+      if ($transfers !== null) {
         //$this->solrTransfers->delete($transfers);
       }
     }
@@ -476,7 +476,7 @@ class ItemsController extends Controller
   {
     $itemable = null;
     $itemableType = $request->itemableType;
-    if($itemableType==='AudioItem') {
+    if ($itemableType==='AudioItem') {
       $itemable = new AudioItem;
     } else if ($itemableType==='FilmItem') {
       $itemable = new FilmItem;

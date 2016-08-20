@@ -27,7 +27,7 @@
                 <a class="{{$section==='masters' ? 'active' : ''}}" href="{{route('masters.index')}}"><i class="fa fa-database fa-fw" aria-hidden="true"></i> Preservation Masters</a>
               </li>
               <li>
-                <a class="{{$section==='transfers' ? 'active' : ''}}" href="#"><i class="fa fa-exchange fa-fw" aria-hidden="true"></i> Transfers</a>
+                <a class="{{$section==='transfers' ? 'active' : ''}}" href="{{route('transfers.index')}}"><i class="fa fa-exchange fa-fw" aria-hidden="true"></i> Transfers</a>
               </li>
             </ul>
           </nav>

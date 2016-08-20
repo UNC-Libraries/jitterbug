@@ -1,0 +1,73 @@
+<dataConfig>
+    <dataSource driver="com.mysql.jdbc.Driver" type="JdbcDataSource"
+        url="jdbc:mysql://localhost:3306/junebug" user="root" password="" />
+    <document>
+        <!-- this entity is the 'root' entity. -->
+        <entity name="transfer" query="
+
+            SELECT 
+                transfers.id AS id,
+                transfers.call_number AS call_number,
+                transfers.transfer_date AS transfer_date,
+                transfers.preservation_master_id AS preservation_master_id,
+                transfers.vendor_id AS vendor_id,
+                vendors.name AS vendor_name,
+                transfers.engineer_id AS engineer_id,
+                users.first_name AS engineer_first_name,
+                users.last_name AS engineer_last_name,
+                transfers.cut_id AS cut_id,
+                cuts.title AS cut_title,
+                cuts.performer_composer AS cut_performer_composer,
+                items.collection_id AS collection_id,
+                collections.name AS collection_name,
+                items.format_id AS format_id,
+                formats.name AS format_name,
+                types.id AS type_id,
+                TRIM(TRAILING 'Transfer' FROM transfers.transferable_type) AS type_name,
+                transfers.created_at AS created_at,
+                transfers.updated_at AS updated_at
+            FROM
+                transfers
+            LEFT JOIN audio_visual_items AS items ON
+                transfers.call_number = items.call_number
+            LEFT JOIN collections ON
+                items.collection_id = collections.id
+            LEFT JOIN vendors ON
+                transfers.vendor_id = vendors.id
+            LEFT JOIN formats ON
+                items.format_id = formats.id
+            LEFT JOIN users ON
+                transfers.engineer_id = users.id
+            LEFT JOIN cuts ON
+                transfers.cut_id = cuts.id
+            LEFT JOIN media_types AS types ON
+                TRIM(TRAILING 'Transfer' FROM transfers.transferable_type) = types.name
+            WHERE
+                transfers.deleted_at is null;
+
+        ">
+
+            <field column="id" name="id" />
+            <field column="call_number" name="callNumber" />
+            <field column="transfer_date" name="transferDate" />
+            <field column="preservation_master_id" name="preservationMasterId" />
+            <field column="vendor_id" name="vendorId" />
+            <field column="vendor_name" name="vendorName" />
+            <field column="engineer_id" name="engineerId" />
+            <field column="engineer_first_name" name="engineerFirstName" />
+            <field column="engineer_last_name" name="engineerLastName" />
+            <field column="cut_id" name="cutId" />
+            <field column="cut_performer_composer" name="cutPerformerComposer" />
+            <field column="cut_title" name="cutTitle" />
+            <field column="collection_id" name="collectionId" />
+            <field column="collection_name" name="collectionName" />
+            <field column="format_id" name="formatId" />
+            <field column="format_name" name="formatName" />
+            <field column="type_id" name="typeId" />
+            <field column="type_name" name="typeName" />
+            <field column="created_at" name="createdAt" />
+            <field column="updated_at" name="updatedAt" />
+
+        </entity>
+    </document>
+</dataConfig>
