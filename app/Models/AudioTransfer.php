@@ -15,4 +15,14 @@ class AudioTransfer extends Model {
 
   protected $revisionCreationsEnabled = true;
 
+  protected $revisionFormattedFields = array(
+    'stylus' => 'isEmpty:nothing|%s',
+    'cartridge' => 'isEmpty:nothing|%s',
+    'first_sound' => 'isEmpty:nothing|%s',
+  );
+
+  protected $revisionFormattedFieldNames = array(
+    'first_sound' => 'first sound',
+  );
+
 }

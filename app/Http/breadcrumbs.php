@@ -46,3 +46,16 @@ Breadcrumbs::register('masters.cuts.show', function($breadcrumbs, $master, $cut)
     $breadcrumbs->parent('masters.show', $master);
     $breadcrumbs->push('View Cut', route('masters.cuts.show', [$master->id, $cut->id]));
 });
+
+// Transfers
+Breadcrumbs::register('transfers.index', function($breadcrumbs)
+{
+    $breadcrumbs->push('Transfers', route('transfers.index'));
+});
+
+// Transfers / View Transfer
+Breadcrumbs::register('transfers.show', function($breadcrumbs, $transfer)
+{
+    $breadcrumbs->parent('transfers.index');
+    $breadcrumbs->push('View Transfer', route('transfers.show', $transfer->id));
+});

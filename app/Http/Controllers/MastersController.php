@@ -68,6 +68,7 @@ class MastersController extends Controller {
   public function show($id)
   {
     $master = PreservationMaster::findOrFail($id);
+    // TODO make these relations on preservation masters
     $transfers = Transfer::where('preservation_master_id', $master->id)->get();
     $cuts = Cut::where('preservation_master_id', $master->id)
                ->orderBy('cut_number', 'asc')

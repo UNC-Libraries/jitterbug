@@ -262,6 +262,12 @@ junebug = {
     });
   },
 
+  initRelatedTransfers: function() {
+    $('#related-transfers tr[role="button"]').click(function(event) {
+      window.location.href='/transfers/' + $(this).data('id');
+    });
+  },
+
   initIndexPage: function(resourceName) {
     var searchField = junebug.SearchField.load(resourceName + 'SearchField');
     if (searchField==null) {
@@ -298,7 +304,7 @@ junebug = {
     if (tableSelection==null) {
       tableSelection = new junebug.TableSelection({
           key:resourceName + 'TableSelection',
-          resource: 'masters',
+          resource: resourceName,
           location:'session',
           selector:'#data tr[role="button"]',
           countSelector:'.selection-count'});

@@ -56,6 +56,14 @@ class TransfersController extends Controller {
     return view('transfers.index', compact('types', 'collections', 'formats'));
   }
 
+  /**
+   * Display the details of a transfer.
+   */
+  public function show($id)
+  {
+    $transfer = Transfer::findOrFail($id);
+    return view('transfers.show', compact('transfer'));
+  }
 
   public function resolveRange(Request $request)
   {

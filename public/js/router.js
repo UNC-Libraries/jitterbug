@@ -67,6 +67,7 @@ JUNEBUG = {
     show: function() {
       junebug.initRevisionHistory();
       junebug.initRelatedCuts();
+      junebug.initRelatedTransfers();
     }
   },
 
@@ -77,6 +78,7 @@ JUNEBUG = {
 
     show: function() {
       junebug.initRevisionHistory();
+      junebug.initRelatedTransfers();
     }
   },
 
@@ -88,8 +90,12 @@ JUNEBUG = {
     index: function() {
       junebug.initTransfersIndex();
       junebug.initTableKeyboardShortcuts();
-    }
+    },
 
+    show: function() {
+      junebug.initRevisionHistory();
+      junebug.initRelatedCuts();
+    }
   },
 
 };

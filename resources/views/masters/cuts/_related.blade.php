@@ -21,9 +21,9 @@
           <tr role="button" data-master="{{$transfer->preservationMasterId}}" data-id="{{$transfer->id}}">
             <td>{{$transfer->preservationMasterId}}</td>
             <td>{{$transfer->transferDate}}</td>
-            <td>@if ($transfer->playbackMachine !== null){{$transfer->playbackMachine->name}}@endif</td>
+            <td>@if ($transfer->playbackMachine){{$transfer->playbackMachine->name}}@endif</td>
             <td>{{$transfer->engineerName}}</td>
-            <td>{{--$transfer->vendor->name--}}</td>
+            <td>@if ($transfer->vendor){{$transfer->vendor->name}}@endif</td>
             <td>{{$transfer->conditionNote}}</td>
           </tr>                      
         </tbody>

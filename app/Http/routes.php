@@ -32,30 +32,24 @@ Route::group(['prefix' => 'suggestions'], function () {
 // Audio Visual Items
 
 Route::get('call-numbers/generate', 'CallNumbersController@generate');
-
 Route::get('items/resolve-range', 'ItemsController@resolveRange');
-
 Route::post('items/batch/edit', [
     'as' => 'items.editBatch', 'uses' => 'ItemsController@editBatch'
 ]);
-
 Route::put('items/batch', [
     'as' => 'items.updateBatch', 'uses' => 'ItemsController@updateBatch'
 ]);
-
 Route::resource('items', 'ItemsController');
 
 // Preservation Masters
 
 Route::get('masters/resolve-range', 'MastersController@resolveRange');
-
 Route::resource('masters', 'MastersController');
 Route::resource('masters.cuts', 'CutsController', ['except' => ['index']]);
 
 // Transfers
 
-Route::get('transfers/resolve-range', 'MastersController@resolveRange');
-
+Route::get('transfers/resolve-range', 'TransfersController@resolveRange');
 Route::resource('transfers', 'TransfersController');
 
 // Authentication

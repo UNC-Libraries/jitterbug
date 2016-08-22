@@ -2,13 +2,8 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class Department extends Model {
-  use CamelCasing;
-    
-  public function preservationMasters()
-  {
-     return $this->hasMany('Junebug\Models\PreservationMaster')->get();
-  }
+class Vendor extends Model {
+	use CamelCasing;
 
   /**
    * Used by Revisionable to get a display name for the model.

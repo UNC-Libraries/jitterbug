@@ -14,6 +14,7 @@ abstract class Controller extends BaseController {
   public function rangeFor(Request $request, $proxy)
   {
     $queryParams = json_decode(urldecode($request->query('q')));
+    \Log::info(urldecode($request->query('q')));
     $range = json_decode(urldecode($request->query('r')));
     $beginIndex = $range->beginIndex;
     $beginId = $range->beginId;
@@ -28,12 +29,12 @@ abstract class Controller extends BaseController {
     $itemIds = array();
     $index = $start;
     foreach ($resultSet as $item) {
-      if ($index == $beginIndex && $item->id != $beginId) {
+      if ($index == $beginIndex && $item->id != $beginId) {   
         $this->invalidRange();
       }
       if ($index == $endIndex && $item->id != $endId) {
         $this->invalidRange();
-      }      
+      }
       array_push($itemIds, $item->id);
       $index++;
     }
