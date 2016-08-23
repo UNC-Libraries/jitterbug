@@ -61,9 +61,9 @@
                 FROM
                     cuts
                 WHERE
-                    call_number='${preservation_master.call_number}
+                    preservation_master_id='${preservation_master.id}'
                 ORDER BY
-                    id' ">
+                    id ">
 
                 <field column="id" name="cutIds" />
                 <field column="performer_composer" name="cutPerformerComposers" />
