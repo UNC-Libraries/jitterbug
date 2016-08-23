@@ -36,7 +36,7 @@ class Transfer extends Model {
    */
   public function cut()
   {
-    return $this->belongsTo('Junebug\Models\Cut');
+    return $this->hasOne('Junebug\Models\Cut');
   }
 
   public function engineer()

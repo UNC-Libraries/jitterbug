@@ -17,7 +17,7 @@ class Cut extends Model {
 
   public function transfer()
   {
-    return $this->hasOne('Junebug\Models\Transfer');
+    return $this->belongsTo('Junebug\Models\Transfer');
   }
 
   /**

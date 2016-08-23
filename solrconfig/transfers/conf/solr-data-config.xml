@@ -15,7 +15,7 @@
                 transfers.engineer_id AS engineer_id,
                 users.first_name AS engineer_first_name,
                 users.last_name AS engineer_last_name,
-                transfers.cut_id AS cut_id,
+                cuts.id AS cut_id,
                 cuts.title AS cut_title,
                 cuts.performer_composer AS cut_performer_composer,
                 items.collection_id AS collection_id,
@@ -39,7 +39,7 @@
             LEFT JOIN users ON
                 transfers.engineer_id = users.id
             LEFT JOIN cuts ON
-                transfers.cut_id = cuts.id
+                transfers.id = cuts.transfer_id
             LEFT JOIN media_types AS types ON
                 TRIM(TRAILING 'Transfer' FROM transfers.transferable_type) = types.name
             WHERE
