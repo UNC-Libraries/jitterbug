@@ -33,6 +33,7 @@ class ItemsController extends Controller
   
   protected $solrItems;
   protected $solrMasters;
+  protected $solrTransfers;
 
   /**
    * Create a new controller instance.
@@ -41,6 +42,7 @@ class ItemsController extends Controller
    */
   public function __construct()
   {
+    $this->middleware('auth');
     $this->solrItems = new SolariumProxy('junebug-items');
     $this->solrMasters = new SolariumProxy('junebug-masters');
     // $this->solrTransfers = new SolariumProxy('junebug-transfers');
@@ -202,7 +204,7 @@ class ItemsController extends Controller
     $itemIdsCount = count($itemIds);
 
     if($itemIdsCount > $max) {
-      $request->session()->put('alert', array('type' => 'danger', 'message' => 
+      $request->session()->put('alert', array('type' => 'danger', 'message' =>
         '<strong>Whoa there!</strong> ' . 
         'Batch editing is limited to ' . $max . ' items. Please narrow ' .
         'your selection.'));

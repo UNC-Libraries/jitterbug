@@ -90,6 +90,8 @@ JUNEBUG = {
     index: function() {
       junebug.initTransfersIndex();
       junebug.initTableKeyboardShortcuts();
+      junebug.initFileSelect();
+      junebug.initAudioImportModal();
     },
 
     show: function() {

@@ -43,6 +43,7 @@ class PreservationMaster extends Model {
 
   public function cuts()
   {
+    // TODO change to get by preservation master id
     return $this->hasMany('Junebug\Models\Cut', 'call_number');
   }
 

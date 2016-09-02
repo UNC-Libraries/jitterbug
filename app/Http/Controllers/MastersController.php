@@ -27,6 +27,7 @@ class MastersController extends Controller {
    */
   public function __construct()
   {
+    $this->middleware('auth');
     $this->solrMasters = new SolariumProxy('junebug-masters');
   }
 
@@ -74,6 +75,20 @@ class MastersController extends Controller {
                ->orderBy('cut_number', 'asc')
                ->get();
     return view('masters.show', compact('master', 'transfers', 'cuts'));
+  }
+
+  /**
+   * Display the form for editing a master.
+   */
+  public function edit($id)
+  {
+    $master = PreservationMaster::findOrFail($id);
+    $cuts = Cut::where('preservation_master_id', $master->id)
+               ->orderBy('cut_number', 'asc')
+               ->get();
+
+    return view('masters.edit', 
+      compact('master', 'cuts', 'collections', 'formats'));
   }
 
   public function resolveRange(Request $request)

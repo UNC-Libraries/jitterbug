@@ -59,9 +59,68 @@ junebug = {
     }
   },
 
-  initDatepicker: function() {
-    $('#detail .input-group.date').datepicker({
-      format: "yyyy-mm-dd"
+  initItemsNewButton: function() {
+    $('#items-new').click(function(event) {
+      junebug.TableSelection.load('itemsTableSelection','session').clear();
+    });
+  },
+
+  initItemsBatchMenu: function() {
+    $('#items-batch-edit').click(function(event) {
+      var tableSelection = 
+          junebug.TableSelection.load('itemsTableSelection','session');
+      if (tableSelection.count() == 0) {
+        junebug.displayAlert('warning',
+          '<strong>Here\'s a tip:</strong> Batch actions require a table selection. \
+          Make a selection by \'shift-clicking\' or \'command-clicking\' \
+          on rows of the table.');
+        return;
+      }
+
+      var form = $(document.createElement('form'));
+      form.attr('action', '/items/batch/edit');
+      form.attr('method', 'post');
+      $('<input>').attr('type', 'hidden')
+        .attr('name', 'ids')
+        .attr('value', tableSelection.ids)
+        .appendTo(form);
+      $('<input>').attr('type', 'hidden')
+        .attr('name', '_token')
+        .attr('value', $('meta[name="csrf-token"]').attr('content'))
+        .appendTo(form);                              
+      form.appendTo(document.body).submit().remove();
+    });
+  },
+  
+  initItemSuggestions: function() {
+    $('#recording-location').autocomplete({
+      serviceUrl: '/suggestions/recording-locations',
+      deferRequestBy: 100
+    });
+
+    $('#speed').autocomplete({
+      serviceUrl: '/suggestions/speeds',
+      deferRequestBy: 100
+    });
+
+    $('#track-configuration').autocomplete({
+      serviceUrl: '/suggestions/track-configurations',
+      deferRequestBy: 100
+    });
+
+    $('#audio-base').autocomplete({
+      serviceUrl: '/suggestions/audio-bases',
+      deferRequestBy: 100
+    });
+
+    $('#film-element').autocomplete({
+      serviceUrl: '/suggestions/film-elements',
+      deferRequestBy: 100
+    });
+
+    $('#film-base').autocomplete({
+      serviceUrl: '/suggestions/film-bases',
+      deferRequestBy: 100
     });
   },
 
@@ -103,39 +162,166 @@ junebug = {
     });
   },
 
-  initItemsNewButton: function() {
-    $('#items-new').click(function(event) {
-      junebug.TableSelection.load('itemsTableSelection','session').clear();
+  initFileSelect: function() {
+    $(':file').change(function() {
+      var input = $(this),
+      fileName = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+      input.trigger('fileselect', fileName);
+    });
+    $('#audio-import-file').on('fileselect', function(event, fileName) {
+      $('#audio-import-filename').val(fileName);
+    });
+    $('#vendor-import-file').on('fileselect', function(event, fileName) {
+      $('#vendor-import-filename').val(fileName);
     });
   },
 
-  initItemsBatchMenu: function() {
-    $('#items-batch-edit').click(function(event) {
-      var tableSelection = 
-          junebug.TableSelection.load('itemsTableSelection','session');
-      if (tableSelection.count() == 0) {
-        junebug.displayAlert('warning',
-          '<strong>Here\'s a tip:</strong> Batch actions require a table selection. \
-          Make a selection by \'shift-clicking\' or \'command-clicking\' \
-          on rows of the table.');
+  initAudioImportModal: function() {
+    junebug.initAudioUploadForm();
+    junebug.initAudioImportForm();
+
+    // Click handlers for 'start over' links and buttons
+    $('#audio-import-modal .reset').click(function(event) {
+      event.preventDefault();
+      junebug.resetAudioImportModal();
+    });
+
+    // Clean up when modal is closed
+    $('#audio-import-modal').on('hidden.bs.modal', function () {
+      junebug.resetAudioImportModal();
+    });
+  },
+
+  resetAudioImportModal: function() {
+    $('#audio-import-file').val('');
+    $('#audio-import-filename').val('');
+    $('#audio-upload-form-error').html('').hide();
+    $('#audio-import-dialog').width(400);
+    $('#audio-import-dialog-content').width(400);
+    $('#audio-import-step-2 .modal-body').height(80);
+    // In order to scroll a div, it must not be hidden
+    $('#audio-import-step-2').show();
+    $('#audio-import-step-2 .modal-body').scrollTop(0);
+    $('#audio-import-step-1').show();
+    $('#audio-import-step-2').hide();
+    $('#audio-import-step-2 .success-actions').show();
+    $('#audio-import-step-2 .failure-actions').hide();
+    $('#audio-import-step-3 .modal-body').scrollTop(0);
+    $('#audio-import-step-3').hide();
+  },
+
+  initAudioUploadForm: function() {
+    $('#audio-upload-form').submit( function(event) {
+      event.preventDefault();
+
+      if(!junebug.validateUploadForm('audio')) {
         return;
       }
 
-      var form = $(document.createElement('form'));
-      form.attr('action', '/items/batch/edit');
-      form.attr('method', 'post');
-      $('<input>').attr('type', 'hidden')
-        .attr('name', 'ids')
-        .attr('value', tableSelection.ids)
-        .appendTo(form);
-      $('<input>').attr('type', 'hidden')
-        .attr('name', '_token')
-        .attr('value', $('meta[name="csrf-token"]').attr('content'))
-        .appendTo(form);                              
-      form.appendTo(document.body).submit().remove();
+      $('#audio-upload-spinner').show();
+      var form = new FormData(this);
+      $.ajax({
+        url: $(this).attr('action'),
+        type: 'post',
+        data: form,
+        processData: false,
+        contentType: false, 
+        success: function (data) {
+          console.log('upload success');
+          var count = data['count'];
+          if (count==0) {
+            $('#audio-import-step-2 .success-actions').hide();
+            $('#audio-import-step-2 .failure-actions').show();
+          }
+          // Animation is handled via CSS transition
+          $('#audio-import-dialog').width(700);
+          $('#audio-import-dialog-content').width(700);
+          // Delay to let the css transition finish (hack)
+          var delay = 500;
+          setTimeout(function() {
+            $('#audio-import-step-1').hide();
+            $('#audio-import-step-2').show();
+            $('#audio-import-step-2 .modal-body').height(300);
+          }, delay);
+
+          $('#audio-upload-data-container').replaceWith(data['html']);
+        },
+        error: function (jqXHR, textStatus, error) {
+          console.log('upload failure: ' + textStatus);
+          if (jqXHR.status==500) {
+            $('#audio-upload-form-error').html('<small>An error occurred \
+              while parsing your file. Check that it\'s a \
+              valid .csv file.</small>').show();
+          } else {
+            $('#audio-upload-form-error').html('<small>An error occurred \
+              while uploading your file. Refresh the page and try \
+              again.</small>').show();
+          }
+        },
+        complete: function() {
+          $('#audio-upload-spinner').hide();
+        }
+      });
     });
   },
-  
+
+  initAudioImportForm: function() {
+    $('#audio-import-form').submit( function(event) {
+      event.preventDefault();
+
+      $('#audio-import-spinner').show();
+      var form = new FormData(this);
+      $.ajax({
+        url: $(this).attr('action'),
+        type: 'post',
+        data: form,
+        processData: false,
+        contentType: false, 
+        success: function (data) {
+          var status = data['status'];
+
+          $('#audio-import-result-container').replaceWith(data['html']);
+          $('#audio-import-step-2').hide();
+          $('#audio-import-step-3 .modal-body').height(300);
+          $('#audio-import-step-3').show();
+          // Initialize popovers which contain any errors
+          junebug.initPopovers();
+        },
+        error: function (jqXHR, textStatus, error) {
+          console.log('import failure: ' + textStatus);
+        },
+        complete: function() {
+          $('#audio-import-spinner').hide();
+        }
+      });
+    });
+  },
+
+  validateUploadForm: function(type) {
+    if ($('#' + type + '-import-file').val() == '' ||
+        $('#' + type + '-import-filename').val() == '') {
+      $('#' + type + '-upload-form-error').html('<small>Please select a \
+        data file to upload.</small>').show();
+      return false;
+    } else if (!$('#' + type + '-import-filename').val().endsWith('.csv')) {
+      $('#' + type + '-upload-form-error').html('<small>A file of type \
+        .csv is required.</small>').show();
+    } else {
+      $('#' + type + '-upload-form-error').html('').hide();
+      return true;
+    }
+  },
+
+  initPopovers: function() {
+    $('[data-toggle="popover"]').popover();
+  },
+
+  initDatepicker: function() {
+    $('#detail .input-group.date').datepicker({
+      format: "yyyy-mm-dd"
+    });
+  },
+
   // When a user batch edits records, some form fields will
   // be set to a value of <mixed>, meaning that those
   // fields differ across the batch. When a user
@@ -214,38 +400,6 @@ junebug = {
         icon.addClass('fa-caret-right');
       }
       $('.revision-history').slideToggle(200);
-    });
-  },
-
-  initItemSuggestions: function() {
-    $('#recording-location').autocomplete({
-      serviceUrl: '/suggestions/recording-locations',
-      deferRequestBy: 100
-    });
-
-    $('#speed').autocomplete({
-      serviceUrl: '/suggestions/speeds',
-      deferRequestBy: 100
-    });
-
-    $('#track-configuration').autocomplete({
-      serviceUrl: '/suggestions/track-configurations',
-      deferRequestBy: 100
-    });
-
-    $('#audio-base').autocomplete({
-      serviceUrl: '/suggestions/audio-bases',
-      deferRequestBy: 100
-    });
-
-    $('#film-element').autocomplete({
-      serviceUrl: '/suggestions/film-elements',
-      deferRequestBy: 100
-    });
-
-    $('#film-base').autocomplete({
-      serviceUrl: '/suggestions/film-bases',
-      deferRequestBy: 100
     });
   },
 

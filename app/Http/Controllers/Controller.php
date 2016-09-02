@@ -14,7 +14,6 @@ abstract class Controller extends BaseController {
   public function rangeFor(Request $request, $proxy)
   {
     $queryParams = json_decode(urldecode($request->query('q')));
-    \Log::info(urldecode($request->query('q')));
     $range = json_decode(urldecode($request->query('r')));
     $beginIndex = $range->beginIndex;
     $beginId = $range->beginId;

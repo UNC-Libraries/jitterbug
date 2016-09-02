@@ -18,7 +18,7 @@ class SolariumProxy {
     $this->client = $this->clientFor($core);
   }
 
-  protected static function clientFor($core)
+  protected function clientFor($core)
   {
     $config = Config::get('solarium');
     $endpointKeys = array_keys($config);

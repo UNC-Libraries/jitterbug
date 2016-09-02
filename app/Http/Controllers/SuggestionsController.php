@@ -27,7 +27,7 @@ use Illuminate\Http\Request;
  * etc.
  *
  * 4. In app.js, add a jQuery selector using the id you created in step 3,
- * then call autocomplete. The serviceUrl should correspond to teh route
+ * then call autocomplete. The serviceUrl should correspond to the route
  * you created in step 2. For example:
  * 
  *  $('#speed').autocomplete({
@@ -44,7 +44,7 @@ class SuggestionsController extends Controller {
    */
   public function __construct()
   {
-    $this->middleware('guest');
+    $this->middleware('auth');
   }
 
   public function recordingLocations(Request $request)

@@ -1,7 +1,36 @@
-@import "node_modules/bootstrap/scss/bootstrap.scss";
-
-
 /*  * { border: 1px solid black; } */
+
+$brand-primary:             #4f8d06 !default;
+$brand-warning:             #d1a842 !default;
+$brand-danger:              #d16642 !default;
+
+$container-max-widths: (
+  sm: 576px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px
+) !default;
+
+$border-radius-sm:               .25rem !default;
+
+$btn-secondary-color:            #707070 !default;
+$btn-secondary-bg:               #e9e9e9 !default;
+
+$state-success-text:             #fff !default;
+$state-success-bg:               #72a137 !default;
+$state-success-border:           darken($state-success-bg, 5%) !default;
+
+$state-warning-text:             #fff !default;
+$state-warning-bg:               $brand-warning !default;
+$state-warning-border:           darken($state-warning-bg, 5%) !default;
+
+$state-danger-text:              #fff !default;
+$state-danger-bg:                $brand-danger !default;
+$state-danger-border:            darken($state-danger-bg, 5%) !default;
+
+$modal-sm:                       400px !default;
+
+@import "node_modules/bootstrap/scss/bootstrap.scss";
 
 $global-nav-bg:                #417505;
 $global-nav-button-bg:         $brand-primary;
@@ -16,6 +45,39 @@ a:link, a:visited, a:hover, a:active {
   color: $link-color;
   text-decoration: none;
 }
+
+body {
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial;
+  background-color: #ededed;
+}
+
+/* -------------------------------------------
+Sign In/Out
+------------------------------------------- */
+
+#sign-in-panel {
+  max-width: 430px;
+  margin: 0 auto;
+  padding: 2.5rem 4rem;
+  background-color: #fff;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5)
+}
+
+#sign-in-panel h4 {
+  font-family: 'Yanone Kaffeesatz', 'YanoneKaffeesatz-Light', sans-serif;
+  font-weight: 300;
+  font-size: 2.3rem;
+  color: #4a4a4a;
+}
+
+.failed-login {
+  color: $brand-danger;
+  margin-bottom: .5rem;
+}
+
+/* -------------------------------------------
+Header & Footer
+------------------------------------------- */
 
 #banner {
   margin-bottom: 5px;
@@ -55,6 +117,14 @@ a:link, a:visited, a:hover, a:active {
   padding-right: 0;
   border-right: 0;
 }
+
+#footer {
+  margin-bottom: 5rem;
+}
+
+/* -------------------------------------------
+Global Navigation
+------------------------------------------- */
 
 #global-nav {
   border-radius: $border-radius-sm $border-radius-sm 0 0;
@@ -100,6 +170,10 @@ a:link, a:visited, a:hover, a:active {
   background-color: $global-nav-button-hover-bg;
 }
 
+/* -------------------------------------------
+Filter Panel
+------------------------------------------- */
+
 #filter-panel {
   background-color: #f0f0f0;
   padding: 0;
@@ -138,6 +212,10 @@ a:link, a:visited, a:hover, a:active {
   color: #8c8c8c;
   margin-left: .1rem;
 }
+
+/* -------------------------------------------
+Data Panel
+------------------------------------------- */
 
 #data-panel {
   background-color: #fff;
@@ -218,29 +296,190 @@ a:link, a:visited, a:hover, a:active {
   border-radius: $border-radius-sm;
 }
 
-#footer {
-  margin-bottom: 5rem;
+@media(max-width:992px){
+  #data-panel .search-container {
+    width: 200px;
+  }
 }
 
+/* -------------------------------------------
+Record Details
+------------------------------------------- */
 
-/* 
- * #content and #content .panel are hacks
- * to workaround columns not displaying the 
- * same height.
- */
-#content {
+#detail {
+  font-size: .9rem;
+}
+
+#detail h6 {
+  background-color: #e0e0e0;
+  padding-top: 8px;
+  font-weight: bold;
+  font-size: .95rem;
+}
+
+#detail .breadcrumb {
+  margin: 0;
+  padding-top: .75rem;
+  padding-left: 0;
+  padding-bottom: 1.5rem;
+  font-size: .95rem;
   background-color: #fff;
-/* display: table; */
-  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.5)
 }
 
-#content .panel {
-  float: none;
-  display: table-cell;
-  vertical-align: top;
+#detail .breadcrumb .active {
+  color: $link-color;
 }
 
-/* Bootsrap overrides */
+#detail .preform {
+  margin-top: 1.25rem;
+}
+
+#detail .preform .divider {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  border-right: 1px solid #e0e0e0;
+}
+
+#detail .first {
+  padding-top: 1rem;
+}
+
+#detail .last {
+  padding-bottom: 2rem;
+}
+
+#detail .detail-container {
+  padding-bottom: 1.5rem;
+  margin-left: .975rem;
+  margin-right: .975rem;
+  margin-top: .975rem;
+  background-color: #f5f5f5;
+}
+
+#detail .revision-history-title {
+  font-weight: bold;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  margin-left: .975rem;
+  margin-right: .975rem;
+  margin-top: .975rem;
+  background-color: #f5f5f5;
+}
+
+#detail .revision-history-title a {
+  color: #373a3c;
+}
+
+#detail .revision-history {
+  padding-bottom: .5rem;
+  margin-left: .975rem;
+  margin-right: .975rem;
+  background-color: #f5f5f5;
+  display: none;
+}
+
+#detail .detail-label {
+  padding-top: .5rem;
+  padding-right: .4rem;
+  font-weight: bold;
+  text-align: right;
+}
+
+#detail .detail-value {
+  padding-top: .5rem;
+}
+
+#detail .form-group .detail-value {
+  padding-left: .25rem;
+  padding-right: 0;
+}
+
+#detail hr.before {
+  margin-top: .75rem;
+}
+
+#detail hr.after {
+  margin-top: 1.25rem;
+}
+
+#detail .actions {
+  margin-bottom: 2rem;
+  background-color: #fff;
+}
+
+#detail table {
+  font-size: .9rem;
+  table-layout: fixed;
+}
+
+#detail table th {
+  border-top: none;
+}
+
+#detail table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* -------------------------------------------
+Data Import
+------------------------------------------- */
+
+.file-select-label {
+  margin-left: 4px;
+  margin-bottom: 2px;
+}
+
+.upload-form-error {
+  margin-left: 4px;
+  display: none;
+}
+
+.import-spinner {
+  vertical-align: middle;
+  margin-left: .5rem;
+  display: none;
+}
+
+.import-modal-body {
+  margin-bottom: 1rem;
+  height: 90px;
+}
+
+#audio-import-dialog {
+  width: 400px;
+  transition: width .5s;
+}
+
+#audio-import-dialog-content {
+  width: 400px;
+  transition: width .5s;
+}
+
+#audio-import-step-2 .modal-body {
+  transition: height .5s;
+  overflow-x: scroll;
+  overflow-y: scroll;
+}
+
+#audio-import-step-3 .modal-body {
+  transition: height .5s;
+  overflow-x: scroll;
+  overflow-y: scroll;
+}
+
+#audio-upload-data-container {
+  width: 675px;
+}
+
+#audio-import-result-container {
+  width: 675px;
+}
+
+/* -------------------------------------------
+Bootstrap Overrides
+------------------------------------------- */
 
 .btn-sm {
   border: none;
@@ -366,8 +605,19 @@ label {
   transition: none;
 }
 
+.modal hr {
+  border-top: 1px dashed #E0E0E0;
+  margin-top: .75rem;
+  margin-bottom: .75rem;
+}
+
 .modal-dialog {
   margin: 150px auto;
+}
+
+.modal-header h4 {
+  font-size: 1.2rem;
+  font-weight: 400;
 }
 
 .modal-header {
@@ -380,19 +630,47 @@ label {
   margin: 0;
 }
 
+.modal-body {
+  font-size: .9rem;
+}
+
 .modal-footer {
   text-align: left;
+  font-size: .9rem;
 }
 
-h4 {
-  font-size: 1.2rem;
-  font-weight: 400;
+.popover {
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial;
 }
 
-/* This is to make the datepicker plugin look a little nicer */
-.dropdown-menu {
-  padding: 5px 10px;
+.popover-title { 
+  display: none;
 }
+
+.popover-content {
+  padding: 4px 10px;
+}
+
+/* 
+ * #content and #content .panel are hacks
+ * to workaround columns not displaying the 
+ * same height.
+ */
+#content {
+  background-color: #fff;
+  /* display: table; */
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.5)
+}
+
+#content .panel {
+  float: none;
+  display: table-cell;
+  vertical-align: top;
+}
+
+/* -------------------------------------------
+Datepicker Plugin
+------------------------------------------- */
 
 .datepicker table tr td.active.active {
   background-image: none;
@@ -412,142 +690,16 @@ h4 {
   background-color: $brand-primary;
 }
 
+/* Makes the datepicker plugin look nicer */
+.dropdown-menu {
+  padding: 5px 10px;
+}
+
 /* need to set year, decade, and century active */
 
-
-/* Misc */
-
-.centered {
-  text-align: center;
-}
-
-.col-fff {
-  background-color: #fff;
-}
-
-.col-e0 {
-  background-color: #e0e0e0;
-}
-
-#detail {
-  font-size: .9rem;
-}
-
-#detail h6 {
-  background-color: #e0e0e0;
-  padding-top: 8px;
-  font-weight: bold;
-  font-size: .95rem;
-}
-
-#detail .breadcrumb {
-  margin: 0;
-  padding-top: .75rem;
-  padding-left: 0;
-  padding-bottom: 1.5rem;
-  font-size: .95rem;
-  background-color: #fff;
-}
-
-#detail .breadcrumb .active {
-  color: $link-color;
-}
-
-#detail .preform {
-  margin-top: 1.25rem;
-}
-
-#detail .preform .divider {
-  margin-left: 1rem;
-  margin-right: 1rem;
-  border-right: 1px solid #e0e0e0;
-}
-
-#detail .first {
-  padding-top: 1rem;
-}
-
-#detail .last {
-  padding-bottom: 2rem;
-}
-
-#detail .detail-container {
-  padding-bottom: 1.5rem;
-  margin-left: .975rem;
-  margin-right: .975rem;
-  margin-top: .975rem;
-  background-color: #f5f5f5;
-}
-
-#detail .revision-history-title {
-  font-weight: bold;
-  padding-top: .5rem;
-  padding-bottom: .5rem;
-  margin-left: .975rem;
-  margin-right: .975rem;
-  margin-top: .975rem;
-  background-color: #f5f5f5;
-}
-
-#detail .revision-history-title a {
-  color: #373a3c;
-}
-
-#detail .revision-history {
-  padding-bottom: .5rem;
-  margin-left: .975rem;
-  margin-right: .975rem;
-  background-color: #f5f5f5;
-  display: none;
-}
-
-#detail .detail-label {
-  padding-top: .5rem;
-  padding-right: .4rem;
-  font-weight: bold;
-  text-align: right;
-}
-
-#detail .detail-value {
-  padding-top: .5rem;
-}
-
-#detail .form-group .detail-value {
-  padding-left: .25rem;
-  padding-right: 0;
-}
-
-#detail hr.before {
-  margin-top: .75rem;
-}
-
-#detail hr.after {
-  margin-top: 1.25rem;
-}
-
-#detail .actions {
-  margin-bottom: 2rem;
-  background-color: #fff;
-}
-
-#detail .actions button {
-  margin-right: .3rem;
-}
-
-#detail table {
-  font-size: .9rem;
-  table-layout: fixed;
-}
-
-#detail table th {
-  border-top: none;
-}
-
-#detail table td {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+/* -------------------------------------------
+Autocomplete Plugin
+------------------------------------------- */
 
 .autocomplete-suggestions {
   border: 1px solid #999;
@@ -580,35 +732,42 @@ h4 {
   border-bottom: 1px solid #000;
 }
 
-body {
-  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial;
-  background-color: #ededed;
+/* -------------------------------------------
+Miscellaneous
+------------------------------------------- */
+
+// The following 3 must be after the bootstrap overrides
+.btn-file-select {
+  border: 1px solid #ccc;
+  border-right: none;
+  padding: .19rem 0.75rem;
+  margin-top: 0;
 }
 
-#sign-in-panel {
-  max-width: 430px;
-  margin: 0 auto;
-  padding: 2.5rem 4rem;
+.btn-file-select:hover  {
+  border: 1px solid #ccc;
+  border-right: none;
+}
+
+.btn-file-select:active:hover  {
+  border: 1px solid #ccc;
+  border-right: none;
+}
+
+.centered {
+  text-align: center;
+}
+
+.col-fff {
   background-color: #fff;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5)
 }
 
-#sign-in-panel h4 {
-  font-family: 'Yanone Kaffeesatz', 'YanoneKaffeesatz-Light', sans-serif;
-  font-weight: 300;
-  font-size: 2.3rem;
-  color: #4a4a4a;
+.col-e0 {
+  background-color: #e0e0e0;
 }
 
-.failed-login {
-  color: $brand-danger;
-  margin-bottom: .5rem;
-}
-
-@media(max-width:992px){
-  #data-panel .search-container {
-    width: 200px;
-  }
+button {
+  margin-right: .3rem;
 }
 
 /* Get rid of borders around focused elements in Firefox */

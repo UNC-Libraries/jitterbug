@@ -21,9 +21,11 @@ Route::delete('alerts', 'AlertsController@destroy');
 // Suggestions
 
 Route::group(['prefix' => 'suggestions'], function () {
-  Route::get('recording-locations', 'SuggestionsController@recordingLocations');
+  Route::get('recording-locations',
+  	'SuggestionsController@recordingLocations');
   Route::get('speeds', 'SuggestionsController@speeds');
-  Route::get('track-configurations', 'SuggestionsController@trackConfigurations');
+  Route::get('track-configurations', 
+    'SuggestionsController@trackConfigurations');
   Route::get('audio-bases', 'SuggestionsController@audioBases');
   Route::get('film-elements', 'SuggestionsController@filmElements');
   Route::get('film-bases', 'SuggestionsController@filmBases');
@@ -50,6 +52,10 @@ Route::resource('masters.cuts', 'CutsController', ['except' => ['index']]);
 // Transfers
 
 Route::get('transfers/resolve-range', 'TransfersController@resolveRange');
+Route::post('transfers/audio-import-upload', 
+	'TransfersController@audioImportUpload')->name('transfers.audio.import.upload');
+Route::post('transfers/audio-import-execute', 
+  'TransfersController@audioImportExecute')->name('transfers.audio.import.execute');
 Route::resource('transfers', 'TransfersController');
 
 // Authentication
