@@ -76,9 +76,14 @@ class Transfer extends Model {
     return $this->morphTo();
   }
 
+  public function vendor()
+  {
+    return $this->belongsTo('Junebug\Models\Vendor');
+  }
+
   public function getTypeAttribute()
   {
-    $fullType = $this->getAttribute("masterableType");
+    $fullType = $this->getAttribute("transferableType");
     $type = substr($fullType,0,strlen($fullType)
       - strlen("Transfer"));
     return $type;

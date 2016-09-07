@@ -160,8 +160,8 @@ class SolariumProxy {
     
     // Get other fields from the associated audio visual item since that's where
     // they reside, not on the master
-    $item = 
-      AudioVisualItem::where('call_number', $master->callNumber)->get()->first();
+    $item = AudioVisualItem::where('call_number', 
+      $master->callNumber)->get()->first();
     $doc->setField('collectionId', $item->collection->id, null, 'set');
     $doc->setField('collectionName', $item->collection->name, null, 'set');
     $doc->setField('formatId', $item->format->id, null, 'set');
@@ -173,9 +173,49 @@ class SolariumProxy {
     return $this->client->update($update);
   }
 
+  /**
+   * Updates the Solr index for the given Transfer.
+   *
+   * @param Transfer $transfer
+   */
   protected function updateTransfer($transfer)
   {
-    // pending
+    $update = $this->client->createUpdate();
+    $doc = $update->createDocument();
+
+    $doc->setKey('id', $transfer->id);
+    $doc->setField('callNumber', $transfer->callNumber, null, 'set');
+    $doc->setField('transferDate', $transfer->transferDate, null, 'set');
+    $doc->setField('vendorId', 
+      $transfer->vendor != null ? $transfer->vendor->id : null, null, 'set');
+    $doc->setField('vendorName', 
+      $transfer->vendor != null ? $transfer->vendor->name : null, null, 'set');
+    $doc->setField('engineerFirstName', 
+      $transfer->engineer != null ? 
+      $transfer->engineer->firstName : null, null, 'set');
+    $doc->setField('engineerLastName', 
+      $transfer->engineer != null ? 
+      $transfer->engineer->lastName : null, null, 'set');
+    $doc->setField('typeName', $transfer->type, null, 'set');
+    $doc->setField('typeId', $transfer->typeId, null, 'set');
+    $doc->setField('createdAt', $transfer->createdAt, null, 'set');
+    $doc->setField('updatedAt', $transfer->updatedAt, null, 'set');
+
+    // Get other fields from the associated audio visual item since that's where
+    // they reside, not on the transfer
+    $item = AudioVisualItem::where('call_number', 
+        $transfer->callNumber)->get()->first();
+    $doc->setField('collectionId', $item->collection->id, null, 'set');
+    $doc->setField('collectionName', $item->collection->name, null, 'set');
+    $doc->setField('formatId', $item->format->id, null, 'set');
+    $doc->setField('formatName', $item->format->name, null, 'set');
+
+    // TODO get associated cut info
+
+    $update->addDocument($doc);
+    $update->addCommit();
+
+    return $this->client->update($update);
   }
 
   public function delete($modelOrModels)

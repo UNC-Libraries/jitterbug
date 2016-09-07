@@ -49,7 +49,7 @@
               </div>
               <div class="modal-footer">
                 <button name="upload" type="submit" class="btn btn-sm btn-secondary" style="outline: none;"><i class="fa fa-upload" aria-hidden="true"></i> Upload and Continue</button>
-                <i id="audio-upload-spinner" class="fa fa-spinner fa-pulse import-spinner"></i>
+                <i id="audio-upload-spinner" class="fa fa-spinner fa-pulse import-spinner" style="display: none;"></i>
               </div>
               {!! Form::close() !!}
             </div>
@@ -67,7 +67,7 @@
               </div>
               <div class="modal-footer">
                 <div class="success-actions">
-                  <button name="import" type="submit" class="btn btn-sm btn-primary" style="outline: none; margin-right: .5rem"><i class="fa fa-bolt" aria-hidden="true"></i> Proceed with Import</button><a class="reset" href="#">or Start Over</a><i id="audio-import-spinner" class="fa fa-spinner fa-pulse import-spinner"></i>
+                  <button name="import" type="submit" class="btn btn-sm btn-primary" style="outline: none; margin-right: .5rem"><i class="fa fa-bolt" aria-hidden="true"></i> Proceed with Import</button><a class="reset" href="#">or Start Over</a><i id="audio-import-spinner" class="fa fa-spinner fa-pulse import-spinner" style="display: none;"></i>
                 </div>
                 <div class="failure-actions" style="display: none;">
                   <button type="submit" class="btn btn-sm btn-secondary reset" style="outline: none;"> Start Over</button>

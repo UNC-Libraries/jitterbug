@@ -284,6 +284,9 @@ junebug = {
           $('#audio-import-step-2').hide();
           $('#audio-import-step-3 .modal-body').height(300);
           $('#audio-import-step-3').show();
+          if (status=='success') {
+            $('#audio-import-step-3 .modal-body').height(50); 
+          }
           // Initialize popovers which contain any errors
           junebug.initPopovers();
         },
@@ -306,6 +309,7 @@ junebug = {
     } else if (!$('#' + type + '-import-filename').val().endsWith('.csv')) {
       $('#' + type + '-upload-form-error').html('<small>A file of type \
         .csv is required.</small>').show();
+      return false;
     } else {
       $('#' + type + '-upload-form-error').html('').hide();
       return true;

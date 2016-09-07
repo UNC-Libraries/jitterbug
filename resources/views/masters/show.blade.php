@@ -57,6 +57,16 @@
         </div>
       </div>
       @endif
+      @if ($master->fileSizeInBytes)
+      <div class="row">
+        <div class="col-xs-4 col-xs-offset-1 detail-label">
+          File Size
+        </div>
+        <div class="col-xs-7 detail-value">
+          {{$master->fileSizeInBytes}}
+        </div>
+      </div>
+      @endif
       @if ($master->checksum)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">

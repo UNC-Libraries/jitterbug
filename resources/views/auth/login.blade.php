@@ -2,7 +2,11 @@
 
 @section('panel')
 <div id="sign-in-panel">
-  <h4 id='greeting'></h4>
+  @if (app('request')->input('logout')==='true')
+    <h4 id='farewell'>See you next time!</h4>
+  @else
+    <h4 id='greeting'></h4>
+  @endif
   {!! Form::open(array('url' => '/login')) !!}
     <div style="margin-top: 2rem">
       @if ($errors->has('failedLogin'))

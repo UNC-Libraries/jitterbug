@@ -4923,8 +4923,7 @@ Data Import
 
 .import-spinner {
   vertical-align: middle;
-  margin-left: .5rem;
-  display: none; }
+  margin-left: .5rem; }
 
 .import-modal-body {
   margin-bottom: 1rem;

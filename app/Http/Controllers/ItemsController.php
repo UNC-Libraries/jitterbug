@@ -1,10 +1,11 @@
 <?php
 namespace Junebug\Http\Controllers;
 
-use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
+
+use DB;
 use Log;
 use Session;
 use Solarium;
