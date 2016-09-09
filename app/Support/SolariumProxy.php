@@ -160,8 +160,7 @@ class SolariumProxy {
     
     // Get other fields from the associated audio visual item since that's where
     // they reside, not on the master
-    $item = AudioVisualItem::where('call_number', 
-      $master->callNumber)->get()->first();
+    $item = AudioVisualItem::where('call_number', $master->callNumber)->first();
     $doc->setField('collectionId', $item->collection->id, null, 'set');
     $doc->setField('collectionName', $item->collection->name, null, 'set');
     $doc->setField('formatId', $item->format->id, null, 'set');
@@ -204,7 +203,7 @@ class SolariumProxy {
     // Get other fields from the associated audio visual item since that's where
     // they reside, not on the transfer
     $item = AudioVisualItem::where('call_number', 
-        $transfer->callNumber)->get()->first();
+        $transfer->callNumber)->first();
     $doc->setField('collectionId', $item->collection->id, null, 'set');
     $doc->setField('collectionName', $item->collection->name, null, 'set');
     $doc->setField('formatId', $item->format->id, null, 'set');

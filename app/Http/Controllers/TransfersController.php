@@ -173,9 +173,10 @@ class TransfersController extends Controller {
 
         // Look up the playback machine using the name. If it 
         // doesn't exist create a new record.
+        // TODO cache this to save on queries!!
         $playbackMachine =
           PlaybackMachine::where('name', 
-            $row['PlaybackMachine'])->get()->first();
+            $row['PlaybackMachine'])->first();
         if ($playbackMachine === null) {
           $playbackMachine = new PlaybackMachine;
           $playbackMachine->name = $row['PlaybackMachine'];
@@ -197,17 +198,18 @@ class TransfersController extends Controller {
             array_push($masters, $master);
             $updated++;
 
-            $transfers = 
+            $relatedTransfers = 
               Transfer::where('preservation_master_id', $master->id)->get();
-            foreach($transfers as $transfer) {
+            foreach($relatedTransfers as $transfer) {
               $transfer->playbackMachineId = $playbackMachine->id;
               $transfer->save();
               array_push($transfers, $transfer);
               $updated++;
             }
 
-            $cuts = Cut::where('preservation_master_id', $master->id)->get();
-            foreach($cuts as $cut) {
+            $relatedCuts = 
+              Cut::where('preservation_master_id', $master->id)->get();
+            foreach($relatedCuts as $cut) {
               $cut->side = $row['Side'];
               $cut->save();
               $updated++;
@@ -358,13 +360,13 @@ class TransfersController extends Controller {
   private function callNumberExists($callNumber)
   {
     return AudioVisualItem::where('call_number', 
-      $callNumber)->get()->first() !== null;
+      $callNumber)->first() !== null;
   }
 
   private function fileNameExists($fileName)
   {
     return PreservationMaster::where('file_name', 
-      $fileName)->get()->first() !== null;
+      $fileName)->first() !== null;
   }
 
   private function hasErrors($messageBags)

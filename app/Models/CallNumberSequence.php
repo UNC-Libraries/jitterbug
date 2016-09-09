@@ -14,7 +14,7 @@ class CallNumberSequence extends Model {
     $prefix = Format::findOrFail($formatId)->prefix;
 
     $sequence = NewCallNumberSequence::where('prefix', '=', $prefix)->
-                  where('collection_id', '=', $collectionId)->get()->first();
+                  where('collection_id', '=', $collectionId)->first();
     if ($sequence === null) {
       if (in_array($prefix, self::ALWAYS_USE_NEW_STYLE)) {
         $sequence = new NewCallNumberSequence();
@@ -24,7 +24,7 @@ class CallNumberSequence extends Model {
         $sequence->save();
       } else {
         $sequence = LegacyCallNumberSequence::
-                    where('prefix', '=', $prefix)->get()->first();
+                    where('prefix', '=', $prefix)->first();
       }
     }
 

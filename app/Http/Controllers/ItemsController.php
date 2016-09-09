@@ -46,7 +46,7 @@ class ItemsController extends Controller
     $this->middleware('auth');
     $this->solrItems = new SolariumProxy('junebug-items');
     $this->solrMasters = new SolariumProxy('junebug-masters');
-    // $this->solrTransfers = new SolariumProxy('junebug-transfers');
+    $this->solrTransfers = new SolariumProxy('junebug-transfers');
   }
   
   /**
@@ -332,14 +332,14 @@ class ItemsController extends Controller
     if ($updateSolrMastersAndTransfers) {
       $masters = PreservationMaster::where('call_number', 
                                                   $item->callNumber)->get();
-      if ($masters !== null) {
+      if ($masters->count() > 0) {
         $this->solrMasters->update($masters);
       }
 
-      // $transfers = Transfer::where('call_number', $item->callNumber)->get();
-      // if ($transfers !== null) {
-      //   $this->solrTransfers->update($transfers);
-      // }
+      $transfers = Transfer::where('call_number', $item->callNumber)->get();
+      if ($transfers->count() > 0) {
+        $this->solrTransfers->update($transfers);
+      }
     }
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
@@ -393,14 +393,14 @@ class ItemsController extends Controller
     foreach ($collectionOrFormatUpdated as $item) {
       $masters = 
         PreservationMaster::where('call_number', $item->callNumber)->get();
-      if($masters !== null) {
+      if($masters->count() > 0) {
         $this->solrMasters->update($masters);
       }
-      // $transfers = 
-      //   Transfer::where('call_number', $item->callNumber)->get();
-      // if($transfers !== null) {
-      //   $this->solrTransfers->update($transfers);
-      // }     
+      $transfers = 
+        Transfer::where('call_number', $item->callNumber)->get();
+      if($transfers->count() > 0) {
+        $this->solrTransfers->update($transfers);
+      }
     }
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
@@ -464,7 +464,7 @@ class ItemsController extends Controller
         $this->solrMasters->delete($masters);
       }
       if ($transfers !== null) {
-        //$this->solrTransfers->delete($transfers);
+        $this->solrTransfers->delete($transfers);
       }
     }
 
