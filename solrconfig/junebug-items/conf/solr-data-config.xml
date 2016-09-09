@@ -1,6 +1,6 @@
 <dataConfig>
     <dataSource driver="com.mysql.jdbc.Driver" type="JdbcDataSource"
-        url="jdbc:mysql://localhost:3306/junebug" user="root" password="" />
+        url="${importDataSourceUrl}" user="${importDataSourceUser}" password="${importDataSourcePassword}" />
     <document>
         <!-- this entity is the 'root' entity. -->
         <entity name="audio_visual_item" query="
