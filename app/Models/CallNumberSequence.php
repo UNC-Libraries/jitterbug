@@ -48,7 +48,7 @@ class CallNumberSequence extends Model {
       $reservedIds = explode(',', $this->reserved);
     }
     $this->next++;
-    while(in_array($this->next , $reservedIds)) {
+    while (in_array($this->next , $reservedIds)) {
       $this->next++;
     }
     $this->save();

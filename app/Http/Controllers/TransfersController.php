@@ -26,8 +26,8 @@ use Junebug\Util\CsvReader;
 
 class TransfersController extends Controller {
 
-  const AUDIO_IMPORT_KEYS = array('CallNumber', 'OriginatorReference', 'Side',
-        'PlaybackMachine', 'FileSize', 'Duration');
+  protected $requiredAudioImportKeys = array(); 
+  protected $audioImportKeys = array(); 
 
   protected $solrMasters;
   protected $solrTransfers;
@@ -40,6 +40,12 @@ class TransfersController extends Controller {
   public function __construct()
   {
     $this->middleware('auth');
+
+    $this->requiredAudioImportKeys = array('CallNumber', 
+      'OriginatorReference', 'Side', 'PlaybackMachine', 'FileSize', 'Duration');
+    $this->audioImportKeys = array_merge($this->requiredAudioImportKeys, 
+      array('OriginalPm'));
+
     $this->solrMasters = new SolariumProxy('junebug-masters');
     $this->solrTransfers = new SolariumProxy('junebug-transfers');
   }
@@ -98,7 +104,7 @@ class TransfersController extends Controller {
       $request->session()->put('audio-import-file', $filePath);
 
       $reader = new CsvReader($filePath);
-      $data = $reader->fetchKeys(self::AUDIO_IMPORT_KEYS);
+      $data = $reader->fetchKeys($this->audioImportKeys);
 
       $count = count($data);
       $html = view('transfers._audio-import-upload-data', 
@@ -120,10 +126,8 @@ class TransfersController extends Controller {
         abort(400, 'Import file not found.');
       }
 
-      $keys = self::AUDIO_IMPORT_KEYS;
-
       $reader = new CsvReader($filePath);
-      $data = $reader->fetchKeys($keys);
+      $data = $reader->fetchKeys($this->audioImportKeys);
 
       $messages = $this->audioImportValidate($data);
       
@@ -168,20 +172,50 @@ class TransfersController extends Controller {
       $transactionId = Uuid::uuid1();
       DB::statement("set @transaction_id = '$transactionId';");
 
+      $playbackMachineCache = array();
+
       foreach($data as $row) {
         $callNumber = $row['CallNumber'];
 
-        // Look up the playback machine using the name. If it 
-        // doesn't exist create a new record.
-        // TODO cache this to save on queries!!
-        $playbackMachine =
-          PlaybackMachine::where('name', 
-            $row['PlaybackMachine'])->first();
+        // We need to lookup the playback machine record to get the 
+        // id. In order to avoid hitting the database, we will utilize
+        // a simple cache.
+        $playbackMachineName = $row['PlaybackMachine'];
+        // Check the cache first for this playback machine record
+        $playbackMachine = 
+          isset($playbackMachineCache[$playbackMachineName]) ? 
+                        $playbackMachineCache[$playbackMachineName] : null;
+        // Not in cache, so get from database and add to cache
+        if ($playbackMachine === null) {
+          $playbackMachine =
+            PlaybackMachine::where('name', $playbackMachineName)->first();
+          if ($playbackMachine) {
+            $playbackMachineCache[$playbackMachineName] = $playbackMachine;
+          }
+        }
+        // Not in cache and not in the database, so create a new record
         if ($playbackMachine === null) {
           $playbackMachine = new PlaybackMachine;
-          $playbackMachine->name = $row['PlaybackMachine'];
+          $playbackMachine->name = $playbackMachineName;
           $playbackMachine->save();
           $created++;
+        }
+
+        $originalPm = $row['OriginalPm'];
+        
+        if (!empty($originalPm)) {
+          $master = PreservationMaster::find($originalPm);
+          $master->fileName = $row['OriginatorReference'];
+          $master->fileSizeInBytes = $row['FileSize'];
+          $master->durationInSeconds = 
+            $this->toDurationInSeconds($row['Duration']);
+          $master->save();
+          array_push($masters, $master);
+          $updated++;
+
+          
+        } else {
+
         }
 
         $preservationMasters = PreservationMaster::where('call_number', 
@@ -229,7 +263,7 @@ class TransfersController extends Controller {
 
           // Create the PM using data from the import.
           $master = new PreservationMaster;
-          $master->callNumber = $row['CallNumber'];
+          $master->callNumber = $callNumber;
           $master->fileName = $row['OriginatorReference'];
           $master->fileSizeInBytes = $row['FileSize'];
           $master->durationInSeconds = 
@@ -249,7 +283,7 @@ class TransfersController extends Controller {
           // Create the Transfer
           $transfer = new Transfer;
           $transfer->preservationMasterId = $master->id;
-          $transfer->callNumber = $row['CallNumber'];
+          $transfer->callNumber = $callNumber;
           $transfer->playbackMachineId = $playbackMachine->id;
           // Right now we will assume the person importing is the
           // engineer, but that might change in the future.
@@ -262,7 +296,7 @@ class TransfersController extends Controller {
 
           // Create the Cut
           $cut = new Cut;
-          $cut->callNumber = $row['CallNumber'];
+          $cut->callNumber = $callNumber;
           $cut->preservationMasterId = $master->id;
           $cut->transferId = $transfer->id;
           $cut->side = $row['Side'];
@@ -286,32 +320,40 @@ class TransfersController extends Controller {
     foreach($data as $row) {
       $bag = new MessageBag();
       array_push($messages, $bag);
-      foreach(self::AUDIO_IMPORT_KEYS as $key) {
-        // Validate that all fields have values
-        if (!isset($row[$key]) || $row[$key] === '') {
+      foreach($this->audioImportKeys as $key) {
+        // Validate that all required fields have values
+        if (in_array($key, $this->requiredAudioImportKeys) 
+          && empty($row[$key])) {
           $bag->add($key, 'A value for ' . $key . ' is required.');
         }
         // Validate file size is an integer
         if ($key==='FileSize' 
-          && isset($row[$key]) && !ctype_digit($row[$key])) {
+          && !empty($row[$key]) && !ctype_digit($row[$key])) {
           $bag->add($key, $key . ' must be an integer.');
         }
         // Validate duration format
         if ($key==='Duration' 
-          && isset($row[$key]) && !$this->isDuration($row[$key])) {
+          && !empty($row[$key]) && !$this->isDuration($row[$key])) {
           $bag->add($key, 
             $key . ' must adhere to the following format: HH:MM:SS.mmm.');
         }
         // Validate call number exists
         if ($key==='CallNumber' 
-          && isset($row[$key]) && !$this->callNumberExists($row[$key])) {
+          && !empty($row[$key]) && !$this->callNumberExists($row[$key])) {
           $bag->add($key, $key . ' must already exist in the database.');
         }
         // Validate originator reference (preservation_master.file_name) 
         // doesn't exist
         if ($key==='OriginatorReference' 
-          && isset($row[$key]) && $this->fileNameExists($row[$key])) {
+          && !empty($row[$key]) && $this->fileNameExists($row[$key])) {
           $bag->add($key, $key . ' already exists in the database.');
+        }
+        // Validate pm belongs to the audio visual item identified by
+        // call number
+        if ($key==='OriginalPm' 
+          && !empty($row[$key]) && !empty($row['CallNumber'])
+          && !$this->belongsToItem($row[$key], $row['CallNumber'])) {
+          $bag->add($key, $key . ' does not belong to the given call number.');
         }
       }
     }
@@ -338,7 +380,8 @@ class TransfersController extends Controller {
     if ($hasMilliseconds) {
       $milliseconds = substr($duration, strpos($duration, '.'));
     }
-    $durationWithoutMilliseconds = substr($duration, 0, strlen($duration) - strlen($milliseconds));
+    $durationWithoutMilliseconds = 
+      substr($duration, 0, strlen($duration) - strlen($milliseconds));
     $durationParts = explode(':', $durationWithoutMilliseconds);
     $hours = $minutes = $seconds = $totalSeconds = 0;
     if (count($durationParts) === 3) {
@@ -361,6 +404,20 @@ class TransfersController extends Controller {
   {
     return AudioVisualItem::where('call_number', 
       $callNumber)->first() !== null;
+  }
+
+  private function belongsToItem($pmId, $callNumber)
+  {
+    $item = AudioVisualItem::where('call_number', $callNumber)->first();
+    if ($item != null) {
+      $masters = $item->preservationMasters();
+      foreach ($masters as $master) {
+        if ($master->id === $pmId) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   private function fileNameExists($fileName)

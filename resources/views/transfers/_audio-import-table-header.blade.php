@@ -1,11 +1,12 @@
     <thead>
       <tr>
-        <th width="6%">#</th>
-        <th width="15%">CallNumber</th>
-        <th width="22%">OriginatorReference</th>
+        <th width="5%">#</th>
+        <th width="14%">CallNumber</th>
+        <th width="21%">OriginatorReference</th>
         <th width="7%">Side</th>
-        <th width="25%">PlaybackMachine</th>
-        <th width="12%">FileSize</th>
-        <th width="13%">Duration</th>
+        <th width="19%">PlaybackMachine</th>
+        <th width="10%">FileSize</th>
+        <th width="12%">Duration</th>
+        <th width="12%">OriginalPm</th>
       </tr>
     </thead>
