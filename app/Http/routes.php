@@ -11,7 +11,9 @@
 |
 */
 
-// Route::get('/', 'WelcomeController@index');
+Route::get('/', function () {
+    return redirect()->route('items.index');
+});
 
 // Alerts
 

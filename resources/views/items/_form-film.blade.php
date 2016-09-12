@@ -91,12 +91,15 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group">
+        <div class="form-group @if ($errors->has('itemable.canNumber')) has-danger @endif">
           <div class="col-xs-4 detail-label">
             {!! Form::label('itemable[canNumber]', 'Can Number', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::text('itemable[canNumber]', null, array('class' => 'form-control form-control-sm')) !!}
+            @if ($errors->has('itemable.canNumber'))
+              <div class="form-control-label"><small>{!! $errors->first('itemable.canNumber') !!}</small></div>
+            @endif
           </div>
         </div>
       </div>

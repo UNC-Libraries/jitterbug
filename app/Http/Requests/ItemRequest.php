@@ -63,7 +63,9 @@ class ItemRequest extends Request {
       } else if ($itemableType === 'FilmItem') {
         $this->addRuleIfNotMixed($itemableRules,'itemable.filmBase','required');
         $this->
-          addRuleIfNotMixed($itemableRules,'itemable.lengthInFeet','required');
+          addRuleIfNotMixed($itemableRules,'itemable.lengthInFeet','required|integer');
+        $this->
+          addRuleIfNotMixed($itemableRules,'itemable.canNumber','integer');
       } else if ($itemableType === 'VideoItem') {
         // No rules yet for video items
       	$itemableRules = [];
@@ -103,7 +105,9 @@ class ItemRequest extends Request {
 
         'itemable.size.required' => 'The size field is required.',
         'itemable.filmBase.required' => 'The base field is required.',
-        'itemable.lengthInFeet.required' => 'The length in feet field is required.'
+        'itemable.lengthInFeet.required' => 'The length in feet field is required.',
+        'itemable.lengthInFeet.integer' => 'The length in feet field must be an integer.',
+        'itemable.canNumber.integer' => 'The can number field must be an integer.',
       ];
     }
 
