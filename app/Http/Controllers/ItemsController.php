@@ -202,9 +202,44 @@ class ItemsController extends Controller
     $max = 500;
 
     $itemIds = explode(',', $request->input('ids'));
+    // The first time into the batch edit form, the request
+    // is POSTed (using jQuery triggered from the Batch Edit
+    // dropdown) with an array of item ids. We can't use
+    // a GET request because the total size of the all the
+    // item ids might possibly exceed what is allowed in
+    // url parameters, as well as what is allowed in
+    // cookies if we were to go that route. So, we must
+    // break with convention (and best practice) by using a
+    // POST. However, if the form input fails validation 
+    // upon a PUT request to update the values, Laravel 
+    // will redirect to the batch edit page using a GET 
+    // request, not a POST. There doesn't seem to be a way
+    // to force it to use a POST request, so we must be
+    // prepared for a GET. We will do this by saving the
+    // item ids into a session variable, and then upon post 
+    // back get the ids from the session instead of from
+    // the request.
+    if ($request->method()==='POST') {
+      $itemIds = explode(',', $request->input('ids'));
+      $request->session()->put('batchItemIds',$itemIds);
+    } else if ($request->method()==='GET') {
+      $itemIds = $request->session()->get('batchItemIds');
+    }
+    
+    // This might happen if the user saves the form successfully
+    // and then uses the browser back button to go back to edit
+    // the form and the new form submission has validation errors.
+    if ($itemIds == null) {
+      $request->session()->put('alert', array('type' => 'warning', 'message' =>
+        '<strong>Hmm, somthing\'s up.</strong> ' . 
+        'That batch edit form is no longer valid. Please make a ' .
+        'new selection and try batch editing again.'));
+      return redirect()->route('items.index');
+    }
+
     $itemIdsCount = count($itemIds);
 
-    if($itemIdsCount > $max) {
+    if ($itemIdsCount > $max) {
       $request->session()->put('alert', array('type' => 'danger', 'message' =>
         '<strong>Whoa there!</strong> ' . 
         'Batch editing is limited to ' . $max . ' items. Please narrow ' .
@@ -217,7 +252,7 @@ class ItemsController extends Controller
 
     $items = AudioVisualItem::whereIn('id', $itemIds)
                             ->where('itemable_type', $itemableType)->get();
-    if($itemIdsCount!=$items->count()) {
+    if ($itemIdsCount!==$items->count()) {
       $request->session()->put('alert', array('type' => 'danger', 'message' => 
         '<strong>Oops! There\'s a problem.</strong> ' . 
         'Batch editing can only be done with items of the same type. ' .
@@ -226,7 +261,7 @@ class ItemsController extends Controller
     }
 
     $itemableIds = array();
-    foreach($items as $item) {
+    foreach ($items as $item) {
       array_push($itemableIds, $item->itemable->id);
     }
     $itemables = $itemableType::whereIn('id', $itemableIds)->get();
@@ -234,7 +269,7 @@ class ItemsController extends Controller
     $item = new BatchAudioVisualItem($items, $itemables);
 
     $collections = array();
-    if($item->collectionId === '<mixed>') {
+    if ($item->collectionId === '<mixed>') {
       $collections = ['' => 'Select a collection'] + 
                      ['<mixed>' => '<mixed>'] +
                      Collection::pluck('name', 'id')->all();
@@ -244,7 +279,7 @@ class ItemsController extends Controller
     }
 
     $formats = array();
-    if($item->formatId === '<mixed>') {
+    if ($item->formatId === '<mixed>') {
       $formats = ['' => 'Select a format'] + 
                  ['<mixed>' => '<mixed>'] +
                  Format::pluck('name', 'id')->all();
@@ -402,6 +437,8 @@ class ItemsController extends Controller
         $this->solrTransfers->update($transfers);
       }
     }
+
+    $request->session()->forget('batchItemIds');
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>That was handy!</strong> ' . 

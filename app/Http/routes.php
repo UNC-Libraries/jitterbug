@@ -37,12 +37,10 @@ Route::group(['prefix' => 'suggestions'], function () {
 
 Route::get('call-numbers/generate', 'CallNumbersController@generate');
 Route::get('items/resolve-range', 'ItemsController@resolveRange');
-Route::post('items/batch/edit', [
-    'as' => 'items.editBatch', 'uses' => 'ItemsController@editBatch'
-]);
-Route::put('items/batch', [
-    'as' => 'items.updateBatch', 'uses' => 'ItemsController@updateBatch'
-]);
+Route::match(['post', 'get'], 'items/batch/edit',
+  'ItemsController@editBatch')->name('items.editBatch');
+Route::put('items/batch',
+  'ItemsController@updateBatch')->name('items.updateBatch');
 Route::resource('items', 'ItemsController');
 
 // Preservation Masters
