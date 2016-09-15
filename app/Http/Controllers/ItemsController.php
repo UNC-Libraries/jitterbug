@@ -126,7 +126,7 @@ class ItemsController extends Controller
       // The transaction id will be used by the 'revisionable' package
       // when a model event is fired. We are passing it down via a connection
       // variable since we don't have have api access to that code.
-      $transactionId = Uuid::uuid1();
+      $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
       
       $batchIndex = 0;
@@ -231,7 +231,7 @@ class ItemsController extends Controller
     // the form and the new form submission has validation errors.
     if ($itemIds == null) {
       $request->session()->put('alert', array('type' => 'warning', 'message' =>
-        '<strong>Hmm, somthing\'s up.</strong> ' . 
+        '<strong>Hmm, something\'s up.</strong> ' . 
         'That batch edit form is no longer valid. Please make a ' .
         'new selection and try batch editing again.'));
       return redirect()->route('items.index');
@@ -318,7 +318,7 @@ class ItemsController extends Controller
 
     // Update MySQL
     DB::transaction(function () use ($item, $itemable) {
-      $transactionId = Uuid::uuid1();
+      $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
 
       // Update call number everywhere if it has changed
@@ -357,6 +357,7 @@ class ItemsController extends Controller
       }
 
       $itemable->save();
+      $item->touch();
       $item->save();
 
       DB::statement('set @transaction_id = null;');      
@@ -401,13 +402,14 @@ class ItemsController extends Controller
     $collectionOrFormatUpdated = array();
 
     // Update MySQL
-    DB::transaction(function () use ($items, $input, 
+    DB::transaction(function () use ($items, $input,
                                               &$collectionOrFormatUpdated) {
-      $transactionId = Uuid::uuid1();
+      $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
       
       foreach ($items as $item) {
         $item->fill($input);
+        $item->touch(); // Touch in case not dirty and itemable is dirty
         $itemable=$item->itemable;
         $itemable->fill($input['itemable']);
 
@@ -421,19 +423,19 @@ class ItemsController extends Controller
       }
 
       DB::statement('set @transaction_id = null;');      
-    });    
-    
+    });
+
     // Update Solr
     $this->solrItems->update($items);
     foreach ($collectionOrFormatUpdated as $item) {
       $masters = 
         PreservationMaster::where('call_number', $item->callNumber)->get();
-      if($masters->count() > 0) {
+      if ($masters->count() > 0) {
         $this->solrMasters->update($masters);
       }
       $transfers = 
         Transfer::where('call_number', $item->callNumber)->get();
-      if($transfers->count() > 0) {
+      if ($transfers->count() > 0) {
         $this->solrTransfers->update($transfers);
       }
     }
@@ -462,7 +464,7 @@ class ItemsController extends Controller
     // Update MySQL
     DB::transaction(function () use ($command, $item, $itemable, 
                                                    &$masters, &$transfers) {
-      $transactionId = Uuid::uuid1();
+      $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
       
       $call = $item->callNumber;

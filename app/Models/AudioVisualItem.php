@@ -12,7 +12,7 @@ class AudioVisualItem extends Model {
   use RevisionableTrait;
   use SoftDeletes;
 
-  protected $dates = ['deleted_at'];
+  protected $dates = array('deleted_at');
   
   protected $revisionCreationsEnabled = true;
 
@@ -38,10 +38,10 @@ class AudioVisualItem extends Model {
     'oclc' => 'OCLC Id',
   );
 
-  protected $fillable = ['callNumber', 'title', 'recordingLocation', 'itemYear', 
-                         'itemDate', 'collectionId', 'containerNote',
-                         'conditionNote', 'oclc', 'formatId', 'entryDate', 
-                         'speed'];
+  protected $fillable = array('callNumber', 'title',
+    'recordingLocation', 'itemYear', 'itemDate', 
+    'collectionId', 'containerNote', 'conditionNote', 'oclc', 
+    'formatId', 'entryDate', 'speed');
 
   public function __construct()
   {

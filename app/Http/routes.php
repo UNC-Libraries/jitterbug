@@ -1,26 +1,23 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
-
 Route::get('/', function () {
     return redirect()->route('items.index');
 });
 
-// Alerts
+/*
+|--------------------------------------------------------------------------
+| Alerts
+|--------------------------------------------------------------------------
+*/
 
 Route::get('alerts', 'AlertsController@index');
 Route::delete('alerts', 'AlertsController@destroy');
 
-// Suggestions
+/*
+|--------------------------------------------------------------------------
+| Suggestions
+|--------------------------------------------------------------------------
+*/
 
 Route::group(['prefix' => 'suggestions'], function () {
   Route::get('recording-locations',
@@ -33,7 +30,11 @@ Route::group(['prefix' => 'suggestions'], function () {
   Route::get('film-bases', 'SuggestionsController@filmBases');
 });
 
-// Audio Visual Items
+/*
+|--------------------------------------------------------------------------
+| Audio Visual Items
+|--------------------------------------------------------------------------
+*/
 
 Route::get('call-numbers/generate', 'CallNumbersController@generate');
 Route::get('items/resolve-range', 'ItemsController@resolveRange');
@@ -43,13 +44,21 @@ Route::put('items/batch',
   'ItemsController@updateBatch')->name('items.updateBatch');
 Route::resource('items', 'ItemsController');
 
-// Preservation Masters
+/*
+|--------------------------------------------------------------------------
+| Preservation Masters
+|--------------------------------------------------------------------------
+*/
 
 Route::get('masters/resolve-range', 'MastersController@resolveRange');
 Route::resource('masters', 'MastersController');
 Route::resource('masters.cuts', 'CutsController', ['except' => ['index']]);
 
-// Transfers
+/*
+|--------------------------------------------------------------------------
+| Transfers
+|--------------------------------------------------------------------------
+*/
 
 Route::get('transfers/resolve-range', 'TransfersController@resolveRange');
 Route::post('transfers/audio-import-upload', 
@@ -58,7 +67,11 @@ Route::post('transfers/audio-import-execute',
   'TransfersController@audioImportExecute')->name('transfers.audio.import.execute');
 Route::resource('transfers', 'TransfersController');
 
-// Authentication
+/*
+|--------------------------------------------------------------------------
+| Authentication
+|--------------------------------------------------------------------------
+*/
 
 Route::get('login', 'Auth\AuthController@showLoginForm')->name('loginForm');
 Route::post('login', 'Auth\AuthController@login')->name('login');

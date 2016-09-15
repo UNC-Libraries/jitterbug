@@ -12,7 +12,7 @@ class AudioItem extends Model {
   use RevisionableTrait;
   use SoftDeletes;
 
-  protected $dates = ['deleted_at'];
+  protected $dates = array('deleted_at');
 
   protected $revisionCreationsEnabled = true;
 
@@ -32,9 +32,9 @@ class AudioItem extends Model {
     'content_description' => 'content description',
   );
 
-  protected $fillable = ['callNumber','listeningCopy','audioMonoStereo',
-                         'trackConfiguration','size','audioBase',
-                         'audioContentDescription'];
+  protected $fillable = array('callNumber','listeningCopy',
+    'audioMonoStereo', 'trackConfiguration','size','audioBase',
+    'audioContentDescription');
 
   public function getListeningCopyDisplayAttribute($value)
   {

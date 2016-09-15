@@ -71,9 +71,16 @@ junebug = {
           junebug.TableSelection.load('itemsTableSelection','session');
       if (tableSelection.count() == 0) {
         junebug.displayAlert('warning',
-          '<strong>Here\'s a tip:</strong> Batch actions require a table selection. \
-          Make a selection by \'shift-clicking\' or \'command-clicking\' \
-          on rows of the table.');
+          '<strong>Here\'s a tip:</strong> Batch actions require a table \
+          selection. Make a selection by \'shift-clicking\' \
+          or \'command-clicking\' on rows of the table.');
+        return;
+      }
+      if (tableSelection.count() == 1) {
+        junebug.displayAlert('warning',
+          '<strong>More please!</strong> Batch actions require at least \
+          2 records to be selected. Make a selection by \
+          \'shift-clicking\' or \'command-clicking\' on rows of the table.');
         return;
       }
 
@@ -394,7 +401,8 @@ junebug = {
   },
 
   initRevisionHistory: function() {
-    $('.revision-history-title').click(function() {
+    $('.revision-history-title').click(function(event) {
+      event.preventDefault();
       var icon = $('.revision-history-title i');
       if (icon.hasClass('fa-caret-right')) {
         icon.removeClass('fa-caret-right');

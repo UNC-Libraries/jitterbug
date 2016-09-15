@@ -11,7 +11,7 @@ class VideoItem extends Model {
   use RevisionableTrait;
   use SoftDeletes;
 
-  protected $dates = ['deleted_at'];
+  protected $dates = array('deleted_at');
 
   protected $revisionCreationsEnabled = true;
 
@@ -32,8 +32,9 @@ class VideoItem extends Model {
     'recording_standard' => 'recording standard',
   );
 
-  protected $fillable = ['callNumber','videoElement', 'videoColor',
-        'videoMonoStereo', 'videoContentDescription', 'recordingStandard'];
+  protected $fillable = array('callNumber','videoElement', 
+    'videoColor', 'videoMonoStereo', 
+    'videoContentDescription', 'recordingStandard');
 
   public function getMonoStereoDisplayAttribute($value)
   {

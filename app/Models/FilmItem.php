@@ -11,7 +11,7 @@ class FilmItem extends Model {
   use RevisionableTrait;
   use SoftDeletes;
 
-  protected $dates = ['deleted_at'];
+  protected $dates = array('deleted_at');
 
   protected $revisionCreationsEnabled = true;
 
@@ -39,9 +39,9 @@ class FilmItem extends Model {
     'content_description' => 'content description',
   );
 
-  protected $fillable = ['callNumber','filmElement','filmBase', 'filmColor',
-        'soundType','lengthInFeet','filmStock','edgeCode',
-        'shrinkagePercent','canNumber','filmContentDescription'];
+  protected $fillable = array('callNumber','filmElement','filmBase', 
+    'filmColor', 'soundType','lengthInFeet','filmStock','edgeCode',
+        'shrinkagePercent','canNumber','filmContentDescription');
 
   public function getFilmColorAttribute($value)
   {

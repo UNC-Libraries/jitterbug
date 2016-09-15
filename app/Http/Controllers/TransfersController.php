@@ -169,7 +169,7 @@ class TransfersController extends Controller {
     // Update MySQL
     DB::transaction( function () 
       use ($data, &$masters, &$transfers, &$created, &$updated) {
-      $transactionId = Uuid::uuid1();
+      $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
 
       $playbackMachineCache = array();
