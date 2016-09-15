@@ -124,10 +124,14 @@ class SolariumProxy {
     $doc->setField('callNumber', $item->callNumber, null, 'set');
     $doc->setField('title', $item->title, null, 'set');
     $doc->setField('containerNote', $item->containerNote, null, 'set');
-    $doc->setField('collectionId', $item->collection->id, null, 'set');
-    $doc->setField('collectionName', $item->collection->name, null, 'set');
-    $doc->setField('formatId', $item->format->id, null, 'set');
-    $doc->setField('formatName', $item->format->name, null, 'set');
+    $doc->setField('collectionId', 
+      $item->collection ? $item->collection->id : null, null, 'set');
+    $doc->setField('collectionName', 
+      $item->collection ? $item->collection->name : null, null, 'set');
+    $doc->setField('formatId', 
+      $item->format ? $item->format->id : null, null, 'set');
+    $doc->setField('formatName',
+      $item->format ? $item->format->name : null, null, 'set');
     $doc->setField('typeName', $item->type, null, 'set');
     $doc->setField('typeId', $item->typeId, null, 'set');
     $doc->setField('createdAt', $item->createdAt, null, 'set');
@@ -161,10 +165,14 @@ class SolariumProxy {
     // Get other fields from the associated audio visual item since that's where
     // they reside, not on the master
     $item = AudioVisualItem::where('call_number', $master->callNumber)->first();
-    $doc->setField('collectionId', $item->collection->id, null, 'set');
-    $doc->setField('collectionName', $item->collection->name, null, 'set');
-    $doc->setField('formatId', $item->format->id, null, 'set');
-    $doc->setField('formatName', $item->format->name, null, 'set');
+    $doc->setField('collectionId', 
+      $item->collection ? $item->collection->id : null, null, 'set');
+    $doc->setField('collectionName', 
+      $item->collection ? $item->collection->name : null, null, 'set');
+    $doc->setField('formatId', 
+      $item->format ? $item->format->id : null, null, 'set');
+    $doc->setField('formatName',
+      $item->format ? $item->format->name : null, null, 'set');
 
     $update->addDocument($doc);
     $update->addCommit();
@@ -204,10 +212,14 @@ class SolariumProxy {
     // they reside, not on the transfer
     $item = AudioVisualItem::where('call_number', 
         $transfer->callNumber)->first();
-    $doc->setField('collectionId', $item->collection->id, null, 'set');
-    $doc->setField('collectionName', $item->collection->name, null, 'set');
-    $doc->setField('formatId', $item->format->id, null, 'set');
-    $doc->setField('formatName', $item->format->name, null, 'set');
+    $doc->setField('collectionId', 
+      $item->collection ? $item->collection->id : null, null, 'set');
+    $doc->setField('collectionName', 
+      $item->collection ? $item->collection->name : null, null, 'set');
+    $doc->setField('formatId', 
+      $item->format ? $item->format->id : null, null, 'set');
+    $doc->setField('formatName',
+      $item->format ? $item->format->name : null, null, 'set');
 
     // TODO get associated cut info
 
