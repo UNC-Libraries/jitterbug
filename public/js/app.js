@@ -392,10 +392,10 @@ junebug = {
     $(document).keydown(function(event) {
       // Right arrow
       if (event.which == 39) {
-        $('.next-page').first().trigger("click");
+        $('.next-page').first().trigger('click');
       // Left arrow
       } else if (event.which == 37) {
-        $('.prev-page').first().trigger("click");
+        $('.prev-page').first().trigger('click');
       }
     });
   },
@@ -1049,6 +1049,7 @@ junebug = {
               <i class="fa fa-times-circle" aria-hidden="true"></i>\
             </a>');
         $('#clear-selection').click(function(event) {
+          event.preventDefault();
           clear();
           render();
         });

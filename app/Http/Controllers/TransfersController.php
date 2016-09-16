@@ -203,7 +203,8 @@ class TransfersController extends Controller {
 
         $originalPm = $row['OriginalPm'];
         
-        if (!empty($originalPm)) {
+        if (!empty($originalPm)) { 
+          // Original PM not empty so this is an update
           $master = PreservationMaster::find($originalPm);
           $master->fileName = $row['OriginatorReference'];
           $master->fileSizeInBytes = $row['FileSize'];
@@ -213,49 +214,32 @@ class TransfersController extends Controller {
           array_push($masters, $master);
           $updated++;
 
-
-        } else {
-
-        }
-
-        $preservationMasters = PreservationMaster::where('call_number', 
-                                           $callNumber)->get();
-        if ($preservationMasters->count() > 0) {
-          // If there are multiple preservation masters with this
-          // call number, update them all with the import data
-          foreach($preservationMasters as $master) {
-            $master->fileName = $row['OriginatorReference'];
-            $master->fileSizeInBytes = $row['FileSize'];
-            $master->durationInSeconds = 
-              $this->toDurationInSeconds($row['Duration']);
-            $master->save();
-            array_push($masters, $master);
-            $updated++;
-
-            $relatedTransfers = 
-              Transfer::where('preservation_master_id', $master->id)->get();
-            foreach($relatedTransfers as $transfer) {
+          // Update related transfers, which should exist
+          $relatedTransfers = $master->transfers()->get();
+          if ($relatedTransfers->count() > 0) {
+            foreach ($relatedTransfers as $transfer) {
               $transfer->playbackMachineId = $playbackMachine->id;
+              // Right now we will assume the person importing is the
+              // engineer, but that might change in the future.
+              $transfer->engineerId = Auth::user()->id;
               $transfer->save();
               array_push($transfers, $transfer);
               $updated++;
             }
+          }
 
-            $relatedCuts = 
-              Cut::where('preservation_master_id', $master->id)->get();
-            foreach($relatedCuts as $cut) {
+          // Update related cuts, which should exist
+          $relatedCuts = $master->cuts()->get();
+          if ($relatedCuts->count() > 0) {
+            foreach ($relatedCuts as $cut) {
               $cut->side = $row['Side'];
               $cut->save();
               $updated++;
             }
-
           }
-
         } else {
-          // There are no preservation masters for the given call number,
-          // and so there are no transfers or cuts. Create them.
-
-          // For the audio PM, Nothing to save, we just need the
+          // Original PM is empty, so all new records will be created.
+          // For the audio PM, there is nothing to save, we just need the
           // ID for the new PM record.
           $audioMaster = new AudioMaster;
           $audioMaster->save();
@@ -302,8 +286,10 @@ class TransfersController extends Controller {
           $cut->side = $row['Side'];
           $cut->save();
           $created++;
+
         }
-      }
+
+      } // end foreach row
 
       DB::statement('set @transaction_id = null;');      
     });
@@ -316,6 +302,7 @@ class TransfersController extends Controller {
 
   private function audioImportValidate($data)
   {
+    $originatorReferences = array();
     $messages = array();
     foreach($data as $row) {
       $bag = new MessageBag();
@@ -347,6 +334,19 @@ class TransfersController extends Controller {
         if ($key==='OriginatorReference' 
           && !empty($row[$key]) && $this->fileNameExists($row[$key])) {
           $bag->add($key, $key . ' already exists in the database.');
+        }
+        // Validate originator reference (preservation_master.file_name) 
+        // doesn't exist
+        if ($key==='OriginatorReference' 
+          && !empty($row[$key]) && in_array($row[$key], $originatorReferences)) {
+          $bag->add($key, $key . ' has already been used in this file.');
+        } else if ($key=='OriginatorReference' && !empty($row[$key])) {
+          array_push($originatorReferences, $row[$key]);
+        }
+        // Validate pm is an integer
+        if ($key==='OriginalPm' 
+          && !empty($row[$key]) && !ctype_digit($row[$key])) {
+          $bag->add($key, $key . ' must be an integer.');
         }
         // Validate pm belongs to the audio visual item identified by
         // call number
@@ -412,7 +412,7 @@ class TransfersController extends Controller {
     if ($item != null) {
       $masters = $item->preservationMasters();
       foreach ($masters as $master) {
-        if ($master->id === $pmId) {
+        if ($master->id == $pmId) {
           return true;
         }
       }
