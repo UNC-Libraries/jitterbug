@@ -76,48 +76,41 @@ class SolariumProxy {
    */
   public function update($modelOrModels)
   {
-    $result;
     $iterable = is_array($modelOrModels) || 
                              $modelOrModels instanceof \IteratorAggregate;
+    if (!$iterable) {
+      $modelOrModels = array($modelOrModels);
+    }
+
+    $update = $this->client->createUpdate();
+
     if ($this->core==='junebug-items') {
-      if ($iterable) {
-        $result = array();
-        foreach ($modelOrModels as $item) {
-          array_push($result, $this->updateItem($item));
-        }
-      } else {
-        $result = $this->updateItem($modelOrModels);
+      foreach ($modelOrModels as $item) {
+        $this->addItemDocument($item, $update);
       }
     } else if ($this->core==='junebug-masters') {
-      if ($iterable) {
-        $result = array();
-        foreach ($modelOrModels as $master) {
-          array_push($result, $this->updateMaster($master));
-        }
-      } else {
-        $result = $this->updateMaster($modelOrModels);
+      foreach ($modelOrModels as $master) {
+        $this->addMasterDocument($master, $update);
       }
     } else if ($this->core==='junebug-transfers') {
-      if ($iterable) {
-        $result = array();
-        foreach ($modelOrModels as $transfer) {
-          array_push($result, $this->updateTransfer($transfer));
-        }
-      } else {
-        $result = $this->updateTransfer($modelOrModels);
+      foreach ($modelOrModels as $transfer) {
+        $this->addTransferDocument($transfer, $update);
       }
     }
-    return $result;
+
+    $update->addCommit();
+    
+    return $this->client->update($update);
   }
 
   /**
-   * Updates the Solr index for the given AudioVisualItem.
+   * Add an item document to the given update query.
    *
    * @param AudioVisualItem $item
+   * @param Query $update
    */
-  protected function updateItem($item)
+  protected function addItemDocument($item, &$update)
   {
-    $update = $this->client->createUpdate();
     $doc = $update->createDocument();
 
     $doc->setKey('id', $item->id);
@@ -138,19 +131,16 @@ class SolariumProxy {
     $doc->setField('updatedAt', $item->updatedAt, null, 'set');
 
     $update->addDocument($doc);
-    $update->addCommit();
-
-    return $this->client->update($update);
   }
 
   /**
-   * Updates the Solr index for the given PreservationMaster.
+   * Add a master document to the given update query.
    *
    * @param PreservationMaster $master
+   * @param Query $update
    */
-  protected function updateMaster($master)
+  protected function addMasterDocument($master, &$update)
   {
-    $update = $this->client->createUpdate();
     $doc = $update->createDocument();
 
     $doc->setKey('id', $master->id);
@@ -175,19 +165,16 @@ class SolariumProxy {
       $item->format ? $item->format->name : null, null, 'set');
 
     $update->addDocument($doc);
-    $update->addCommit();
-
-    return $this->client->update($update);
   }
 
   /**
-   * Updates the Solr index for the given Transfer.
+   * Add a transfer document to the given update query.
    *
    * @param Transfer $transfer
+   * @param Query $update
    */
-  protected function updateTransfer($transfer)
+  protected function addTransferDocument($transfer, &$update)
   {
-    $update = $this->client->createUpdate();
     $doc = $update->createDocument();
 
     $doc->setKey('id', $transfer->id);
@@ -224,9 +211,6 @@ class SolariumProxy {
     // TODO get associated cut info
 
     $update->addDocument($doc);
-    $update->addCommit();
-
-    return $this->client->update($update);
   }
 
   public function delete($modelOrModels)
