@@ -340,7 +340,7 @@ class TransfersController extends Controller {
         if ($key==='OriginatorReference' 
           && !empty($row[$key]) && in_array($row[$key], $originatorReferences)) {
           $bag->add($key, $key . ' has already been used in this file.');
-        } else if ($key=='OriginatorReference' && !empty($row[$key])) {
+        } else if ($key==='OriginatorReference' && !empty($row[$key])) {
           array_push($originatorReferences, $row[$key]);
         }
         // Validate pm is an integer
