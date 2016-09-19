@@ -370,7 +370,8 @@
   </div>
   <div class="row last">
     <div class="col-xs-12 actions">
-      <a class="btn btn-sm btn-secondary" role="button" href="{{ route('items.edit', $item->id) }}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+      <a class="btn btn-sm btn-secondary" role="button" href="{{ route('items.edit', $item->id) }}" style="margin-right: .3rem;"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+      <a class="btn btn-sm btn-secondary" role="button" href="#"><i class="fa fa-plus" aria-hidden="true"></i> Add Master</a>
       <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target=".confirm-delete-modal" style="outline: none; float: right;"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></button>
 
       {!! Form::open(array('route' => array('items.destroy', $item->id), 'method' => 'delete', 'style' => 'display: inline;')) !!}
@@ -385,7 +386,7 @@
               <h4 id="confirmDelete" class="modal-title">Confirm Delete</h4>
             </div>
             <div class="modal-body">
-              <strong>Yikes! Are you sure?</strong> @if (count($item->preservationMasters()) > 0 )This item has related preservation masters and possibly other related records.@endif Do you want to delete just this item, or do you want to delete this item <strong>and all</strong> associated records? This cannot be undone.
+              <strong>Yikes! Are you sure?</strong> @if (count($item->preservationMasters()) > 0 )This item has related preservation masters and transfers.@endif Do you want to delete just this item, or do you want to delete this item <strong>and all</strong> associated records? This cannot be undone.
             </div>
             <div class="modal-footer">
               <button name="deleteCommand" value="item" type="submit" class="btn btn-sm btn-warning" style="outline: none;"><i class="fa fa-trash" aria-hidden="true"></i> Delete Item Only</button>
