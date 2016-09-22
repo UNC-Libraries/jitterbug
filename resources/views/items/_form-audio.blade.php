@@ -55,32 +55,41 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group">
+        <div class="form-group @if ($errors->has('itemable.trackConfiguration')) has-danger @endif">
           <div class="col-xs-4 detail-label">
             {!! Form::label('itemable[trackConfiguration]', 'Track Config', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::text('itemable[trackConfiguration]', null, array('id' => 'track-configuration', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. 1/2 track')) !!}
+            @if ($errors->has('itemable.trackConfiguration'))
+              <div class="form-control-label"><small>{!! $errors->first('itemable.trackConfiguration') !!}</small></div>
+            @endif
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="form-group">
+        <div class="form-group @if ($errors->has('itemable.audioBase')) has-danger @endif">
           <div class="col-xs-4 detail-label">
             {!! Form::label('itemable[audioBase]', 'Base', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::text('itemable[audioBase]', null, array('id' => 'audio-base', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. Polyester')) !!}
+            @if ($errors->has('itemable.audioBase'))
+              <div class="form-control-label"><small>{!! $errors->first('itemable.audioBase') !!}</small></div>
+            @endif
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="form-group">
+        <div class="form-group @if ($errors->has('itemable.audioContentDescription')) has-danger @endif">
           <div class="col-xs-4 detail-label">
             {!! Form::label('itemable[audioContentDescription]', 'Content Description', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::textarea('itemable[audioContentDescription]', null, array('class' => 'form-control form-control-sm', 'rows' => 3)) !!}
+            @if ($errors->has('itemable.audioContentDescription'))
+              <div class="form-control-label"><small>{!! $errors->first('itemable.audioContentDescription') !!}</small></div>
+            @endif
           </div>
         </div>
       </div>

@@ -34,12 +34,15 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group">
+        <div class="form-group @if ($errors->has('containerNote')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
             {!! Form::label('containerNote', 'Container Note', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::textarea('containerNote', null, array('class' => 'form-control form-control-sm', 'rows' => 3)) !!}
+            @if ($errors->has('containerNote'))
+              <div class="form-control-label"><small>{!! $errors->first('containerNote') !!}</small></div>
+            @endif
           </div>
         </div>
       </div>
@@ -70,32 +73,41 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group">
+        <div class="form-group @if ($errors->has('recordingLocation')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
             {!! Form::label('recordingLocation', 'Rec Location', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::text('recordingLocation', null, array('id' => 'recording-location', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. New Orleans, LA')) !!}
+            @if ($errors->has('recordingLocation'))
+              <div class="form-control-label"><small>{!! $errors->first('recordingLocation') !!}</small></div>
+            @endif
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="form-group">
+        <div class="form-group @if ($errors->has('oclc')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
             {!! Form::label('oclc', 'OCLC Id', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::text('oclc', null, array('class' => 'form-control form-control-sm')) !!}
+            @if ($errors->has('oclc'))
+              <div class="form-control-label"><small>{!! $errors->first('oclc') !!}</small></div>
+            @endif
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="form-group">
+        <div class="form-group @if ($errors->has('itemYear')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
             {!! Form::label('itemYear', 'Item Year', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::text('itemYear', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. Item year or range')) !!}
+            @if ($errors->has('itemYear'))
+              <div class="form-control-label"><small>{!! $errors->first('itemYear') !!}</small></div>
+            @endif
           </div>
         </div>
       </div>
@@ -116,12 +128,15 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group">
+        <div class="form-group @if ($errors->has('speed')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
             {!! Form::label('speed', 'Speed', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::text('speed', null, array('id' => 'speed', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. 7.5 ips, 24 fps')) !!}
+            @if ($errors->has('speed'))
+              <div class="form-control-label"><small>{!! $errors->first('speed') !!}</small></div>
+            @endif
           </div>
         </div>
       </div>

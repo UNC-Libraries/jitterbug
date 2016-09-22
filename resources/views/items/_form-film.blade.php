@@ -1,10 +1,13 @@
        <div class="row">
-        <div class="form-group">
+        <div class="form-group @if ($errors->has('itemable.filmElement')) has-danger @endif">
           <div class="col-xs-4 detail-label">
             {!! Form::label('itemable[filmElement]', 'Element', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::text('itemable[filmElement]', null, array('id' => 'film-element', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. Negative')) !!}
+            @if ($errors->has('itemable.filmElement'))
+              <div class="form-control-label"><small>{!! $errors->first('itemable.filmElement') !!}</small></div>
+            @endif
           </div>
         </div>
       </div>
@@ -22,12 +25,15 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group">
+        <div class="form-group @if ($errors->has('itemable.filmColor')) has-danger @endif">
           <div class="col-xs-4 detail-label">
             {!! Form::label('itemable[filmColor]', 'Color', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::text('itemable[filmColor]', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. B/W')) !!}
+            @if ($errors->has('itemable.filmColor'))
+              <div class="form-control-label"><small>{!! $errors->first('itemable.filmColor') !!}</small></div>
+            @endif
           </div>
         </div>
       </div>
@@ -61,32 +67,41 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group">
+        <div class="form-group @if ($errors->has('itemable.filmStock')) has-danger @endif">
           <div class="col-xs-4 detail-label">
             {!! Form::label('itemable[filmStock]', 'Film Stock', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::text('itemable[filmStock]', null, array('class' => 'form-control form-control-sm')) !!}
+            @if ($errors->has('itemable.filmStock'))
+              <div class="form-control-label"><small>{!! $errors->first('itemable.filmStock') !!}</small></div>
+            @endif
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="form-group">
+        <div class="form-group @if ($errors->has('itemable.edgeCode')) has-danger @endif">
           <div class="col-xs-4 detail-label">
             {!! Form::label('itemable[edgeCode]', 'Edge Code', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::text('itemable[edgeCode]', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. Triangle, Triangle')) !!}
+            @if ($errors->has('itemable.edgeCode'))
+              <div class="form-control-label"><small>{!! $errors->first('itemable.edgeCode') !!}</small></div>
+            @endif
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="form-group">
+        <div class="form-group @if ($errors->has('itemable.shrinkagePercent')) has-danger @endif">
           <div class="col-xs-4 detail-label">
             {!! Form::label('itemable[shrinkagePercent]', 'Shrinkage Percent', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::text('itemable[shrinkagePercent]', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. .08')) !!}
+            @if ($errors->has('itemable.shrinkagePercent'))
+              <div class="form-control-label"><small>{!! $errors->first('itemable.shrinkagePercent') !!}</small></div>
+            @endif
           </div>
         </div>
       </div>
@@ -104,12 +119,15 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group">
+        <div class="form-group @if ($errors->has('itemable.filmContentDescription')) has-danger @endif">
           <div class="col-xs-4 detail-label">
             {!! Form::label('itemable[filmContentDescription]', 'Content Description', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::textarea('itemable[filmContentDescription]', null, array('class' => 'form-control form-control-sm', 'rows' => 3)) !!}
+            @if ($errors->has('itemable.filmContentDescription'))
+              <div class="form-control-label"><small>{!! $errors->first('itemable.filmContentDescription') !!}</small></div>
+            @endif
           </div>
         </div>
       </div>
