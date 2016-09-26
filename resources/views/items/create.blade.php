@@ -46,10 +46,10 @@
       </label>
       <span class="divider"></span>
       <span style="margin-right: .75rem">
-        {!! Form::label('favorite', 'Add to Marks: ', array('class' => 'form-control-label')) !!}
+        {!! Form::label('mark', 'Mark: ', array('class' => 'form-control-label')) !!}
       </span>
       <label>
-        {!! Form::checkbox('favorite', '1') !!}
+        {!! Form::checkbox('mark', '1') !!}
       </label>
     </div>
   </div>

@@ -125,7 +125,7 @@ class ItemsController extends Controller
                                                    &$itemId, &$items) {
       // The transaction id will be used by the 'revisionable' package
       // when a model event is fired. We are passing it down via a connection
-      // variable since we don't have have api access to that code.
+      // variable.
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
       
@@ -141,9 +141,9 @@ class ItemsController extends Controller
         $itemable->fill($input['itemable']);
 
         $item = new AudioVisualItem;
+        $item->itemableType = $input['itemableType'];
         $item->fill($input);
         $item->callNumber = $sequence->callNumber();
-        $item->itemableType = $input['itemableType'];
 
         $itemable->save();
         $item->itemableId = $itemable->id;

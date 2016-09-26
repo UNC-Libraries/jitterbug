@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Venturecraft\Revisionable\RevisionableTrait;
 
+use Junebug\Util\DurationFormat;
+
 class PreservationMaster extends Model {
   use CamelCasing;
   use NullFieldPreserver;
   use RevisionableTrait;
+  use CompositeHistory;
   use SoftDeletes;
 
   protected $dates = ['deleted_at'];
@@ -33,12 +36,27 @@ class PreservationMaster extends Model {
     'duration_in_seconds' => 'duration',
     'file_name' => 'file name',
     'file_location' => 'file location',
+    'file_format' => 'file format',
+    'file_codec' => 'file codec',
     'access_file_location' => 'access file location',
   );
 
-  public function department()
+  protected $fillable = array('callNumber', 'checksum',
+    'projectId', 'reproductionMachineId', 'departmentId', 
+    'duration', 'fileName', 'fileLocation', 
+    'fileSizeInBytes', 'audioFileFormat', 'audioFileCode',
+    'filmFileFormat', 'filmFileCodec', 'videoFileFormat',
+    'videoFileCodec', 'accessFileLocation');
+
+  public function __construct()
   {
-    return $this->belongsTo('Junebug\Models\Department');
+    $this->masterableType = 'AudioMaster';
+    parent::__construct();
+  }
+
+  public function batch()
+  {
+    return false;
   }
 
   public function cuts()
@@ -51,11 +69,26 @@ class PreservationMaster extends Model {
     return $this->hasMany('Junebug\Models\Transfer');
   }
 
+  public function department()
+  {
+    return $this->belongsTo('Junebug\Models\Department');
+  }
+
+  public function project()
+  {
+    return $this->belongsTo('Junebug\Models\Project');
+  }
+
   public function masterable()
   {
     return $this->morphTo();
   }
 
+  public function getBatchAttribute()
+  {
+    return $this->batch();
+  }
+  
   public function getTypeAttribute()
   {
   	$fullType = $this->getAttribute("masterableType");
@@ -64,55 +97,104 @@ class PreservationMaster extends Model {
     return $type;
   }
 
+  /* File format accessors / mutators */
+
+  public function getAudioFileFormatAttribute($value)
+  {
+    if ($this->masterableType === 'AudioMaster') {
+      return $value===null ? $this->fileFormat : $value;
+    }
+  }
+
+  public function setAudioFileFormatAttribute($value)
+  {
+    if ($this->masterableType === 'AudioMaster') {
+      $this->fileFormat = $value;
+    }
+  }
+
+  public function getFilmFileFormatAttribute($value)
+  {
+    if ($this->masterableType === 'FilmMaster') {
+      return $value===null ? $this->fileFormat : $value;
+    }
+  }
+
+  public function setFilmFileFormatAttribute($value)
+  {
+    if ($this->masterableType === 'FilmMaster') {
+      $this->fileFormat = $value;
+    }
+  }
+
+  public function getVideoFileFormatAttribute($value)
+  {
+    if ($this->masterableType === 'VideoMaster') {
+      return $value===null ? $this->fileFormat : $value;
+    }
+  }
+
+  public function setVideoFileFormatAttribute($value)
+  {
+    if ($this->masterableType === 'VideoMaster') {
+      $this->fileFormat = $value;
+    }
+  }
+
+  /* File codec accessors / mutators */
+
+  public function getAudioFileCodecAttribute($value)
+  {
+    if ($this->masterableType === 'AudioMaster') {
+      return $value===null ? $this->fileCodec : $value;
+    }
+  }
+
+  public function setAudioFileCodecAttribute($value)
+  {
+    if ($this->masterableType === 'AudioMaster') {
+      $this->fileCodec = $value;
+    }
+  }
+
+  public function getFilmFileCodecAttribute($value)
+  {
+    if ($this->masterableType === 'FilmMaster') {
+      return $value===null ? $this->fileCodec : $value;
+    }
+  }
+
+  public function setFilmFileCodecAttribute($value)
+  {
+    if ($this->masterableType === 'FilmMaster') {
+      $this->fileCodec = $value;
+    }
+  }
+
+  public function getVideoFileCodecAttribute($value)
+  {
+    if ($this->masterableType === 'VideoMaster') {
+      return $value===null ? $this->fileCodec : $value;
+    }
+  }
+
+  public function setVideoFileCodecAttribute($value)
+  {
+    if ($this->masterableType === 'VideoMaster') {
+      $this->fileCodec = $value;
+    }
+  }
+
   public function getDurationAttribute()
   {
     $durationInSeconds = $this->getAttribute("durationInSeconds");
-    $duration = "";
-    if($durationInSeconds) {
-      $minutes = (int) ($durationInSeconds / 60);
-      $seconds = $minutes == 0 ? $durationInSeconds : 
-        $durationInSeconds % ($minutes * 60);
-
-      if($minutes) {
-        $duration = $minutes . "' ";
-      }
-      if($seconds) {
-        $duration = $duration . $seconds . "\"";
-      }
-    }
-    return $duration;
+    return DurationFormat::toDuration($durationInSeconds);
   }
 
-  /**
-   * Merges the revision histories of the preservation master and the
-   * associated audio/film/video master since they should appear as one
-   * to the end user.
-   * 
-   * @return Collection
-   */
-  public function completeRevisionHistory()
+  public function setDurationAttribute($value)
   {
-    $masterRevisionHistory = $this->revisionHistory()->get();
-    $masterableRevisionHistory = $this->masterable->revisionHistory()->get();
-    $completeRevisionHistory = $masterRevisionHistory->
-                               merge($masterableRevisionHistory);
-    $completeRevisionHistory = $completeRevisionHistory->sortBy('created_at');
-
-    // Remove any revisions that will appear to be duplicate to the 
-    // user. This is currently only an issue with AudioVisualItems, but we
-    // will do it here for future protection.
-    $compositeKeys = array();
-    foreach ($completeRevisionHistory as $key => $history) {
-      $compositeKey = $history->transaction_id.$history->field.
-                      $history->old_value.$history->new_value;
-      if(in_array($compositeKey,$compositeKeys)) {
-        $completeRevisionHistory->pull($key);
-      } else {
-        array_push($compositeKeys,$compositeKey);
-      }
-    }
-
-    return $completeRevisionHistory;
+    $this->durationInSeconds = DurationFormat::toSeconds($value);
   }
   
 }
+

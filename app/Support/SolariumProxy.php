@@ -147,6 +147,10 @@ class SolariumProxy {
     $doc->setField('callNumber', $master->callNumber, null, 'set');
     $doc->setField('fileName', $master->fileName, null, 'set');
     $doc->setField('durationInSeconds', $master->durationInSeconds, null, 'set');
+    $doc->setField('departmentId', 
+      $master->department ? $master->department->id : null, null, 'set');
+    $doc->setField('departmentName', 
+      $master->department ? $master->department->name : null, null, 'set');
     $doc->setField('typeName', $master->type, null, 'set');
     $doc->setField('typeId', $master->typeId, null, 'set');
     $doc->setField('createdAt', $master->createdAt, null, 'set');

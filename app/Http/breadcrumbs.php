@@ -1,5 +1,11 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| Audio Visual Items
+|--------------------------------------------------------------------------
+*/
+
 // Items
 Breadcrumbs::register('items.index', function($breadcrumbs)
 {
@@ -27,6 +33,12 @@ Breadcrumbs::register('items.create', function($breadcrumbs, $item)
     $breadcrumbs->push('Create Item', route('items.create', $item->id));
 });
 
+/*
+|--------------------------------------------------------------------------
+| Preservation Masters
+|--------------------------------------------------------------------------
+*/
+
 // Masters
 Breadcrumbs::register('masters.index', function($breadcrumbs)
 {
@@ -46,6 +58,19 @@ Breadcrumbs::register('masters.cuts.show', function($breadcrumbs, $master, $cut)
     $breadcrumbs->parent('masters.show', $master);
     $breadcrumbs->push('View Cut', route('masters.cuts.show', [$master->id, $cut->id]));
 });
+
+// Masters / Create Master
+Breadcrumbs::register('masters.create', function($breadcrumbs, $master)
+{
+    $breadcrumbs->parent('masters.index');
+    $breadcrumbs->push('Create Master', route('masters.create', $master->id));
+});
+
+/*
+|--------------------------------------------------------------------------
+| Transfers
+|--------------------------------------------------------------------------
+*/
 
 // Transfers
 Breadcrumbs::register('transfers.index', function($breadcrumbs)

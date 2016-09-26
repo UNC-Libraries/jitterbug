@@ -10,6 +10,7 @@ class AudioVisualItem extends Model {
   use CamelCasing;
   use NullFieldPreserver;
   use RevisionableTrait;
+  use CompositeHistory;
   use SoftDeletes;
 
   protected $dates = array('deleted_at');
@@ -103,42 +104,6 @@ class AudioVisualItem extends Model {
   public function itemable()
   {
     return $this->morphTo();
-  }
-
-  /**
-   * Merges the revision histories of the audio visual item and the
-   * associated audio/film/video item since they should appear as one
-   * to the end user.
-   * 
-   * @return Collection
-   */
-  public function completeRevisionHistory()
-  {
-    $itemRevisionHistory = $this->revisionHistory()->get();
-    $itemableRevisionHistory = $this->itemable->revisionHistory()->get();
-    $completeRevisionHistory = $itemRevisionHistory->
-                               merge($itemableRevisionHistory);
-    $completeRevisionHistory = $completeRevisionHistory->sortBy('created_at');
-
-    // Revisions that appear to be duplicate to the user are possible 
-    // in the case of a call number update, which updates the call 
-    // numbers on both AudioVisualItem and AudioItem (or FilmItem,
-    // VideoItem), so remove the duplicates. Yes, this is a hack to
-    // get around the fact that call numbers shouldn't be on the
-    // itemable tables. But for the purposes of data migration they
-    // are needed for now.
-    $compositeKeys = array();
-    foreach ($completeRevisionHistory as $key => $history) {
-      $compositeKey = $history->transaction_id.$history->field.
-                      $history->old_value.$history->new_value;
-      if(in_array($compositeKey,$compositeKeys)) {
-        $completeRevisionHistory->pull($key);
-      } else {
-        array_push($compositeKeys,$compositeKey);
-      }
-    }
-
-    return $completeRevisionHistory;
   }
 
 }

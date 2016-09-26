@@ -25,7 +25,8 @@
       </div>
       {{--
         In the past, there have been masters without call numbers. In other
-        words they were not linked to an AudioVisualItem.
+        words they were not linked to an AudioVisualItem, so here we will
+        check to make sure a call number is defined before we display it.
        --}}
       @if ($master->callNumber)
       <div class="row">
@@ -60,10 +61,20 @@
       @if ($master->fileSizeInBytes)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
-          File Size
+          File Size (bytes)
         </div>
         <div class="col-xs-7 detail-value">
           {{$master->fileSizeInBytes}}
+        </div>
+      </div>
+      @endif
+      @if ($master->duration)
+      <div class="row">
+        <div class="col-xs-4 col-xs-offset-1 detail-label">
+          Duration
+        </div>
+        <div class="col-xs-7 detail-value">
+          {{$master->duration}}
         </div>
       </div>
       @endif
@@ -87,6 +98,16 @@
         </div>
       </div>
       @endif
+      @if ($master->reproductionMachine)
+      <div class="row">
+        <div class="col-xs-4 col-xs-offset-1 detail-label">
+          Repro Machine
+        </div>
+        <div class="col-xs-7 detail-value">
+          {{$master->reproductionMachine->name()}}
+        </div>
+      </div>
+      @endif
       @if ($master->project)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
@@ -107,22 +128,43 @@
         </div>
       </div>
       @endif
-      @if ($master->duration)
+    </div>
+    <div class="col-xs-6">
+      @if ($master->fileFormat)
       <div class="row">
-        <div class="col-xs-4 col-xs-offset-1 detail-label">
-          Duration
+        <div class="col-xs-4 detail-label">
+          File Format
         </div>
-        <div class="col-xs-7 detail-value">
-          {{$master->duration}}
+        <div class="col-xs-8 detail-value">
+          {{$master->fileFormat}}
+        </div>
+      </div>
+      @endif
+      @if ($master->fileCodec)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          File Codec
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$master->fileCodec}}
         </div>
       </div>
       @endif
       {{-- End PreservationMaster Fields --}}
-    </div>
-    <div class="col-xs-6">
+      
       {{-- Begin Masterable Fields --}}
 
       @if (get_class($master->masterable) === 'Junebug\Models\AudioMaster')
+      @if ($master->masterable->samplingRate)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Sampling Rate
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$master->masterable->samplingRate->name}}
+        </div>
+      </div>
+      @endif
       @if ($master->masterable->tapeBrand)
       <div class="row">
         <div class="col-xs-4 detail-label">
@@ -143,16 +185,6 @@
         </div>
       </div>
       @endif
-      @if ($master->masterable->samplingRate)
-      <div class="row">
-        <div class="col-xs-4 detail-label">
-          Sampling Rate
-        </div>
-        <div class="col-xs-8 detail-value">
-          {{$master->masterable->samplingRate->name}}
-        </div>
-      </div>
-      @endif
       @if ($master->masterable->testTones)
       <div class="row">
         <div class="col-xs-4 detail-label">
@@ -165,10 +197,48 @@
       @endif
       @endif
       @if (get_class($master->masterable) === 'Junebug\Models\FilmMaster')
-
+      @if ($master->masterable->frameSize)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Frame Size
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$master->masterable->frameSize}}
+        </div>
+      </div>
+      @endif
+      @if ($master->masterable->aspectRatio)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Aspect Ratio
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$master->masterable->aspectRatio}}
+        </div>
+      </div>
+      @endif
       @endif
       @if (get_class($master->masterable) === 'Junebug\Models\VideoMaster')
-
+      @if ($master->masterable->frameSize)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Frame Size
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$master->masterable->frameSize}}
+        </div>
+      </div>
+      @endif
+      @if ($master->masterable->aspectRatio)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Aspect Ratio
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$master->masterable->aspectRatio}}
+        </div>
+      </div>
+      @endif
       @endif
       {{-- End Masterable Fields --}}
       <div class="row">

@@ -68,6 +68,10 @@ JUNEBUG = {
       junebug.initRevisionHistory();
       junebug.initRelatedCuts();
       junebug.initRelatedTransfers();
+    },
+
+    create: function() {
+      junebug.initMasterTypeControls();
     }
   },
 

@@ -23,6 +23,7 @@ use Junebug\Models\TransferFormat;
 use Junebug\Support\SolariumProxy;
 use Junebug\Support\SolariumPaginator;
 use Junebug\Util\CsvReader;
+use Junebug\Util\DurationFormat;
 
 class TransfersController extends Controller {
 
@@ -320,7 +321,7 @@ class TransfersController extends Controller {
         }
         // Validate duration format
         if ($key==='Duration' 
-          && !empty($row[$key]) && !$this->isDuration($row[$key])) {
+          && !empty($row[$key]) && !DurationFormat::isDuration($row[$key])) {
           $bag->add($key, 
             $key . ' must adhere to the following format: HH:MM:SS.mmm.');
         }
@@ -358,46 +359,6 @@ class TransfersController extends Controller {
       }
     }
     return $messages;
-  }
-
-  private function isDuration($duration)
-  {
-    // HH:MM:SS.mmm
-    $pattern = '/^(?:2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9](.?[0-9]{1,3}?)?$/';
-    if (preg_match($pattern, $duration) === 1) {
-      return true;
-    }
-    return false;
-  }
-
-  /**
-   * Get duration in seconds from a duration in HH:MM:SS.mmm format. 
-   */
-  private function toDurationInSeconds($duration)
-  {
-    $hasMilliseconds = strpos($duration, '.') != false;
-    $milliseconds = '';
-    if ($hasMilliseconds) {
-      $milliseconds = substr($duration, strpos($duration, '.'));
-    }
-    $durationWithoutMilliseconds = 
-      substr($duration, 0, strlen($duration) - strlen($milliseconds));
-    $durationParts = explode(':', $durationWithoutMilliseconds);
-    $hours = $minutes = $seconds = $totalSeconds = 0;
-    if (count($durationParts) === 3) {
-      $hours = $durationParts[0];
-      $minutes = $durationParts[1];
-      $seconds = $durationParts[2];
-    } else if (count($durationParts) === 2) {
-      $minutes = $durationParts[0];
-      $seconds = $durationParts[1];
-    } else {
-      $seconds = $durationParts[0];
-    }
-    $totalSeconds = $hours * 60 * 60;
-    $totalSeconds = $totalSeconds + ($minutes * 60);
-    $totalSeconds = $totalSeconds + $seconds;
-    return $totalSeconds;
   }
 
   private function callNumberExists($callNumber)

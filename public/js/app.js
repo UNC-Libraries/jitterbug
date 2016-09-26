@@ -169,6 +169,24 @@ junebug = {
     });
   },
 
+  initMasterTypeControls: function() {
+    $('#detail #master-type-controls :radio').click(function(event) {
+      if ($(this).val()=='AudioMaster') {
+        $('#audio-form').show();
+        $('#film-form').hide();
+        $('#video-form').hide();
+      } else if ($(this).val()=='FilmMaster') {
+        $('#audio-form').hide();
+        $('#film-form').show();
+        $('#video-form').hide();
+      } else if ($(this).val()=='VideoMaster') {
+        $('#audio-form').hide();
+        $('#film-form').hide();
+        $('#video-form').show();
+      }
+    });
+  },
+
   initFileSelect: function() {
     $(':file').change(function() {
       var input = $(this),

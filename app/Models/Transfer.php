@@ -9,6 +9,7 @@ class Transfer extends Model {
   use CamelCasing;
   use NullFieldPreserver;
   use RevisionableTrait;
+  use CompositeHistory;
   use SoftDeletes;
 
   protected $dates = ['deleted_at'];
@@ -89,36 +90,4 @@ class Transfer extends Model {
     return $type;
   }
 
-  /**
-   * Merges the revision histories of the transfer and the
-   * associated audio/film/video transfer since they should appear as one
-   * to the end user.
-   * 
-   * @return Collection
-   */
-  public function completeRevisionHistory()
-  {
-    $transferRevisionHistory = $this->revisionHistory()->get();
-    $transferableRevisionHistory = 
-                                $this->transferable->revisionHistory()->get();
-    $completeRevisionHistory = $transferRevisionHistory->
-                               merge($transferableRevisionHistory);
-    $completeRevisionHistory = $completeRevisionHistory->sortBy('created_at');
-
-    // Remove any revisions that will appear to be duplicate to the 
-    // user. This is currently only an issue with AudioVisualItems, but we
-    // will do it here for future protection.
-    $compositeKeys = array();
-    foreach ($completeRevisionHistory as $key => $history) {
-      $compositeKey = $history->transaction_id.$history->field.
-                      $history->old_value.$history->new_value;
-      if(in_array($compositeKey,$compositeKeys)) {
-        $completeRevisionHistory->pull($key);
-      } else {
-        array_push($compositeKeys,$compositeKey);
-      }
-    }
-
-    return $completeRevisionHistory;
-  }
 }

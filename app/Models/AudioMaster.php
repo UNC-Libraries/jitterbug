@@ -15,6 +15,23 @@ class AudioMaster extends Model {
 
   protected $revisionCreationsEnabled = true;
 
+  protected $revisionFormattedFields = array(
+    'tape_brand_id' => 'isEmpty:nothing|%s',
+    'pm_speed_id' => 'isEmpty:nothing|%s',
+    'sampling_rate_id' => 'isEmpty:nothing|%s',
+    'test_tones' => 'isEmpty:nothing|%s',
+  );
+
+  protected $revisionFormattedFieldNames = array(
+    'tape_brand_id' => 'tape brand',
+    'pm_speed_id' => 'PM speed',
+    'sampling_rate_id' => 'sampling rate',
+    'test_tones' => 'test tones',
+  );
+
+  protected $fillable = array('tapeBrandId', 'pmSpeedId',
+    'samplingRateId', 'testTones');
+
   public function tapeBrand()
   {
     return $this->belongsTo('Junebug\Models\TapeBrand');

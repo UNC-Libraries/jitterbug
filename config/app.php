@@ -225,9 +225,13 @@ return [
 		'VideoItem'	                => 'Junebug\Models\VideoItem',
 		'FilmItem'	                => 'Junebug\Models\FilmItem',
 		'AudioMaster'	            => 'Junebug\Models\AudioMaster',
+		'FilmMaster'	            => 'Junebug\Models\FilmMaster',
+		'VideoMaster'	            => 'Junebug\Models\VideoMaster',
 		'PreservationMaster'	    => 'Junebug\Models\PreservationMaster',
 		'Cut'                       => 'Junebug\Models\Cut',
 		'AudioTransfer'             => 'Junebug\Models\AudioTransfer',
+		'FilmTransfer'              => 'Junebug\Models\FilmTransfer',
+		'VideoTransfer'             => 'Junebug\Models\VideoTransfer',
 		'Transfer'                  => 'Junebug\Models\Transfer',
 
 		'Breadcrumbs' => 'DaveJamesMiller\Breadcrumbs\Facade',
