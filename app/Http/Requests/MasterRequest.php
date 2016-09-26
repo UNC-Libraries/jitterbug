@@ -3,6 +3,7 @@
 use Log;
 
 use Junebug\Http\Requests\Request;
+use Junebug\Util\DurationFormat;
 
 class MasterRequest extends Request {
 
@@ -28,10 +29,14 @@ class MasterRequest extends Request {
     $rules['batchSize'] = 'required_if:batch,1|integer|between:2,100';
     $this->addRuleIfNotMixed($rules, 'callNumber',
       'required|min:4|max:30|exists:audio_visual_items,call_number');
-    $this->addRuleIfNotMixed($rules, 'fileName', 'required|max:60|unique:preservation_masters,file_name');
+    $this->addRuleIfNotMixed($rules, 'fileName', 
+      'required|max:60|unique:preservation_masters,file_name,' . 
+      $this->input('id'));
     $this->addRuleIfNotMixed($rules, 'fileLocation', 'max:60');
-    $this->addRuleIfNotMixed($rules, 'fileSizeInBytes', 'integer|required|digits_between:0,15');
-    $this->addRuleIfNotMixed($rules, 'duration', array('required', 'regex:/^(?:2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9](.?[0-9]{1,3}?)?$/'));
+    $this->addRuleIfNotMixed($rules, 'fileSizeInBytes', 
+      'integer|required|digits_between:0,15');
+    $this->addRuleIfNotMixed($rules, 'duration', array('required', 
+      'regex:' . DurationFormat::$pattern));
     $this->addRuleIfNotMixed($rules, 'checksum', 'max:255');
     $this->addRuleIfNotMixed($rules, 'accessFileLocation', 'max:60');
     $this->addRuleIfNotMixed($rules, 'departmentId', 'required');

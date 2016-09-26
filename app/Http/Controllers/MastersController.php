@@ -109,25 +109,20 @@ class MastersController extends Controller {
       $linked = true;
     }
 
+    $reproductionMachines = ['' => 
+             'Select a reproduction machine'] +
+             ReproductionMachine::pluck('name', 'id')->all();
     $departments = ['' => 
              'Select a department'] + Department::pluck('name', 'id')->all();
     $projects = ['' => 
              'Select a project'] + Project::orderBy('name')
              ->pluck('name', 'id')->all();
-    $reproductionMachines = ['' => 
-             'Select a reproduction machine'] +
-             ReproductionMachine::pluck('name', 'id')->all();
-    $tapeBrands = ['' => 
-             'Select a tape brand'] + TapeBrand::pluck('name', 'id')->all();
     $samplingRates = ['' => 
              'Select a sampling rate'] +
              SamplingRate::pluck('name', 'id')->all();
-    $pmSpeeds = ['' => 
-             'Select a speed'] +
-             PmSpeed::pluck('name', 'id')->all();
     return view('masters.create', 
-      compact('master', 'item', 'linked', 'departments', 'projects', 
-        'reproductionMachines', 'tapeBrands', 'samplingRates', 'pmSpeeds'));
+      compact('master', 'item', 'linked', 'reproductionMachines', 
+        'departments', 'projects', 'samplingRates'));
   }
 
   /**
@@ -191,24 +186,70 @@ class MastersController extends Controller {
     }
   }
 
-
   /**
    * Display the form for editing a master.
    */
   public function edit($id)
   {
     $master = PreservationMaster::findOrFail($id);
-    $cuts = Cut::where('preservation_master_id', $master->id)
-               ->orderBy('cut_number', 'asc')
-               ->get();
+    $transfers = $master->transfers()->get();
+    $cuts = $master->cuts()->get();
 
+    $departments = ['' => 
+             'Select a department'] + Department::pluck('name', 'id')->all();
+    $projects = ['' => 
+             'Select a project'] + Project::orderBy('name')
+             ->pluck('name', 'id')->all();
+    $reproductionMachines = ['' => 
+             'Select a reproduction machine'] +
+             ReproductionMachine::pluck('name', 'id')->all();
+    $tapeBrands = ['' => 
+             'Select a tape brand'] + TapeBrand::pluck('name', 'id')->all();
+    $samplingRates = ['' => 
+             'Select a sampling rate'] +
+             SamplingRate::pluck('name', 'id')->all();
+    $pmSpeeds = ['' => 
+             'Select a speed'] +
+             PmSpeed::pluck('name', 'id')->all();
     return view('masters.edit', 
-      compact('master', 'cuts', 'collections', 'formats'));
+      compact('master', 'transfers', 'cuts', 'departments', 'projects',
+        'reproductionMachines', 'tapeBrands', 'samplingRates', 'pmSpeeds'));
   }
 
   public function resolveRange(Request $request)
   {
   	return parent::rangeFor($request, $this->solrMasters);
+  }
+
+  public function update($id, MasterRequest $request)
+  {
+    $input = $request->all();
+    $master = PreservationMaster::findOrFail($id);
+    $masterable = $master->masterable;
+
+    $master->fill($input);
+    $masterable->fill($input['masterable']); 
+
+    // Update MySQL
+    DB::transaction(function () use ($master, $masterable) {
+      $transactionId = Uuid::uuid4();
+      DB::statement("set @transaction_id = '$transactionId';");
+
+      $masterable->save();
+      $master->touch();
+      $master->save();
+
+      DB::statement('set @transaction_id = null;');      
+    });
+
+    // Update Solr
+    $this->solrMasters->update($master);
+
+    $request->session()->put('alert', array('type' => 'success', 'message' => 
+        '<strong>Yep.</strong> ' . 
+        'Preservation master was successfully updated.'));
+
+    return redirect()->route('masters.show', [$id]);
   }
 
   public function destroy($id, Request $request)

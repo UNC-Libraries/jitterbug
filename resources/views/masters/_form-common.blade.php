@@ -5,7 +5,7 @@
             {!! Form::label('callNumber', 'Call Number', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            @if ($linked)
+            @if ((isset($linked) && $linked) || routeName()==='masters.edit')
               {!! Form::text('callNumber', null, array('class' => 'form-control form-control-sm', 'readonly' => 'readonly')) !!}
             @else
               {!! Form::text('callNumber', null, array('class' => 'form-control form-control-sm')) !!}
@@ -95,7 +95,7 @@
         </div>
       </div>
       {{-- Reproduction machine is only for old, analog PMs. All new PMs will be digital. So, we won't display it on the create page. --}}
-      @if (app('request')->route()->getAction()['as']!=='masters.create' && $master->reproductionMachineId)
+      @if (routeName() !== 'masters.create' && $master->reproductionMachineId)
       <div class="row">
         <div class="form-group @if ($errors->has('reproductionMachineId')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">

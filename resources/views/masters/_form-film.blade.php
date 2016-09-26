@@ -4,7 +4,7 @@
             {!! Form::label('filmFileFormat', 'File Format', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('filmFileFormat', 'DPX', array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::text('filmFileFormat', routeName() === 'masters.create' ? 'DPX' : null, array('class' => 'form-control form-control-sm')) !!}
             @if ($errors->has('filmFileFormat'))
               <div class="form-control-label"><small>{!! $errors->first('filmFileFormat') !!}</small></div>
             @endif
@@ -17,7 +17,7 @@
             {!! Form::label('filmFileCodec', 'File Codec', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('filmFileCodec', 'Uncompressed 10-bit', array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::text('filmFileCodec', routeName() === 'masters.create' ? 'Uncompressed 10-bit' : null, array('class' => 'form-control form-control-sm')) !!}
             @if ($errors->has('filmFileCodec'))
               <div class="form-control-label"><small>{!! $errors->first('filmFileCodec') !!}</small></div>
             @endif
@@ -30,7 +30,7 @@
             {!! Form::label('masterable[filmFrameSize]', 'Frame Size', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('masterable[filmFrameSize]', '720 x 480', array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::text('masterable[filmFrameSize]', routeName() === 'masters.create' ? '720 x 480' : null, array('class' => 'form-control form-control-sm')) !!}
             @if ($errors->has('masterable.filmFrameSize'))
               <div class="form-control-label"><small>{!! $errors->first('masterable.filmFrameSize') !!}</small></div>
             @endif
@@ -43,7 +43,7 @@
             {!! Form::label('masterable[filmAspectRatio]', 'Aspect Ratio', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('masterable[filmAspectRatio]', '4:3', array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::text('masterable[filmAspectRatio]', routeName() === 'masters.create' ? '4:3' : null, array('class' => 'form-control form-control-sm')) !!}
             @if ($errors->has('masterable.filmAspectRatio'))
               <div class="form-control-label"><small>{!! $errors->first('masterable.filmAspectRatio') !!}</small></div>
             @endif

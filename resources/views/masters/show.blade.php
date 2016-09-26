@@ -104,7 +104,7 @@
           Repro Machine
         </div>
         <div class="col-xs-7 detail-value">
-          {{$master->reproductionMachine->name()}}
+          {{$master->reproductionMachine->name}}
         </div>
       </div>
       @endif

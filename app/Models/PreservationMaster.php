@@ -27,6 +27,7 @@ class PreservationMaster extends Model {
     'duration_in_seconds' => 'isEmpty:nothing|%s',
     'file_name' => 'isEmpty:nothing|%s',
     'file_location' => 'isEmpty:nothing|%s',
+    'file_size_in_bytes' => 'isEmpty:nothing|%s',
     'access_file_location' => 'isEmpty:nothing|%s',
   );
 
@@ -38,13 +39,14 @@ class PreservationMaster extends Model {
     'file_location' => 'file location',
     'file_format' => 'file format',
     'file_codec' => 'file codec',
+    'file_size_in_bytes' => 'file size',
     'access_file_location' => 'access file location',
   );
 
   protected $fillable = array('callNumber', 'checksum',
     'projectId', 'reproductionMachineId', 'departmentId', 
     'duration', 'fileName', 'fileLocation', 
-    'fileSizeInBytes', 'audioFileFormat', 'audioFileCode',
+    'fileSizeInBytes', 'audioFileFormat', 'audioFileCodec',
     'filmFileFormat', 'filmFileCodec', 'videoFileFormat',
     'videoFileCodec', 'accessFileLocation');
 
@@ -77,6 +79,11 @@ class PreservationMaster extends Model {
   public function project()
   {
     return $this->belongsTo('Junebug\Models\Project');
+  }
+
+  public function reproductionMachine()
+  {
+    return $this->belongsTo('Junebug\Models\ReproductionMachine');
   }
 
   public function masterable()
@@ -187,8 +194,7 @@ class PreservationMaster extends Model {
 
   public function getDurationAttribute()
   {
-    $durationInSeconds = $this->getAttribute("durationInSeconds");
-    return DurationFormat::toDuration($durationInSeconds);
+    return DurationFormat::toDuration($this->durationInSeconds);
   }
 
   public function setDurationAttribute($value)
@@ -196,5 +202,9 @@ class PreservationMaster extends Model {
     $this->durationInSeconds = DurationFormat::toSeconds($value);
   }
   
+  public function getDurationInSecondsDisplayAttribute($value)
+  {
+    return DurationFormat::toDuration($value);
+  }
 }
 

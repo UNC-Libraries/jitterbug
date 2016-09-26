@@ -1,7 +1,6 @@
 <?php
 
-// example helper
-// function someFuction($param)
-// {
-//   return app('request')->something;
-// }
+function routeName()
+{
+  return app('request')->route()->getName();
+}

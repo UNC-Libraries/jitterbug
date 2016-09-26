@@ -4,7 +4,7 @@
             {!! Form::label('audioFileFormat', 'File Format', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('audioFileFormat', 'BWF', array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::text('audioFileFormat', routeName() === 'masters.create' ? 'BWF' : null, array('class' => 'form-control form-control-sm')) !!}
             @if ($errors->has('audioFileFormat'))
               <div class="form-control-label"><small>{!! $errors->first('audioFileFormat') !!}</small></div>
             @endif
@@ -17,7 +17,7 @@
             {!! Form::label('audioFileCodec', 'File Codec', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('audioFileCodec', 'Uncompressed PCM', array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::text('audioFileCodec', routeName() === 'masters.create' ? 'Uncompressed PCM' : null, array('class' => 'form-control form-control-sm')) !!}
             @if ($errors->has('audioFileCodec'))
               <div class="form-control-label"><small>{!! $errors->first('audioFileCodec') !!}</small></div>
             @endif
@@ -40,7 +40,7 @@
       </div>
 
       {{-- The fields below are only for old, analog PMs. All new PMs will be digital. So, we won't display them on the create page --}}
-      @if (app('request')->route()->getAction()['as'] !== 'masters.create' && 
+      @if (routeName() !== 'masters.create' && 
           ($master->masterable->tapeBrandId || $master->masterable->pmSpeedId || $master->masterable->testTones))
       <div class="row">
         <div class="form-group @if ($errors->has('masterable.tapeBrandId')) has-danger @endif">
