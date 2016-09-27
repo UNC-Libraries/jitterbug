@@ -18,7 +18,7 @@
   </div>
 
   @if ($master->batch())
-    {!! Form::model($master, array('route' => array('masters.updateBatch'), 'method' => 'put')) !!}
+    {!! Form::model($master, array('route' => array('masters.batch.update'), 'method' => 'put')) !!}
     {!! Form::hidden('ids') !!}
     {!! Form::hidden('masterableType') !!}
   @else
@@ -44,6 +44,7 @@
         @include('masters._form-video')
       @endif
       {{-- End Masterable Fields --}}
+      @if (!$master->batch())
       <div class="row">
         <div class="col-xs-4 detail-label">
           Created On
@@ -60,6 +61,7 @@
           5/15/2016 by John Loy
         </div>
       </div>
+      @endif
     </div>
   </div>
   

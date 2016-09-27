@@ -5,7 +5,7 @@
             {!! Form::label('callNumber', 'Call Number', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            @if ((isset($linked) && $linked) || routeName()==='masters.edit')
+            @if ((isset($linked) && $linked) || routeName()==='masters.edit' || routeName()==='masters.batch.edit')
               {!! Form::text('callNumber', null, array('class' => 'form-control form-control-sm', 'readonly' => 'readonly')) !!}
             @else
               {!! Form::text('callNumber', null, array('class' => 'form-control form-control-sm')) !!}
@@ -22,7 +22,11 @@
             {!! Form::label('fileName', 'File Name', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('fileName', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. FT6708_1_PM')) !!}
+            @if (routeName()==='masters.batch.edit')
+              {!! Form::text('fileName', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. FT6708_1_PM', 'readonly' => 'readonly')) !!}
+            @else
+              {!! Form::text('fileName', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. FT6708_1_PM')) !!}
+            @endif
             @if ($errors->has('fileName'))
               <div class="form-control-label"><small>{!! $errors->first('fileName') !!}</small></div>
             @endif

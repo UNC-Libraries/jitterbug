@@ -39,9 +39,9 @@ Route::group(['prefix' => 'suggestions'], function () {
 Route::get('call-numbers/generate', 'CallNumbersController@generate');
 Route::get('items/resolve-range', 'ItemsController@resolveRange');
 Route::match(['post', 'get'], 'items/batch/edit',
-  'ItemsController@editBatch')->name('items.editBatch');
+  'ItemsController@batchEdit')->name('items.batch.edit');
 Route::put('items/batch',
-  'ItemsController@updateBatch')->name('items.updateBatch');
+  'ItemsController@batchUpdate')->name('items.batch.update');
 Route::resource('items', 'ItemsController');
 
 /*
@@ -51,6 +51,10 @@ Route::resource('items', 'ItemsController');
 */
 
 Route::get('masters/resolve-range', 'MastersController@resolveRange');
+Route::match(['post', 'get'], 'masters/batch/edit',
+  'MastersController@batchEdit')->name('masters.batch.edit');
+Route::put('masters/batch',
+  'MastersController@batchUpdate')->name('masters.batch.update');
 Route::resource('masters', 'MastersController');
 Route::resource('masters.cuts', 'CutsController', ['except' => ['index']]);
 

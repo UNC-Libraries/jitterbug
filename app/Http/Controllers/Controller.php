@@ -10,8 +10,7 @@ use Illuminate\Routing\Controller as BaseController;
 abstract class Controller extends BaseController {
   use AuthorizesRequests, AuthorizesResources, DispatchesJobs, ValidatesRequests;
 
-
-  public function rangeFor(Request $request, $proxy)
+  protected function rangeFor(Request $request, $proxy)
   {
     $queryParams = json_decode(urldecode($request->query('q')));
     $range = json_decode(urldecode($request->query('r')));

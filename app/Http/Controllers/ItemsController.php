@@ -197,7 +197,7 @@ class ItemsController extends Controller
   /**
    * Display the form for editing multiple items at a time.
    */
-  public function editBatch(Request $request)
+  public function batchEdit(Request $request)
   {
     $max = 500;
 
@@ -220,7 +220,6 @@ class ItemsController extends Controller
     // back get the ids from the session instead of from
     // the request.
     if ($request->method()==='POST') {
-      $itemIds = explode(',', $request->input('ids'));
       $request->session()->put('batchItemIds',$itemIds);
     } else if ($request->method()==='GET') {
       $itemIds = $request->session()->get('batchItemIds');
@@ -229,7 +228,7 @@ class ItemsController extends Controller
     // This might happen if the user saves the form successfully
     // and then uses the browser back button to go back to edit
     // the form and the new form submission has validation errors.
-    if ($itemIds == null) {
+    if ($itemIds === null) {
       $request->session()->put('alert', array('type' => 'warning', 'message' =>
         '<strong>Hmm, something\'s up.</strong> ' . 
         'That batch edit form is no longer valid. Please make a ' .
@@ -388,7 +387,7 @@ class ItemsController extends Controller
   /**
    * Update multple items at once.
    */
-  public function updateBatch(ItemRequest $request)
+  public function batchUpdate(ItemRequest $request)
   {
     $input = $request->allWithoutMixed();
     $itemIds = explode(',', $input['ids']);

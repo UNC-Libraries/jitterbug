@@ -18,7 +18,7 @@
   </div>
 
   @if ($item->batch())
-    {!! Form::model($item, array('route' => array('items.updateBatch'), 'method' => 'put')) !!}
+    {!! Form::model($item, array('route' => array('items.batch.update'), 'method' => 'put')) !!}
     {!! Form::hidden('ids') !!}
     {!! Form::hidden('itemableType') !!}
   @else
@@ -44,6 +44,7 @@
         @include('items._form-video')
       @endif
       {{-- End Itemable Fields --}}
+      @if (!$item->batch())
       <div class="row">
         <div class="col-xs-4 detail-label">
           Created On
@@ -60,6 +61,7 @@
           5/15/2016 by John Loy
         </div>
       </div>
+      @endif
     </div>
   </div>
   

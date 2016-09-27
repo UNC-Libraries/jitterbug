@@ -12,6 +12,7 @@ use Uuid;
 use Junebug\Http\Controllers\Controller;
 use Junebug\Models\AudioVisualItem;
 use Junebug\Models\AudioMaster;
+use Junebug\Models\BatchPreservationMaster;
 use Junebug\Models\Cut;
 use Junebug\Models\Department;
 use Junebug\Models\FilmMaster;
@@ -173,13 +174,13 @@ class MastersController extends Controller {
 
     if ($batch) {
       $request->session()->put('alert', array('type' => 'success', 'message' => 
-        '<strong>Yesss!</strong> ' . 
+        '<strong>Woot!</strong> ' . 
         'Preservation masters were successfully created.'));
 
       return redirect()->route('masters.index');
     } else {
       $request->session()->put('alert', array('type' => 'success', 'message' => 
-        '<strong>Yesss!</strong> ' . 
+        '<strong>Woot!</strong> ' . 
         'Preservation master was successfully created.'));
 
       return redirect()->route('masters.show', [$masterId]);
@@ -195,25 +196,142 @@ class MastersController extends Controller {
     $transfers = $master->transfers()->get();
     $cuts = $master->cuts()->get();
 
-    $departments = ['' => 
-             'Select a department'] + Department::pluck('name', 'id')->all();
-    $projects = ['' => 
-             'Select a project'] + Project::orderBy('name')
-             ->pluck('name', 'id')->all();
-    $reproductionMachines = ['' => 
-             'Select a reproduction machine'] +
+    $departments = ['' => 'Select a department'] + 
+             Department::pluck('name', 'id')->all();
+    $projects = ['' => 'Select a project'] + 
+             Project::orderBy('name')->pluck('name', 'id')->all();
+    $reproductionMachines = ['' => 'Select a reproduction machine'] +
              ReproductionMachine::pluck('name', 'id')->all();
-    $tapeBrands = ['' => 
-             'Select a tape brand'] + TapeBrand::pluck('name', 'id')->all();
-    $samplingRates = ['' => 
-             'Select a sampling rate'] +
+    $tapeBrands = ['' => 'Select a tape brand'] + 
+             TapeBrand::pluck('name', 'id')->all();
+    $samplingRates = ['' => 'Select a sampling rate'] +
              SamplingRate::pluck('name', 'id')->all();
-    $pmSpeeds = ['' => 
-             'Select a speed'] +
+    $pmSpeeds = ['' => 'Select a speed'] +
              PmSpeed::pluck('name', 'id')->all();
     return view('masters.edit', 
       compact('master', 'transfers', 'cuts', 'departments', 'projects',
         'reproductionMachines', 'tapeBrands', 'samplingRates', 'pmSpeeds'));
+  }
+
+  /**
+   * Display the form for editing multiple masters at a time.
+   */
+  public function batchEdit(Request $request)
+  {
+    $max = 500;
+
+    $masterIds = explode(',', $request->input('ids'));
+    // See similar in ItemsController.php for comments on the below
+    if ($request->method()==='POST') {
+      $request->session()->put('batchMasterIds', $masterIds);
+    } else if ($request->method()==='GET') {
+      $masterIds = $request->session()->get('batchMasterIds');
+    }
+    
+    if ($masterIds === null) {
+      $request->session()->put('alert', array('type' => 'warning', 'message' =>
+        '<strong>Hmm, something\'s up.</strong> ' . 
+        'That batch edit form is no longer valid. Please make a ' .
+        'new selection and try batch editing again.'));
+      return redirect()->route('masters.index');
+    }
+
+    $masterIdsCount = count($masterIds);
+
+    if ($masterIdsCount > $max) {
+      $request->session()->put('alert', array('type' => 'danger', 'message' =>
+        '<strong>Hold on there.</strong> ' . 
+        'Batch editing is limited to ' . $max . ' masters. Please narrow ' .
+        'your selection.'));
+      return redirect()->route('masters.index');
+    }
+    
+    $first = PreservationMaster::find($masterIds[0]);
+    $masterableType = $first->masterableType;
+
+    $masters = PreservationMaster::whereIn('id', $masterIds)
+                            ->where('masterable_type', $masterableType)->get();
+    if ($masterIdsCount!==$masters->count()) {
+      $request->session()->put('alert', array('type' => 'danger', 'message' => 
+        '<strong>Oops! There\'s a problem.</strong> ' . 
+        'Batch editing can only be done with masters of the same type. ' .
+        'Please change your selection.'));
+      return redirect()->route('masters.index');
+    }
+
+    $masterableIds = array();
+    foreach ($masters as $master) {
+      array_push($masterableIds, $master->masterable->id);
+    }
+    $masterables = $masterableType::whereIn('id', $masterableIds)->get();
+
+    $master = new BatchPreservationMaster($masters, $masterables);
+
+    // Build select lists
+    $departments = array();
+    if ($master->departmentId === '<mixed>') {
+      $departments = ['' => 'Select a department'] + 
+                     ['<mixed>' => '<mixed>'] +
+                     Department::pluck('name', 'id')->all();
+    } else {
+      $departments = ['' => 'Select a department'] + 
+                     Department::pluck('name', 'id')->all();
+    }
+
+    $projects = array();
+    if ($master->projectId === '<mixed>') {
+      $projects = ['' => 'Select a project'] + 
+                     ['<mixed>' => '<mixed>'] +
+                     Project::orderBy('name')->pluck('name', 'id')->all();
+    } else {
+      $projects = ['' => 'Select a project'] + 
+                     Project::orderBy('name')->pluck('name', 'id')->all();
+    }
+
+    $reproductionMachines = array();
+    if ($master->reproductionMachineId === '<mixed>') {
+      $reproductionMachines = ['' => 'Select a reproduction machine'] + 
+                     ['<mixed>' => '<mixed>'] +
+                     ReproductionMachine::pluck('name', 'id')->all();
+    } else {
+      $reproductionMachines = ['' => 'Select a reproduction machine'] + 
+                     ReproductionMachine::pluck('name', 'id')->all();
+    }
+
+    $tapeBrands = array();
+    if ($master->tapeBrandId === '<mixed>') {
+      $tapeBrands = ['' => 'Select a tape brand'] + 
+                     ['<mixed>' => '<mixed>'] +
+                     TapeBrand::pluck('name', 'id')->all();
+    } else {
+      $tapeBrands = ['' => 'Select a tape brand'] + 
+                     TapeBrand::pluck('name', 'id')->all();
+    }
+
+    $samplingRates = array();
+    if ($master->samplingRateId === '<mixed>') {
+      $samplingRates = ['' => 'Select a sampling rate'] + 
+                     ['<mixed>' => '<mixed>'] +
+                     SamplingRate::pluck('name', 'id')->all();
+    } else {
+      $samplingRates = ['' => 'Select a sampling rate'] + 
+                     SamplingRate::pluck('name', 'id')->all();
+    }
+
+    $pmSpeeds = array();
+    if ($master->pmSpeedId === '<mixed>') {
+      $pmSpeeds = ['' => 'Select a speed'] + 
+                     ['<mixed>' => '<mixed>'] +
+                     PmSpeed::pluck('name', 'id')->all();
+    } else {
+      $pmSpeeds = ['' => 'Select a speed'] + 
+                     PmSpeed::pluck('name', 'id')->all();
+    }
+
+    return view('masters.edit', 
+      compact('master', 'departments', 'projects', 'reproductionMachines',
+        'tapeBrands', 'samplingRates', 'pmSpeeds'));
+
   }
 
   public function resolveRange(Request $request)
@@ -250,6 +368,46 @@ class MastersController extends Controller {
         'Preservation master was successfully updated.'));
 
     return redirect()->route('masters.show', [$id]);
+  }
+
+  /**
+   * Update multple masters at once.
+   */
+  public function batchUpdate(MasterRequest $request)
+  {
+    $input = $request->allWithoutMixed();
+    $masterIds = explode(',', $input['ids']);
+    unset($input['ids']);
+    $masters = PreservationMaster::whereIn('id',$masterIds)->get();
+
+    // Update MySQL
+    DB::transaction(function () use ($masters, $input) {
+      $transactionId = Uuid::uuid4();
+      DB::statement("set @transaction_id = '$transactionId';");
+      
+      foreach ($masters as $master) {
+        $master->fill($input);
+        $master->touch(); // Touch in case not dirty and masterable is dirty
+        $masterable=$master->masterable;
+        $masterable->fill($input['masterable']);
+
+        $masterable->save();
+        $master->save();
+      }
+
+      DB::statement('set @transaction_id = null;');      
+    });
+
+    // Update Solr
+    $this->solrMasters->update($masters);
+
+    $request->session()->forget('batchMasterIds');
+
+    $request->session()->put('alert', array('type' => 'success', 'message' => 
+        '<strong>Woohoo!</strong> ' . 
+        'Preservation masters were successfully updated.'));
+
+    return redirect()->route('masters.index');
   }
 
   public function destroy($id, Request $request)

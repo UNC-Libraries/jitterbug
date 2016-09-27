@@ -69,36 +69,13 @@ junebug = {
     $('#items-batch-edit').click(function(event) {
       var tableSelection = 
           junebug.TableSelection.load('itemsTableSelection','session');
-      if (tableSelection.count() == 0) {
-        junebug.displayAlert('warning',
-          '<strong>Here\'s a tip:</strong> Batch actions require a table \
-          selection. Make a selection by \'shift-clicking\' \
-          or \'command-clicking\' on rows of the table.');
+      if (!junebug.validateBatchSelection(tableSelection)) {
         return;
       }
-      if (tableSelection.count() == 1) {
-        junebug.displayAlert('warning',
-          '<strong>More please!</strong> Batch actions require at least \
-          2 records to be selected. Make a selection by \
-          \'shift-clicking\' or \'command-clicking\' on rows of the table.');
-        return;
-      }
-
-      var form = $(document.createElement('form'));
-      form.attr('action', '/items/batch/edit');
-      form.attr('method', 'post');
-      $('<input>').attr('type', 'hidden')
-        .attr('name', 'ids')
-        .attr('value', tableSelection.ids)
-        .appendTo(form);
-      $('<input>').attr('type', 'hidden')
-        .attr('name', '_token')
-        .attr('value', $('meta[name="csrf-token"]').attr('content'))
-        .appendTo(form);                              
-      form.appendTo(document.body).submit().remove();
+      junebug.submitBatchEditForm('items', tableSelection);
     });
   },
-  
+
   initItemSuggestions: function() {
     $('#recording-location').autocomplete({
       serviceUrl: '/suggestions/recording-locations',
@@ -166,6 +143,23 @@ junebug = {
       } else {
         $('#call-number').val('');
       }
+    });
+  },
+
+  initMastersNewButton: function() {
+    $('#masters-new').click(function(event) {
+      junebug.TableSelection.load('mastersTableSelection','session').clear();
+    });
+  },
+
+  initMastersBatchMenu: function() {
+    $('#masters-batch-edit').click(function(event) {
+      var tableSelection = 
+          junebug.TableSelection.load('mastersTableSelection','session');
+      if (!junebug.validateBatchSelection(tableSelection)) {
+        return;
+      }
+      junebug.submitBatchEditForm('masters', tableSelection);
     });
   },
 
@@ -339,6 +333,39 @@ junebug = {
       $('#' + type + '-upload-form-error').html('').hide();
       return true;
     }
+  },
+
+  validateBatchSelection: function(tableSelection) {
+    if (tableSelection.count() == 0) {
+      junebug.displayAlert('warning',
+        '<strong>Here\'s a tip:</strong> Batch actions require a table \
+        selection. Make a selection by \'shift-clicking\' \
+        or \'command-clicking\' on rows of the table.');
+      return false;
+    }
+    if (tableSelection.count() == 1) {
+      junebug.displayAlert('warning',
+        '<strong>More please!</strong> Batch actions require at least \
+        2 records to be selected. Make a selection by \
+        \'shift-clicking\' or \'command-clicking\' on rows of the table.');
+      return false;
+    }
+    return true;
+  },
+
+  submitBatchEditForm: function(resource, tableSelection) {
+    var form = $(document.createElement('form'));
+    form.attr('action', '/' + resource + '/batch/edit');
+    form.attr('method', 'post');
+    $('<input>').attr('type', 'hidden')
+      .attr('name', 'ids')
+      .attr('value', tableSelection.ids)
+      .appendTo(form);
+    $('<input>').attr('type', 'hidden')
+      .attr('name', '_token')
+      .attr('value', $('meta[name="csrf-token"]').attr('content'))
+      .appendTo(form);                              
+    form.appendTo(document.body).submit().remove();
   },
 
   initPopovers: function() {

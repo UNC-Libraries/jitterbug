@@ -47,7 +47,7 @@ JUNEBUG = {
       junebug.initRelatedCuts();
     },
 
-    editBatch: function() {
+    batchEdit: function() {
       junebug.initBatchEditMixed();
       junebug.initDatepicker();
       junebug.initItemSuggestions();
@@ -62,6 +62,8 @@ JUNEBUG = {
     index: function() {
       junebug.initMastersIndex();
       junebug.initTableKeyboardShortcuts();
+      junebug.initMastersNewButton();
+      junebug.initMastersBatchMenu();
     },
 
     show: function() {
@@ -78,6 +80,10 @@ JUNEBUG = {
       junebug.initRevisionHistory();
       junebug.initRelatedCuts();
       junebug.initRelatedTransfers();
+    },
+
+    batchEdit: function() {
+      junebug.initBatchEditMixed();
     }
   },
 
