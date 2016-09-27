@@ -284,7 +284,13 @@
               <h4 id="confirmDelete" class="modal-title">Confirm Delete</h4>
             </div>
             <div class="modal-body">
-              <strong>Yikes! Are you sure?</strong> @if (count($master->cuts()) > 0 )This master has related cuts and possibly other related records.@endif Do you want to delete just this master, or do you want to delete this master <strong>and all</strong> associated records? This cannot be undone.
+              <strong>Yikes! Are you sure?</strong> 
+              @if (count($master->cuts) > 0 && count($master->transfers) > 0)
+                This master has related cuts and transfers.
+              @elseif (count($master->cuts) > 0) 
+                This master has related cuts.
+              @endif
+              Do you want to delete just this master, or do you want to delete this master <strong>and all</strong> associated records? This cannot be undone.
             </div>
             <div class="modal-footer">
               <button name="deleteCommand" value="master" type="submit" class="btn btn-sm btn-warning" style="outline: none;"><i class="fa fa-trash" aria-hidden="true"></i> Delete Master Only</button>
