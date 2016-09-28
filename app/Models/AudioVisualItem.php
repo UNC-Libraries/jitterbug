@@ -65,7 +65,24 @@ class AudioVisualItem extends Model {
   {
     return $this->belongsTo('Junebug\Models\Format');
   }
-  
+
+  public function preservationMasters()
+  {
+    return $this->hasMany('Junebug\Models\PreservationMaster', 
+      'call_number', 'call_number');
+  }
+
+  public function cuts()
+  {
+    return $this->hasMany('Junebug\Models\Cut', 
+      'call_number', 'call_number');
+  }
+
+  public function itemable()
+  {
+    return $this->morphTo();
+  }
+
   // Added to overcome an exception that was being thrown after the upgrade to
   // Laravel 5.1.40. With Laravel 5.0, no batch attribute was needed on this
   // model when displaying the creation form, which includes a batch (true or 
@@ -93,17 +110,6 @@ class AudioVisualItem extends Model {
     } else if ($type==='Video') {
       return 3;
     }
-  }
-
-  public function preservationMasters()
-  {
-    return $this->hasMany('Junebug\Models\PreservationMaster', 
-      'call_number', 'call_number')->get();
-  }
-
-  public function itemable()
-  {
-    return $this->morphTo();
   }
 
 }

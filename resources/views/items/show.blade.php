@@ -371,7 +371,7 @@
   <div class="row last">
     <div class="col-xs-12 actions">
       <a class="btn btn-sm btn-secondary" role="button" href="{{ route('items.edit', $item->id) }}" style="margin-right: .3rem;"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
-      <a class="btn btn-sm btn-secondary" role="button" href="{{ route('masters.create', array('item' => $item->id)) }}"><i class="fa fa-plus" aria-hidden="true"></i> Add Master</a>
+      <a class="btn btn-sm btn-secondary" role="button" href="{{ route('masters.create', array('itemId' => $item->id)) }}"><i class="fa fa-plus" aria-hidden="true"></i> Add Master</a>
       <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target=".confirm-delete-modal" style="outline: none; float: right;"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></button>
 
       {!! Form::open(array('route' => array('items.destroy', $item->id), 'method' => 'delete', 'style' => 'display: inline;')) !!}

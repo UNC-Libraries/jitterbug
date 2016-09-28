@@ -371,7 +371,7 @@ class TransfersController extends Controller {
   {
     $item = AudioVisualItem::where('call_number', $callNumber)->first();
     if ($item != null) {
-      $masters = $item->preservationMasters();
+      $masters = $item->preservationMasters;
       foreach ($masters as $master) {
         if ($master->id == $pmId) {
           return true;

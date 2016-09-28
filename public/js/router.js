@@ -74,6 +74,7 @@ JUNEBUG = {
 
     create: function() {
       junebug.initMasterTypeControls();
+      junebug.initMasterBatchCheckbox();
     },
 
     edit: function() {

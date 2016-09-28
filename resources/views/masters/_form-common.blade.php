@@ -22,10 +22,10 @@
             {!! Form::label('fileName', 'File Name', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            @if (routeName()==='masters.batch.edit')
-              {!! Form::text('fileName', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. FT6708_1_PM', 'readonly' => 'readonly')) !!}
+            @if (routeName()==='masters.batch.edit' || old('batch'))
+              {!! Form::text('fileName', null, array('id' => 'fileName', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. FT6708_1_PM', 'readonly' => 'readonly')) !!}
             @else
-              {!! Form::text('fileName', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. FT6708_1_PM')) !!}
+              {!! Form::text('fileName', null, array('id' => 'fileName', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. FT6708_1_PM')) !!}
             @endif
             @if ($errors->has('fileName'))
               <div class="form-control-label"><small>{!! $errors->first('fileName') !!}</small></div>
@@ -98,8 +98,6 @@
           </div>
         </div>
       </div>
-      {{-- Reproduction machine is only for old, analog PMs. All new PMs will be digital. So, we won't display it on the create page. --}}
-      @if (routeName() !== 'masters.create' && $master->reproductionMachineId)
       <div class="row">
         <div class="form-group @if ($errors->has('reproductionMachineId')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
@@ -113,7 +111,6 @@
           </div>
         </div>
       </div>
-      @endif
       <div class="row">
         <div class="form-group @if ($errors->has('projectId')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">

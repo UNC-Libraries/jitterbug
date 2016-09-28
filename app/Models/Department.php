@@ -7,7 +7,7 @@ class Department extends Model {
     
   public function preservationMasters()
   {
-     return $this->hasMany('Junebug\Models\PreservationMaster')->get();
+     return $this->hasMany('Junebug\Models\PreservationMaster');
   }
 
   /**

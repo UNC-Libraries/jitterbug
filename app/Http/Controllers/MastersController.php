@@ -96,7 +96,7 @@ class MastersController extends Controller {
    */
   public function create(Request $request)
   {
-    $itemId = $request->item;
+    $itemId = $request->itemId;
     $item = null;
     if ($itemId !== null) {
       $item = AudioVisualItem::findOrFail($itemId);

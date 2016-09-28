@@ -1,4 +1,4 @@
-  @if (count($item->preservationMasters()) > 0 )
+  @if (count($item->preservationMasters) > 0 )
   <div class="row">
     <div class="col-xs-12 col-e0">
       <h6>Related Preservation Masters</h6>
@@ -18,7 +18,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach ($item->preservationMasters() as $master)
+          @foreach ($item->preservationMasters as $master)
           <tr role="button" data-id="{{$master->id}}">
             <td>{{$master->id}}</td>
             <td>{{$master->fileName}}</td>

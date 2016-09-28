@@ -29,9 +29,13 @@ class MasterRequest extends Request {
     $rules['batchSize'] = 'required_if:batch,1|integer|between:2,100';
     $this->addRuleIfNotMixed($rules, 'callNumber',
       'required|min:4|max:30|exists:audio_visual_items,call_number');
-    $this->addRuleIfNotMixed($rules, 'fileName', 
-      'required|max:60|unique:preservation_masters,file_name,' . 
-      $this->input('id'));
+    // If this is a batch create, don't require a file name since it
+    // needs to be unique across every master.
+    if (!$this->input('batch')) {
+      $this->addRuleIfNotMixed($rules, 'fileName', 
+        'required|max:60|unique:preservation_masters,file_name,' . 
+        $this->input('id'));
+    }
     $this->addRuleIfNotMixed($rules, 'fileLocation', 'max:60');
     $this->addRuleIfNotMixed($rules, 'fileSizeInBytes', 
       'integer|required|digits_between:0,15');

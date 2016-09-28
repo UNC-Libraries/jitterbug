@@ -181,6 +181,13 @@ junebug = {
     });
   },
 
+  initMasterBatchCheckbox: function() {
+    $('#batch-checkbox').change(function(event) {
+      $('#fileName').attr('readonly', $(this).is(':checked'));
+      $('#fileName').val('');
+    });
+  },
+
   initFileSelect: function() {
     $(':file').change(function() {
       var input = $(this),

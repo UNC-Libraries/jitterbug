@@ -46,10 +46,10 @@
       </span>
       <span class="divider"></span>
       <span style="margin-right: .75rem">
-        {!! Form::label('batch', 'Create Batch: ', array('class' => 'form-control-label')) !!}
+        {!! Form::label('batch-checkbox', 'Create Batch: ', array('class' => 'form-control-label')) !!}
       </span>
       <label style="margin-right: 1.25rem">
-        {!! Form::checkbox('batch', '1') !!}
+        {!! Form::checkbox('batch', '1', null, array('id' => 'batch-checkbox')) !!}
       </label>
       <span @if ($errors->has('batchSize')) class='has-danger' @endif style="margin-right: .75rem">
         {!! Form::label('batchSize', 'Batch Size: ', array('class' => 'form-control-label')) !!}
@@ -79,13 +79,13 @@
     </div>
     <div class="col-xs-6">
       {{-- Begin Masterable Fields --}}
-      <div id="audio-form" @if ($master->masterableType !== 'AudioMaster' && Form::old('masterableType') !== 'AudioMaster') style="display: none" @endif>
+      <div id="audio-form" @if (($linked && $master->masterableType !== 'AudioMaster') || old('masterableType') !== null && old('masterableType') !== 'AudioMaster') style="display: none" @endif>
         @include('masters._form-audio')
       </div>
-      <div id="film-form" @if ($master->masterableType !== 'FilmMaster' && Form::old('masterableType') !== 'FilmMaster') style="display: none" @endif>
+      <div id="film-form" @if ($master->masterableType !== 'FilmMaster' && old('masterableType') !== 'FilmMaster') style="display: none" @endif>
         @include('masters._form-film')
       </div>
-      <div id="video-form" @if ($master->masterableType !== 'VideoMaster' && Form::old('masterableType') !== 'VideoMaster') style="display: none" @endif>
+      <div id="video-form" @if ($master->masterableType !== 'VideoMaster' && old('masterableType') !== 'VideoMaster') style="display: none" @endif>
         @include('masters._form-video')
       </div>
       {{-- End Masterable Fields --}}
