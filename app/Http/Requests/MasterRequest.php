@@ -3,6 +3,7 @@
 use Log;
 
 use Junebug\Http\Requests\Request;
+use Junebug\Models\AudioVisualItem;
 use Junebug\Util\DurationFormat;
 
 class MasterRequest extends Request {
@@ -114,6 +115,30 @@ class MasterRequest extends Request {
       'masterable.videoAspectRatio.max' => 'The aspect ratio must be less than :max characters.',
 
     ];
+  }
+
+  public function validator($factory)
+  {
+    // call allWithoutMixed() here?
+    $validator = $factory->make(
+      $this->all(), $this->rules(), $this->messages(), $this->attributes()
+    );
+
+    $validator->after(function($validator) {
+      if ($this->typeMismatch()) {
+        $validator->errors()->add('callNumber', 'The call number type must match the master type.');
+      }
+    });
+
+    return $validator;
+  }
+
+  private function typeMismatch()
+  {
+    $inputType = $this->input('masterableType');
+    $type = substr($inputType, 0, strlen($inputType) - strlen("Master"));
+    $item = AudioVisualItem::where('call_number', $this->input('callNumber'))->first();
+    return $item !== null && $type !== $item->type;
   }
 
 }

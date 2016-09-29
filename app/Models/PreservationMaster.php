@@ -98,9 +98,8 @@ class PreservationMaster extends Model {
   
   public function getTypeAttribute()
   {
-  	$fullType = $this->getAttribute("masterableType");
-    $type = substr($fullType,0,strlen($fullType)
-    	- strlen("Master"));
+    $fullType = $this->masterableType;
+    $type = substr($fullType, 0, strlen($fullType) - strlen("Master"));
     return $type;
   }
 

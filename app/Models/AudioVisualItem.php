@@ -94,8 +94,8 @@ class AudioVisualItem extends Model {
 
   public function getTypeAttribute()
   {
-    $fullType = $this->getAttribute("itemableType");
-    $type = substr($fullType,0,strlen($fullType) - strlen("Item"));
+    $fullType = $this->itemableType;
+    $type = substr($fullType, 0, strlen($fullType) - strlen("Item"));
     return $type;
   }
 

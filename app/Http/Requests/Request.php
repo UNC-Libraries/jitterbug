@@ -41,9 +41,7 @@ abstract class Request extends FormRequest {
   protected function addRuleIfNotMixed(&$rules, $attributeName, $rule)
   {
     $input = trim($this->input($attributeName));
-    if($input === '<mixed>') {
-      return;
-    } else {
+    if ($input !== '<mixed>') {
       $rules[$attributeName] = $rule;
     }
   }
