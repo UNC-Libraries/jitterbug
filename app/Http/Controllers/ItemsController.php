@@ -455,7 +455,7 @@ class ItemsController extends Controller
     $item = AudioVisualItem::findOrFail($id);
     $itemable = $item->itemable;
 
-    $command = $request['deleteCommand'];
+    $command = $request->deleteCommand;
 
     $masters;
     $transfers;

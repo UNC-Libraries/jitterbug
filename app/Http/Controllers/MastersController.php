@@ -35,7 +35,9 @@ use Junebug\Support\SolariumPaginator;
 
 class MastersController extends Controller {
 
+  protected $solrItems;
   protected $solrMasters;
+  protected $solrTransfers;
 
   /**
    * Create a new controller instance.
@@ -45,7 +47,9 @@ class MastersController extends Controller {
   public function __construct()
   {
     $this->middleware('auth');
+    $this->solrItems = new SolariumProxy('junebug-items');
     $this->solrMasters = new SolariumProxy('junebug-masters');
+    $this->solrTransfers = new SolariumProxy('junebug-transfers');
   }
 
   /**
@@ -412,7 +416,60 @@ class MastersController extends Controller {
 
   public function destroy($id, Request $request)
   {
-    
+    $master = PreservationMaster::findOrFail($id);
+    $masterable = $master->masterable;
+
+    $command = $request->deleteCommand;
+
+    $transfers;
+    $cuts;
+
+    // Update MySQL
+    DB::transaction(function () use ($command, $master, $masterable, 
+                                                   &$transfers, &$cuts) {
+      $transactionId = Uuid::uuid4();
+      DB::statement("set @transaction_id = '$transactionId';");
+      
+      if ($command==='all') {
+        $transfers = $master->transfers;
+        foreach ($transfers as $transfer) {
+          $transfer->transferable->delete();
+          $transfer->delete();
+        }
+
+        $cuts = $master->cuts;
+        foreach ($cuts as $cut) {
+          $cut->delete();
+        }
+      }
+
+      $master->delete();
+      $masterable->delete();
+
+      DB::statement('set @transaction_id = null;');      
+    });
+
+    // Update Solr
+    $this->solrMasters->delete($master);
+    if ($command==='all') {
+      if ($transfers !== null) {
+        $this->solrTransfers->delete($transfers);
+      }
+      if ($cuts !== null) {
+        // Since cuts where deleted, we need to get the audio visual item
+        // and update it in Solr to remove the cuts from the index.
+        $item = 
+          AudioVisualItem::where('call_number', $master->callNumber)->first();
+        if ($item !== null) {
+          $this->solrItems->update($item);
+        }
+
+      }
+    }
+
+    $request->session()->put('alert', array('type' => 'success', 'message' => 
+        '<strong>It\'s done!</strong> ' . 
+        "Preservation master was successfully deleted."));
 
     return redirect()->route('masters.index');
   }

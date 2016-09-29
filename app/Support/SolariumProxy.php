@@ -5,6 +5,9 @@ use Log;
 use Solarium;
 
 use Junebug\Models\AudioVisualItem;
+use Junebug\Models\Cut;
+use Junebug\Models\PreservationMaster;
+use Junebug\Models\Transfer;
 
 class SolariumProxy {
 
@@ -130,6 +133,8 @@ class SolariumProxy {
     $doc->setField('createdAt', $item->createdAt, null, 'set');
     $doc->setField('updatedAt', $item->updatedAt, null, 'set');
 
+    $this->appendCuts($item->callNumber, $doc);
+
     $update->addDocument($doc);
   }
 
@@ -158,15 +163,8 @@ class SolariumProxy {
     
     // Get other fields from the associated audio visual item since that's where
     // they reside, not on the master
-    $item = AudioVisualItem::where('call_number', $master->callNumber)->first();
-    $doc->setField('collectionId', 
-      $item->collection ? $item->collection->id : null, null, 'set');
-    $doc->setField('collectionName', 
-      $item->collection ? $item->collection->name : null, null, 'set');
-    $doc->setField('formatId', 
-      $item->format ? $item->format->id : null, null, 'set');
-    $doc->setField('formatName',
-      $item->format ? $item->format->name : null, null, 'set');
+    $this->appendCollectionAndFormat($master->callNumber, $doc);
+    $this->appendCuts($master->callNumber, $doc);
 
     $update->addDocument($doc);
   }
@@ -201,18 +199,7 @@ class SolariumProxy {
 
     // Get other fields from the associated audio visual item since that's where
     // they reside, not on the transfer
-    $item = AudioVisualItem::where('call_number', 
-        $transfer->callNumber)->first();
-    $doc->setField('collectionId', 
-      $item->collection ? $item->collection->id : null, null, 'set');
-    $doc->setField('collectionName', 
-      $item->collection ? $item->collection->name : null, null, 'set');
-    $doc->setField('formatId', 
-      $item->format ? $item->format->id : null, null, 'set');
-    $doc->setField('formatName',
-      $item->format ? $item->format->name : null, null, 'set');
-
-    // TODO get associated cut info
+    $this->appendCollectionAndFormat($master->callNumber, $doc);
 
     $update->addDocument($doc);
   }
@@ -241,6 +228,43 @@ class SolariumProxy {
     $update->addCommit();
 
     return $this->client->update($update);
+  }
+
+  private function appendCollectionAndFormat($callNumber, &$doc)
+  {
+    $item = AudioVisualItem::where('call_number', $callNumber)->first();
+    $doc->setField('collectionId', 
+      $item->collection ? $item->collection->id : null, null, 'set');
+    $doc->setField('collectionName', 
+      $item->collection ? $item->collection->name : null, null, 'set');
+    $doc->setField('formatId', 
+      $item->format ? $item->format->id : null, null, 'set');
+    $doc->setField('formatName',
+      $item->format ? $item->format->name : null, null, 'set');
+  }
+
+  private function appendCuts($callNumber, &$doc)
+  {
+    $cuts = Cut::where('call_number', $callNumber)->get();
+    $cutIds = array();
+    $cutTitles = array();
+    $cutPerformerComposers = array();
+    if ($cuts->count() > 0) {
+      foreach ($cuts as $cut) {
+        array_push($cutIds, $cut->id);
+        array_push($cutTitles, $cut->title);
+        array_push($cutPerformerComposers, $cut->performerComposer);
+      }
+    }
+    if (count($cutIds) === 0) {
+      $cutIds = null;
+      $cutTitles = null;
+      $cutPerformerComposers = null;
+    }
+    $doc->setField('cutIds', $cutIds, null, 'set');
+    $doc->setField('cutTitles', $cutTitles, null, 'set');
+    $doc->setField('cutPerformerComposers', 
+      $cutPerformerComposers, null, 'set');
   }
 
   protected function createFilterQueries($solariumQuery, $queryParams)
