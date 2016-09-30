@@ -466,23 +466,21 @@ class ItemsController extends Controller
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
       
-      $call = $item->callNumber;
+      $callNumber = $item->callNumber;
       if ($command==='all') {
-        $masters = PreservationMaster::where('call_number', '=', 
-                                              $call)->get();
+        $masters = 
+          PreservationMaster::where('call_number', $callNumber)->get();
         foreach ($masters as $master) {
           $master->masterable->delete();
           $master->delete();
         }
 
-        $cuts = Cut::where('call_number', '=', $call)->get();
-
+        $cuts = Cut::where('call_number', $callNumber)->get();
         foreach ($cuts as $cut) {
           $cut->delete();
         }
 
-        $transfers = Transfer::where('call_number', '=', $call)->get();
-
+        $transfers = Transfer::where('call_number', $callNumber)->get();
         foreach ($transfers as $transfer) {
           $transfer->transferable->delete();
           $transfer->delete();
@@ -509,6 +507,79 @@ class ItemsController extends Controller
     $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>It\'s done!</strong> ' . 
         "$item->type item was successfully deleted."));
+
+    return redirect()->route('items.index');
+  }
+
+  public function batchDestroy(Request $request)
+  {
+    $max = 100;
+
+    $itemIds = explode(',', $request->ids);
+    $items = AudioVisualItem::whereIn('id',$itemIds)->get();
+
+    if ($items->count() > $max) {
+      $request->session()->put('alert', array('type' => 'danger', 'message' =>
+        '<strong>Whoa there!</strong> ' . 
+        'Batch deleting is limited to ' . $max . ' items. Please narrow ' .
+        'your selection.'));
+      return redirect()->route('items.index');
+    }
+
+    $command = $request->deleteCommand;
+    $masters = $transfers = null;
+
+    // Update MySQL
+    DB::transaction(function () use ($command, $items,
+                                                  &$masters, &$transfers) {
+      $transactionId = Uuid::uuid4();
+      DB::statement("set @transaction_id = '$transactionId';");
+        
+      $callNumbers = $items->pluck('call_number')->all();
+
+      if ($command==='all') {
+        $masters = 
+          PreservationMaster::whereIn('call_number', $callNumbers)->get();
+        foreach ($masters as $master) {
+          $master->masterable->delete();
+          $master->delete();
+        }
+
+        $cuts = Cut::whereIn('call_number', $callNumbers)->get();
+        foreach ($cuts as $cut) {
+          $cut->delete();
+        }
+
+        $transfers = Transfer::whereIn('call_number', $callNumbers)->get();
+        foreach ($transfers as $transfer) {
+          $transfer->transferable->delete();
+          $transfer->delete();
+        }
+      }
+
+      foreach ($items as $item) {
+        $itemable = $item->itemable;
+        $itemable->delete();
+        $item->delete();
+      }
+
+      DB::statement('set @transaction_id = null;');      
+    });
+
+    // Update Solr
+    $this->solrItems->delete($items);
+    if ($command==='all') {
+      if ($masters !== null) {
+        $this->solrMasters->delete($masters);
+      }
+      if ($transfers !== null) {
+        $this->solrTransfers->delete($transfers);
+      }
+    }
+
+    $request->session()->put('alert', array('type' => 'success', 'message' => 
+        '<strong>It\'s done!</strong> ' . 
+        "Audio visual items were successfully deleted."));
 
     return redirect()->route('items.index');
   }

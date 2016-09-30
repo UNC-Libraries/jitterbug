@@ -5,7 +5,7 @@
             {!! Form::label('callNumber', 'Call Number', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            @if ((isset($linked) && $linked))
+            @if (isset($linked) && $linked)
               {!! Form::text('callNumber', null, array('class' => 'form-control form-control-sm', 'readonly' => 'readonly')) !!}
             @else
               {!! Form::text('callNumber', null, array('class' => 'form-control form-control-sm')) !!}

@@ -69,10 +69,28 @@ junebug = {
     $('#items-batch-edit').click(function(event) {
       var tableSelection = 
           junebug.TableSelection.load('itemsTableSelection','session');
-      if (!junebug.validateBatchSelection(tableSelection)) {
+      if (!junebug.validateBatchSelection(tableSelection, 'editing', 500)) {
         return;
       }
       junebug.submitBatchEditForm('items', tableSelection);
+    });
+
+    junebug.initBatchDeleteForm();
+    $('#items-batch-delete').click(function(event) {
+      var tableSelection = 
+          junebug.TableSelection.load('itemsTableSelection','session');
+      if (!junebug.validateBatchSelection(tableSelection, 'deleting', 100)) {
+        return;
+      }
+      $('.confirm-batch-delete-modal').modal('toggle');
+      $('#batch-delete-form input[name="ids"]').val(tableSelection.ids);
+    });
+  },
+
+  initBatchDeleteForm: function() {
+    $('#batch-delete-form').submit( function(event) {
+      junebug.TableSelection.load('itemsTableSelection','session').clear();
+      junebug.TableParams.load('itemsTableParams').setPage(1);
     });
   },
 
@@ -342,7 +360,7 @@ junebug = {
     }
   },
 
-  validateBatchSelection: function(tableSelection) {
+  validateBatchSelection: function(tableSelection, action, max) {
     if (tableSelection.count() == 0) {
       junebug.displayAlert('warning',
         '<strong>Here\'s a tip:</strong> Batch actions require a table \
@@ -355,6 +373,12 @@ junebug = {
         '<strong>More please!</strong> Batch actions require at least \
         2 records to be selected. Make a selection by \
         \'shift-clicking\' or \'command-clicking\' on rows of the table.');
+      return false;
+    }
+    if (tableSelection.count() > max) {
+      junebug.displayAlert('warning',
+        '<strong>Whoa there!</strong> Batch ' + action + ' is limited \
+        to ' + max + ' records at a time. Please narrow your selection.');
       return false;
     }
     return true;

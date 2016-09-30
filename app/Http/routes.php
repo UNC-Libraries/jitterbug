@@ -42,6 +42,8 @@ Route::match(['post', 'get'], 'items/batch/edit',
   'ItemsController@batchEdit')->name('items.batch.edit');
 Route::put('items/batch',
   'ItemsController@batchUpdate')->name('items.batch.update');
+Route::delete('items/batch/destroy', 
+  'ItemsController@batchDestroy')->name('items.batch.destroy');
 Route::resource('items', 'ItemsController');
 
 /*

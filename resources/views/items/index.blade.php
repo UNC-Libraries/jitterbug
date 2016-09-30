@@ -13,13 +13,40 @@
         <a id="items-new" class="btn btn-sm btn-secondary" style="margin-right: 5px;" href="{{ route('items.create') }}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
         <div class="btn-group">
           <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cubes" data-toggle="dropdown" aria-hidden="true"></i> Batch</button>
-          <div class="dropdown-menu">
+          <div id="items-batch-dropdown" class="dropdown-menu">
             <a id="items-batch-edit" class="dropdown-item" href="#">Edit</a>
             <a id="items-batch-export" class="dropdown-item" href="#">Export</a>
             <a id="items-batch-delete" class="dropdown-item" href="#">Delete</a>
           </div>
         </div>
       </div>
+
+      {!! Form::open(array('route' => array('items.batch.destroy'), 'method' => 'delete', 'id' => 'batch-delete-form', 'style' => 'display: inline;')) !!}
+      <div class="modal fade confirm-batch-delete-modal" tabindex="-1" role="dialog" aria-labelledby="confirmDelete" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 id="confirmDelete" class="modal-title">Confirm Delete</h4>
+            </div>
+            <div class="modal-body">
+              <strong>Be careful!</strong>
+              You are about to delete multiple items at once. You may choose to delete only the selected items or delete the selected items and all associated preservation masters and transfers. This cannot be undone.
+            </div>
+            <div class="modal-footer">
+              {!! Form::hidden('ids') !!}
+              <button name="deleteCommand" value="item" type="submit" class="btn btn-sm btn-warning" style="outline: none;"><i class="fa fa-trash" aria-hidden="true"></i> Delete Items Only</button>
+              <button name="deleteCommand" value="all" type="submit" class="btn btn-sm btn-danger" style="outline: none;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Delete All</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      {!! Form::close() !!}
+
       <div class="search-container">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
