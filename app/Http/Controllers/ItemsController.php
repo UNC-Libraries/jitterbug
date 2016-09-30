@@ -545,15 +545,15 @@ class ItemsController extends Controller
           $master->delete();
         }
 
-        $cuts = Cut::whereIn('call_number', $callNumbers)->get();
-        foreach ($cuts as $cut) {
-          $cut->delete();
-        }
-
         $transfers = Transfer::whereIn('call_number', $callNumbers)->get();
         foreach ($transfers as $transfer) {
           $transfer->transferable->delete();
           $transfer->delete();
+        }
+
+        $cuts = Cut::whereIn('call_number', $callNumbers)->get();
+        foreach ($cuts as $cut) {
+          $cut->delete();
         }
       }
 

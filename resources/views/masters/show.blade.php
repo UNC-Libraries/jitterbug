@@ -287,9 +287,9 @@
               <strong>Yikes! Are you sure?</strong> 
               @if (count($master->cuts) > 0 && count($master->transfers) > 0)
                 This master has related cuts and transfers.
-              @elseif (count($master->cuts) > 0 && count($masters->transfers) === 0) 
+              @elseif (count($master->cuts) > 0 && count($master->transfers) === 0) 
                 This master has related cuts.
-              @elseif (count($master->cuts) === 0 && count($masters->transfers) > 0) 
+              @elseif (count($master->cuts) === 0 && count($master->transfers) > 0) 
                 This master has related transfers.
               @endif
               Do you want to delete just this master, or do you want to delete this master <strong>and all</strong> associated records? This cannot be undone.

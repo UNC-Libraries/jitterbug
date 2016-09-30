@@ -42,7 +42,7 @@ Route::match(['post', 'get'], 'items/batch/edit',
   'ItemsController@batchEdit')->name('items.batch.edit');
 Route::put('items/batch',
   'ItemsController@batchUpdate')->name('items.batch.update');
-Route::delete('items/batch/destroy', 
+Route::delete('items/batch', 
   'ItemsController@batchDestroy')->name('items.batch.destroy');
 Route::resource('items', 'ItemsController');
 
@@ -57,6 +57,8 @@ Route::match(['post', 'get'], 'masters/batch/edit',
   'MastersController@batchEdit')->name('masters.batch.edit');
 Route::put('masters/batch',
   'MastersController@batchUpdate')->name('masters.batch.update');
+Route::delete('masters/batch', 
+  'MastersController@batchDestroy')->name('masters.batch.destroy');
 Route::resource('masters', 'MastersController');
 Route::resource('masters.cuts', 'CutsController', ['except' => ['index']]);
 

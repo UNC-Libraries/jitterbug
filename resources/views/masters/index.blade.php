@@ -21,6 +21,33 @@
           </div>
         </div>
       </div>
+
+      {!! Form::open(array('route' => array('masters.batch.destroy'), 'method' => 'delete', 'id' => 'batch-delete-form', 'style' => 'display: inline;')) !!}
+      <div class="modal fade confirm-batch-delete-modal" tabindex="-1" role="dialog" aria-labelledby="confirmDelete" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 id="confirmDelete" class="modal-title">Confirm Delete</h4>
+            </div>
+            <div class="modal-body">
+              <strong>Be careful!</strong>
+              You are about to delete multiple masters at once. You may choose to delete only the selected masters or delete the selected masters and all associated cuts and transfers. This cannot be undone.
+            </div>
+            <div class="modal-footer">
+              {!! Form::hidden('ids') !!}
+              <button name="deleteCommand" value="master" type="submit" class="btn btn-sm btn-warning" style="outline: none;"><i class="fa fa-trash" aria-hidden="true"></i> Delete Masters Only</button>
+              <button name="deleteCommand" value="all" type="submit" class="btn btn-sm btn-danger" style="outline: none;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Delete All</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      {!! Form::close() !!}
+
       <div class="search-container">
         <div class="input-group">
           <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>

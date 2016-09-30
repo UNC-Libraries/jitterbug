@@ -24,6 +24,7 @@ JUNEBUG = {
       junebug.initTableKeyboardShortcuts();
       junebug.initItemsNewButton();
       junebug.initItemsBatchMenu();
+      junebug.initItemsBatchDeleteForm();
     },
 
     show: function() {
@@ -64,6 +65,7 @@ JUNEBUG = {
       junebug.initTableKeyboardShortcuts();
       junebug.initMastersNewButton();
       junebug.initMastersBatchMenu();
+      junebug.initMastersBatchDeleteForm();
     },
 
     show: function() {

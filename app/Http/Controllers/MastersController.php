@@ -474,6 +474,81 @@ class MastersController extends Controller {
     return redirect()->route('masters.index');
   }
 
+
+  public function batchDestroy(Request $request)
+  {
+    $max = 100;
+
+    $masterIds = explode(',', $request->ids);
+    $masters = PreservationMaster::whereIn('id',$masterIds)->get();
+
+    if ($masters->count() > $max) {
+      $request->session()->put('alert', array('type' => 'danger', 'message' =>
+        '<strong>Whoa there!</strong> ' . 
+        'Batch deleting is limited to ' . $max . ' items. Please narrow ' .
+        'your selection.'));
+      return redirect()->route('masters.index');
+    }
+
+    $command = $request->deleteCommand;
+    $transfers = $cuts = null;
+
+    // Update MySQL
+    DB::transaction(function () use ($command, $masters,
+                                                   &$transfers, &$cuts) {
+      $transactionId = Uuid::uuid4();
+      DB::statement("set @transaction_id = '$transactionId';");
+
+      $callNumbers = $masters->pluck('call_number')->unique()->all();
+
+      if ($command==='all') {
+        $transfers = Transfer::whereIn('call_number', $callNumbers)->get();
+        foreach ($transfers as $transfer) {
+          $transfer->transferable->delete();
+          $transfer->delete();
+        }
+
+        $cuts = Cut::whereIn('call_number', $callNumbers)->get();
+        foreach ($cuts as $cut) {
+          $cut->delete();
+        }
+      }
+
+      foreach ($masters as $master) {
+        $masterable = $master->masterable;
+        $masterable->delete();
+        $master->delete();
+      }
+
+      DB::statement('set @transaction_id = null;');      
+    });
+
+    // Update Solr
+    $this->solrMasters->delete($masters);
+    if ($command==='all') {
+      if ($transfers !== null) {
+        $this->solrTransfers->delete($transfers);
+      }
+      if ($cuts !== null) {
+        // Since cuts where deleted, we need to get the audio visual items
+        // and update them in Solr to remove the cuts from the index.
+        $cutCallNumbers = $cuts->pluck('call_number')->unique()->all();
+        $items = 
+          AudioVisualItem::whereIn('call_number', $cutCallNumbers)->get();
+        if ($items !== null) {
+          $this->solrItems->update($items);
+        }
+      }
+    }
+
+    $request->session()->put('alert', array('type' => 'success', 'message' => 
+        '<strong>It\'s done!</strong> ' . 
+        "Preservation masters were successfully deleted."));
+
+    return redirect()->route('masters.index');
+  }
+
+
   private function newMasterableInstance(Request $request)
   {
     $masterable = null;

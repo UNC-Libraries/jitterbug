@@ -75,7 +75,6 @@ junebug = {
       junebug.submitBatchEditForm('items', tableSelection);
     });
 
-    junebug.initBatchDeleteForm();
     $('#items-batch-delete').click(function(event) {
       var tableSelection = 
           junebug.TableSelection.load('itemsTableSelection','session');
@@ -87,7 +86,7 @@ junebug = {
     });
   },
 
-  initBatchDeleteForm: function() {
+  initItemsBatchDeleteForm: function() {
     $('#batch-delete-form').submit( function(event) {
       junebug.TableSelection.load('itemsTableSelection','session').clear();
       junebug.TableParams.load('itemsTableParams').setPage(1);
@@ -174,10 +173,27 @@ junebug = {
     $('#masters-batch-edit').click(function(event) {
       var tableSelection = 
           junebug.TableSelection.load('mastersTableSelection','session');
-      if (!junebug.validateBatchSelection(tableSelection)) {
+      if (!junebug.validateBatchSelection(tableSelection, 'editing', 500)) {
         return;
       }
       junebug.submitBatchEditForm('masters', tableSelection);
+    });
+
+    $('#masters-batch-delete').click(function(event) {
+      var tableSelection = 
+          junebug.TableSelection.load('mastersTableSelection','session');
+      if (!junebug.validateBatchSelection(tableSelection, 'deleting', 100)) {
+        return;
+      }
+      $('.confirm-batch-delete-modal').modal('toggle');
+      $('#batch-delete-form input[name="ids"]').val(tableSelection.ids);
+    });
+  },
+
+  initMastersBatchDeleteForm: function() {
+    $('#batch-delete-form').submit( function(event) {
+      junebug.TableSelection.load('mastersTableSelection','session').clear();
+      junebug.TableParams.load('mastersTableParams').setPage(1);
     });
   },
 
