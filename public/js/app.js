@@ -75,13 +75,22 @@ junebug = {
       junebug.submitBatchEditForm('items', tableSelection);
     });
 
+    $('#items-batch-export').click(function(event) {
+      var tableSelection = 
+          junebug.TableSelection.load('itemsTableSelection','session');
+      if (!junebug.validateBatchSelection(tableSelection, 'exporting')) {
+        return;
+      }
+      junebug.initDataExportModal('items', tableSelection);
+    });
+
     $('#items-batch-delete').click(function(event) {
       var tableSelection = 
           junebug.TableSelection.load('itemsTableSelection','session');
       if (!junebug.validateBatchSelection(tableSelection, 'deleting', 100)) {
         return;
       }
-      $('.confirm-batch-delete-modal').modal('toggle');
+      $('#confirm-batch-delete-modal').modal('toggle');
       $('#batch-delete-form input[name="ids"]').val(tableSelection.ids);
     });
   },
@@ -185,7 +194,7 @@ junebug = {
       if (!junebug.validateBatchSelection(tableSelection, 'deleting', 100)) {
         return;
       }
-      $('.confirm-batch-delete-modal').modal('toggle');
+      $('#confirm-batch-delete-modal').modal('toggle');
       $('#batch-delete-form input[name="ids"]').val(tableSelection.ids);
     });
   },
@@ -219,6 +228,12 @@ junebug = {
     $('#batch-checkbox').change(function(event) {
       $('#fileName').attr('readonly', $(this).is(':checked'));
       $('#fileName').val('');
+    });
+  },
+
+  initTransfersBatchMenu: function() {
+    $('#transfers-batch-audio-import').click(function(event) {
+      $('#audio-import-modal').modal('toggle');
     });
   },
 
@@ -271,6 +286,8 @@ junebug = {
   },
 
   initAudioUploadForm: function() {
+    junebug.initFileSelect();
+
     $('#audio-upload-form').submit( function(event) {
       event.preventDefault();
 
@@ -374,6 +391,41 @@ junebug = {
       $('#' + type + '-upload-form-error').html('').hide();
       return true;
     }
+  },
+
+  initDataExportModal: function(resource, tableSelection) {
+    $('#data-export-modal').modal('toggle');
+
+    $('#loading-export-fields-spinner').show();
+    $.ajax({
+      url: '/' + resource + '/batch/export-fields',
+      type: 'post',
+      data: {'ids': tableSelection.ids},
+      success: function (data) {
+        $('#data-export-fields-container').replaceWith(data);
+        var delay = 200;
+        setTimeout(function() {
+          $('.export-modal-body').height(220);
+        }, delay);
+        $('#data-export-form input[name="ids"]').val(tableSelection.ids);
+      },
+      error: function (jqXHR, textStatus, error) {
+        console.log('Could not fetch export fields: ' + textStatus);
+      },
+      complete: function() {
+        $('#loading-export-fields-spinner').hide();
+      }
+    });
+
+    $('#data-import-form').submit( function(event) {
+      // show export spinner
+      
+    });
+
+    // Clean up when modal is closed
+    $('#data-export-modal').on('hidden.bs.modal', function () {
+      $('.export-modal-body').height(40);
+    });
   },
 
   validateBatchSelection: function(tableSelection, action, max) {

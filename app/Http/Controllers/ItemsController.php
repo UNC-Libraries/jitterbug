@@ -11,6 +11,7 @@ use Session;
 use Solarium;
 use Uuid;
 
+use Junebug\Export\ItemsExport;
 use Junebug\Models\AudioVisualItem;
 use Junebug\Models\AudioVisualItemType;
 use Junebug\Models\AudioVisualItemCollection;
@@ -293,12 +294,14 @@ class ItemsController extends Controller
   }
 
   /**
-   * Given Solr query parameters
+   * Resolve a range table selection to an array of
+   * item ids.
    */
   public function resolveRange(Request $request)
   {
     return parent::rangeFor($request, $this->solrItems);
   }
+
 
   public function update($id, ItemRequest $request)
   {
@@ -511,6 +514,7 @@ class ItemsController extends Controller
     return redirect()->route('items.index');
   }
 
+
   public function batchDestroy(Request $request)
   {
     $max = 100;
@@ -582,6 +586,28 @@ class ItemsController extends Controller
         "Audio visual items were successfully deleted."));
 
     return redirect()->route('items.index');
+  }
+
+  /**
+   * Return the fields that are exportable for the given selection of items.
+   */
+  public function batchExportFields(Request $request)
+  {
+    if ($request->ajax()) {
+      $itemIds = $request->ids;
+      $export = new ItemsExport($itemIds);
+      $fields = $export->exportableFields();
+      return view('shared._export-fields', compact('fields'));
+    }
+  }
+
+  public function batchExportExecute(Request $request)
+  {
+    $itemIds = $request->ids;
+    $fields = $request->fields;
+    $export = new ItemsExport($itemIds);
+    $filePath = $export->build($fields);
+    //return response()->download(base_path() . '/storage/app/downloads/ashirk-audio-import.csv');
   }
 
   private function newItemableInstance(Request $request)

@@ -109,8 +109,8 @@ JUNEBUG = {
     index: function() {
       junebug.initTransfersIndex();
       junebug.initTableKeyboardShortcuts();
-      junebug.initFileSelect();
       junebug.initAudioImportModal();
+      junebug.initTransfersBatchMenu();
     },
 
     show: function() {

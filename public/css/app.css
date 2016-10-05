@@ -4959,6 +4959,22 @@ Data Import
   border-radius: .25rem; }
 
 /* -------------------------------------------
+Data Export
+------------------------------------------- */
+.export-modal-body {
+  margin-bottom: 1rem;
+  height: 40px;
+  transition: height .5s;
+  overflow-y: scroll; }
+
+#data-export-fields-container .col-xs-12 {
+  padding-left: 0;
+  padding-right: 0; }
+
+#data-export-fields-container .col-xs-6 {
+  padding-left: .5rem; }
+
+/* -------------------------------------------
 Bootstrap Overrides
 ------------------------------------------- */
 .btn-sm, .btn-group-sm > .btn {

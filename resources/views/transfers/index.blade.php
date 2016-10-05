@@ -18,7 +18,7 @@
             <a id="transfers-batch-export" class="dropdown-item" href="#">Export</a>
             <a id="transfers-batch-delete" class="dropdown-item" href="#">Delete</a>
             <div class="dropdown-divider"></div>
-            <a id="transfers-batch-audio-import" class="dropdown-item"  data-toggle="modal" data-target="#audio-import-modal" href="#">Audio Import</a>
+            <a id="transfers-batch-audio-import" class="dropdown-item" href="#">Audio Import</a>
             <a id="transfers-batch-vendor-import" class="dropdown-item" href="#">Vendor Import</a>
           </div>
         </div>
