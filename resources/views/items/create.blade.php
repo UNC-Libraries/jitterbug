@@ -19,16 +19,16 @@
     <div class="col-xs-12 preform">
       <span id="item-type-controls">
         <span style="margin-right: .75rem">
-          {!! Form::label('itemableType', 'Item Type: ', array('class' => 'form-control-label')) !!}
+          {!! Form::label('subclassType', 'Item Type: ', array('class' => 'form-control-label')) !!}
         </span>
         <label class="radio-inline">
-          {!! Form::radio('itemableType', 'AudioItem') !!} Audio
+          {!! Form::radio('subclassType', 'AudioItem') !!} Audio
         </label>
         <label class="radio-inline">
-          {!! Form::radio('itemableType', 'FilmItem') !!} Film
+          {!! Form::radio('subclassType', 'FilmItem') !!} Film
         </label>
         <label class="radio-inline">
-          {!! Form::radio('itemableType', 'VideoItem') !!} Video
+          {!! Form::radio('subclassType', 'VideoItem') !!} Video
         </label>
       </span>
       <span class="divider"></span>
@@ -65,17 +65,17 @@
       @include('items._form-common')
     </div>
     <div class="col-xs-6">
-      {{-- Begin Itemable Fields --}}
-      <div id="audio-form" @if (old('itemableType') !== null && old('itemableType') !== 'AudioItem') style="display: none" @endif>
+      {{-- Begin subclass fields --}}
+      <div id="audio-form" @if (old('subclassType') !== null && old('subclassType') !== 'AudioItem') style="display: none" @endif>
         @include('items._form-audio')
       </div>
-      <div id="film-form" @if (old('itemableType') !== 'FilmItem') style="display: none" @endif>
+      <div id="film-form" @if (old('subclassType') !== 'FilmItem') style="display: none" @endif>
         @include('items._form-film')
       </div>
-      <div id="video-form" @if (old('itemableType') !== 'VideoItem') style="display: none" @endif>
+      <div id="video-form" @if (old('subclassType') !== 'VideoItem') style="display: none" @endif>
         @include('items._form-video')
       </div>
-      {{-- End Itemable Fields --}}
+      {{-- End subclass fields --}}
     </div>
   </div>
 

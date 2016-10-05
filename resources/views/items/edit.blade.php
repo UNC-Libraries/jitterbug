@@ -20,12 +20,12 @@
   @if ($item->batch())
     {!! Form::model($item, array('route' => array('items.batch.update'), 'method' => 'put')) !!}
     {!! Form::hidden('ids') !!}
-    {!! Form::hidden('itemableType') !!}
+    {!! Form::hidden('subclassType') !!}
   @else
     {!! Form::model($item, array('route' => array('items.update', $item->id), 'method' => 'put')) !!}
     {!! Form::hidden('id') !!}
-    {!! Form::hidden('itemableType') !!}
-    {!! Form::hidden('itemableId') !!}
+    {!! Form::hidden('subclassType') !!}
+    {!! Form::hidden('subclassId') !!}
   @endif
 
   <div class="row first detail-container">
@@ -33,17 +33,17 @@
       @include('items._form-common')
     </div>
     <div class="col-xs-6">
-      {{-- Begin Itemable Fields --}}
-      @if (get_class($item->itemable) === 'Junebug\Models\AudioItem')
+      {{-- Begin subclass fields --}}
+      @if (get_class($item->subclass) === 'Junebug\Models\AudioItem')
         @include('items._form-audio')
       @endif
-      @if (get_class($item->itemable) === 'Junebug\Models\FilmItem')
+      @if (get_class($item->subclass) === 'Junebug\Models\FilmItem')
         @include('items._form-film')
       @endif
-      @if (get_class($item->itemable) === 'Junebug\Models\VideoItem')
+      @if (get_class($item->subclass) === 'Junebug\Models\VideoItem')
         @include('items._form-video')
       @endif
-      {{-- End Itemable Fields --}}
+      {{-- End subclass fields --}}
       @if (!$item->batch())
       <div class="row">
         <div class="col-xs-4 detail-label">

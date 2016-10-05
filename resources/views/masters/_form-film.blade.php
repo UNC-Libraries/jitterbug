@@ -25,27 +25,27 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group @if ($errors->has('masterable.filmFrameSize')) has-danger @endif">
+        <div class="form-group @if ($errors->has('subclass.filmFrameSize')) has-danger @endif">
           <div class="col-xs-4 detail-label">
-            {!! Form::label('masterable[filmFrameSize]', 'Frame Size', array('class' => 'form-control-label')) !!}
+            {!! Form::label('subclass[filmFrameSize]', 'Frame Size', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('masterable[filmFrameSize]', routeName() === 'masters.create' ? '720 x 480' : null, array('class' => 'form-control form-control-sm')) !!}
-            @if ($errors->has('masterable.filmFrameSize'))
-              <div class="form-control-label"><small>{!! $errors->first('masterable.filmFrameSize') !!}</small></div>
+            {!! Form::text('subclass[filmFrameSize]', routeName() === 'masters.create' ? '720 x 480' : null, array('class' => 'form-control form-control-sm')) !!}
+            @if ($errors->has('subclass.filmFrameSize'))
+              <div class="form-control-label"><small>{!! $errors->first('subclass.filmFrameSize') !!}</small></div>
             @endif
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="form-group @if ($errors->has('masterable.filmAspectRatio')) has-danger @endif">
+        <div class="form-group @if ($errors->has('subclass.filmAspectRatio')) has-danger @endif">
           <div class="col-xs-4 detail-label">
-            {!! Form::label('masterable[filmAspectRatio]', 'Aspect Ratio', array('class' => 'form-control-label')) !!}
+            {!! Form::label('subclass[filmAspectRatio]', 'Aspect Ratio', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('masterable[filmAspectRatio]', routeName() === 'masters.create' ? '4:3' : null, array('class' => 'form-control form-control-sm')) !!}
-            @if ($errors->has('masterable.filmAspectRatio'))
-              <div class="form-control-label"><small>{!! $errors->first('masterable.filmAspectRatio') !!}</small></div>
+            {!! Form::text('subclass[filmAspectRatio]', routeName() === 'masters.create' ? '4:3' : null, array('class' => 'form-control form-control-sm')) !!}
+            @if ($errors->has('subclass.filmAspectRatio'))
+              <div class="form-control-label"><small>{!! $errors->first('subclass.filmAspectRatio') !!}</small></div>
             @endif
           </div>
         </div>

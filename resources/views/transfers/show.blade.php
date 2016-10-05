@@ -12,7 +12,7 @@
       <h6>{{$transfer->type}} Transfer Details</h6>
     </div>
   </div>
-  {{-- Transfer Fields --}}
+  {{-- Transfer fields --}}
   <div class="row first detail-container">
     <div class="col-xs-6">
       {{--
@@ -90,50 +90,50 @@
         </div>
       </div>
       @endif
-      {{-- End Transfer Fields --}}
+      {{-- End Transfer fields --}}
     </div>
     <div class="col-xs-6">
-      {{-- Begin Transferable Fields --}}
+      {{-- Begin subclass fields --}}
 
-      @if (get_class($transfer->transferable) === 'Junebug\Models\AudioTransfer')
-      @if ($transfer->transferable->stylus)
+      @if (get_class($transfer->subclass) === 'Junebug\Models\AudioTransfer')
+      @if ($transfer->subclass->stylus)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Stylus
         </div>
         <div class="col-xs-8 detail-value">
-          {{$transfer->transferable->stylus}}
+          {{$transfer->subclass->stylus}}
         </div>
       </div>
       @endif
-      @if ($transfer->transferable->cartridge)
+      @if ($transfer->subclass->cartridge)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Cartridge
         </div>
         <div class="col-xs-8 detail-value">
-          {{$transfer->transferable->cartridge}}
+          {{$transfer->subclass->cartridge}}
         </div>
       </div>
       @endif
-      @if ($transfer->transferable->firstSound)
+      @if ($transfer->subclass->firstSound)
       <div class="row">
         <div class="col-xs-4 detail-label">
           First Sound
         </div>
         <div class="col-xs-8 detail-value">
-          {{$transfer->transferable->firstSound}}
+          {{$transfer->subclass->firstSound}}
         </div>
       </div>
       @endif
       @endif
-      @if (get_class($transfer->transferable) === 'Junebug\Models\FilmTransfer')
+      @if (get_class($transfer->subclass) === 'Junebug\Models\FilmTransfer')
 
       @endif
-      @if (get_class($transfer->transferable) === 'Junebug\Models\VideoTransfer')
+      @if (get_class($transfer->subclass) === 'Junebug\Models\VideoTransfer')
 
       @endif
-      {{-- End Transferable Fields --}}
+      {{-- End subclass fields --}}
       <div class="row">
         <div class="col-xs-4 detail-label">
           Created On

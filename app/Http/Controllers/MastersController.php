@@ -110,7 +110,7 @@ class MastersController extends Controller {
     $linked = false;
     if($item !== null) {
       $master->callNumber = $item->callNumber;
-      $master->masterableType = $item->type . 'Master';
+      $master->subclassType = $item->type . 'Master';
       $linked = true;
     }
 
@@ -131,7 +131,7 @@ class MastersController extends Controller {
   }
 
   /**
-   * Save the details of a new master and its masterable, then update solr.
+   * Save the details of a new master and its subclass, then update solr.
    */
   public function store(MasterRequest $request)
   {
@@ -155,15 +155,15 @@ class MastersController extends Controller {
       $batchIndex = 0;
 
       do {
-        $masterable = $this->newMasterableInstance($request);
-        $masterable->fill($input['masterable']);
+        $subclass = new $request->subclassType;
+        $subclass->fill($input['subclass']);
 
         $master = new PreservationMaster;
-        $master->masterableType = $input['masterableType'];
+        $master->subclassType = $input['subclassType'];
         $master->fill($input);
 
-        $masterable->save();
-        $master->masterableId = $masterable->id;
+        $subclass->save();
+        $master->subclassId = $subclass->id;
         $master->save();
         $masterId = $master->id;
         array_push($masters, $master);
@@ -251,10 +251,10 @@ class MastersController extends Controller {
     }
     
     $first = PreservationMaster::find($masterIds[0]);
-    $masterableType = $first->masterableType;
+    $subclassType = $first->subclassType;
 
     $masters = PreservationMaster::whereIn('id', $masterIds)
-                            ->where('masterable_type', $masterableType)->get();
+                            ->where('subclass_type', $subclassType)->get();
     if ($masterIdsCount!==$masters->count()) {
       $request->session()->put('alert', array('type' => 'danger', 'message' => 
         '<strong>Oops! There\'s a problem.</strong> ' . 
@@ -263,13 +263,13 @@ class MastersController extends Controller {
       return redirect()->route('masters.index');
     }
 
-    $masterableIds = array();
+    $subclassIds = array();
     foreach ($masters as $master) {
-      array_push($masterableIds, $master->masterable->id);
+      array_push($subclassIds, $master->subclass->id);
     }
-    $masterables = $masterableType::whereIn('id', $masterableIds)->get();
+    $subclasses = $subclassType::whereIn('id', $subclassIds)->get();
 
-    $master = new BatchPreservationMaster($masters, $masterables);
+    $master = new BatchPreservationMaster($masters, $subclasses);
 
     // Build select lists
     $departments = array();
@@ -347,17 +347,17 @@ class MastersController extends Controller {
   {
     $input = $request->all();
     $master = PreservationMaster::findOrFail($id);
-    $masterable = $master->masterable;
+    $subclass = $master->subclass;
 
     $master->fill($input);
-    $masterable->fill($input['masterable']); 
+    $subclass->fill($input['subclass']); 
 
     // Update MySQL
-    DB::transaction(function () use ($master, $masterable) {
+    DB::transaction(function () use ($master, $subclass) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
 
-      $masterable->save();
+      $subclass->save();
       $master->touch();
       $master->save();
 
@@ -391,11 +391,11 @@ class MastersController extends Controller {
       
       foreach ($masters as $master) {
         $master->fill($input);
-        $master->touch(); // Touch in case not dirty and masterable is dirty
-        $masterable=$master->masterable;
-        $masterable->fill($input['masterable']);
+        $master->touch(); // Touch in case not dirty and subclass is dirty
+        $subclass=$master->subclass;
+        $subclass->fill($input['subclass']);
 
-        $masterable->save();
+        $subclass->save();
         $master->save();
       }
 
@@ -417,7 +417,7 @@ class MastersController extends Controller {
   public function destroy($id, Request $request)
   {
     $master = PreservationMaster::findOrFail($id);
-    $masterable = $master->masterable;
+    $subclass = $master->subclass;
 
     $command = $request->deleteCommand;
 
@@ -425,7 +425,7 @@ class MastersController extends Controller {
     $cuts;
 
     // Update MySQL
-    DB::transaction(function () use ($command, $master, $masterable, 
+    DB::transaction(function () use ($command, $master, $subclass, 
                                                    &$transfers, &$cuts) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
@@ -433,7 +433,7 @@ class MastersController extends Controller {
       if ($command==='all') {
         $transfers = $master->transfers;
         foreach ($transfers as $transfer) {
-          $transfer->transferable->delete();
+          $transfer->subclass->delete();
           $transfer->delete();
         }
 
@@ -444,7 +444,7 @@ class MastersController extends Controller {
       }
 
       $master->delete();
-      $masterable->delete();
+      $subclass->delete();
 
       DB::statement('set @transaction_id = null;');      
     });
@@ -504,7 +504,7 @@ class MastersController extends Controller {
       if ($command==='all') {
         $transfers = Transfer::whereIn('call_number', $callNumbers)->get();
         foreach ($transfers as $transfer) {
-          $transfer->transferable->delete();
+          $transfer->subclass->delete();
           $transfer->delete();
         }
 
@@ -515,8 +515,8 @@ class MastersController extends Controller {
       }
 
       foreach ($masters as $master) {
-        $masterable = $master->masterable;
-        $masterable->delete();
+        $subclass = $master->subclass;
+        $subclass->delete();
         $master->delete();
       }
 
@@ -547,23 +547,5 @@ class MastersController extends Controller {
 
     return redirect()->route('masters.index');
   }
-
-
-  private function newMasterableInstance(Request $request)
-  {
-    $masterable = null;
-    $masterableType = $request->masterableType;
-    if ($masterableType==='AudioMaster') {
-      $masterable = new AudioMaster;
-    } else if ($masterableType==='FilmMaster') {
-      $masterable = new FilmMaster;
-    } else if ($masterableType==='VideoMaster') {
-      $masterable = new VideoMaster;
-    } else {
-      throw new Exception('Unknown master type: ' . $masterableType);
-    }
-    return $masterable;
-  }
-
 
 }

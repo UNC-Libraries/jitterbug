@@ -19,7 +19,7 @@
                 types.id AS type_id,
                 collections.name AS collection_name,
                 formats.name AS format_name,
-                TRIM(TRAILING 'Item' FROM items.itemable_type) AS type_name
+                TRIM(TRAILING 'Item' FROM items.subclass_type) AS type_name
             FROM
                 audio_visual_items AS items
             LEFT JOIN collections ON
@@ -27,7 +27,7 @@
             LEFT JOIN formats ON
                 items.format_id = formats.id
             LEFT JOIN media_types AS types ON
-                TRIM(TRAILING 'Item' FROM items.itemable_type) = types.name
+                TRIM(TRAILING 'Item' FROM items.subclass_type) = types.name
             WHERE
                 items.deleted_at is null;
 

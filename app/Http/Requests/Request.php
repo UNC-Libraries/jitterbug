@@ -22,8 +22,7 @@ abstract class Request extends FormRequest {
     // and saved.
     $attributes = $this->all();
     foreach ($attributes as $key => $value) {
-      // Itemable/masterable/transferable attributes will
-      // come in a nested array
+      // Subclass attributes will come in a nested array
       if (is_array($value)) {
         foreach ($value as $innerKey => $innerValue) {
           if (trim($innerValue)==='<mixed>') {

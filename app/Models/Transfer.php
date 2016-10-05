@@ -72,7 +72,7 @@ class Transfer extends Model {
     return $this->belongsTo('Junebug\Models\PreservationMaster');
   }
 
-  public function transferable()
+  public function subclass()
   {
     return $this->morphTo();
   }
@@ -84,7 +84,7 @@ class Transfer extends Model {
 
   public function getTypeAttribute()
   {
-    $fullType = $this->getAttribute("transferableType");
+    $fullType = $this->getAttribute("subclassType");
     $type = substr($fullType,0,strlen($fullType)
       - strlen("Transfer"));
     return $type;

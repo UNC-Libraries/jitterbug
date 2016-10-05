@@ -23,7 +23,7 @@
                 items.format_id AS format_id,
                 formats.name AS format_name,
                 types.id AS type_id,
-                TRIM(TRAILING 'Transfer' FROM transfers.transferable_type) AS type_name,
+                TRIM(TRAILING 'Transfer' FROM transfers.subclass_type) AS type_name,
                 transfers.created_at AS created_at,
                 transfers.updated_at AS updated_at
             FROM
@@ -41,7 +41,7 @@
             LEFT JOIN cuts ON
                 transfers.id = cuts.transfer_id
             LEFT JOIN media_types AS types ON
-                TRIM(TRAILING 'Transfer' FROM transfers.transferable_type) = types.name
+                TRIM(TRAILING 'Transfer' FROM transfers.subclass_type) = types.name
             WHERE
                 transfers.deleted_at is null;
 

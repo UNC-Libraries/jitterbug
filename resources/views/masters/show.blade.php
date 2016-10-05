@@ -12,7 +12,7 @@
       <h6>{{$master->type}} Master Details</h6>
     </div>
   </div>
-  {{-- Preservation Master Fields --}}
+  {{-- PreservationMaster fields --}}
   <div class="row first detail-container">
     <div class="col-xs-6">
       <div class="row">
@@ -150,97 +150,97 @@
         </div>
       </div>
       @endif
-      {{-- End PreservationMaster Fields --}}
+      {{-- End PreservationMaster fields --}}
       
-      {{-- Begin Masterable Fields --}}
+      {{-- Begin subclass fields --}}
 
-      @if (get_class($master->masterable) === 'Junebug\Models\AudioMaster')
-      @if ($master->masterable->samplingRate)
+      @if (get_class($master->subclass) === 'Junebug\Models\AudioMaster')
+      @if ($master->subclass->samplingRate)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Sampling Rate
         </div>
         <div class="col-xs-8 detail-value">
-          {{$master->masterable->samplingRate->name}}
+          {{$master->subclass->samplingRate->name}}
         </div>
       </div>
       @endif
-      @if ($master->masterable->tapeBrand)
+      @if ($master->subclass->tapeBrand)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Tape Brand
         </div>
         <div class="col-xs-8 detail-value">
-          {{$master->masterable->tapeBrand->name}}
+          {{$master->subclass->tapeBrand->name}}
         </div>
       </div>
       @endif
-      @if ($master->masterable->pmSpeed)
+      @if ($master->subclass->pmSpeed)
       <div class="row">
         <div class="col-xs-4 detail-label">
           PM Speed
         </div>
         <div class="col-xs-8 detail-value">
-          {{$master->masterable->pmSpeed->name}}
+          {{$master->subclass->pmSpeed->name}}
         </div>
       </div>
       @endif
-      @if ($master->masterable->testTones)
+      @if ($master->subclass->testTones)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Test Tones
         </div>
         <div class="col-xs-8 detail-value">
-          {{$master->masterable->testTones}}
+          {{$master->subclass->testTones}}
         </div>
       </div>
       @endif
       @endif
-      @if (get_class($master->masterable) === 'Junebug\Models\FilmMaster')
-      @if ($master->masterable->frameSize)
+      @if (get_class($master->subclass) === 'Junebug\Models\FilmMaster')
+      @if ($master->subclass->frameSize)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Frame Size
         </div>
         <div class="col-xs-8 detail-value">
-          {{$master->masterable->frameSize}}
+          {{$master->subclass->frameSize}}
         </div>
       </div>
       @endif
-      @if ($master->masterable->aspectRatio)
+      @if ($master->subclass->aspectRatio)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Aspect Ratio
         </div>
         <div class="col-xs-8 detail-value">
-          {{$master->masterable->aspectRatio}}
+          {{$master->subclass->aspectRatio}}
         </div>
       </div>
       @endif
       @endif
-      @if (get_class($master->masterable) === 'Junebug\Models\VideoMaster')
-      @if ($master->masterable->frameSize)
+      @if (get_class($master->subclass) === 'Junebug\Models\VideoMaster')
+      @if ($master->subclass->frameSize)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Frame Size
         </div>
         <div class="col-xs-8 detail-value">
-          {{$master->masterable->frameSize}}
+          {{$master->subclass->frameSize}}
         </div>
       </div>
       @endif
-      @if ($master->masterable->aspectRatio)
+      @if ($master->subclass->aspectRatio)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Aspect Ratio
         </div>
         <div class="col-xs-8 detail-value">
-          {{$master->masterable->aspectRatio}}
+          {{$master->subclass->aspectRatio}}
         </div>
       </div>
       @endif
       @endif
-      {{-- End Masterable Fields --}}
+      {{-- End subclass fields --}}
       <div class="row">
         <div class="col-xs-4 detail-label">
           Created On

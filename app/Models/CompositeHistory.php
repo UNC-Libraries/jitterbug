@@ -8,14 +8,7 @@ trait CompositeHistory
   {
     $revisionHistory = $this->revisionHistory()->get();
     $childRevisionHistory = null;
-    if (method_exists($this, 'itemable')) {
-      $childRevisionHistory = $this->itemable->revisionHistory()->get();
-    } else if (method_exists($this, 'masterable')) {
-      $childRevisionHistory = $this->masterable->revisionHistory()->get();
-    } else if (method_exists($this, 'transferable')) {
-      $childRevisionHistory = $this->transferable->revisionHistory()->get();
-    }
-
+    $childRevisionHistory = $this->subclass->revisionHistory()->get();
     $completeRevisionHistory = $revisionHistory->merge($childRevisionHistory);
     $completeRevisionHistory = $completeRevisionHistory->sortBy('created_at');
 

@@ -12,7 +12,7 @@
       <h6>{{$item->type}} Item Details</h6>
     </div>
   </div>
-  {{-- AudioVisualItem Fields --}}
+  {{-- AudioVisualItem fields --}}
   <div class="row first detail-container">
     <div class="col-xs-6">
       <div class="row">
@@ -123,225 +123,225 @@
         </div>
       </div>
       @endif
-      {{-- End AudioVisualItem Fields --}}
+      {{-- End AudioVisualItem fields --}}
     </div>
     <div class="col-xs-6">
-      {{-- Begin Itemable Fields --}}
-      @if (get_class($item->itemable) === 'Junebug\Models\AudioItem')
+      {{-- Begin subclass fields --}}
+      @if (get_class($item->subclass) === 'Junebug\Models\AudioItem')
       <div class="row">
         <div class="col-xs-4 detail-label">
           Listening Copy
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable->listeningCopyDisplay}}
+          {{$item->subclass->listeningCopyDisplay}}
         </div>
       </div>
-      @if ($item->itemable->monoStereo)
+      @if ($item->subclass->monoStereo)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Mono/Stereo
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable->monoStereoDisplay}}
+          {{$item->subclass->monoStereoDisplay}}
         </div>
       </div>
       @endif
-      @if ($item->itemable->size)
+      @if ($item->subclass->size)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Size
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable->size}}
+          {{$item->subclass->size}}
         </div>
       </div>
       @endif
-      @if ($item->itemable->trackConfiguration)
+      @if ($item->subclass->trackConfiguration)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Track Config
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable->trackConfiguration}}
+          {{$item->subclass->trackConfiguration}}
         </div>
       </div>
       @endif
-      @if ($item->itemable->base)
+      @if ($item->subclass->base)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Base
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable->base}}
+          {{$item->subclass->base}}
         </div>
       </div>
       @endif
-      @if ($item->itemable->contentDescription)
+      @if ($item->subclass->contentDescription)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Content Description
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable->contentDescription}}
+          {{$item->subclass->contentDescription}}
         </div>
       </div>
       @endif
       @endif
-      @if (get_class($item->itemable) === 'Junebug\Models\FilmItem')
-      @if ($item->itemable->element)
+      @if (get_class($item->subclass) === 'Junebug\Models\FilmItem')
+      @if ($item->subclass->element)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Element
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable->element}}
+          {{$item->subclass->element}}
         </div>
       </div>
       @endif
-      @if ($item->itemable->base)
+      @if ($item->subclass->base)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Base
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable->base}}
+          {{$item->subclass->base}}
         </div>
       </div>
       @endif
-      @if ($item->itemable->color)
+      @if ($item->subclass->color)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Color
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable->color}}
+          {{$item->subclass->color}}
         </div>
       </div>
       @endif
-      @if ($item->itemable->soundType)
+      @if ($item->subclass->soundType)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Sound Type
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable->soundType}}
+          {{$item->subclass->soundType}}
         </div>
       </div>
       @endif
-      @if ($item->itemable->lengthInFeet)
+      @if ($item->subclass->lengthInFeet)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Length in Feet
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable->lengthInFeet}}
+          {{$item->subclass->lengthInFeet}}
         </div>
       </div>
       @endif
-      @if ($item->itemable->filmStock)
+      @if ($item->subclass->filmStock)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Film Stock
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable->filmStock}}
+          {{$item->subclass->filmStock}}
         </div>
       </div>
       @endif
-      @if ($item->itemable->edgeCode)
+      @if ($item->subclass->edgeCode)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Edge Code
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable->edgeCode}}
+          {{$item->subclass->edgeCode}}
         </div>
       </div>
       @endif
-      @if ($item->itemable->shrinkagePercent)
+      @if ($item->subclass->shrinkagePercent)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Shrinkage Percent
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable->shrinkagePercent}}
+          {{$item->subclass->shrinkagePercent}}
         </div>
       </div>
       @endif
-      @if ($item->itemable->canNumber)
+      @if ($item->subclass->canNumber)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Can Number
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable->canNumber}}
+          {{$item->subclass->canNumber}}
         </div>
       </div>
       @endif
-      @if ($item->itemable->contentDescription)
+      @if ($item->subclass->contentDescription)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Content Description
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable->contentDescription}}
+          {{$item->subclass->contentDescription}}
         </div>
       </div>
       @endif
       @endif
-      @if (get_class($item->itemable) === 'Junebug\Models\VideoItem')
-      @if ($item->itemable->monoStereoDisplay)
+      @if (get_class($item->subclass) === 'Junebug\Models\VideoItem')
+      @if ($item->subclass->monoStereoDisplay)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Mono/Stereo
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable->monoStereoDisplay}}
+          {{$item->subclass->monoStereoDisplay}}
         </div>
       </div>
       @endif
-      @if ($item->itemable->element)
+      @if ($item->subclass->element)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Element
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable->element}}
+          {{$item->subclass->element}}
         </div>
       </div>
       @endif
-      @if ($item->itemable->color)
+      @if ($item->subclass->color)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Color
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable->color}}
+          {{$item->subclass->color}}
         </div>
       </div>
       @endif
-      @if ($item->itemable->recordingStandard)
+      @if ($item->subclass->recordingStandard)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Recording Standard
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable->recordingStandard}}
+          {{$item->subclass->recordingStandard}}
         </div>
       </div>
       @endif
-      @if ($item->itemable->contentDescription)
+      @if ($item->subclass->contentDescription)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Content Description
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->itemable->contentDescription}}
+          {{$item->subclass->contentDescription}}
         </div>
       </div>
       @endif
       @endif
-      {{-- End Itemable Fields --}}
+      {{-- End subclass fields --}}
       <div class="row">
         <div class="col-xs-4 detail-label">
           Created On

@@ -8,29 +8,29 @@ class BatchAudioVisualItem extends AudioVisualItem {
   use MergeableAttributes;
 
   protected $items;
-  protected $itemables;
+  protected $subclasses;
   protected $aggregateItem;
-  protected $aggregateItemable;
+  protected $aggregateSubclass;
 
-  protected $batchGuarded = ['id', 'itemableType', 'itemableId', 'createdAt',
+  protected $batchGuarded = ['id', 'subclassType', 'subclassId', 'createdAt',
     'updatedAt'];
 
   protected $attributes;
 
-  public function __construct($items, $itemables)
+  public function __construct($items, $subclasses)
   {
     parent::__construct();
 
     $this->items = $items;
-    $this->itemables = $itemables;
+    $this->subclasses = $subclasses;
 
     $this->aggregateItem = new AudioVIsualItem;
     $this->aggregateItem->entryDate = null;
-    $itemableType = $this->items->first()->itemableType;
-    $this->aggregateItem->itemableType = $itemableType;
-    $this->aggregateItemable = new $itemableType;
+    $subclassType = $this->items->first()->subclassType;
+    $this->aggregateItem->subclassType = $subclassType;
+    $this->aggregateSubclass = new $subclassType;
     $this->mergeAttributes($items, $this->aggregateItem);
-    $this->mergeAttributes($itemables, $this->aggregateItemable);
+    $this->mergeAttributes($subclasses, $this->aggregateSubclass);
 
     $this->attributes = $this->aggregateItem->attributes;
   }
@@ -49,19 +49,19 @@ class BatchAudioVisualItem extends AudioVisualItem {
     return implode(',', $ids);
   }
 
-  public function getItemableAttribute()
+  public function getSubclassAttribute()
   {
-    return $this->aggregateItemable;
+    return $this->aggregateSubclass;
   }
 
-  public function itemable()
+  public function subclass()
   {
-    return $this->aggregateItemable;
+    return $this->aggregateSubclass;
   }
 
   public function getTypeAttribute()
   {
-    $fullType = $this->items->first()->getAttribute("itemableType");
+    $fullType = $this->items->first()->getAttribute("subclassType");
     $type = substr($fullType,0,strlen($fullType) - strlen("Item"));
     return $type;
   }

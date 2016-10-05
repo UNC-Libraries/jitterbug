@@ -17,7 +17,7 @@
                 formats.name AS format_name,
                 departments.name AS department_name,
                 types.id AS type_id,
-                TRIM(TRAILING 'Master' FROM masters.masterable_type) AS type_name,
+                TRIM(TRAILING 'Master' FROM masters.subclass_type) AS type_name,
                 masters.created_at AS created_at,
                 masters.updated_at AS updated_at
             FROM
@@ -31,7 +31,7 @@
             LEFT JOIN departments ON
                 masters.department_id = departments.id
             LEFT JOIN media_types AS types ON
-                TRIM(TRAILING 'Master' FROM masters.masterable_type) = types.name
+                TRIM(TRAILING 'Master' FROM masters.subclass_type) = types.name
             WHERE
                 masters.deleted_at is null;
 

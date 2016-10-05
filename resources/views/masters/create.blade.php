@@ -19,28 +19,28 @@
     <div class="col-xs-12 preform">
       <span id="master-type-controls">
         <span style="margin-right: .75rem">
-          {!! Form::label('masterableType', 'Master Type: ', array('class' => 'form-control-label')) !!}
+          {!! Form::label('subclassType', 'Master Type: ', array('class' => 'form-control-label')) !!}
         </span>
         @if ($linked)
-          {!! Form::hidden('masterableType') !!}
+          {!! Form::hidden('subclassType') !!}
           <label class="radio-inline">
-            {!! Form::radio('masterableType', 'AudioMaster', null, array('disabled' => 'disabled')) !!} Audio
+            {!! Form::radio('subclassType', 'AudioMaster', null, array('disabled' => 'disabled')) !!} Audio
           </label>
           <label class="radio-inline">
-            {!! Form::radio('masterableType', 'FilmMaster', null, array('disabled' => 'disabled')) !!} Film
+            {!! Form::radio('subclassType', 'FilmMaster', null, array('disabled' => 'disabled')) !!} Film
           </label>
           <label class="radio-inline">
-            {!! Form::radio('masterableType', 'VideoMaster', null, array('disabled' => 'disabled')) !!} Video
+            {!! Form::radio('subclassType', 'VideoMaster', null, array('disabled' => 'disabled')) !!} Video
           </label>
         @else
           <label class="radio-inline">
-            {!! Form::radio('masterableType', 'AudioMaster') !!} Audio
+            {!! Form::radio('subclassType', 'AudioMaster') !!} Audio
           </label>
           <label class="radio-inline">
-            {!! Form::radio('masterableType', 'FilmMaster') !!} Film
+            {!! Form::radio('subclassType', 'FilmMaster') !!} Film
           </label>
           <label class="radio-inline">
-            {!! Form::radio('masterableType', 'VideoMaster') !!} Video
+            {!! Form::radio('subclassType', 'VideoMaster') !!} Video
           </label>
         @endif
       </span>
@@ -78,17 +78,17 @@
       @include('masters._form-common')
     </div>
     <div class="col-xs-6">
-      {{-- Begin Masterable Fields --}}
-      <div id="audio-form" @if (($linked && $master->masterableType !== 'AudioMaster') || old('masterableType') !== null && old('masterableType') !== 'AudioMaster') style="display: none" @endif>
+      {{-- Begin subclass fields --}}
+      <div id="audio-form" @if (($linked && $master->subclassType !== 'AudioMaster') || old('subclassType') !== null && old('subclassType') !== 'AudioMaster') style="display: none" @endif>
         @include('masters._form-audio')
       </div>
-      <div id="film-form" @if ($master->masterableType !== 'FilmMaster' && old('masterableType') !== 'FilmMaster') style="display: none" @endif>
+      <div id="film-form" @if ($master->subclassType !== 'FilmMaster' && old('subclassType') !== 'FilmMaster') style="display: none" @endif>
         @include('masters._form-film')
       </div>
-      <div id="video-form" @if ($master->masterableType !== 'VideoMaster' && old('masterableType') !== 'VideoMaster') style="display: none" @endif>
+      <div id="video-form" @if ($master->subclassType !== 'VideoMaster' && old('subclassType') !== 'VideoMaster') style="display: none" @endif>
         @include('masters._form-video')
       </div>
-      {{-- End Masterable Fields --}}
+      {{-- End subclass fields --}}
     </div>
   </div>
 

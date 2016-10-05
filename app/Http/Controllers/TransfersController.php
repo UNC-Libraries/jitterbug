@@ -253,8 +253,8 @@ class TransfersController extends Controller {
           $master->fileSizeInBytes = $row['FileSize'];
           $master->durationInSeconds = 
               $this->toDurationInSeconds($row['Duration']);
-          $master->masterableType = 'AudioMaster';
-          $master->masterableId = $audioMaster->id;
+          $master->subclassType = 'AudioMaster';
+          $master->subclassId = $audioMaster->id;
           $master->save();
           array_push($masters, $master);
           $created++;
@@ -273,8 +273,8 @@ class TransfersController extends Controller {
           // Right now we will assume the person importing is the
           // engineer, but that might change in the future.
           $transfer->engineerId = Auth::user()->id;
-          $transfer->transferableType = 'AudioTransfer';
-          $transfer->transferableId = $audioTransfer->id;
+          $transfer->subclassType = 'AudioTransfer';
+          $transfer->subclassId = $audioTransfer->id;
           $transfer->save();
           array_push($transfers, $transfer);
           $created++;

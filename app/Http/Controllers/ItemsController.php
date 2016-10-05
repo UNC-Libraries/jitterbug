@@ -109,7 +109,7 @@ class ItemsController extends Controller
   }
 
   /**
-   * Save the details of a new item and its itemable, then update solr.
+   * Save the details of a new item and its subclass, then update solr.
    */
   public function store(ItemRequest $request)
   {
@@ -137,17 +137,17 @@ class ItemsController extends Controller
         $sequence = 
           CallNumberSequence::next($input['collectionId'], $input['formatId']);
 
-        $itemable = $this->newItemableInstance($request);
-        $itemable->callNumber = $sequence->callNumber();
-        $itemable->fill($input['itemable']);
+        $subclass = new $request->subclassType;
+        $subclass->callNumber = $sequence->callNumber();
+        $subclass->fill($input['subclass']);
 
         $item = new AudioVisualItem;
-        $item->itemableType = $input['itemableType'];
+        $item->subclassType = $input['subclassType'];
         $item->fill($input);
         $item->callNumber = $sequence->callNumber();
 
-        $itemable->save();
-        $item->itemableId = $itemable->id;
+        $subclass->save();
+        $item->subclassId = $subclass->id;
         $item->save();
         $itemId = $item->id;
         array_push($items, $item);
@@ -248,10 +248,10 @@ class ItemsController extends Controller
     }
     
     $first = AudioVisualItem::find($itemIds[0]);
-    $itemableType = $first->itemableType;
+    $subclassType = $first->subclassType;
 
     $items = AudioVisualItem::whereIn('id', $itemIds)
-                            ->where('itemable_type', $itemableType)->get();
+                            ->where('subclass_type', $subclassType)->get();
     if ($itemIdsCount!==$items->count()) {
       $request->session()->put('alert', array('type' => 'danger', 'message' => 
         '<strong>Oops! There\'s a problem.</strong> ' . 
@@ -260,13 +260,13 @@ class ItemsController extends Controller
       return redirect()->route('items.index');
     }
 
-    $itemableIds = array();
+    $subclassIds = array();
     foreach ($items as $item) {
-      array_push($itemableIds, $item->itemable->id);
+      array_push($subclassIds, $item->subclass->id);
     }
-    $itemables = $itemableType::whereIn('id', $itemableIds)->get();
+    $subclasses = $subclassType::whereIn('id', $subclassIds)->get();
 
-    $item = new BatchAudioVisualItem($items, $itemables);
+    $item = new BatchAudioVisualItem($items, $subclasses);
 
     $collections = array();
     if ($item->collectionId === '<mixed>') {
@@ -307,10 +307,10 @@ class ItemsController extends Controller
   {
     $input = $request->all();
     $item = AudioVisualItem::findOrFail($id);
-    $itemable = $item->itemable;
+    $subclass = $item->subclass;
 
     $item->fill($input);
-    $itemable->fill($input['itemable']);
+    $subclass->fill($input['subclass']);
 
     $updateSolrMastersAndTransfers = false;
     if ($item->isDirty('call_number') || $item->isDirty('collection_id') ||
@@ -319,13 +319,13 @@ class ItemsController extends Controller
     }  
 
     // Update MySQL
-    DB::transaction(function () use ($item, $itemable) {
+    DB::transaction(function () use ($item, $subclass) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
 
       // Update call number everywhere if it has changed
       if($item->isDirty('call_number')) {
-        $itemable->callNumber = $item->callNumber;
+        $subclass->callNumber = $item->callNumber;
 
         $origCall = $item->getOriginal()['callNumber'];
         $newCall = $item->callNumber;
@@ -358,7 +358,7 @@ class ItemsController extends Controller
 
       }
 
-      $itemable->save();
+      $subclass->save();
       $item->touch();
       $item->save();
 
@@ -411,16 +411,16 @@ class ItemsController extends Controller
       
       foreach ($items as $item) {
         $item->fill($input);
-        $item->touch(); // Touch in case not dirty and itemable is dirty
-        $itemable=$item->itemable;
-        $itemable->fill($input['itemable']);
+        $item->touch(); // Touch in case not dirty and subclass is dirty
+        $subclass=$item->subclass;
+        $subclass->fill($input['subclass']);
 
         if ($item->isDirty('collection_id') ||
             $item->isDirty('format_id')) {
           array_push($collectionOrFormatUpdated, $item);
         }
 
-        $itemable->save();
+        $subclass->save();
         $item->save();
       }
 
@@ -456,7 +456,7 @@ class ItemsController extends Controller
   public function destroy($id, Request $request)
   {
     $item = AudioVisualItem::findOrFail($id);
-    $itemable = $item->itemable;
+    $subclass = $item->subclass;
 
     $command = $request->deleteCommand;
 
@@ -464,7 +464,7 @@ class ItemsController extends Controller
     $transfers;
 
     // Update MySQL
-    DB::transaction(function () use ($command, $item, $itemable, 
+    DB::transaction(function () use ($command, $item, $subclass, 
                                                    &$masters, &$transfers) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
@@ -474,7 +474,7 @@ class ItemsController extends Controller
         $masters = 
           PreservationMaster::where('call_number', $callNumber)->get();
         foreach ($masters as $master) {
-          $master->masterable->delete();
+          $master->subclass->delete();
           $master->delete();
         }
 
@@ -485,13 +485,13 @@ class ItemsController extends Controller
 
         $transfers = Transfer::where('call_number', $callNumber)->get();
         foreach ($transfers as $transfer) {
-          $transfer->transferable->delete();
+          $transfer->subclass->delete();
           $transfer->delete();
         }
       }
 
       $item->delete();
-      $itemable->delete();
+      $subclass->delete();
 
       DB::statement('set @transaction_id = null;');      
     });
@@ -545,13 +545,13 @@ class ItemsController extends Controller
         $masters = 
           PreservationMaster::whereIn('call_number', $callNumbers)->get();
         foreach ($masters as $master) {
-          $master->masterable->delete();
+          $master->subclass->delete();
           $master->delete();
         }
 
         $transfers = Transfer::whereIn('call_number', $callNumbers)->get();
         foreach ($transfers as $transfer) {
-          $transfer->transferable->delete();
+          $transfer->subclass->delete();
           $transfer->delete();
         }
 
@@ -562,8 +562,8 @@ class ItemsController extends Controller
       }
 
       foreach ($items as $item) {
-        $itemable = $item->itemable;
-        $itemable->delete();
+        $subclass = $item->subclass;
+        $subclass->delete();
         $item->delete();
       }
 
@@ -608,22 +608,6 @@ class ItemsController extends Controller
     $export = new ItemsExport($itemIds);
     $filePath = $export->build($fields);
     //return response()->download(base_path() . '/storage/app/downloads/ashirk-audio-import.csv');
-  }
-
-  private function newItemableInstance(Request $request)
-  {
-    $itemable = null;
-    $itemableType = $request->itemableType;
-    if ($itemableType==='AudioItem') {
-      $itemable = new AudioItem;
-    } else if ($itemableType==='FilmItem') {
-      $itemable = new FilmItem;
-    } else if ($itemableType==='VideoItem') {
-      $itemable = new VideoItem;
-    } else {
-      throw new Exception('Unknown item type: ' . $itemableType);
-    }
-    return $itemable;
   }
 
 }

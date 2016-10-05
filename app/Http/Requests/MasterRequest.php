@@ -32,7 +32,7 @@ class MasterRequest extends Request {
       'required|min:4|max:30|exists:audio_visual_items,call_number');
     // If this is a batch create, don't require a file name since it
     // needs to be unique across every master.
-    if (!$this->input('batch')) {
+    if (!$this->input('batch') && !$this->route()->getName()==='masters.batch.update') {
       $this->addRuleIfNotMixed($rules, 'fileName', 
         'required|max:60|unique:preservation_masters,file_name,' . 
         $this->input('id'));
@@ -46,25 +46,25 @@ class MasterRequest extends Request {
     $this->addRuleIfNotMixed($rules, 'accessFileLocation', 'max:60');
     $this->addRuleIfNotMixed($rules, 'departmentId', 'required');
 
-    $masterableType = $this->input('masterableType');
+    $subclassType = $this->input('subclassType');
     // Add rules for audio masters
-    if($masterableType === 'AudioMaster') {
+    if($subclassType === 'AudioMaster') {
       $this->addRuleIfNotMixed($rules, 'audioFileFormat', 'required|max:60');
       $this->addRuleIfNotMixed($rules, 'audioFileCodec', 'required|max:60');
-      $this->addRuleIfNotMixed($rules, 'masterable.samplingRateId', 'required');
-      $this->addRuleIfNotMixed($rules, 'masterable.testTones', 'max:255');     
+      $this->addRuleIfNotMixed($rules, 'subclass.samplingRateId', 'required');
+      $this->addRuleIfNotMixed($rules, 'subclass.testTones', 'max:255');     
     // Add rules for film masters
-    } else if ($masterableType === 'FilmMaster') {
+    } else if ($subclassType === 'FilmMaster') {
       $this->addRuleIfNotMixed($rules, 'filmFileFormat', 'required|max:60');
       $this->addRuleIfNotMixed($rules, 'filmFileCodec', 'required|max:60');
-      $this->addRuleIfNotMixed($rules, 'masterable.filmFrameSize', 'max:30');
-      $this->addRuleIfNotMixed($rules, 'masterable.filmAspectRatio', 'max:30');
+      $this->addRuleIfNotMixed($rules, 'subclass.filmFrameSize', 'max:30');
+      $this->addRuleIfNotMixed($rules, 'subclass.filmAspectRatio', 'max:30');
     // Add rules for video masters
-    } else if ($masterableType === 'VideoMaster') {
+    } else if ($subclassType === 'VideoMaster') {
       $this->addRuleIfNotMixed($rules, 'videoFileFormat', 'required|max:60');
       $this->addRuleIfNotMixed($rules, 'videoFileCodec', 'required|max:60');
-      $this->addRuleIfNotMixed($rules, 'masterable.videoFrameSize', 'max:30');
-      $this->addRuleIfNotMixed($rules, 'masterable.videoAspectRatio', 'max:30');
+      $this->addRuleIfNotMixed($rules, 'subclass.videoFrameSize', 'max:30');
+      $this->addRuleIfNotMixed($rules, 'subclass.videoAspectRatio', 'max:30');
     }
 
     return $rules;
@@ -91,8 +91,8 @@ class MasterRequest extends Request {
       'departmentId.required' => 'The department field is required.',
 
       // Messages for audio master fields
-      'masterable.samplingRateId.required' => 'The sampling rate field is required.',
-      'masterable.testTones.max' => 'The test tones field must be less than :max characters.',
+      'subclass.samplingRateId.required' => 'The sampling rate field is required.',
+      'subclass.testTones.max' => 'The test tones field must be less than :max characters.',
       'audioFileFormat.required' => 'The file format field is required.',
       'audioFileCodec.required' => 'The file codec field is required.',
       'audioFileFormat.max' => 'The file format must be less than :max characters.',
@@ -103,16 +103,16 @@ class MasterRequest extends Request {
       'filmFileFormat.max' => 'The file format must be less than :max characters.',
       'filmFileCodec.required' => 'The file codec field is required.',
       'filmFileCodec.max' => 'The file codec must be less than :max characters.',
-      'masterable.filmFrameSize.max' => 'The frame size must be less than :max characters.',
-      'masterable.filmAspectRatio.max' => 'The aspect ratio must be less than :max characters.',
+      'subclass.filmFrameSize.max' => 'The frame size must be less than :max characters.',
+      'subclass.filmAspectRatio.max' => 'The aspect ratio must be less than :max characters.',
 
       // Messages for video master fields
       'videoFileFormat.required' => 'The file format field is required.',
       'videoFileCodec.required' => 'The file codec field is required.',
       'videoFileFormat.max' => 'The file format must be less than :max characters.',
       'videoFileCodec.max' => 'The file codec must be less than :max characters.',
-      'masterable.videoFrameSize.max' => 'The frame size must be less than :max characters.',
-      'masterable.videoAspectRatio.max' => 'The aspect ratio must be less than :max characters.',
+      'subclass.videoFrameSize.max' => 'The frame size must be less than :max characters.',
+      'subclass.videoAspectRatio.max' => 'The aspect ratio must be less than :max characters.',
 
     ];
   }
@@ -135,8 +135,8 @@ class MasterRequest extends Request {
 
   private function typeMismatch()
   {
-    $inputType = $this->input('masterableType');
-    $type = substr($inputType, 0, strlen($inputType) - strlen("Master"));
+    $inputType = $this->input('subclassType');
+    $type = substr($inputType, 0, strlen($inputType) - strlen('Master'));
     $item = AudioVisualItem::where('call_number', $this->input('callNumber'))->first();
     return $item !== null && $type !== $item->type;
   }

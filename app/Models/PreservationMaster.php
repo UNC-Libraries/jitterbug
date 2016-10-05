@@ -52,7 +52,7 @@ class PreservationMaster extends Model {
 
   public function __construct()
   {
-    $this->masterableType = 'AudioMaster';
+    $this->subclassType = 'AudioMaster';
     parent::__construct();
   }
 
@@ -86,7 +86,7 @@ class PreservationMaster extends Model {
     return $this->belongsTo('Junebug\Models\ReproductionMachine');
   }
 
-  public function masterable()
+  public function subclass()
   {
     return $this->morphTo();
   }
@@ -98,7 +98,7 @@ class PreservationMaster extends Model {
   
   public function getTypeAttribute()
   {
-    $fullType = $this->masterableType;
+    $fullType = $this->subclassType;
     $type = substr($fullType, 0, strlen($fullType) - strlen("Master"));
     return $type;
   }
@@ -107,42 +107,42 @@ class PreservationMaster extends Model {
 
   public function getAudioFileFormatAttribute($value)
   {
-    if ($this->masterableType === 'AudioMaster') {
+    if ($this->subclassType === 'AudioMaster') {
       return $value===null ? $this->fileFormat : $value;
     }
   }
 
   public function setAudioFileFormatAttribute($value)
   {
-    if ($this->masterableType === 'AudioMaster') {
+    if ($this->subclassType === 'AudioMaster') {
       $this->fileFormat = $value;
     }
   }
 
   public function getFilmFileFormatAttribute($value)
   {
-    if ($this->masterableType === 'FilmMaster') {
+    if ($this->subclassType === 'FilmMaster') {
       return $value===null ? $this->fileFormat : $value;
     }
   }
 
   public function setFilmFileFormatAttribute($value)
   {
-    if ($this->masterableType === 'FilmMaster') {
+    if ($this->subclassType === 'FilmMaster') {
       $this->fileFormat = $value;
     }
   }
 
   public function getVideoFileFormatAttribute($value)
   {
-    if ($this->masterableType === 'VideoMaster') {
+    if ($this->subclassType === 'VideoMaster') {
       return $value===null ? $this->fileFormat : $value;
     }
   }
 
   public function setVideoFileFormatAttribute($value)
   {
-    if ($this->masterableType === 'VideoMaster') {
+    if ($this->subclassType === 'VideoMaster') {
       $this->fileFormat = $value;
     }
   }
@@ -151,42 +151,42 @@ class PreservationMaster extends Model {
 
   public function getAudioFileCodecAttribute($value)
   {
-    if ($this->masterableType === 'AudioMaster') {
+    if ($this->subclassType === 'AudioMaster') {
       return $value===null ? $this->fileCodec : $value;
     }
   }
 
   public function setAudioFileCodecAttribute($value)
   {
-    if ($this->masterableType === 'AudioMaster') {
+    if ($this->subclassType === 'AudioMaster') {
       $this->fileCodec = $value;
     }
   }
 
   public function getFilmFileCodecAttribute($value)
   {
-    if ($this->masterableType === 'FilmMaster') {
+    if ($this->subclassType === 'FilmMaster') {
       return $value===null ? $this->fileCodec : $value;
     }
   }
 
   public function setFilmFileCodecAttribute($value)
   {
-    if ($this->masterableType === 'FilmMaster') {
+    if ($this->subclassType === 'FilmMaster') {
       $this->fileCodec = $value;
     }
   }
 
   public function getVideoFileCodecAttribute($value)
   {
-    if ($this->masterableType === 'VideoMaster') {
+    if ($this->subclassType === 'VideoMaster') {
       return $value===null ? $this->fileCodec : $value;
     }
   }
 
   public function setVideoFileCodecAttribute($value)
   {
-    if ($this->masterableType === 'VideoMaster') {
+    if ($this->subclassType === 'VideoMaster') {
       $this->fileCodec = $value;
     }
   }

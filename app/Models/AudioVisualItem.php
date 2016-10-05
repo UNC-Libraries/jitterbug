@@ -46,7 +46,7 @@ class AudioVisualItem extends Model {
 
   public function __construct()
   {
-    $this->itemableType = 'AudioItem';
+    $this->subclassType = 'AudioItem';
     $this->entryDate = (new \DateTime())->format('Y-m-d');
     parent::__construct();
   }
@@ -78,7 +78,7 @@ class AudioVisualItem extends Model {
       'call_number', 'call_number');
   }
 
-  public function itemable()
+  public function subclass()
   {
     return $this->morphTo();
   }
@@ -94,7 +94,7 @@ class AudioVisualItem extends Model {
 
   public function getTypeAttribute()
   {
-    $fullType = $this->itemableType;
+    $fullType = $this->subclassType;
     $type = substr($fullType, 0, strlen($fullType) - strlen("Item"));
     return $type;
   }

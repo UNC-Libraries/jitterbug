@@ -20,12 +20,12 @@
   @if ($master->batch())
     {!! Form::model($master, array('route' => array('masters.batch.update'), 'method' => 'put')) !!}
     {!! Form::hidden('ids') !!}
-    {!! Form::hidden('masterableType') !!}
+    {!! Form::hidden('subclassType') !!}
   @else
     {!! Form::model($master, array('route' => array('masters.update', $master->id), 'method' => 'put')) !!}
     {!! Form::hidden('id') !!}
-    {!! Form::hidden('masterableType') !!}
-    {!! Form::hidden('masterableId') !!}
+    {!! Form::hidden('subclassType') !!}
+    {!! Form::hidden('subclassId') !!}
   @endif
 
   <div class="row first detail-container">
@@ -33,17 +33,17 @@
       @include('masters._form-common')
     </div>
     <div class="col-xs-6">
-      {{-- Begin Masterable Fields --}}
-      @if (get_class($master->masterable) === 'Junebug\Models\AudioMaster')
+      {{-- Begin subclass fields --}}
+      @if (get_class($master->subclass) === 'Junebug\Models\AudioMaster')
         @include('masters._form-audio')
       @endif
-      @if (get_class($master->masterable) === 'Junebug\Models\FilmMaster')
+      @if (get_class($master->subclass) === 'Junebug\Models\FilmMaster')
         @include('masters._form-film')
       @endif
-      @if (get_class($master->masterable) === 'Junebug\Models\VideoMaster')
+      @if (get_class($master->subclass) === 'Junebug\Models\VideoMaster')
         @include('masters._form-video')
       @endif
-      {{-- End Masterable Fields --}}
+      {{-- End subclass fields --}}
       @if (!$master->batch())
       <div class="row">
         <div class="col-xs-4 detail-label">

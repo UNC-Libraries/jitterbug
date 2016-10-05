@@ -9,28 +9,28 @@ class BatchPreservationMaster extends PreservationMaster {
   use MergeableAttributes;
 
   protected $masters;
-  protected $masterables;
+  protected $subclasses;
   protected $aggregateMaster;
-  protected $aggregateMasterable;
+  protected $aggregateSubclass;
 
-  protected $batchGuarded = ['id', 'masterableType', 'masterableId', 'createdAt',
+  protected $batchGuarded = ['id', 'subclassType', 'subclassId', 'createdAt',
     'updatedAt'];
 
   protected $attributes;
 
-  public function __construct($masters, $masterables)
+  public function __construct($masters, $subclasses)
   {
     parent::__construct();
 
     $this->masters = $masters;
-    $this->masterables = $masterables;
+    $this->subclasses = $subclasses;
 
     $this->aggregateMaster = new PreservationMaster;
-    $masterableType = $this->masters->first()->masterableType;
-    $this->aggregateMaster->masterableType = $masterableType;
-    $this->aggregateMasterable = new $masterableType;
+    $subclassType = $this->masters->first()->subclassType;
+    $this->aggregateMaster->subclassType = $subclassType;
+    $this->aggregateSubclass = new $subclassType;
     $this->mergeAttributes($masters, $this->aggregateMaster);
-    $this->mergeAttributes($masterables, $this->aggregateMasterable);
+    $this->mergeAttributes($subclasses, $this->aggregateSubclass);
 
     $this->attributes = $this->aggregateMaster->attributes;
   }
@@ -58,19 +58,19 @@ class BatchPreservationMaster extends PreservationMaster {
     return implode(',', $ids);
   }
 
-  public function getMasterableAttribute()
+  public function getSubclassAttribute()
   {
-    return $this->aggregateMasterable;
+    return $this->aggregateSubclass;
   }
 
-  public function masterable()
+  public function subclass()
   {
-    return $this->aggregateMasterable;
+    return $this->aggregateSubclass;
   }
 
   public function getTypeAttribute()
   {
-    $fullType = $this->masters->first()->getAttribute("masterableType");
+    $fullType = $this->masters->first()->getAttribute("subclassType");
     $type = substr($fullType,0,strlen($fullType) - strlen("Master"));
     return $type;
   }
