@@ -1,5 +1,5 @@
               <div id="data-export-fields-container">
-                <div>Choose from the fields below to customize your export.</div>
+                <div id="export-instructions">Choose from the fields below to customize your export.</div>
                 <hr>
                 <div class="row">
                   <div class="col-xs-12">

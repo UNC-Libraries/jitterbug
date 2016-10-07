@@ -5,8 +5,10 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 use Auth;
-use Log;
+use DateTime;
+use DateTimeZone;
 use DB;
+use Log;
 use Uuid;
 
 use Junebug\Http\Controllers\Controller;
@@ -98,8 +100,8 @@ class TransfersController extends Controller {
     if ($request->ajax()) {
       $dataFile = $request->file('audio-import-file');
       $fileDir = base_path() . '/storage/app/uploads';
-      $fileName = Auth::user()->username . '-audio-import.' 
-        . $dataFile->getClientOriginalExtension();
+      $fileName = Auth::user()->username . '-audio-import-' . fileTimestamp() 
+        . '.' . $dataFile->getClientOriginalExtension();
       $dataFile->move($fileDir, $fileName);
       $filePath = $fileDir . '/' . $fileName;
       $request->session()->put('audio-import-file', $filePath);

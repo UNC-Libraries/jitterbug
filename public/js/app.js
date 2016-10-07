@@ -75,13 +75,14 @@ junebug = {
       junebug.submitBatchEditForm('items', tableSelection);
     });
 
+    junebug.initDataExportModal('items');
     $('#items-batch-export').click(function(event) {
       var tableSelection = 
           junebug.TableSelection.load('itemsTableSelection','session');
       if (!junebug.validateBatchSelection(tableSelection, 'exporting')) {
         return;
       }
-      junebug.initDataExportModal('items', tableSelection);
+      junebug.openDataExportModal('items', tableSelection);
     });
 
     $('#items-batch-delete').click(function(event) {
@@ -393,14 +394,75 @@ junebug = {
     }
   },
 
-  initDataExportModal: function(resource, tableSelection) {
+  initDataExportModal: function(resource) {
+    $('#data-export-form').submit( function(event) {
+      event.preventDefault();
+
+      // Validate that at least one field is selected
+      var fieldCheckboxes = 
+        $('#data-export-fields-container').find(':checkbox'),
+      oneIsChecked = false;
+      $.each(fieldCheckboxes, function(i, checkbox) {
+        if ($(this).is(':checked')) {
+          oneIsChecked = true;
+          return false;
+        }
+      });
+      if (oneIsChecked) {
+        $('#export-instructions').removeClass('text-danger');
+      } else {
+        $('#export-instructions').addClass('text-danger');
+        $('#data-export-modal .modal-body').scrollTop(0);
+        return;
+      }
+
+      // Build export file
+      $('#export-building-spinner').show();
+
+      var formData = new FormData(this);
+      $.ajax({
+        url: $(this).attr('action'),
+        type: 'post',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+          // File is built, now download
+          var form = $(document.createElement('form'));
+          form.attr('action', '/' + resource + '/batch/export-download');
+          form.attr('method', 'post');
+          $('<input>').attr('type', 'hidden')
+            .attr('name', '_token')
+            .attr('value', $('meta[name="csrf-token"]').attr('content'))
+            .appendTo(form);                              
+          form.appendTo(document.body).submit().remove();
+
+          $('#export-building-spinner').hide();
+          $('#data-export-modal .modal-body').scrollTop(0);
+          $('#data-export-modal').modal('toggle');
+        },
+        error: function (jqXHR, textStatus, error) {
+          console.log('Export failed: ' + error);
+        }
+      });
+
+    });
+
+    // Clean up when modal is closed
+    $('#data-export-modal').on('hidden.bs.modal', function () {
+      $('.export-modal-body').height(40);
+    });
+  },
+
+  openDataExportModal: function(resource, tableSelection) {
     $('#data-export-modal').modal('toggle');
 
+    // Get the export fields appropriate for the current selection
     $('#loading-export-fields-spinner').show();
     $.ajax({
       url: '/' + resource + '/batch/export-fields',
       type: 'post',
-      data: {'ids': tableSelection.ids},
+      data: {'ids': tableSelection.ids.toString()},
       success: function (data) {
         $('#data-export-fields-container').replaceWith(data);
         var delay = 200;
@@ -410,21 +472,11 @@ junebug = {
         $('#data-export-form input[name="ids"]').val(tableSelection.ids);
       },
       error: function (jqXHR, textStatus, error) {
-        console.log('Could not fetch export fields: ' + textStatus);
+        console.log('Could not fetch export fields: ' + error);
       },
       complete: function() {
         $('#loading-export-fields-spinner').hide();
       }
-    });
-
-    $('#data-import-form').submit( function(event) {
-      // show export spinner
-      
-    });
-
-    // Clean up when modal is closed
-    $('#data-export-modal').on('hidden.bs.modal', function () {
-      $('.export-modal-body').height(40);
     });
   },
 
@@ -534,12 +586,21 @@ junebug = {
   initTableKeyboardShortcuts: function() {
     // Page next or previous using the keyboard
     $(document).keydown(function(event) {
+      // If search input is focused, return
+      if ($('#search').is(':focus') && $('#search').val() != '') {
+        return;
+      }
       // Right arrow
       if (event.which == 39) {
         $('.next-page').first().trigger('click');
       // Left arrow
       } else if (event.which == 37) {
         $('.prev-page').first().trigger('click');
+      // Select all
+      } else if (event.which == 65 && (event.ctrlKey || event.metaKey)) {
+        // also need to make sure no modal is open
+        console.log('select all');
+        event.preventDefault();
       }
     });
   },
@@ -851,6 +912,10 @@ junebug = {
 
     elementValue = function() {
       return $(selector).val();
+    },
+
+    focused = function() {
+      return $(selector).is(':focus');
     },
 
     store = function() {

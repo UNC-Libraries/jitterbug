@@ -594,20 +594,30 @@ class ItemsController extends Controller
   public function batchExportFields(Request $request)
   {
     if ($request->ajax()) {
-      $itemIds = $request->ids;
+      $itemIds = explode(',', $request->ids);
       $export = new ItemsExport($itemIds);
       $fields = $export->exportableFields();
       return view('shared._export-fields', compact('fields'));
     }
   }
 
-  public function batchExportExecute(Request $request)
+  public function batchExportBuild(Request $request)
   {
-    $itemIds = $request->ids;
-    $fields = $request->fields;
-    $export = new ItemsExport($itemIds);
-    $filePath = $export->build($fields);
-    //return response()->download(base_path() . '/storage/app/downloads/ashirk-audio-import.csv');
+    if ($request->ajax()) {
+      $itemIds = explode(',', $request->ids);
+      $fields = $request->fields;
+      $export = new ItemsExport($itemIds);
+      $filePath = $export->build($fields);
+      $request->session()->put('exportFilePath', $filePath);
+      $response = array('status'=>'success', 'file'=>$filePath);
+      return response()->json($response);
+    }
+  }
+
+  public function batchExportDownload(Request $request)
+  {
+    $file = $request->session()->get('exportFilePath');
+    return response()->download($file);
   }
 
 }

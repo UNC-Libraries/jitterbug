@@ -46,8 +46,10 @@ Route::delete('items/batch',
   'ItemsController@batchDestroy')->name('items.batch.destroy');
 Route::post('items/batch/export-fields', 
   'ItemsController@batchExportFields')->name('items.batch.export.fields');
-Route::post('items/batch/export-execute', 
-  'ItemsController@batchExportExecute')->name('items.batch.export.execute');
+Route::post('items/batch/export-build', 
+  'ItemsController@batchExportBuild')->name('items.batch.export.build');
+Route::post('items/batch/export-download', 
+  'ItemsController@batchExportDownload')->name('items.batch.export.download');
 Route::resource('items', 'ItemsController');
 
 /*

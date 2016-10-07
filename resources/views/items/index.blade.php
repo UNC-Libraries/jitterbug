@@ -21,7 +21,7 @@
         </div>
       </div>
 
-      {!! Form::open(array('route' => 'items.batch.export.execute', 'id' => 'data-export-form')) !!}
+      {!! Form::open(array('route' => 'items.batch.export.build', 'id' => 'data-export-form')) !!}
       <div id="data-export-modal" class="modal fade" tabindex="-1" role="dialog">
         <div id="data-export-dialog" class="modal-dialog modal-sm">
           <div id="data-export-dialog-content" class="modal-content">
@@ -40,6 +40,7 @@
               <div>
                 {!! Form::hidden('ids') !!}
                 <button name="exportCommand" value="execute" type="submit" class="btn btn-sm btn-primary" style="outline: none; margin-right: .5rem"><i class="fa fa-download" aria-hidden="true"></i> Build and Download</button>
+                <i id="export-building-spinner" class="fa fa-spinner fa-pulse export-spinner" style="display: none;"></i>
               </div>
             </div>
 

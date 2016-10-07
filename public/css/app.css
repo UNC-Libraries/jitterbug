@@ -4974,6 +4974,10 @@ Data Export
 #data-export-fields-container .col-xs-6 {
   padding-left: .5rem; }
 
+.export-spinner {
+  vertical-align: middle;
+  margin-left: .5rem; }
+
 /* -------------------------------------------
 Bootstrap Overrides
 ------------------------------------------- */

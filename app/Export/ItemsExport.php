@@ -26,7 +26,7 @@ class ItemsExport extends Export {
 
   protected $audioExportFields = array(
     'Listening Copy' => 'listening_copy',
-    'Mono/Stereo' => 'mono_stero',
+    'Mono/Stereo' => 'mono_stereo',
     'Size' => 'size',
     'Track Config' => 'track_configuration',
     'Base' => 'base',
@@ -38,7 +38,7 @@ class ItemsExport extends Export {
     'Base' => 'base',
     'Color' => 'color',
     'Sound Type' => 'sound_type',
-    'Length in Feet' => 'length_in_feet',
+    'Length In Feet' => 'length_in_feet',
     'Film Stock' => 'film_stock',
     'Edge Code' => 'edge_code',
     'Shrinkage Percent' => 'shrinkage_percent',
@@ -47,7 +47,7 @@ class ItemsExport extends Export {
   );
 
   protected $videoExportFields = array(
-    'Mono/Stereo' => 'mono_stero',
+    'Mono/Stereo' => 'mono_stereo',
     'Element' => 'element',
     'Color' => 'color',
     'Recording Standard' => 'recording_standard',
