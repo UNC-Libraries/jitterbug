@@ -45,4 +45,13 @@ abstract class Controller extends BaseController {
     abort(400, 'Requested range is out of sync with datastore.');
   }
 
+  public function batchExportDownload(Request $request)
+  {
+    $filePath = $request->session()->get('exportFilePath');
+    if ($filePath !== null) {
+      $headers = array('Content-Type' => 'text/csv');
+      return response()->download($filePath, basename($filePath), $headers);
+    }
+  }
+
 }

@@ -597,7 +597,7 @@ class ItemsController extends Controller
       $itemIds = explode(',', $request->ids);
       $export = new ItemsExport($itemIds);
       $fields = $export->exportableFields();
-      return view('shared._export-fields', compact('fields'));
+      return view('shared._data-export-fields', compact('fields'));
     }
   }
 
@@ -612,12 +612,6 @@ class ItemsController extends Controller
       $response = array('status'=>'success', 'file'=>$filePath);
       return response()->json($response);
     }
-  }
-
-  public function batchExportDownload(Request $request)
-  {
-    $file = $request->session()->get('exportFilePath');
-    return response()->download($file);
   }
 
 }

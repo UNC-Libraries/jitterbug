@@ -65,6 +65,12 @@ Route::put('masters/batch',
   'MastersController@batchUpdate')->name('masters.batch.update');
 Route::delete('masters/batch', 
   'MastersController@batchDestroy')->name('masters.batch.destroy');
+Route::post('masters/batch/export-fields', 
+  'MastersController@batchExportFields')->name('masters.batch.export.fields');
+Route::post('masters/batch/export-build', 
+  'MastersController@batchExportBuild')->name('masters.batch.export.build');
+Route::post('masters/batch/export-download',
+  'MastersController@batchExportDownload')->name('masters.batch.export.download'); 
 Route::resource('masters', 'MastersController');
 Route::resource('masters.cuts', 'CutsController', ['except' => ['index']]);
 

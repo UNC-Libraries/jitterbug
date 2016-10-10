@@ -9,6 +9,7 @@ use Session;
 use Solarium;
 use Uuid;
 
+use Junebug\Export\MastersExport;
 use Junebug\Http\Controllers\Controller;
 use Junebug\Models\AudioVisualItem;
 use Junebug\Models\AudioMaster;
@@ -546,6 +547,32 @@ class MastersController extends Controller {
         "Preservation masters were successfully deleted."));
 
     return redirect()->route('masters.index');
+  }
+
+  /**
+   * Return the fields that are exportable for the given selection of masters.
+   */
+  public function batchExportFields(Request $request)
+  {
+    if ($request->ajax()) {
+      $masterIds = explode(',', $request->ids);
+      $export = new MastersExport($masterIds);
+      $fields = $export->exportableFields();
+      return view('shared._data-export-fields', compact('fields'));
+    }
+  }
+
+  public function batchExportBuild(Request $request)
+  {
+    if ($request->ajax()) {
+      $masterIds = explode(',', $request->ids);
+      $fields = $request->fields;
+      $export = new MastersExport($masterIds);
+      $filePath = $export->build($fields);
+      $request->session()->put('exportFilePath', $filePath);
+      $response = array('status'=>'success', 'file'=>$filePath);
+      return response()->json($response);
+    }
   }
 
 }

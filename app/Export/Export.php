@@ -22,7 +22,7 @@ abstract class Export {
   public function build($selectedFields)
   {
     // Create the export file
-    $fileDir = base_path() . '/storage/app/downloads';
+    $fileDir = base_path() . '/storage/app/exports';
     $fileName = Auth::user()->username . '-' . 
       $this->exportClass . 's-' . fileTimestamp() . '.csv';
     $filePath = $fileDir . '/' . $fileName;
@@ -30,6 +30,7 @@ abstract class Export {
 
     // Get headings for the selected fields and write to file
     $fields = $this->exportableFields();
+    // Flatten the fields array
     $fields = array_merge($fields[0], $fields[1]);
     $headings = array();
     foreach ($selectedFields as $field) {
@@ -50,7 +51,7 @@ abstract class Export {
     $records = $class::whereIn('id', $this->ids)->get();
     foreach ($records as $record) {
       $attributes = $this->getSnakeAttributes($record);
-      $line = array();
+      $row = array();
       foreach ($selectedFields as $fieldName) {
         $fieldValue = null;
         if (array_key_exists($fieldName, $attributes)) {
@@ -59,9 +60,9 @@ abstract class Export {
           $subclass = $record->subclass;
           $fieldValue = $this->getFieldValue($subclass, $fieldName);
         }
-        array_push($line, $fieldValue);
+        array_push($row, $fieldValue);
       }
-      fputcsv($handle, $line);
+      fputcsv($handle, $row);
     }
 
     fclose($handle);
@@ -78,7 +79,10 @@ abstract class Export {
       $relation = camel_case($fieldWithoutId);
       // Check for a relation method
       if(method_exists($model, $relation)) {
-        $fieldValue = $model->$relation->identifiableName();
+        $builder = $model->$relation;
+        if ($builder !== null) {
+          $fieldValue = $model->$relation->identifiableName();
+        }
       } else {
         $fieldValue = $model->$fieldName;
       }
