@@ -15,9 +15,9 @@ abstract class Controller extends BaseController {
     $queryParams = json_decode(urldecode($request->query('q')));
     $range = json_decode(urldecode($request->query('r')));
     $beginIndex = $range->beginIndex;
-    $beginId = $range->beginId;
+    $beginId = isset($range->beginId) ? $range->beginId : null;
     $endIndex = $range->endIndex;
-    $endId = $range->endId;
+    $endId = isset($range->endId) ? $range->endId : null;
     $firstIndex = min($beginIndex, $endIndex);
     $lastIndex = max($beginIndex, $endIndex);
     $start = $firstIndex;
@@ -26,12 +26,15 @@ abstract class Controller extends BaseController {
 
     $itemIds = array();
     $index = $start;
+    $validateRange = $beginId !== null && $endId !== null;
     foreach ($resultSet as $item) {
-      if ($index == $beginIndex && $item->id != $beginId) {   
-        $this->invalidRange();
-      }
-      if ($index == $endIndex && $item->id != $endId) {
-        $this->invalidRange();
+      if ($validateRange) {
+        if ($index == $beginIndex && $item->id != $beginId) {   
+          $this->invalidRange();
+        }
+        if ($index == $endIndex && $item->id != $endId) {
+          $this->invalidRange();
+        }
       }
       array_push($itemIds, $item->id);
       $index++;

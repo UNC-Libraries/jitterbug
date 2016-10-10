@@ -59,6 +59,11 @@ junebug = {
     }
   },
 
+  /* 
+   * These properties are set to deserialized instances for each
+   * index page (items, masters, and transfers). They aren't used
+   * for other pages.
+   */
   searchField: null,
   filterPanel: null,
   tableParams: null,
@@ -1295,8 +1300,7 @@ junebug = {
 
     // Resolve a range selection to an array of ids
     resolveRange = function(endIndex, endId) {
-      // change logical or to logical and
-      if (beginIndex == null || beginId == null) {
+      if (beginIndex == null && beginId == null) {
         beginIndex = endIndex;
         beginId = endId;
         ids = [beginId];
@@ -1305,20 +1309,11 @@ junebug = {
 
         // Check if full range is currently within the table on screen
         if (rangeInTable(beginIndex, endIndex)) {
-          console.log('Getting range from table');
-          var firstIndex = Math.min(beginIndex, endIndex),
-          lastIndex = Math.max(beginIndex, endIndex);
-          ids = [];
-          $(selector).each(function() {
-            var thisIndex = $(this).data('index'),
-            thisId = $(this).data('id');
-            if (thisIndex >= firstIndex && thisIndex <= lastIndex) {
-              ids.push(thisId);
-            }
-          });
+          console.log('Getting range from table: ' + beginIndex + ' ' + endIndex);
+          ids = idsFromTable(beginIndex, endIndex);
         // Full range is not in the table, so check to see if it's in cache
         } else if (rangeInCache(beginIndex, endIndex)) {
-          console.log('Getting range from cache');
+          console.log('Getting range from cache: ' + beginIndex + ' ' + endIndex);
           ids = idsFromCache(beginIndex, endIndex);
           // Not in table or cache, so go to the server to get ids from Solr
         } else {
@@ -1365,6 +1360,25 @@ junebug = {
       }
     },
 
+    rangeInTable = function(begin, end) {
+      var table = tableToObject();
+      return table[begin] != null && table[end] != null;
+    },
+
+    idsFromTable = function(begin, end) {
+      var first = Math.min(begin, end),
+      last = Math.max(begin, end);
+      tableIds = [];
+      $(selector).each(function() {
+        var thisIndex = $(this).data('index'),
+        thisId = $(this).data('id');
+        if (thisIndex >= first && thisIndex <= last) {
+          tableIds.push(thisId);
+        }
+      });
+      return tableIds;
+    },
+
     rangeInCache = function(begin, end) {
       var first = Math.min(begin, end),
       last = Math.max(begin, end);
@@ -1386,11 +1400,6 @@ junebug = {
       return cacheIds;
     },
 
-    rangeInTable = function(begin, end) {
-      var table = tableToObject();
-      return table[begin] != null && table[end] != null;
-    },
-
     tableToObject = function() {
       var table = {};
       $(selector).each(function() {
@@ -1406,7 +1415,7 @@ junebug = {
       } else {
         ids.splice(result, 1);
       }
-      if (count()==0) {
+      if (count() == 0) {
         clear();
       }
     },
@@ -1416,9 +1425,28 @@ junebug = {
     },
 
     selectAll = function() {
-      console.log(cache[0]);
-      // set endIndex based on count, endId is null which means we havent seen it yet
-      // validate size of selection --- if greater than 3000? deny selection
+      var max = 3000;
+      // This is kinda gross
+      var total = parseInt($('.record-count').text().trim().split(/\s+/)[0]);
+      if (total > max) {
+        junebug.displayAlert('warning',
+          '<strong>Sorry!</strong> That\'s too many records to select at \
+          once. Please narrow your search to less than ' + 
+          max + ' records.');
+      } else {
+        beginIndex = 0;
+        endIndex = total - 1;
+        resolveRange(endIndex, null);
+        if (rangeInTable(beginIndex, endIndex) || 
+            rangeInCache(beginIndex, endIndex)) {
+          store();
+          render();
+        }
+        // Cache all ids
+        for (var i = beginIndex; i <= endIndex; i++) {
+         cache[i] = ids[i];
+        }
+      }
     },
 
     selectedIds = function() {
