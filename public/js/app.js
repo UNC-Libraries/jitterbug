@@ -620,11 +620,14 @@ junebug = {
         // Left arrow
         } else if (event.which == 37) {
           $('.prev-page').first().trigger('click');
-        // Select all
+        // Cmd/ctrl-a (select all)
         } else if (event.which == 65 && (event.ctrlKey || event.metaKey)) {
-          console.log('select all');
           event.preventDefault();
           junebug.tableSelection.selectAll();
+        // Escape (deselect all)
+        } else if (event.which == 27) {
+          junebug.tableSelection.clear();
+          junebug.tableSelection.render();
         }
       }
     });
