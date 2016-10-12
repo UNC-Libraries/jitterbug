@@ -1,24 +1,33 @@
 <?php namespace Junebug\Export;
 
 use Auth;
-use Log;
-use DateTime;
-use DateTimeZone;
 
+/**
+ * Abstract base class for export types. Subclasses must define the 
+ * exportableFields() method and 2 properties: an $exportClass property 
+ * that specifies the base class to be exported, and an $ids property
+ * that specifies the ids of the records (of type $exportClass) to 
+ * be exported.
+ *
+ * This class assumes the specified $exportClass uses the 
+ * Junebug\Models\CamelCasing trait, as it uses the toSnakeCase()
+ * method for getting the attributes in snake case.
+ * 
+ * This class also assumes the specified $exportClass uses the
+ * Venturecraft\Revisionable\RevisionableTrait trait, as it
+ * uses the identifiableName() method/convention on relations to get
+ * values for fields that are foreign keys.
+ */
 abstract class Export {
   
   private $fields = null;
 
   /**
-   * Create a new export instance.
+   * Build the export file for the given selected fields, which should
+   * be snake cased field names.
    *
-   * @return void
+   * @param array selectedFields 
    */
-  public function __construct()
-  {
-
-  }
-
   public function build($selectedFields)
   {
     // Create the export file
@@ -35,6 +44,7 @@ abstract class Export {
     $headings = array();
     foreach ($selectedFields as $field) {
       $heading = array_search($field, $fields);
+      // Remove the spaces from the heading labels
       $heading = str_replace(' ', '', $heading);
       array_push($headings, $heading);
     }
@@ -70,6 +80,28 @@ abstract class Export {
     return $filePath;
   }
 
+  /**
+   * Get the exportable fields for the specified $exportableClass.
+   * The returned array should be an array of arrays: a top level array
+   * that has 2 other arrays which correspond to a 2 column user
+   * interface for the fields. The fields at array[0] will be rendered
+   * on the left in the user interface, and the fields at array[1] will
+   * be rendered on the right. Each contained array should be an 
+   * associative array with keys that are the display name of the field
+   * and values that are the field name. The order of the fields in
+   * the user interface will be derived from the order of the fields in
+   * the arrays.
+   *
+   * @return array
+   */
+  abstract protected function exportableFields();
+
+  /**
+   * Get the value for the specified field from the specified model instance.
+   *
+   * @param mixed model
+   * @param string fieldName
+   */
   private function getFieldValue($model, $fieldName)
   {
     $fieldValue = null;
