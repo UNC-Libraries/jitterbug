@@ -5,8 +5,6 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 use Auth;
-use DateTime;
-use DateTimeZone;
 use DB;
 use Log;
 use Uuid;
@@ -212,7 +210,7 @@ class TransfersController extends Controller {
           $master->fileName = $row['OriginatorReference'];
           $master->fileSizeInBytes = $row['FileSize'];
           $master->durationInSeconds = 
-            $this->toDurationInSeconds($row['Duration']);
+            DurationFormat::toSeconds($row['Duration']);
           $master->save();
           array_push($masters, $master);
           $updated++;
@@ -254,7 +252,7 @@ class TransfersController extends Controller {
           $master->fileName = $row['OriginatorReference'];
           $master->fileSizeInBytes = $row['FileSize'];
           $master->durationInSeconds = 
-              $this->toDurationInSeconds($row['Duration']);
+              DurationFormat::toSeconds($row['Duration']);
           $master->subclassType = 'AudioMaster';
           $master->subclassId = $audioMaster->id;
           $master->save();
@@ -339,7 +337,7 @@ class TransfersController extends Controller {
           $bag->add($key, $key . ' already exists in the database.');
         }
         // Validate originator reference (preservation_master.file_name) 
-        // doesn't exist
+        // is unqiue amongst values in the rest fo the file
         if ($key==='OriginatorReference' 
           && !empty($row[$key]) && in_array($row[$key], $originatorReferences)) {
           $bag->add($key, $key . ' has already been used in this file.');
