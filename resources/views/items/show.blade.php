@@ -347,7 +347,7 @@
           Created On
         </div>
         <div class="col-xs-8 detail-value">
-          4/26/2016 by System
+          {{$item->createdOnDisplay}}
         </div>
       </div>
       <div class="row">
@@ -355,7 +355,7 @@
           Updated On
         </div>
         <div class="col-xs-8 detail-value">
-          5/15/2016 by John Loy
+          {{$item->updatedOnDisplay}}
         </div>
       </div>
     </div>

@@ -49,16 +49,16 @@
         <div class="col-xs-4 detail-label">
           Created On
         </div>
-        <div class="col-xs-7 detail-value">
-          4/26/2016 by System
+        <div class="col-xs-8 detail-value">
+          {{$item->createdOnDisplay}}
         </div>
       </div>
       <div class="row">
         <div class="col-xs-4 detail-label">
           Updated On
         </div>
-        <div class="col-xs-7 detail-value">
-          5/15/2016 by John Loy
+        <div class="col-xs-8 detail-value">
+          {{$item->updatedOnDisplay}}
         </div>
       </div>
       @endif

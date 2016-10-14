@@ -199,7 +199,7 @@ class SolariumProxy {
 
     // Get other fields from the associated audio visual item since that's where
     // they reside, not on the transfer
-    $this->appendCollectionAndFormat($master->callNumber, $doc);
+    $this->appendCollectionAndFormat($transfer->callNumber, $doc);
 
     $update->addDocument($doc);
   }

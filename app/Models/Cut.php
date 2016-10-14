@@ -29,4 +29,25 @@ class Cut extends Model {
   {
     return $this->revisionHistory()->get();
   }
+
+  public function getCreatedOnDisplayAttribute()
+  {
+    $revisionHistory = $this->completeRevisionHistory();
+    return $this->formattedHistory($revisionHistory->first());
+  }
+
+  public function getUpdatedOnDisplayAttribute()
+  {
+    $revisionHistory = $this->completeRevisionHistory();
+    $revisionHistory = $revisionHistory->sortByDesc('created_at');
+    return $this->formattedHistory($revisionHistory->first());
+  }
+
+  public function formattedHistory($history)
+  {
+    $user = $history->userResponsible()->firstName 
+      . ' ' . $history->userResponsible()->lastName;
+    $date =  date('n/j/Y', strtotime($history->created_at));
+    return $date . ' by ' . $user;
+  }
 }
