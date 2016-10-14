@@ -4,6 +4,7 @@ JUNEBUG = {
   common: {
     init: function() {
       junebug.initAjax();
+      junebug.initSessionTimeout();
       junebug.getAlert();
     }
   },

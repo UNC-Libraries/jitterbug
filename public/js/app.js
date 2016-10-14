@@ -23,6 +23,13 @@ junebug = {
     });
   },
 
+  initSessionTimeout: function() {
+    var oneHour = 3600000;
+    window.setTimeout(function(){
+      window.location.href='/logout'
+    }, oneHour);
+  },
+
   initGreeting: function() {
     var hour = new Date().getHours(),
     greeting;
