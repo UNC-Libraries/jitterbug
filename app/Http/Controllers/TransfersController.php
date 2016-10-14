@@ -337,7 +337,7 @@ class TransfersController extends Controller {
           $bag->add($key, $key . ' already exists in the database.');
         }
         // Validate originator reference (preservation_master.file_name) 
-        // is unqiue amongst values in the rest fo the file
+        // is unqiue amongst values in the rest of the file
         if ($key==='OriginatorReference' 
           && !empty($row[$key]) && in_array($row[$key], $originatorReferences)) {
           $bag->add($key, $key . ' has already been used in this file.');

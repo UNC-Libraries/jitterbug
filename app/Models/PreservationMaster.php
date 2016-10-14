@@ -27,6 +27,8 @@ class PreservationMaster extends Model {
     'duration_in_seconds' => 'isEmpty:nothing|%s',
     'file_name' => 'isEmpty:nothing|%s',
     'file_location' => 'isEmpty:nothing|%s',
+    'file_format' => 'isEmpty:nothing|%s',
+    'file_codec' => 'isEmpty:nothing|%s',
     'file_size_in_bytes' => 'isEmpty:nothing|%s',
     'access_file_location' => 'isEmpty:nothing|%s',
   );

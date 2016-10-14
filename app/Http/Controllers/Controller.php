@@ -10,6 +10,19 @@ use Illuminate\Routing\Controller as BaseController;
 abstract class Controller extends BaseController {
   use AuthorizesRequests, AuthorizesResources, DispatchesJobs, ValidatesRequests;
 
+  /**
+   * Resolve a table selection range (beginning and ending indices) to an
+   * array of record ids, fetching the ids from Solr. If beginning and
+   * ending ids are found in the range variable in the request, the range
+   * ids will be validated. This provides some modicum of protection against
+   * stale table selections, where the range selection doesn't match up to
+   * the current state of the data in Solr. A use case where no validation
+   * would be required would be a select all operation where the beginning
+   * and ending ids would not be known.
+   *
+   * @param Illuminate\Http\Request request
+   * @param Junebug\Support\SolariumProxy proxy
+   */
   protected function rangeFor(Request $request, $proxy)
   {
     $queryParams = json_decode(urldecode($request->query('q')));

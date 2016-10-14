@@ -6,6 +6,10 @@ use Log;
 use Junebug\Export\Export;
 use Junebug\Models\PreservationMaster;
 
+/**
+ * Class for exporting PreservationMasters. See 
+ * superclass for documentation.
+ */
 class MastersExport extends Export {
 
   protected $exportClass = 'PreservationMaster';

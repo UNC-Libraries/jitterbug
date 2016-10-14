@@ -6,6 +6,10 @@ use Log;
 use Junebug\Export\Export;
 use Junebug\Models\AudioVisualItem;
 
+/**
+ * Class for exporting AudioVisualItems. See 
+ * superclass for documentation.
+ */
 class ItemsExport extends Export {
 
   protected $exportClass = 'AudioVisualItem';
