@@ -20,6 +20,16 @@
         words they were not linked to an AudioVisualItem. So we will check to
         make sure there is a call number.
        --}}
+      @if ($transfer->preservationMasterId)
+      <div class="row">
+        <div class="col-xs-4 col-xs-offset-1 detail-label">
+          PM #
+        </div>
+        <div class="col-xs-7 detail-value">
+          {{$transfer->preservationMasterId}}
+        </div>
+      </div>
+      @endif
       @if ($transfer->callNumber)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
@@ -40,16 +50,6 @@
         </div>
       </div>
       @endif
-      @if ($transfer->vendor)
-      <div class="row">
-        <div class="col-xs-4 col-xs-offset-1 detail-label">
-          Vendor
-        </div>
-        <div class="col-xs-7 detail-value">
-          {{$transfer->vendor->name}}
-        </div>
-      </div>
-      @endif
       @if ($transfer->engineer)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
@@ -57,6 +57,16 @@
         </div>
         <div class="col-xs-7 detail-value">
           {{$transfer->engineerName}}
+        </div>
+      </div>
+      @endif
+      @if ($transfer->vendor)
+      <div class="row">
+        <div class="col-xs-4 col-xs-offset-1 detail-label">
+          Vendor
+        </div>
+        <div class="col-xs-7 detail-value">
+          {{$transfer->vendor->name}}
         </div>
       </div>
       @endif
@@ -70,16 +80,6 @@
         </div>
       </div>
       @endif
-      @if ($transfer->conditionNote)
-      <div class="row">
-        <div class="col-xs-4 col-xs-offset-1 detail-label">
-          Condition Note
-        </div>
-        <div class="col-xs-7 detail-value">
-          {{$transfer->conditionNote}}
-        </div>
-      </div>
-      @endif
       @if ($transfer->transferNote)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
@@ -87,6 +87,16 @@
         </div>
         <div class="col-xs-7 detail-value">
           {{$transfer->transferNote}}
+        </div>
+      </div>
+      @endif
+      @if ($transfer->conditionNote)
+      <div class="row">
+        <div class="col-xs-4 col-xs-offset-1 detail-label">
+          Condition Note
+        </div>
+        <div class="col-xs-7 detail-value">
+          {{$transfer->conditionNote}}
         </div>
       </div>
       @endif
@@ -128,10 +138,29 @@
       @endif
       @endif
       @if (get_class($transfer->subclass) === 'Junebug\Models\FilmTransfer')
-
+        {{-- There are currently no type specific fields for film transfers --}}
       @endif
       @if (get_class($transfer->subclass) === 'Junebug\Models\VideoTransfer')
-
+      @if ($transfer->subclass->timeBaseCorrector)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Time Base Corrector
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$transfer->subclass->timeBaseCorrector}}
+        </div>
+      </div>
+      @endif
+      @if ($transfer->subclass->adConverter)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          A/D Converter
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$transfer->subclass->adConverter}}
+        </div>
+      </div>
+      @endif
       @endif
       {{-- End subclass fields --}}
       <div class="row">

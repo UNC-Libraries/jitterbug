@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Venturecraft\Revisionable\RevisionableTrait;
 
-class AudioTransfer extends Model {
+class VideoTransfer extends Model {
   use CamelCasing;
   use NullFieldPreserver;
   use RevisionableTrait;
@@ -16,16 +16,16 @@ class AudioTransfer extends Model {
   protected $revisionCreationsEnabled = true;
 
   protected $revisionFormattedFields = array(
-    'stylus' => 'isEmpty:nothing|%s',
-    'cartridge' => 'isEmpty:nothing|%s',
-    'first_sound' => 'isEmpty:nothing|%s',
+    'time_base_corrector' => 'isEmpty:nothing|%s',
+    'ad_converter' => 'isEmpty:nothing|%s',
   );
 
   protected $revisionFormattedFieldNames = array(
-    'first_sound' => 'first sound',
+    'time_base_corrector' => 'time base corrector',
+    'ad_converter' => 'A/D converter',
   );
 
-  protected $fillable = array('stylus',
-    'cartridge', 'firstSound');
+  protected $fillable = array('timeBaseCorrector', 
+    'adConverter');
 
 }

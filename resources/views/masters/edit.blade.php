@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title' => 'Preservation Master', 'section' => 'masters'])
+@extends('layouts.master', ['title' => 'Edit Preservation Master', 'section' => 'masters'])
 
 @section('content')
 <div id="detail">

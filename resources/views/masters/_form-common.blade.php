@@ -1,4 +1,4 @@
-      {{-- PreservationMaster Fields --}}
+      {{-- PreservationMaster fields --}}
       <div class="row">
         <div class="form-group @if ($errors->has('callNumber')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
@@ -137,5 +137,5 @@
           </div>
         </div>
       </div>
-      {{-- End PreservationMaster Fields --}}
+      {{-- End PreservationMaster fields --}}
  

@@ -10,6 +10,7 @@ use Log;
 use Uuid;
 
 use Junebug\Http\Controllers\Controller;
+use Junebug\Http\Requests\TransferRequest;
 use Junebug\Models\AudioVisualItem;
 use Junebug\Models\AudioMaster;
 use Junebug\Models\AudioTransfer;
@@ -20,6 +21,8 @@ use Junebug\Models\Transfer;
 use Junebug\Models\TransferType;
 use Junebug\Models\TransferCollection;
 use Junebug\Models\TransferFormat;
+use Junebug\Models\User;
+use Junebug\Models\Vendor;
 use Junebug\Support\SolariumProxy;
 use Junebug\Support\SolariumPaginator;
 use Junebug\Util\CsvReader;
@@ -28,7 +31,7 @@ use Junebug\Util\DurationFormat;
 class TransfersController extends Controller {
 
   protected $requiredAudioImportKeys = array(); 
-  protected $audioImportKeys = array(); 
+  protected $audioImportKeys = array();
 
   protected $solrMasters;
   protected $solrTransfers;
@@ -69,8 +72,8 @@ class TransfersController extends Controller {
       $perPage = $request->query('perPage');
       $start = $perPage * ($page - 1);
 
-      $resultSet = $this->solrTransfers->query($queryParams,$start,$perPage);
-      $transfers = new SolariumPaginator($resultSet,$page,$perPage);
+      $resultSet = $this->solrTransfers->query($queryParams, $start, $perPage);
+      $transfers = new SolariumPaginator($resultSet, $page, $perPage);
       return view('transfers._transfers', compact('transfers', 'start'));
     }
 
@@ -88,6 +91,104 @@ class TransfersController extends Controller {
   {
     $transfer = Transfer::findOrFail($id);
     return view('transfers.show', compact('transfer'));
+  }
+
+  /**
+   * Display the form for creating a new audio, video, or film master.
+   */
+  public function create(Request $request)
+  {
+    $masterId = $request->masterId;
+    $master = null;
+    if ($masterId !== null) {
+      $master = PreservationMaster::findOrFail($masterId);
+    }
+
+    $transfer = new Transfer;
+    $linked = false;
+    if($master !== null) {
+      $transfer->preservationMasterId = $master->id;
+      $transfer->callNumber = $master->callNumber;
+      $transfer->subclassType = $master->type . 'Transfer';
+      $linked = true;
+    }
+
+    $playbackMachines = ['' => 'Select a playback machine'] +
+             PlaybackMachine::orderBy('name')->pluck('name', 'id')->all();
+    $engineers = ['' => 'Select an engineer'] + 
+             User::engineerList();
+    $vendors = ['' => 'Select a vendor'] + 
+             Vendor::pluck('name', 'id')->all();
+    return view('transfers.create', 
+      compact('transfer', 'master', 'linked', 'playbackMachines', 
+        'engineers', 'vendors'));
+  }
+
+  /**
+   * Save the details of a new transfer and its subclass, then update solr.
+   */
+  public function store(TransferRequest $request)
+  {
+    $input = $request->all();
+
+    $transfer = null;
+
+    // Update MySQL
+    DB::transaction(
+      function () use ($request, $input, &$transfer) {
+
+      $transactionId = Uuid::uuid4();
+      DB::statement("set @transaction_id = '$transactionId';");
+
+      $subclass = new $request->subclassType;
+      $subclass->fill($input['subclass']);
+
+      $transfer = new Transfer;
+      $transfer->subclassType = $input['subclassType'];
+      $master = 
+        PreservationMaster::where('id', $input['preservationMasterId'])->first();
+      $transfer->callNumber = $master->callNumber;
+      $transfer->fill($input);
+
+      $subclass->save();
+      $transfer->subclassId = $subclass->id;
+      $transfer->save();
+
+      DB::statement('set @transaction_id = null;');
+    });
+
+    // Update Solr
+    $this->solrTransfers->update($transfer);
+
+    $request->session()->put('alert', array('type' => 'success', 'message' => 
+      '<strong>Super!</strong> Transfer was successfully created.'));
+
+    return redirect()->route('transfers.show', [$transfer->id]);
+  }
+
+  /**
+   * Display the form for editing a master.
+   */
+  public function edit($id)
+  {
+    $transfer = Transfer::findOrFail($id);
+
+    $playbackMachines = ['' => 'Select a playback machine'] +
+             PlaybackMachine::orderBy('name')->pluck('name', 'id')->all();
+    $engineers = ['' => 'Select an engineer'] + 
+             User::engineerList();
+    if ($transfer->engineerId !== null) {
+      $engineer = User::findOrFail($transfer->engineerId);
+      if ($engineer->legacy()) {
+        $engineers = 
+          $engineers + [$engineer->id => $engineer->legacyInitials];
+      }
+    }
+
+    $vendors = ['' => 'Select a vendor'] + 
+             Vendor::pluck('name', 'id')->all();
+    return view('transfers.edit', 
+      compact('transfer', 'playbackMachines', 'engineers', 'vendors'));
   }
 
   /**
@@ -153,6 +254,39 @@ class TransfersController extends Controller {
   public function resolveRange(Request $request)
   {
     return parent::rangeFor($request, $this->solrTransfers);
+  }
+
+  public function update($id, TransferRequest $request)
+  {
+    $input = $request->all();
+    $transfer = Transfer::findOrFail($id);
+    $subclass = $transfer->subclass;
+
+    $master = 
+      PreservationMaster::where('id', $input['preservationMasterId'])->first();
+    $transfer->callNumber = $master->callNumber;
+    $transfer->fill($input);
+    $subclass->fill($input['subclass']); 
+
+    // Update MySQL
+    DB::transaction(function () use ($transfer, $subclass) {
+      $transactionId = Uuid::uuid4();
+      DB::statement("set @transaction_id = '$transactionId';");
+
+      $subclass->save();
+      $transfer->touch();
+      $transfer->save();
+
+      DB::statement('set @transaction_id = null;');      
+    });
+
+    // Update Solr
+    $this->solrTransfers->update($transfer);
+
+    $request->session()->put('alert', array('type' => 'success', 'message' => 
+        '<strong>Success!</strong> Your transfer was updated.'));
+
+    return redirect()->route('transfers.show', [$id]);
   }
 
   public function destroy($id, Request $request)

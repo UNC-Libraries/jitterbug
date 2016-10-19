@@ -19,6 +19,8 @@ class AudioVisualItem extends Model {
 
   protected $revisionFormattedFields = array(
     'title' => 'isEmpty:nothing|%s',
+    'container_note' => 'isEmpty:nothing|%s',
+    'condition_note' => 'isEmpty:nothing|%s',
     'collection_id' => 'isEmpty:nothing|%s',
     'format_id' => 'isEmpty:nothing|%s',
     'recording_location' => 'isEmpty:nothing|%s',

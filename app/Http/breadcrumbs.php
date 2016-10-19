@@ -91,3 +91,18 @@ Breadcrumbs::register('transfers.show', function($breadcrumbs, $transfer)
     $breadcrumbs->parent('transfers.index');
     $breadcrumbs->push('View Transfer', route('transfers.show', $transfer->id));
 });
+
+// Transfers / Edit Transfer
+Breadcrumbs::register('transfers.edit', function($breadcrumbs, $transfer)
+{
+    $breadcrumbs->parent('masters.index');
+    $breadcrumbs->push('Edit Transfer', route('transfers.edit', $transfer->id));
+});
+
+// Transfers / Create Transfer
+Breadcrumbs::register('transfers.create', function($breadcrumbs, $transfer)
+{
+    $breadcrumbs->parent('transfers.index');
+    $breadcrumbs->push('Create Transfer', route('transfers.create', $transfer->id));
+});
+

@@ -11,6 +11,7 @@ use Uuid;
 
 use Junebug\Export\MastersExport;
 use Junebug\Http\Controllers\Controller;
+use Junebug\Http\Requests\MasterRequest;
 use Junebug\Models\AudioVisualItem;
 use Junebug\Models\AudioMaster;
 use Junebug\Models\BatchPreservationMaster;
@@ -29,7 +30,6 @@ use Junebug\Models\SamplingRate;
 use Junebug\Models\TapeBrand;
 use Junebug\Models\Transfer;
 use Junebug\Models\VideoMaster;
-use Junebug\Http\Requests\MasterRequest;
 use Junebug\Support\SolariumProxy;
 use Junebug\Support\SolariumPaginator;
 

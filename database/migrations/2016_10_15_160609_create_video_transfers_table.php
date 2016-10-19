@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateVendorsTable extends Migration
+class CreateVideoTransfersTable extends Migration
 {
  /**
   * Run the migrations.
@@ -12,19 +12,14 @@ class CreateVendorsTable extends Migration
   */
   public function up()
   {
-    Schema::create('vendors', function (Blueprint $table) {
+    Schema::create('video_transfers', function (Blueprint $table) {
       $table->increments('id');
-      $table->string('name', 255);
+      $table->string('time_base_corrector', 255)->nullable();
+      $table->string('ad_converter', 255)->nullable();
       $table->timestamp('updated_at');
       $table->timestamp('created_at')->nullable();
+      $table->timestamp('deleted_at')->nullable();
     });
-
-    \DB::table('vendors')->insert(
-      array(
-        'name' => 'George Blood',
-        'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
-      )
-    );
   }
 
  /**
@@ -34,6 +29,6 @@ class CreateVendorsTable extends Migration
   */
   public function down()
   {
-    Schema::drop('vendors');
+    Schema::drop('video_transfers');
   }
 }

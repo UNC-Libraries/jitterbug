@@ -1,3 +1,4 @@
+      {{-- VideoItem fields --}}
       <div class="row">
         <div class="form-group">
           <div class="col-xs-4 detail-label">
@@ -73,3 +74,4 @@
           </div>
         </div>
       </div>
+      {{-- End VideoItem fields --}}

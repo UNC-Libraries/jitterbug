@@ -1,10 +1,12 @@
+      {{-- VideoMaster fields --}}
       <div class="row">
+        {{-- videoFileFormat and videoFileCodec now reside in preservation_masters in the file_format and file_codec fields --}}
         <div class="form-group @if ($errors->has('videoFileFormat')) has-danger @endif">
           <div class="col-xs-4 detail-label">
             {!! Form::label('videoFileFormat', 'File Format', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('videoFileFormat', routeName() === 'masters.create' ? 'MKV' : null, array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::text('videoFileFormat', routeName() === 'masters.create' ? 'MKV' : null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. MKV')) !!}
             @if ($errors->has('videoFileFormat'))
               <div class="form-control-label"><small>{!! $errors->first('videoFileFormat') !!}</small></div>
             @endif
@@ -17,7 +19,7 @@
             {!! Form::label('videoFileCodec', 'File Codec', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('videoFileCodec', routeName() === 'masters.create' ? 'FFV1' : null, array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::text('videoFileCodec', routeName() === 'masters.create' ? 'FFV1' : null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. FFV1')) !!}
             @if ($errors->has('videoFileCodec'))
               <div class="form-control-label"><small>{!! $errors->first('videoFileCodec') !!}</small></div>
             @endif
@@ -30,7 +32,7 @@
             {!! Form::label('subclass[videoFrameSize]', 'Frame Size', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('subclass[videoFrameSize]', routeName() === 'masters.create' ? '720 x 480' : null, array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::text('subclass[videoFrameSize]', routeName() === 'masters.create' ? '720 x 480' : null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. 720 x 480')) !!}
             @if ($errors->has('subclass.videoFrameSize'))
               <div class="form-control-label"><small>{!! $errors->first('subclass.videoFrameSize') !!}</small></div>
             @endif
@@ -43,10 +45,11 @@
             {!! Form::label('subclass[videoAspectRatio]', 'Aspect Ratio', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('subclass[videoAspectRatio]', routeName() === 'masters.create' ? '4:3' : null, array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::text('subclass[videoAspectRatio]', routeName() === 'masters.create' ? '4:3' : null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. 4:3')) !!}
             @if ($errors->has('subclass.videoAspectRatio'))
               <div class="form-control-label"><small>{!! $errors->first('subclass.videoAspectRatio') !!}</small></div>
             @endif
           </div>
         </div>
       </div>
+      {{-- End VideoMaster fields --}}

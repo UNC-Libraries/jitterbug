@@ -27,10 +27,26 @@ class Transfer extends Model {
 
   protected $revisionFormattedFieldNames = array(
     'call_number' => 'call number',
+    'preservation_master_id' => 'preservation master',
     'transfer_date' => 'transfer date',
-    'condition_note' => 'condition note',
     'transfer_note' => 'transfer note',
+    'condition_note' => 'condition note',
+    'playback_machine_id' => 'playback machine',
+    'vendor_id' => 'vendor',
+    'enginer_id' => 'engineer',
   );
+
+  protected $fillable = array('callNumber',
+    'preservationMasterId', 'transferDate',
+    'playbackMachineId', 'engineerId', 'vendorId',
+    'conditionNote', 'transferNote');
+
+  public function __construct()
+  {
+    $this->subclassType = 'AudioTransfer';
+    $this->transferDate = (new \DateTime())->format('Y-m-d');
+    parent::__construct();
+  }
 
   /**
    * Return the associated cut, if there is one.
@@ -72,14 +88,19 @@ class Transfer extends Model {
     return $this->belongsTo('Junebug\Models\PreservationMaster');
   }
 
+  public function vendor()
+  {
+    return $this->belongsTo('Junebug\Models\Vendor');
+  }
+
   public function subclass()
   {
     return $this->morphTo();
   }
 
-  public function vendor()
+  public function batch()
   {
-    return $this->belongsTo('Junebug\Models\Vendor');
+    return false;
   }
 
   public function getTypeAttribute()

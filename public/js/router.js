@@ -117,7 +117,20 @@ JUNEBUG = {
     show: function() {
       junebug.initRevisionHistory();
       junebug.initRelatedCuts();
-    }
+    },
+
+    create: function() {
+      junebug.initTransferTypeControls();
+      junebug.initTransferCallNumberQuery();
+      junebug.initDatepicker();
+    },
+
+    edit: function() {
+      junebug.initDatepicker();
+      junebug.initTransferCallNumberQuery();
+      junebug.initRevisionHistory();
+      junebug.initRelatedCuts();
+    },
   },
 
 };

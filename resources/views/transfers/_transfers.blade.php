@@ -3,8 +3,8 @@
     <thead>
       <tr>
         <th width="12%">Call Number</th>
-        <th width="10%">Date</th>
-        <th width="20%">Engineer</th>
+        <th width="13%">Date</th>
+        <th width="17%">Engineer</th>
         <th width="15%">Vendor</th>
         <th width="20%">Collection</th>
         <th width="16%">Format</th>

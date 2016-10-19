@@ -1,3 +1,4 @@
+      {{-- FilmItem fields --}}
        <div class="row">
         <div class="form-group @if ($errors->has('subclass.filmElement')) has-danger @endif">
           <div class="col-xs-4 detail-label">
@@ -131,3 +132,4 @@
           </div>
         </div>
       </div>
+      {{-- End FilmItem fields --}}

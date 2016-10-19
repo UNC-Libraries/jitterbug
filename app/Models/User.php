@@ -37,7 +37,43 @@ class User extends Model implements AuthenticatableContract,
 
   public function fullName()
   {
-    return $this->firstName . ' ' . $this->lastName;
+    $fullName = null;
+    if ($this->legacy()) {
+      $fullName = $this->legacyInitials;
+    } else {
+      $fullName = $this->firstName . ' ' . $this->lastName;
+    }
+    return $fullName;
   }
 
+  /**
+   * Used by Revisionable to get a display name for the model.
+   */
+  public function identifiableName()
+  {
+    return $this->username;
+  }
+
+  static public function engineerList()
+  {
+    $users = User::orderBy('first_name')->get();
+    $engineers = array();
+    foreach ($users as $user) {
+      // Filter out System user
+      if ($user->id===1) {
+        continue;
+      }
+      // Filter out legacy engineers with unknown names
+      if ($user->legacy()) {
+        continue;
+      }
+      $engineers[$user->id] = $user->fullName();
+    }
+    return $engineers;
+  }
+
+  public function legacy()
+  {
+    return $this->legacyInitials !== null;
+  }
 }

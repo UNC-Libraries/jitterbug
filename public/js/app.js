@@ -261,6 +261,42 @@ junebug = {
     });
   },
 
+  initTransferTypeControls: function() {
+    $('#detail #transfer-type-controls :radio').click(function(event) {
+      if ($(this).val()=='AudioTransfer') {
+        $('#audio-form').show();
+        $('#film-form').hide();
+        $('#video-form').hide();
+      } else if ($(this).val()=='FilmTransfer') {
+        $('#audio-form').hide();
+        $('#film-form').show();
+        $('#video-form').hide();
+      } else if ($(this).val()=='VideoTransfer') {
+        $('#audio-form').hide();
+        $('#film-form').hide();
+        $('#video-form').show();
+      }
+    });
+  },
+
+  initTransferCallNumberQuery: function() {
+    $('#preservation-master-id').change(function() {
+      var preservationMasterId = $('#preservation-master-id').val();
+      if (preservationMasterId.length) {
+        query = {};
+        query['preservation-master-id'] = preservationMasterId;
+        $.get('/call-numbers/for-pm', query, function(data) {
+          $('#call-number').val(data['callNumber']);
+        }).fail(function() {
+          console.log('Could not resolve PM to a call number.');
+          $('#call-number').val('');
+        });
+      } else {
+        $('#call-number').val('');
+      }
+    });
+  },
+
   initFileSelect: function() {
     $(':file').change(function() {
       var input = $(this),

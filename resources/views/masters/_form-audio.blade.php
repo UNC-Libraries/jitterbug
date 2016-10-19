@@ -1,10 +1,12 @@
+      {{-- AudioMaster fields --}}
       <div class="row">
+        {{-- audioFileFormat and audioFileCodec now reside in preservation_masters in the file_format and file_codec fields --}}
         <div class="form-group @if ($errors->has('audioFileFormat')) has-danger @endif">
           <div class="col-xs-4 detail-label">
             {!! Form::label('audioFileFormat', 'File Format', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('audioFileFormat', routeName() === 'masters.create' ? 'BWF' : null, array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::text('audioFileFormat', routeName() === 'masters.create' ? 'BWF' : null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. BWF')) !!}
             @if ($errors->has('audioFileFormat'))
               <div class="form-control-label"><small>{!! $errors->first('audioFileFormat') !!}</small></div>
             @endif
@@ -17,7 +19,7 @@
             {!! Form::label('audioFileCodec', 'File Codec', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('audioFileCodec', routeName() === 'masters.create' ? 'Uncompressed PCM' : null, array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::text('audioFileCodec', routeName() === 'masters.create' ? 'Uncompressed PCM' : null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. Uncompressed PCM')) !!}
             @if ($errors->has('audioFileCodec'))
               <div class="form-control-label"><small>{!! $errors->first('audioFileCodec') !!}</small></div>
             @endif
@@ -82,3 +84,4 @@
         </div>
       </div>
       @endif
+      {{-- End AudioMaster fields --}}

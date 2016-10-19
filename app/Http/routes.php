@@ -37,6 +37,7 @@ Route::group(['prefix' => 'suggestions'], function () {
 */
 
 Route::get('call-numbers/generate', 'CallNumbersController@generate');
+Route::get('call-numbers/for-pm', 'CallNumbersController@forPm');
 Route::get('items/resolve-range', 'ItemsController@resolveRange');
 Route::match(['post', 'get'], 'items/batch/edit',
   'ItemsController@batchEdit')->name('items.batch.edit');
