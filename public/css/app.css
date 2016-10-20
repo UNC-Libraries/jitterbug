@@ -4635,15 +4635,16 @@ Header & Footer
 
 #logo {
   color: #000;
-  font-family: 'Yanone Kaffeesatz', 'YanoneKaffeesatz-Light', sans-serif;
-  font-weight: 300;
-  font-size: 2.3rem;
-  float: left; }
+  float: left;
+  margin-top: -1.0rem;
+  margin-bottom: .5rem;
+  margin-left: -.2rem;
+  margin-right: .6rem; }
 
 #support-nav {
-  font-size: .9rem;
+  font-size: .8rem;
   margin-left: 360px;
-  margin-top: 25px;
+  margin-top: 5px;
   float: right; }
 
 #support-nav a {
@@ -4681,9 +4682,9 @@ Global Navigation
 
 #global-nav nav li {
   float: left;
-  margin-bottom: 15px;
-  margin-top: 15px;
-  margin-right: 16px; }
+  margin-top: .6rem;
+  margin-bottom: .6rem;
+  margin-right: .75rem; }
 
 #global-nav nav li a {
   display: block;

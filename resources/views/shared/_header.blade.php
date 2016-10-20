@@ -1,6 +1,5 @@
       <div id="banner" class="row">
         <div class="col-md-12">
-          <div id="logo">{!! Html::image('img/junebug-logo.svg', 'Junebug logo', array('width' => 48 , 'height' => 46)) !!} &nbsp;junebug</div>
           <div id="support-nav">
             <ul>
               <li>
@@ -15,6 +14,7 @@
       </div>
       <div class="row">
         <div id="global-nav" class="col-md-12">
+          <div id="logo">{!! Html::image('img/junebug-logo.svg', 'Junebug logo', array('width' => 56 , 'height' => 54)) !!}</div>
           <nav>
             <ul>
               <li>
