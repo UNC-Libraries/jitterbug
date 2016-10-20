@@ -35,6 +35,10 @@ class User extends Model implements AuthenticatableContract,
    */
   protected $hidden = ['password', 'remember_token'];
 
+  /**
+   * Return the user's full name or, in the case of legacy
+   * users, their initials.
+   */
   public function fullName()
   {
     $fullName = null;
@@ -54,6 +58,12 @@ class User extends Model implements AuthenticatableContract,
     return $this->username;
   }
 
+  /**
+   * Return a list of engineer users, suitable for use in dropdown
+   * menus.
+   *
+   * @return array
+   */
   static public function engineerList()
   {
     $users = User::orderBy('first_name')->get();
@@ -72,6 +82,13 @@ class User extends Model implements AuthenticatableContract,
     return $engineers;
   }
 
+  /**
+   * Legacy users are those individuals we only have initials for.
+   * Nobody can remember who they were, and thus we have no first
+   * or last name.
+   * 
+   * @return string
+   */
   public function legacy()
   {
     return $this->legacyInitials !== null;
