@@ -33,7 +33,7 @@ class CallNumbersController extends Controller {
     return response()->json($response);
   }
 
-  public function forPm(Request $request)
+  public function forPreservationMaster(Request $request)
   {
     $preservationMasterId = $request->query('preservation-master-id');
     $master = PreservationMaster::where('id', $preservationMasterId)->first();
