@@ -4636,7 +4636,7 @@ Header & Footer
 #logo {
   color: #000;
   float: left;
-  margin-top: -1.0rem;
+  margin-top: -.9rem;
   margin-bottom: .5rem;
   margin-left: -.2rem;
   margin-right: .6rem; }
@@ -4684,7 +4684,7 @@ Global Navigation
   float: left;
   margin-top: .6rem;
   margin-bottom: .6rem;
-  margin-right: .75rem; }
+  margin-right: .5rem; }
 
 #global-nav nav li a {
   display: block;
@@ -4692,8 +4692,7 @@ Global Navigation
   text-align: center;
   padding: 3px 14px;
   border-radius: 0.25rem;
-  text-decoration: none;
-  background-color: #4f8d06; }
+  text-decoration: none; }
 
 #global-nav nav li a.active {
   color: #fff;
@@ -5126,7 +5125,7 @@ label {
 #content {
   background-color: #fff;
   /* display: table; */
-  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.5); }
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5); }
 
 #content .panel {
   float: none;
