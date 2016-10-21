@@ -25,7 +25,7 @@ JUNEBUG = {
       junebug.initTableKeyboardShortcuts();
       junebug.initItemsNewButton();
       junebug.initItemsBatchMenu();
-      junebug.initItemsBatchDeleteForm();
+      junebug.initBatchDeleteForm();
     },
 
     show: function() {
@@ -66,7 +66,7 @@ JUNEBUG = {
       junebug.initTableKeyboardShortcuts();
       junebug.initMastersNewButton();
       junebug.initMastersBatchMenu();
-      junebug.initMastersBatchDeleteForm();
+      junebug.initBatchDeleteForm();
     },
 
     show: function() {
@@ -111,7 +111,9 @@ JUNEBUG = {
       junebug.initTransfersIndex();
       junebug.initTableKeyboardShortcuts();
       junebug.initAudioImportModal();
+      junebug.initTransfersNewButton();
       junebug.initTransfersBatchMenu();
+      junebug.initBatchDeleteForm();
     },
 
     show: function() {

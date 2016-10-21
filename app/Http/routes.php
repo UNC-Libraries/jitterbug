@@ -82,6 +82,12 @@ Route::resource('masters.cuts', 'CutsController', ['except' => ['index']]);
 */
 
 Route::get('transfers/resolve-range', 'TransfersController@resolveRange');
+Route::match(['post', 'get'], 'transfers/batch/edit',
+  'TransfersController@batchEdit')->name('transfers.batch.edit');
+Route::put('transfers/batch',
+  'TransfersController@batchUpdate')->name('transfers.batch.update');
+Route::delete('transfers/batch', 
+  'TransfersController@batchDestroy')->name('transfers.batch.destroy');
 Route::post('transfers/audio-import-upload', 
 	'TransfersController@audioImportUpload')->name('transfers.audio.import.upload');
 Route::post('transfers/audio-import-execute', 

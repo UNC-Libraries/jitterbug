@@ -343,19 +343,16 @@ class ItemsController extends Controller
         }
 
         $cuts = Cut::where('call_number', $origCall)->get();
-
         foreach ($cuts as $cut) {
           $cut->callNumber = $newCall;
           $cut->save();
         }
 
         $transfers = Transfer::where('call_number', $origCall)->get();
-
         foreach ($transfers as $transfer) {
           $transfer->callNumber = $newCall;
           $transfer->save();
         }
-
       }
 
       $subclass->save();
@@ -562,8 +559,7 @@ class ItemsController extends Controller
       }
 
       foreach ($items as $item) {
-        $subclass = $item->subclass;
-        $subclass->delete();
+        $item->subclass->delete();
         $item->delete();
       }
 

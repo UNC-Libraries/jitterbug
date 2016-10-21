@@ -100,7 +100,7 @@ class TransferRequest extends Request {
   {
     $inputType = $this->input('subclassType');
     $type = substr($inputType, 0, strlen($inputType) - strlen('Transfer'));
-    $master = PreservationMaster::findOrFail($this->input('preservationMasterId'));
+    $master = PreservationMaster::find($this->input('preservationMasterId'));
     return $master !== null && $type !== $master->type;
   }
 

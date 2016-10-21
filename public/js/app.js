@@ -111,13 +111,6 @@ junebug = {
     });
   },
 
-  initItemsBatchDeleteForm: function() {
-    $('#batch-delete-form').submit( function(event) {
-      junebug.tableSelection.clear();
-      junebug.tableParams.setPage(1);
-    });
-  },
-
   initItemSuggestions: function() {
     $('#recording-location').autocomplete({
       serviceUrl: '/suggestions/recording-locations',
@@ -223,13 +216,6 @@ junebug = {
     });
   },
 
-  initMastersBatchDeleteForm: function() {
-    $('#batch-delete-form').submit( function(event) {
-      junebug.tableSelection.clear();
-      junebug.tableSelection.setPage(1);
-    });
-  },
-
   initMasterTypeControls: function() {
     $('#detail #master-type-controls :radio').click(function(event) {
       if ($(this).val()=='AudioMaster') {
@@ -255,7 +241,39 @@ junebug = {
     });
   },
 
+  initTransfersNewButton: function() {
+    $('#transfers-new').click(function(event) {
+      junebug.tableSelection.clear();
+    });
+  },
+
   initTransfersBatchMenu: function() {
+    $('#transfers-batch-edit').click(function(event) {
+      var tableSelection = junebug.tableSelection;
+      if (!junebug.validateBatchSelection(tableSelection, 'editing', 500)) {
+        return;
+      }
+      junebug.submitBatchEditForm('transfers', tableSelection);
+    });
+
+    junebug.initDataExportModal('transfers');
+    $('#transfers-batch-export').click(function(event) {
+      var tableSelection = junebug.tableSelection;
+      if (!junebug.validateBatchSelection(tableSelection, 'exporting')) {
+        return;
+      }
+      junebug.openDataExportModal('tranfsers', tableSelection);
+    });
+
+    $('#transfers-batch-delete').click(function(event) {
+      var tableSelection = junebug.tableSelection;
+      if (!junebug.validateBatchSelection(tableSelection, 'deleting', 100)) {
+        return;
+      }
+      $('#confirm-batch-delete-modal').modal('toggle');
+      $('#batch-delete-form input[name="ids"]').val(tableSelection.selectedIds());
+    });
+
     $('#transfers-batch-audio-import').click(function(event) {
       $('#audio-import-modal').modal('toggle');
     });
@@ -294,6 +312,13 @@ junebug = {
       } else {
         $('#call-number').val('');
       }
+    });
+  },
+
+  initBatchDeleteForm: function() {
+    $('#batch-delete-form').submit( function(event) {
+      junebug.tableSelection.clear();
+      junebug.tableParams.setPage(1);
     });
   },
 

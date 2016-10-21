@@ -422,8 +422,8 @@ class MastersController extends Controller {
 
     $command = $request->deleteCommand;
 
-    $transfers;
-    $cuts;
+    $transfers = null;
+    $cuts = null;
 
     // Update MySQL
     DB::transaction(function () use ($command, $master, $subclass, 
@@ -457,7 +457,7 @@ class MastersController extends Controller {
         $this->solrTransfers->delete($transfers);
       }
       if ($cuts !== null) {
-        // Since cuts where deleted, we need to get the audio visual item
+        // Since cuts were deleted, we need to get the audio visual item
         // and update it in Solr to remove the cuts from the index.
         $item = 
           AudioVisualItem::where('call_number', $master->callNumber)->first();
@@ -486,7 +486,7 @@ class MastersController extends Controller {
     if ($masters->count() > $max) {
       $request->session()->put('alert', array('type' => 'danger', 'message' =>
         '<strong>Whoa there!</strong> ' . 
-        'Batch deleting is limited to ' . $max . ' items. Please narrow ' .
+        'Batch deleting is limited to ' . $max . ' masters. Please narrow ' .
         'your selection.'));
       return redirect()->route('masters.index');
     }
@@ -516,8 +516,7 @@ class MastersController extends Controller {
       }
 
       foreach ($masters as $master) {
-        $subclass = $master->subclass;
-        $subclass->delete();
+        $master->subclass->delete();
         $master->delete();
       }
 

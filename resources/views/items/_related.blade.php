@@ -9,7 +9,7 @@
       <table id="related-masters" class="table table-sm table-hover">
         <thead>
           <tr>
-            <th width="12%">#</th>
+            <th width="12%">PM #</th>
             <th width="20%">File Name</th>
             <th width="30%">File Location</th>
             <th width="15%">Department</th>

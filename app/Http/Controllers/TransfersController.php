@@ -14,6 +14,7 @@ use Junebug\Http\Requests\TransferRequest;
 use Junebug\Models\AudioVisualItem;
 use Junebug\Models\AudioMaster;
 use Junebug\Models\AudioTransfer;
+use Junebug\Models\BatchTransfer;
 use Junebug\Models\Cut;
 use Junebug\Models\PlaybackMachine;
 use Junebug\Models\PreservationMaster;
@@ -33,6 +34,7 @@ class TransfersController extends Controller {
   protected $requiredAudioImportKeys = array(); 
   protected $audioImportKeys = array();
 
+  protected $solrItems;
   protected $solrMasters;
   protected $solrTransfers;
 
@@ -50,6 +52,7 @@ class TransfersController extends Controller {
     $this->audioImportKeys = array_merge($this->requiredAudioImportKeys, 
       array('OriginalPm'));
 
+    $this->solrItems = new SolariumProxy('junebug-items');
     $this->solrMasters = new SolariumProxy('junebug-masters');
     $this->solrTransfers = new SolariumProxy('junebug-transfers');
   }
@@ -184,11 +187,107 @@ class TransfersController extends Controller {
           $engineers + [$engineer->id => $engineer->legacyInitials];
       }
     }
-
     $vendors = ['' => 'Select a vendor'] + 
              Vendor::pluck('name', 'id')->all();
+
     return view('transfers.edit', 
       compact('transfer', 'playbackMachines', 'engineers', 'vendors'));
+  }
+
+  /**
+   * Display the form for editing multiple transfers at a time.
+   */
+  public function batchEdit(Request $request)
+  {
+    $max = 500;
+
+    $transferIds = explode(',', $request->input('ids'));
+    // See similar in ItemsController.php for comments on the below
+    if ($request->method()==='POST') {
+      $request->session()->put('batchTransferIds', $transferIds);
+    } else if ($request->method()==='GET') {
+      $transferIds = $request->session()->get('batchTransferIds');
+    }
+    
+    if ($transferIds === null) {
+      $request->session()->put('alert', array('type' => 'warning', 'message' =>
+        '<strong>Hmm, something\'s up.</strong> ' . 
+        'That batch edit form is no longer valid. Please make a ' .
+        'new selection and try batch editing again.'));
+      return redirect()->route('transfers.index');
+    }
+
+    $transferIdsCount = count($transferIds);
+
+    if ($transferIdsCount > $max) {
+      $request->session()->put('alert', array('type' => 'danger', 'message' =>
+        '<strong>Hold on there.</strong> ' . 
+        'Batch editing is limited to ' . $max . ' transfers. Please narrow ' .
+        'your selection.'));
+      return redirect()->route('transfers.index');
+    }
+    
+    $first = Transfer::find($transferIds[0]);
+    $subclassType = $first->subclassType;
+
+    $transfers = Transfer::whereIn('id', $transferIds)
+                            ->where('subclass_type', $subclassType)->get();
+    if ($transferIdsCount!==$transfers->count()) {
+      $request->session()->put('alert', array('type' => 'danger', 'message' => 
+        '<strong>Oops! There\'s a problem.</strong> ' . 
+        'Batch editing can only be done with transfers of the same type. ' .
+        'Please change your selection.'));
+      return redirect()->route('transfers.index');
+    }
+
+    $subclassIds = array();
+    foreach ($transfers as $transfer) {
+      array_push($subclassIds, $transfer->subclass->id);
+    }
+    $subclasses = $subclassType::whereIn('id', $subclassIds)->get();
+
+    $transfer = new BatchTransfer($transfers, $subclasses);
+
+    // Build select lists
+    $playbackMachines = array();
+    if ($transfer->playbackMachineId === '<mixed>') {
+      $playbackMachines = ['' => 'Select a playback machine'] + 
+              ['<mixed>' => '<mixed>'] +
+              PlaybackMachine::orderBy('name')->pluck('name', 'id')->all();
+    } else {
+      $playbackMachines = ['' => 'Select a playback machine'] + 
+              PlaybackMachine::orderBy('name')->pluck('name', 'id')->all();
+    }
+
+    $engineers = array();
+    if ($transfer->engineerId === '<mixed>') {
+      $engineers = ['' => 'Select an engineer'] + 
+              ['<mixed>' => '<mixed>'] + User::engineerList();
+    } else {
+      $engineers = ['' => 'Select an engineer'] + 
+              User::engineerList();
+    }
+    if ($transfer->engineerId !== null && $transfer->engineerId !== '<mixed>') {
+      $engineer = User::findOrFail($transfer->engineerId);
+      if ($engineer->legacy()) {
+        $engineers = 
+          $engineers + [$engineer->id => $engineer->legacyInitials];
+      }
+    }
+
+    $vendors = array();
+    if ($transfer->vendorId === '<mixed>') {
+      $vendors = ['' => 'Select a vendor'] + 
+              ['<mixed>' => '<mixed>'] +
+              Vendor::pluck('name', 'id')->all();
+    } else {
+      $vendors = ['' => 'Select a vendor'] + 
+              Vendor::pluck('name', 'id')->all();
+    }
+
+    return view('transfers.edit', 
+      compact('transfer', 'playbackMachines', 'engineers', 'vendors'));
+
   }
 
   /**
@@ -289,9 +388,153 @@ class TransfersController extends Controller {
     return redirect()->route('transfers.show', [$id]);
   }
 
+  /**
+   * Update multple transfers at once.
+   */
+  public function batchUpdate(TransferRequest $request)
+  {
+    $input = $request->allWithoutMixed();
+    $transferIds = explode(',', $input['ids']);
+    unset($input['ids']);
+    $transfers = Transfer::whereIn('id',$transferIds)->get();
+
+    // Update MySQL
+    DB::transaction(function () use ($transfers, $input) {
+      $transactionId = Uuid::uuid4();
+      DB::statement("set @transaction_id = '$transactionId';");
+      
+      foreach ($transfers as $transfer) {
+        $transfer->fill($input);
+        $transfer->touch(); // Touch in case not dirty and subclass is dirty
+        $subclass=$transfer->subclass;
+        $subclass->fill($input['subclass']);
+
+        $subclass->save();
+        $transfer->save();
+      }
+
+      DB::statement('set @transaction_id = null;');      
+    });
+
+    // Update Solr
+    $this->solrTransfers->update($transfers);
+
+    $request->session()->forget('batchTransferIds');
+
+    $request->session()->put('alert', array('type' => 'success', 'message' => 
+        '<strong>Nice!</strong> ' . 
+        'Transfers were successfully updated.'));
+
+    return redirect()->route('transfers.index');
+  }
+
   public function destroy($id, Request $request)
   {
+    $transfer = Transfer::findOrFail($id);
+    $subclass = $transfer->subclass;
+
+    $cut = null;
+
+    // Update MySQL
+    DB::transaction(function () use ($transfer, $subclass, &$cut) {
+      $transactionId = Uuid::uuid4();
+      DB::statement("set @transaction_id = '$transactionId';");
+      
+      $cut = $transfer->cut;
+      if ($cut !== null) {
+        $cut->delete();
+      }
+
+      $transfer->delete();
+      $subclass->delete();
+
+      DB::statement('set @transaction_id = null;');      
+    });
+
+    // Update Solr
+    $this->solrTransfers->delete($transfer);
+    if ($cut !== null) {
+      // Since a cut was deleted, we need to get the related master and audio
+      // visual item and update them in Solr to remove the cut from the index.
+      $item = 
+        AudioVisualItem::where('call_number', $transfer->callNumber)->first();
+      if ($item !== null) {
+        $this->solrItems->update($item);
+      }
+      $master = $transfer->preservationMaster;
+      if ($master !== null) {
+        $this->solrMasters->update($master);
+      }
+    }
+
+    $request->session()->put('alert', array('type' => 'success', 'message' => 
+        '<strong>Gone!</strong> ' . 
+        "Transfer was successfully deleted."));
+
     return redirect()->route('transfers.index');
+  }
+
+  public function batchDestroy(Request $request)
+  {
+    $max = 100;
+
+    $transferIds = explode(',', $request->ids);
+    $transfers = Transfer::whereIn('id', $transferIds)->get();
+
+    if ($transfers->count() > $max) {
+      $request->session()->put('alert', array('type' => 'danger', 'message' =>
+        '<strong>Whoa there!</strong> ' . 
+        'Batch deleting is limited to ' . $max . ' transfers. Please narrow ' .
+        'your selection.'));
+      return redirect()->route('transfers.index');
+    }
+
+    $command = $request->deleteCommand;
+    $cuts = null;
+
+    // Update MySQL
+    DB::transaction(function () use ($command, $transferIds, 
+                                                  $transfers, &$cuts) {
+      $transactionId = Uuid::uuid4();
+      DB::statement("set @transaction_id = '$transactionId';");
+
+      foreach ($transfers as $transfer) {
+        $transfer->subclass->delete();
+        $transfer->delete();
+      }
+
+      $cuts = Cut::whereIn('transfer_id', $transferIds)->get();
+      foreach ($cuts as $cut) {
+        $cut->delete();
+      }
+
+      DB::statement('set @transaction_id = null;');      
+    });
+
+    // Update Solr
+    $this->solrTransfers->delete($transfers);
+
+    if ($cuts !== null) {
+      // Since cuts where deleted, we need to get the audio visual items
+      // and masters and update them in Solr to remove the cuts from the index.
+      $cutCallNumbers = $cuts->pluck('call_number')->unique()->all();
+      $items = 
+        AudioVisualItem::whereIn('call_number', $cutCallNumbers)->get();
+      if ($items !== null) {
+        $this->solrItems->update($items);
+      }
+      $masters =
+        PreservationMaster::whereIn('call_number', $cutCallNumbers)->get();
+      if ($masters !== null) {
+        $this->solrMasters->update($masters);
+      }
+    }
+
+    $request->session()->put('alert', array('type' => 'success', 'message' => 
+        '<strong>Voila!</strong> ' . 
+        "Transfers were successfully deleted."));
+
+    return redirect()->route('masters.index');
   }
 
   private function audioImportDo($data)

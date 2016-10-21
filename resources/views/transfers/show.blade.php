@@ -206,13 +206,10 @@
               <h4 id="confirmDelete" class="modal-title">Confirm Delete</h4>
             </div>
             <div class="modal-body">
-              <strong>Be careful!</strong> @if ($transfer->cut) This transfer has a related cut. Do you want to delete just this transfer, or do you want to delete this transfer and the associated cut?@endif This cannot be undone.
+              <strong>Be careful!</strong> @if ($transfer->cut) This transfer has a related cut, which will also be deleted.@endif This cannot be undone.
             </div>
             <div class="modal-footer">
-              <button name="deleteCommand" value="transfer" type="submit" class="btn btn-sm btn-warning" style="outline: none;"><i class="fa fa-trash" aria-hidden="true"></i> Delete Transfer Only</button>
-              @if ($transfer->cut)
-              <button name="deleteCommand" value="all" type="submit" class="btn btn-sm btn-danger" style="outline: none;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Delete Transfer and Cut</button>
-              @endif
+              <button name="deleteCommand" value="all" type="submit" class="btn btn-sm btn-danger" style="outline: none;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Delete</button>
             </div>
 
           </div>

@@ -24,6 +24,31 @@
         </div>
       </div>
 
+      {!! Form::open(array('route' => array('transfers.batch.destroy'), 'method' => 'delete', 'id' => 'batch-delete-form', 'style' => 'display: inline;')) !!}
+      <div id="confirm-batch-delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirmDelete" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 id="confirmDelete" class="modal-title">Confirm Delete</h4>
+            </div>
+            <div class="modal-body">
+              <strong>Be careful!</strong>
+              You are about to delete multiple transfers at once. This will also delete any associated cuts. This cannot be undone.
+            </div>
+            <div class="modal-footer">
+              {!! Form::hidden('ids') !!}
+              <button name="deleteCommand" value="all" type="submit" class="btn btn-sm btn-danger" style="outline: none;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Delete Transfers</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      {!! Form::close() !!}
+
       <div id="audio-import-modal" class="modal fade" tabindex="-1" role="dialog">
         <div id="audio-import-dialog" class="modal-dialog modal-sm">
           <div id="audio-import-dialog-content" class="modal-content">
