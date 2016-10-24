@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-12 col-e0">
+    <div class="col-xs-12">
       @if ($item->batch())
         <h6>{{$item->type}} Item Details (editing {{$item->count()}} items)</h6>
       @else

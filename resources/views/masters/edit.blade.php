@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-12 col-e0">
+    <div class="col-xs-12">
       @if ($master->batch())
         <h6>{{$master->type}} Master Details (editing {{$master->count()}} masters)</h6>
       @else

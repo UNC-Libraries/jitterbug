@@ -869,17 +869,20 @@ junebug = {
                  $(this).parent().hasClass('active')) {
                 return;
               } else if ($(this).hasClass('prev-page')) {
-                $(this).click(function(){
+                $(this).click(function(event){
+                  event.preventDefault();
                   tableParams.setPage(currentPage - 1);
                   executeQuery();
                 });
               } else if ($(this).hasClass('next-page')) {
-                $(this).click(function(){
+                $(this).click(function(event){
+                  event.preventDefault();
                   tableParams.setPage(currentPage + 1);
                   executeQuery();
                 });
               } else {
-                $(this).click(function(){
+                $(this).click(function(event){
+                  event.preventDefault();
                   tableParams.setPage($(this).text().trim());
                   executeQuery();
                 });

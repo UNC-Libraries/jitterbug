@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-12 col-e0">
+    <div class="col-xs-12">
       <h6>{{$item->type}} Item Details</h6>
     </div>
   </div>

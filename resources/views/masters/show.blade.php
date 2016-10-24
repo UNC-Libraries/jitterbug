@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-12 col-e0">
+    <div class="col-xs-12">
       <h6>{{$master->type}} Master Details</h6>
     </div>
   </div>
@@ -17,7 +17,7 @@
     <div class="col-xs-6">
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
-          ID
+          PM #
         </div>
         <div class="col-xs-7 detail-value">
           {{$master->id}}
@@ -287,7 +287,7 @@
             <div class="modal-body">
               <strong>Yikes! Are you sure?</strong> 
               @if (count($master->cuts) > 0 && count($master->transfers) > 0)
-                This master has related cuts and transfers.
+                This master has related transfers and cuts.
               @elseif (count($master->cuts) > 0 && count($master->transfers) === 0) 
                 This master has related cuts.
               @elseif (count($master->cuts) === 0 && count($master->transfers) > 0) 

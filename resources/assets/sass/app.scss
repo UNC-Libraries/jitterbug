@@ -4,6 +4,8 @@ $brand-primary:             #4f8d06 !default;
 $brand-warning:             #d1a842 !default;
 $brand-danger:              #d16642 !default;
 
+$gray-light:                #e0e0e0 !default;
+
 $container-max-widths: (
   sm: 576px,
   md: 720px,
@@ -39,11 +41,12 @@ $global-nav-button-active-bg:  #72a137;
 $global-nav-color:             #cbddb4;
 $global-nav-color-active:      #fff;
 
+$content-bg:                   #f3f3f3;
 $link-color:                   #707070;
+
 
 a:link, a:visited, a:hover, a:active {
   color: $link-color;
-  text-decoration: none;
 }
 
 body {
@@ -100,7 +103,7 @@ Header & Footer
 }
 
 #support-nav a {
-   color: #000;
+   color: $gray-dark;
 }
 
 #support-nav ul {
@@ -151,7 +154,7 @@ Global Navigation
   display: block;
   color: $global-nav-color;
   text-align: center;
-  padding: 3px 14px;
+  padding: 3px 12px;
   border-radius: $border-radius-sm;
   text-decoration: none;
 }
@@ -175,13 +178,13 @@ Filter Panel
 ------------------------------------------- */
 
 #filter-panel {
-  background-color: #f0f0f0;
-  padding: 0;
+  background-color: $content-bg;
+  padding: 0 10px;
 }
 
 #filter-panel h6 {
-  background-color: #e0e0e0;
-  padding-left: 15px;
+  border-bottom: 1px dashed #c7c7c7;
+  padding-left: 5px;
   padding-top: 8px;
   padding-bottom: 8px;
   margin-top: 12px;
@@ -200,8 +203,8 @@ Filter Panel
 .filter-list {
   list-style-type: none;
   font-size: .9rem;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 5px;
+  padding-right: 5px;
   margin-bottom: .5rem;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -216,6 +219,11 @@ Filter Panel
 /* -------------------------------------------
 Data Panel
 ------------------------------------------- */
+
+/* A chrome rendering bug workaround */
+#search {
+  height: 29px;
+}
 
 #data-panel {
   background-color: #fff;
@@ -254,6 +262,16 @@ Data Panel
   font-size: .9rem;
 }
 
+#data-panel .input-group-addon {
+  background-color: #fff;
+  border: 1px solid $gray-light;
+  border-right: 0;
+}
+
+#data-panel .form-control {
+  border: 1px solid $gray-light;
+}
+
 #data-panel .search-container {
   float: right;
   width: 275px;
@@ -268,6 +286,7 @@ Data Panel
 #data-panel .data-footer .selection-count {
   font-size: 90%;
   font-weight: normal;
+  background-color: #818a91;
 }
 
 #data-panel .pagination {
@@ -276,24 +295,25 @@ Data Panel
 }
 
 #data-panel .pagination .page-link {
-  color: #000;
-  background-color: #FFF;
+  color: $gray-dark;
+  background-color: #fff;
 }
 
 #data-panel .pagination li a {
   border: 0;
-  text-decoration: none;
 }
 
 #data-panel .pagination li.page-item a:hover {
-  color: #000;
+  color: $gray-dark;
   background-color: #fff;
 }
 
 #data-panel .pagination li.page-item.active a {
-  color: #000;
-  background-color: #e9e9e9;
+  color: $gray-dark;
+  background-color: #fff;
   border-radius: $border-radius-sm;
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
+  text-decoration: none;
 }
 
 @media(max-width:992px){
@@ -311,10 +331,8 @@ Record Details
 }
 
 #detail h6 {
-  background-color: #e0e0e0;
-  padding-top: 8px;
-  font-weight: bold;
-  font-size: .95rem;
+  font-size: 1.1rem;
+  margin-bottom: .5rem;
 }
 
 #detail .breadcrumb {
@@ -323,15 +341,19 @@ Record Details
   padding-left: 0;
   padding-bottom: 1.5rem;
   font-size: .95rem;
-  background-color: #fff;
+  background-color: $content-bg;
 }
 
 #detail .breadcrumb .active {
   color: $link-color;
 }
 
+#detail .breadcrumb li::before {
+  color: #707070;
+}
+
 #detail .preform {
-  margin-top: 1.25rem;
+  margin-top: 0;
 }
 
 #detail .preform .divider {
@@ -349,11 +371,22 @@ Record Details
 }
 
 #detail .detail-container {
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  margin-left: .975rem;
+  margin-right: .975rem;
+  background-color: #fff;
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);
+}
+
+#detail .related-container {
+  padding-top: 1rem;
   padding-bottom: 1.5rem;
   margin-left: .975rem;
   margin-right: .975rem;
-  margin-top: .975rem;
-  background-color: #f5f5f5;
+  margin-bottom: 1.25rem;
+  background-color: #fff;
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);
 }
 
 #detail .revision-history-title {
@@ -363,18 +396,22 @@ Record Details
   margin-left: .975rem;
   margin-right: .975rem;
   margin-top: .975rem;
-  background-color: #f5f5f5;
+  background-color: #fff;
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);
 }
 
 #detail .revision-history-title a {
-  color: #373a3c;
+  color: $gray-dark;
+  text-decoration: none;
 }
 
 #detail .revision-history {
+  padding-top: .6rem;
   padding-bottom: .5rem;
   margin-left: .975rem;
   margin-right: .975rem;
-  background-color: #f5f5f5;
+  background-color: #fff;
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);
   display: none;
 }
 
@@ -394,6 +431,10 @@ Record Details
   padding-right: 0;
 }
 
+#detail hr {
+  border-top: 1px dashed #c7c7c7
+}
+
 #detail hr.before {
   margin-top: .75rem;
 }
@@ -404,10 +445,11 @@ Record Details
 
 #detail .actions {
   margin-bottom: 2rem;
-  background-color: #fff;
+  background-color: $content-bg;
 }
 
 #detail table {
+  margin-bottom: 0;
   font-size: .9rem;
   table-layout: fixed;
 }
@@ -533,16 +575,40 @@ Bootstrap Overrides
   border: none;
 }
 
+.btn-secondary {
+  color: $gray-dark;
+  background-color: #fff;
+  border: 1px solid $gray-light;
+}
+
+.btn-secondary:active:hover, .btn-secondary:active:focus {
+  color: $gray-dark;
+  background-color: darken($gray-light, 6%);
+  border: 1px solid darken($gray-light, 6%);
+}
+
+.open > .btn-secondary.dropdown-toggle, .open > .btn-secondary.dropdown-toggle:focus, .open > .btn-secondary.dropdown-toggle:hover  {
+  color: $gray-dark;
+  background-color: darken($gray-light, 6%);
+  border: 1px solid darken($gray-light, 6%);
+}
+
 .btn-secondary:link, .btn-secondary:visited, .btn-secondary:active {
-  color: #707070;
-  background-color: #e9e9e9;
-  border: none;
+  color: $gray-dark;
+  background-color: #fff;
+  border: 1px solid $gray-light;
 }
 
 .btn-secondary:hover {
-  color: #373a3c;
-  background-color: #e6e6e6;
-  border: none;
+  color: $gray-dark;
+  background-color: scale-color($gray-light, $lightness: 30%);
+  border: 1px solid scale-color($gray-light, $lightness: 30%);
+}
+
+.btn-secondary:focus {
+  color: $gray-dark;
+  background-color: scale-color($gray-light, $lightness: 10%);
+  border: 1px solid scale-color($gray-light, $lightness: 10%);
 }
 
 .btn-warning:link, .btn-warning:visited, .btn-warning:active {
@@ -590,6 +656,7 @@ Bootstrap Overrides
 }
 
 .input-group-addon {
+  background-color: #e9e9e9;
   padding: 0.25rem 0.75rem;
 }
 
@@ -687,9 +754,9 @@ label {
  * same height.
  */
 #content {
-  background-color: #fff;
-  /* display: table; */
-  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5)
+  background-color: $content-bg;
+  /*display: table;*/
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
 }
 
 #content .panel {

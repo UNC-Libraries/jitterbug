@@ -1,4 +1,4 @@
-    <h6>{{Str::title($name)}}</h6>
+    <h6>{{Str::title($name)}} Filters</h6>
     <ul id="{{Str::lower($name)}}-filters" class="filter-list" style="{{$style or ''}}">
       <li>
         <div class="checkbox">

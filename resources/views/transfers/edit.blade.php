@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-12 col-e0">
+    <div class="col-xs-12">
       @if ($transfer->batch())
         <h6>{{$transfer->type}} Transfer Details (editing {{$transfer->count()}} transfers)</h6>
       @else

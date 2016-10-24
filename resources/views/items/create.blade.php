@@ -8,74 +8,76 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-12 col-e0">
+    <div class="col-xs-12">
       <h6>Create Audio Visual Item</h6>
     </div>
   </div>
 
   {!! Form::model($item, array('route' => array('items.store'), 'method' => 'post')) !!}
 
-  <div class="row">
-    <div class="col-xs-12 preform">
-      <span id="item-type-controls">
-        <span style="margin-right: .75rem">
-          {!! Form::label('subclassType', 'Item Type: ', array('class' => 'form-control-label')) !!}
+  <div class="row first detail-container">
+    <div class="row">
+      <div class="col-xs-12 preform">
+        <span id="item-type-controls">
+          <span style="margin-right: .75rem">
+            {!! Form::label('subclassType', 'Item Type: ', array('class' => 'form-control-label')) !!}
+          </span>
+          <label class="radio-inline">
+            {!! Form::radio('subclassType', 'AudioItem') !!} Audio
+          </label>
+          <label class="radio-inline">
+            {!! Form::radio('subclassType', 'FilmItem') !!} Film
+          </label>
+          <label class="radio-inline">
+            {!! Form::radio('subclassType', 'VideoItem') !!} Video
+          </label>
         </span>
-        <label class="radio-inline">
-          {!! Form::radio('subclassType', 'AudioItem') !!} Audio
+        <span class="divider"></span>
+        <span style="margin-right: .75rem">
+          {!! Form::label('batch', 'Create Batch: ', array('class' => 'form-control-label')) !!}
+        </span>
+        <label style="margin-right: 1.25rem">
+          {!! Form::checkbox('batch', '1') !!}
         </label>
-        <label class="radio-inline">
-          {!! Form::radio('subclassType', 'FilmItem') !!} Film
+        <span @if ($errors->has('batchSize')) class='has-danger' @endif style="margin-right: .75rem">
+          {!! Form::label('batchSize', 'Batch Size: ', array('class' => 'form-control-label')) !!}
+        </span>
+        <label @if ($errors->has('batchSize')) class='has-danger' @endif>
+          {!! Form::text('batchSize', null, array('class' => 'form-control form-control-sm', 'style' => 'display: inline; width: 50px; padding: 0.2rem 0.5rem;', 'maxlength' => '3')) !!}
         </label>
-        <label class="radio-inline">
-          {!! Form::radio('subclassType', 'VideoItem') !!} Video
+        <span class="divider"></span>
+        <span style="margin-right: .75rem">
+          {!! Form::label('mark', 'Mark: ', array('class' => 'form-control-label')) !!}
+        </span>
+        <label>
+          {!! Form::checkbox('mark', '1') !!}
         </label>
-      </span>
-      <span class="divider"></span>
-      <span style="margin-right: .75rem">
-        {!! Form::label('batch', 'Create Batch: ', array('class' => 'form-control-label')) !!}
-      </span>
-      <label style="margin-right: 1.25rem">
-        {!! Form::checkbox('batch', '1') !!}
-      </label>
-      <span @if ($errors->has('batchSize')) class='has-danger' @endif style="margin-right: .75rem">
-        {!! Form::label('batchSize', 'Batch Size: ', array('class' => 'form-control-label')) !!}
-      </span>
-      <label @if ($errors->has('batchSize')) class='has-danger' @endif>
-        {!! Form::text('batchSize', null, array('class' => 'form-control form-control-sm', 'style' => 'display: inline; width: 50px; padding: 0.2rem 0.5rem;', 'maxlength' => '3')) !!}
-      </label>
-      <span class="divider"></span>
-      <span style="margin-right: .75rem">
-        {!! Form::label('mark', 'Mark: ', array('class' => 'form-control-label')) !!}
-      </span>
-      <label>
-        {!! Form::checkbox('mark', '1') !!}
-      </label>
+      </div>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col-xs-12">
-      <hr class="before"/>
+    <div class="row">
+      <div class="col-xs-12">
+        <hr class="after"/>
+      </div>
     </div>
-  </div>
-
-  <div class="row first detail-container" style="margin-top: 0">
-    <div class="col-xs-6">
-      @include('items._form-common')
-    </div>
-    <div class="col-xs-6">
-      {{-- Begin subclass fields --}}
-      <div id="audio-form" @if (old('subclassType') !== null && old('subclassType') !== 'AudioItem') style="display: none" @endif>
-        @include('items._form-audio')
+    
+    <div class="row">
+      <div class="col-xs-6">
+        @include('items._form-common')
       </div>
-      <div id="film-form" @if (old('subclassType') !== 'FilmItem') style="display: none" @endif>
-        @include('items._form-film')
+      <div class="col-xs-6">
+        {{-- Begin subclass fields --}}
+        <div id="audio-form" @if (old('subclassType') !== null && old('subclassType') !== 'AudioItem') style="display: none" @endif>
+          @include('items._form-audio')
+        </div>
+        <div id="film-form" @if (old('subclassType') !== 'FilmItem') style="display: none" @endif>
+          @include('items._form-film')
+        </div>
+        <div id="video-form" @if (old('subclassType') !== 'VideoItem') style="display: none" @endif>
+          @include('items._form-video')
+        </div>
+        {{-- End subclass fields --}}
       </div>
-      <div id="video-form" @if (old('subclassType') !== 'VideoItem') style="display: none" @endif>
-        @include('items._form-video')
-      </div>
-      {{-- End subclass fields --}}
     </div>
   </div>
 
@@ -92,7 +94,6 @@
   </div>
 
   {!! Form::close() !!}
-
 
 </div>
 @stop

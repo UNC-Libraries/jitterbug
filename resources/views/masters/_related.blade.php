@@ -1,11 +1,11 @@
   @if (count($transfers) > 0 )
   <div class="row">
-    <div class="col-xs-12 col-e0">
+    <div class="col-xs-12">
       <h6>Related Transfers</h6>
     </div>
   </div>
-  <div class="row first last">
-    <div class="col-xs-12 col-fff">
+  <div class="row related-container">
+    <div class="col-xs-12">
       <table id="related-transfers" class="table table-sm table-hover">
         <thead>
           <tr>
@@ -36,12 +36,12 @@
   
   @if (count($cuts) > 0 )
   <div class="row">
-    <div class="col-xs-12 col-e0">
+    <div class="col-xs-12">
       <h6>Related Cuts</h6>
     </div>
   </div>
-  <div class="row first last">
-    <div class="col-xs-12 col-fff">
+  <div class="row related-container">
+    <div class="col-xs-12">
       <table id="related-cuts" class="table table-sm table-hover">
         <thead>
           <tr>
@@ -69,3 +69,4 @@
     </div>
   </div>
   @endif
+  &nbsp; {{-- Hack to workaround a rendering bug --}}
