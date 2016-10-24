@@ -95,7 +95,7 @@ Breadcrumbs::register('transfers.show', function($breadcrumbs, $transfer)
 // Transfers / Edit Transfer
 Breadcrumbs::register('transfers.edit', function($breadcrumbs, $transfer)
 {
-    $breadcrumbs->parent('masters.index');
+    $breadcrumbs->parent('transfers.index');
     $breadcrumbs->push('Edit Transfer', route('transfers.edit', $transfer->id));
 });
 

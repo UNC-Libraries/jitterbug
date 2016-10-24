@@ -41,7 +41,7 @@ $global-nav-button-active-bg:  #72a137;
 $global-nav-color:             #cbddb4;
 $global-nav-color-active:      #fff;
 
-$content-bg:                   #f3f3f3;
+$content-bg:                   #f7f7f7;
 $link-color:                   #707070;
 
 
@@ -746,6 +746,10 @@ label {
 
 .popover-content {
   padding: 4px 10px;
+}
+
+tr:hover {
+ background-color: $content-bg;
 }
 
 /* 

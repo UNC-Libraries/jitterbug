@@ -42,11 +42,22 @@ abstract class Export {
     // Flatten the fields array
     $fields = array_merge($fields[0], $fields[1]);
     $headings = array();
-    foreach ($selectedFields as $field) {
-      $heading = array_search($field, $fields);
-      // Remove the spaces from the heading labels
-      $heading = str_replace(' ', '', $heading);
-      array_push($headings, $heading);
+    foreach ($selectedFields as $selectedField) {
+      // Cuts are a special case field that represents its
+      // own array of headings and fields, defined in a 
+      // $cutExportFields variable.
+      if ($selectedField === 'cut') {
+        $cutHeadings = array_keys($this->cutExportFields);
+        foreach ($cutHeadings as $heading) {
+          $heading = str_replace(' ', '', $heading);
+          array_push($headings, $heading);
+        }
+      } else {
+        $heading = array_search($selectedField, $fields);
+        // Remove the spaces from the heading labels
+        $heading = str_replace(' ', '', $heading);
+        array_push($headings, $heading);
+      }
     }
     fputcsv($handle, $headings);
 
@@ -62,15 +73,27 @@ abstract class Export {
     foreach ($records as $record) {
       $attributes = $this->getSnakeAttributes($record);
       $row = array();
-      foreach ($selectedFields as $fieldName) {
-        $fieldValue = null;
-        if (array_key_exists($fieldName, $attributes)) {
-          $fieldValue = $this->getFieldValue($record, $fieldName);
+      foreach ($selectedFields as $selectedField) {
+        if ($selectedField === 'cut') {
+          if (method_exists($record, 'cut') && $record->cut !== null) {
+            $cut = $record->cut;
+            $cutFields = array_values($this->cutExportFields);
+            foreach ($cutFields as $cutField) {
+              $fieldValue = $this->getFieldValue($cut, $cutField);
+              array_push($row, $fieldValue);
+            }
+          }
         } else {
-          $subclass = $record->subclass;
-          $fieldValue = $this->getFieldValue($subclass, $fieldName);
+          $fieldValue = null;
+          if (array_key_exists($selectedField, $attributes)) {
+            $fieldValue = $this->getFieldValue($record, $selectedField);
+          } else if (array_key_exists($selectedField, 
+              $this->getSnakeAttributes($record->subclass))) {
+            $subclass = $record->subclass;
+            $fieldValue = $this->getFieldValue($subclass, $selectedField);
+          }
+          array_push($row, $fieldValue);
         }
-        array_push($row, $fieldValue);
       }
       fputcsv($handle, $row);
     }

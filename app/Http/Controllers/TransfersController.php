@@ -9,6 +9,7 @@ use DB;
 use Log;
 use Uuid;
 
+use Junebug\Export\TransfersExport;
 use Junebug\Http\Controllers\Controller;
 use Junebug\Http\Requests\TransferRequest;
 use Junebug\Models\AudioVisualItem;
@@ -535,6 +536,32 @@ class TransfersController extends Controller {
         "Transfers were successfully deleted."));
 
     return redirect()->route('masters.index');
+  }
+
+  /**
+   * Return the fields that are exportable for the given selection of transfers.
+   */
+  public function batchExportFields(Request $request)
+  {
+    if ($request->ajax()) {
+      $transferIds = explode(',', $request->ids);
+      $export = new TransfersExport($transferIds);
+      $fields = $export->exportableFields();
+      return view('shared._data-export-fields', compact('fields'));
+    }
+  }
+
+  public function batchExportBuild(Request $request)
+  {
+    if ($request->ajax()) {
+      $transferIds = explode(',', $request->ids);
+      $fields = $request->fields;
+      $export = new TransfersExport($transferIds);
+      $filePath = $export->build($fields);
+      $request->session()->put('exportFilePath', $filePath);
+      $response = array('status'=>'success', 'file'=>$filePath);
+      return response()->json($response);
+    }
   }
 
   private function audioImportDo($data)

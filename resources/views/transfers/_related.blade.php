@@ -32,4 +32,4 @@
     </div>
   </div>
   @endif
-  &nbsp;
+  &nbsp; {{-- Hack to workaround a rendering bug --}}

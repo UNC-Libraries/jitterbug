@@ -262,7 +262,7 @@ junebug = {
       if (!junebug.validateBatchSelection(tableSelection, 'exporting')) {
         return;
       }
-      junebug.openDataExportModal('tranfsers', tableSelection);
+      junebug.openDataExportModal('transfers', tableSelection);
     });
 
     $('#transfers-batch-delete').click(function(event) {

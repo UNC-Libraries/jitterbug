@@ -24,6 +24,8 @@
         </div>
       </div>
 
+      @include('shared._data-export-modal', ['route' => 'transfers.batch.export.build', 'title' => 'Export Transfers'])
+
       {!! Form::open(array('route' => array('transfers.batch.destroy'), 'method' => 'delete', 'id' => 'batch-delete-form', 'style' => 'display: inline;')) !!}
       <div id="confirm-batch-delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirmDelete" aria-hidden="true">
         <div class="modal-dialog modal-sm">

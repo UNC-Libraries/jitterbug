@@ -88,6 +88,12 @@ Route::put('transfers/batch',
   'TransfersController@batchUpdate')->name('transfers.batch.update');
 Route::delete('transfers/batch', 
   'TransfersController@batchDestroy')->name('transfers.batch.destroy');
+Route::post('transfers/batch/export-fields', 
+  'TransfersController@batchExportFields')->name('transfers.batch.export.fields');
+Route::post('transfers/batch/export-build', 
+  'TransfersController@batchExportBuild')->name('transfers.batch.export.build');
+Route::post('transfers/batch/export-download',
+  'TransfersController@batchExportDownload')->name('transfers.batch.export.download'); 
 Route::post('transfers/audio-import-upload', 
 	'TransfersController@audioImportUpload')->name('transfers.audio.import.upload');
 Route::post('transfers/audio-import-execute', 
