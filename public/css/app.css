@@ -5170,7 +5170,7 @@ label {
 .popover-content {
   padding: 4px 10px; }
 
-tr:hover {
+tbody > tr:hover {
   background-color: #f7f7f7; }
 
 /* 

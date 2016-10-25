@@ -748,7 +748,7 @@ label {
   padding: 4px 10px;
 }
 
-tr:hover {
+tbody > tr:hover {
  background-color: $content-bg;
 }
 
