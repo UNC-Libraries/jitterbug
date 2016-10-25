@@ -262,19 +262,19 @@ Data Panel
   font-size: .9rem;
 }
 
-#data-panel .input-group-addon {
-  background-color: #fff;
-  border: 1px solid $gray-light;
-  border-right: 0;
-}
-
-#data-panel .form-control {
-  border: 1px solid $gray-light;
-}
-
 #data-panel .search-container {
   float: right;
   width: 275px;
+}
+
+#data-panel .search-container .form-control {
+  border: 1px solid $gray-light;
+}
+
+#data-panel .search-container .input-group-addon {
+  background-color: #fff;
+  border: 1px solid $gray-light;
+  border-right: 0;
 }
 
 #data-panel .data-footer .record-count {

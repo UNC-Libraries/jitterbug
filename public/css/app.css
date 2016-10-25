@@ -4777,17 +4777,17 @@ Data Panel
   padding: 0;
   font-size: .9rem; }
 
-#data-panel .input-group-addon {
-  background-color: #fff;
-  border: 1px solid #e0e0e0;
-  border-right: 0; }
-
-#data-panel .form-control {
-  border: 1px solid #e0e0e0; }
-
 #data-panel .search-container {
   float: right;
   width: 275px; }
+
+#data-panel .search-container .form-control {
+  border: 1px solid #e0e0e0; }
+
+#data-panel .search-container .input-group-addon {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-right: 0; }
 
 #data-panel .data-footer .record-count {
   font-size: .9rem;

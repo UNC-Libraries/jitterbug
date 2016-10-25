@@ -27,6 +27,9 @@ class TransfersExport extends Export {
     'Stylus' => 'stylus',
     'Cartridge' => 'cartridge',
     'First Sound' => 'first_sound',
+    // This actually represents mulitiple fields
+    // from the associated cut model.
+    'Cut Information' => 'cut',
   );
 
   // For future use
@@ -75,7 +78,6 @@ class TransfersExport extends Export {
     if ($types->contains('Video')) {
       $fields[1] = array_merge($fields[1], $this->videoExportFields);
     }
-    $fields[1] = array_merge($fields[1], array('Cut Info' => 'cut'));
     return $fields;
   }
 
