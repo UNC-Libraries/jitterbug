@@ -4767,8 +4767,7 @@ Data Panel
 #data-panel table td {
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
-  padding-left: .3rem; }
+  text-overflow: ellipsis; }
 
 #data-panel table tr.selected {
   background-color: #e8e8e8; }
