@@ -1,5 +1,5 @@
 <div id="data-container">
-  <table id="data" class="table table-sm table-hover">
+  <table id="masters-data" class="table table-sm table-hover">
     <thead>
       <tr>
         <th width="12%">Call Number</th>

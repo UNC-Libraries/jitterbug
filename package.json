@@ -5,6 +5,7 @@
     "laravel-elixir": "*",
     "bootstrap": "~4.0.0-alpha.2",
     "js-cookie": "~2.1.1",
-    "devbridge-autocomplete": "1.2.25"
+    "devbridge-autocomplete": "1.2.25",
+    "colresizable": "1.6.0"
   }
 }

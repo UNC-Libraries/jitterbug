@@ -2,12 +2,12 @@
 
 @section('content')
 <div class="row">
-  <div id="filter-panel" class="col-md-3 panel">
+  <div id="filter-panel" class="col-xs-3 panel">
     @include('shared._filter-list', ['name' => 'type', 'filters' => $types])
     @include('shared._filter-list', ['name' => 'collection', 'filters' => $collections, 'style' => 'height: 268px;'])
     @include('shared._filter-list', ['name' => 'format', 'filters' => $formats, 'style' => 'height: 250px;'])
   </div>
-  <div id="data-panel" class="col-md-9 panel">
+  <div id="data-panel" class="col-xs-9 panel">
     <div class="top-controls">
       <div style="float: left;">
         <a id="items-new" class="btn btn-sm btn-secondary" style="margin-right: 5px;" href="{{ route('items.create') }}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> New</a>

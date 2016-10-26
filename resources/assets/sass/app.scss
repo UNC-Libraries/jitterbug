@@ -239,6 +239,9 @@ Data Panel
 }
 
 #data-panel table th {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   border-top: none;
 }
 
@@ -246,6 +249,7 @@ Data Panel
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  padding-left: .3rem;
 }
 
 #data-panel table tr.selected {
@@ -310,9 +314,9 @@ Data Panel
 
 #data-panel .pagination li.page-item.active a {
   color: $gray-dark;
-  background-color: #fff;
+  background-color: #f7f7f7;
   border-radius: $border-radius-sm;
-  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
+  border: solid 1px $gray-light;
   text-decoration: none;
 }
 
@@ -758,13 +762,13 @@ tbody > tr:hover {
  * same height.
  */
 #content {
-  background-color: $content-bg;
-  /*display: table;*/
+  background-color: #fff;
+  display: table;
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
 }
 
 #content .panel {
-  float: none;
+  float: left;
   display: table-cell;
   vertical-align: top;
 }

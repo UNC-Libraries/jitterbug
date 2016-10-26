@@ -849,12 +849,19 @@ junebug = {
       $.get('/' + resource, query, function(data) {
         $('#data-container').replaceWith(data);
 
+        var dataEl = '#' + resource + '-data';
+        // Initialize the colResizable plugin
+        $(dataEl).colResizable({partialRefresh:true, postbackSafe: true});
+        // colResizable strips left and right padding off of table cells,
+        // which looks like crap so we will add it back here.
+        $(dataEl + ' td').attr('style', 'padding: .3rem !important');
+
         tableSelection.init();
 
         $.publish('dataLoaded');
 
         // Bind click handlers to all data table rows
-        $('#data tr[role="button"]').click(function(event) {
+        $(dataEl + ' tr[role="button"]').click(function(event) {
           tableSelection.clear();
           window.location.href='/' + resource + '/' + $(this).data('id');
         });
