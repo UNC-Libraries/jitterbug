@@ -776,7 +776,7 @@ junebug = {
           key:resourceName + 'TableSelection',
           resource: resourceName,
           location:'session',
-          selector:'#data tr[role="button"]',
+          selector: '#' + resourceName + '-data tr[role="button"]',
           countSelector:'.selection-count'});
       tableSelection.init();
       tableSelection.store();
@@ -851,10 +851,8 @@ junebug = {
 
         var dataEl = '#' + resource + '-data';
         // Initialize the colResizable plugin
-        $(dataEl).colResizable({partialRefresh:true, postbackSafe: true});
-        // colResizable strips left and right padding off of table cells,
-        // which looks like crap so we will add it back here.
-        $(dataEl + ' td').attr('style', 'padding: .3rem !important');
+        $(dataEl).colResizable(
+          {partialRefresh: true, postbackSafe: true, removePadding: false});
 
         tableSelection.init();
 
