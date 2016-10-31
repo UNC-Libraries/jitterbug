@@ -24,7 +24,7 @@ class TransferRequest extends Request {
    */
   public function rules()
   {
-    // Add rules for base audio visual item
+    // Add rules for base transfer
     $rules = array();
     $this->addRuleIfNotMixed($rules, 'preservationMasterId',
       'required|exists:preservation_masters,id');

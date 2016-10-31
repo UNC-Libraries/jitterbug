@@ -13,7 +13,30 @@ class Cut extends Model {
 
   protected $dates = ['deleted_at'];
 
+  protected $revisionFormattedFields = array(
+    'side' => 'isEmpty:nothing|%s',
+    'cut_number' => 'isEmpty:nothing|%s',
+    'title' => 'isEmpty:nothing|%s',
+    'performer_composer' => 'isEmpty:nothing|%s',
+  );
+
+  protected $revisionFormattedFieldNames = array(
+    'call_number' => 'call number',
+    'preservation_master_id' => 'preservation master',
+    'cut_number' => 'cut number',
+    'performer_composer' => 'performer composer',
+  );
+
+  protected $fillable = array('callNumber',
+    'preservationMasterId', 'side', 'cutNumber',
+    'side', 'title', 'performerComposer');
+
   protected $revisionCreationsEnabled = true;
+
+  public function preservationMaster()
+  {
+    return $this->belongsTo('Junebug\Models\PreservationMaster');
+  }
 
   public function transfer()
   {

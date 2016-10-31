@@ -356,14 +356,13 @@ class TransfersController extends Controller {
     return parent::rangeFor($request, $this->solrTransfers);
   }
 
-  public function update($id, TransferRequest $request)
+  public function update(TransferRequest $request, $id)
   {
     $input = $request->all();
     $transfer = Transfer::findOrFail($id);
     $subclass = $transfer->subclass;
 
-    $master = 
-      PreservationMaster::where('id', $input['preservationMasterId'])->first();
+    $master = PreservationMaster::findOrFail($input['preservationMasterId']);
     $transfer->callNumber = $master->callNumber;
     $transfer->fill($input);
     $subclass->fill($input['subclass']); 

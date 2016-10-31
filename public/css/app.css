@@ -5176,16 +5176,17 @@ label {
 tbody > tr:hover {
   background-color: #f7f7f7; }
 
-/* 
- * #content and #content .panel are hacks
- * to workaround columns not displaying the 
- * same height.
- */
 #content {
   background-color: #f7f7f7;
-  /* display: table; */
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5); }
 
+/*
+ * This affects index pages, which have 2 columns:
+ * filters on the left and data on the right. In
+ * order to get the two columns to display as the
+ * same height, we'll use the display: table-cell
+ * style.
+ */
 #content .panel {
   float: none;
   display: table-cell;

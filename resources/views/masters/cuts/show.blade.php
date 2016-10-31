@@ -17,6 +17,14 @@
     <div class="col-xs-6">
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
+          PM #
+        </div>
+        <div class="col-xs-7 detail-value">
+          {{$cut->preservationMasterId}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-4 col-xs-offset-1 detail-label">
           Call Number
         </div>
         <div class="col-xs-7 detail-value">
@@ -94,7 +102,7 @@
   </div>
   <div class="row last">
     <div class="col-xs-12 actions">
-      <a class="btn btn-sm btn-secondary" role="button" href="{{ route('masters.cuts.edit', [$master->id, $cut->id]) }}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+      <a class="btn btn-sm btn-secondary" role="button" href="{{ route('masters.cuts.edit', array($master->id, $cut->id)) }}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
       <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target=".confirm-delete-modal" style="outline: none; float: right;"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></button>
 
       {!! Form::open(array('route' => array('masters.cuts.destroy', $master->id, $cut->id), 'method' => 'delete', 'style' => 'display: inline;')) !!}
@@ -109,10 +117,10 @@
               <h4 id="confirmDelete" class="modal-title">Confirm Delete</h4>
             </div>
             <div class="modal-body">
-              <strong>Yikes! Are you sure?</strong> @if (count($cut->transfer()) > 0 )This item has related transfers.@endif Do you want to delete just this cut, or do you want to delete this cut <strong>and all</strong> associated records? This cannot be undone.
+              <strong>Yikes! Are you sure?</strong> @if (count($cut->transfer()) > 0 )This item has a related transfer.@endif Do you want to delete just this cut, or do you want to delete this cut <strong>and all</strong> associated records? This cannot be undone.
             </div>
             <div class="modal-footer">
-              <button name="deleteCommand" value="item" type="submit" class="btn btn-sm btn-warning" style="outline: none;"><i class="fa fa-trash" aria-hidden="true"></i> Delete Item Only</button>
+              <button name="deleteCommand" value="cut" type="submit" class="btn btn-sm btn-warning" style="outline: none;"><i class="fa fa-trash" aria-hidden="true"></i> Delete Cut Only</button>
               <button name="deleteCommand" value="all" type="submit" class="btn btn-sm btn-danger" style="outline: none;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Delete All</button>
             </div>
 

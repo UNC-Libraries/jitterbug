@@ -99,6 +99,11 @@ JUNEBUG = {
     show: function() {
       junebug.initRevisionHistory();
       junebug.initRelatedTransfers();
+    },
+
+    edit: function() {
+      junebug.initRevisionHistory();
+      junebug.initRelatedTransfers();
     }
   },
 
