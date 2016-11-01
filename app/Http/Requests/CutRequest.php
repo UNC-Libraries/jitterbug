@@ -30,6 +30,7 @@ class CutRequest extends Request {
       'cutNumber' => 'integer',
       'title' => 'max:255',
       'performerComposer' => 'max:255',
+      'pmStartTime' => 'max:10',
     ];
   }
 
@@ -48,29 +49,8 @@ class CutRequest extends Request {
       'side.max' => 'The side field must be less than :max characters.',
       'title.max' => 'The title field must be less than :max characters.',
       'performerComposer.max' => 'The performer composer field must be less than :max characters.',
+      'pmStartTime.max' => 'The PM start time must be less than :max characters.',
     ];
-  }
-
-  public function validator($factory)
-  {
-    // call allWithoutMixed() here?
-    $validator = $factory->make(
-      $this->all(), $this->rules(), $this->messages(), $this->attributes()
-    );
-
-    $validator->after(function($validator) {
-      if ($this->typeMismatch()) {
-        $validator->errors()->add('preservationMasterId', 'The preservation master type must be audio.');
-      }
-    });
-
-    return $validator;
-  }
-
-  private function typeMismatch()
-  {
-    $master = PreservationMaster::find($this->input('preservationMasterId'));
-    return $master !== null && 'Audio' !== $master->type;
   }
 
 }

@@ -18,6 +18,7 @@ class Cut extends Model {
     'cut_number' => 'isEmpty:nothing|%s',
     'title' => 'isEmpty:nothing|%s',
     'performer_composer' => 'isEmpty:nothing|%s',
+    'pm_start_time' => 'isEmpty:nothing|%s',
   );
 
   protected $revisionFormattedFieldNames = array(
@@ -25,11 +26,12 @@ class Cut extends Model {
     'preservation_master_id' => 'preservation master',
     'cut_number' => 'cut number',
     'performer_composer' => 'performer composer',
+    'pm_start_time' => 'PM start time',
   );
 
   protected $fillable = array('callNumber',
-    'preservationMasterId', 'side', 'cutNumber',
-    'side', 'title', 'performerComposer');
+    'preservationMasterId', 'transferId', 'side', 'cutNumber',
+    'side', 'title', 'performerComposer', 'pmStartTime');
 
   protected $revisionCreationsEnabled = true;
 

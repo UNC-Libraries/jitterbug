@@ -13,6 +13,7 @@ use Junebug\Http\Requests\CutRequest;
 use Junebug\Models\AudioVisualItem;
 use Junebug\Models\Cut;
 use Junebug\Models\PreservationMaster;
+use Junebug\Models\Transfer;
 use Junebug\Support\SolariumProxy;
 
 class CutsController extends Controller
@@ -48,6 +49,55 @@ class CutsController extends Controller
   }
 
   /**
+   * Display the form for creating a new cut.
+   */
+  public function create(Request $request)
+  {
+    $transfer = Transfer::findOrFail($request->transferId);
+    $master = $transfer->preservationMaster;
+    $cut = new Cut;
+    $cut->callNumber = $transfer->callNumber;
+    $cut->preservationMasterId = $transfer->preservationMasterId;
+    $cut->transferId = $transfer->id;
+
+    return view('masters.cuts.create', compact('cut', 'master', 'transfer'));
+  }
+
+  /**
+   * Save the details of a new cut.
+   */
+  public function store(CutRequest $request)
+  {
+    $cut = null;
+
+    // Update MySQL
+    DB::transaction(
+      function () use ($request, &$cut) {
+
+      $transactionId = Uuid::uuid4();
+      DB::statement("set @transaction_id = '$transactionId';");
+
+      $cut = new Cut;
+      $cut->fill($request->all());
+      $cut->save();
+
+      DB::statement('set @transaction_id = null;');
+    });
+
+    // Update Solr
+    $item = AudioVisualItem::where('call_number', $cut->callNumber)->first();
+    $this->solrItems->update($item);
+    $this->solrMasters->update($cut->preservationMaster);
+    $this->solrTransfers->update($cut->transfer);
+
+    $request->session()->put('alert', array('type' => 'success', 'message' => 
+      '<strong>Done!</strong> Cut was successfully created.'));
+
+    return redirect()->route('masters.cuts.show', 
+      [$cut->preservationMasterId, $cut->transfer->id]);
+  }
+
+  /**
    * Display the form for editing a cut.
    */
   public function edit(Request $request, $masterId, $cutId)
@@ -58,6 +108,9 @@ class CutsController extends Controller
     return view('masters.cuts.edit', compact('master', 'cut', 'transfer'));
   }
 
+  /**
+   * Update the details of a cut.
+   */
   public function update(CutRequest $request, $masterId, $cutId)
   {
     $input = $request->all();
@@ -76,7 +129,7 @@ class CutsController extends Controller
 
       $cut->save();
 
-      DB::statement('set @transaction_id = null;');      
+      DB::statement('set @transaction_id = null;');
     });
 
     // Update Solr

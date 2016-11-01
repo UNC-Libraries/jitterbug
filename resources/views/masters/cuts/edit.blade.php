@@ -14,15 +14,15 @@
   </div>
 
   {!! Form::model($cut, array('route' => array('masters.cuts.update', $master->id, $cut->id), 'method' => 'put')) !!}
-  {!! Form::hidden('id') !!}
 
   <div class="row first detail-container">
     {{-- Left Column --}}
     <div class="col-xs-6">
-      @include('masters.cuts._form')
+      @include('masters.cuts._form-left')
     </div>
     {{-- Right Column --}}
     <div class="col-xs-6">
+      @include('masters.cuts._form-right')
       <div class="row">
         <div class="col-xs-4 detail-label">
           Created On

@@ -51,29 +51,39 @@
         </div>
       </div>
       @endif
+    </div>
+    {{-- Right Column --}}
+    <div class="col-xs-6">
       @if ($cut->title)
       <div class="row">
-        <div class="col-xs-4 col-xs-offset-1 detail-label">
+        <div class="col-xs-4 detail-label">
           Title
         </div>
-        <div class="col-xs-7 detail-value">
+        <div class="col-xs-8 detail-value">
           {{$cut->title}}
         </div>
       </div>
       @endif
       @if ($cut->performerComposer)
       <div class="row">
-        <div class="col-xs-4 col-xs-offset-1 detail-label">
+        <div class="col-xs-4 detail-label">
           Performer Composer
         </div>
-        <div class="col-xs-7 detail-value">
+        <div class="col-xs-8 detail-value">
           {{$cut->performerComposer}}
         </div>
       </div>
       @endif
-    </div>
-    {{-- Right Column --}}
-    <div class="col-xs-6">
+      @if ($cut->pmStartTime)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          PM Start Time
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$cut->pmStartTime}}
+        </div>
+      </div>
+      @endif
       <div class="row">
         <div class="col-xs-4 detail-label">
           Created On

@@ -850,7 +850,9 @@ junebug = {
         $('#data-container').replaceWith(data);
 
         var dataEl = '#' + resource + '-data';
-        // Initialize the colResizable plugin
+        // Initialize the colResizable plugin. Note that we're using a very
+        // slightly modified version that doesn't set an explict width of the
+        // grip container element.
         $(dataEl).colResizable(
           {partialRefresh: true, postbackSafe: true, removePadding: false});
 
