@@ -201,6 +201,14 @@ class SolariumProxy {
     // they reside, not on the transfer
     $this->appendCollectionAndFormat($transfer->callNumber, $doc);
 
+    $cut = Cut::where('transfer_id', $transfer->id)->first();
+    if ($cut !== null) {
+      $doc->setField('cutId', $cut->id, null, 'set');
+      $doc->setField('cutTitle', $cut->title, null, 'set');
+      $doc->setField('cutPerformerComposer', 
+        $cut->performerComposer, null, 'set');
+    }
+
     $update->addDocument($doc);
   }
 

@@ -4,7 +4,7 @@
 <div id="detail">
   <div class="row">
     <div class="col-xs-12">
-      {!! Breadcrumbs::render('items.create', $item) !!}
+      {!! Breadcrumbs::render('items.create') !!}
     </div>
   </div>
   <div class="row">

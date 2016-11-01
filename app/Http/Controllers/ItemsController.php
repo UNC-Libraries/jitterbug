@@ -579,7 +579,7 @@ class ItemsController extends Controller
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>It\'s done!</strong> ' . 
-        "Audio visual items were successfully deleted."));
+        'Audio visual items were successfully deleted.'));
 
     return redirect()->route('items.index');
   }

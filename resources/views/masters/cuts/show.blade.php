@@ -127,7 +127,7 @@
               <h4 id="confirmDelete" class="modal-title">Confirm Delete</h4>
             </div>
             <div class="modal-body">
-              <strong>Yikes! Are you sure?</strong> @if (count($cut->transfer()) > 0 )This item has a related transfer.@endif Do you want to delete just this cut, or do you want to delete this cut <strong>and all</strong> associated records? This cannot be undone.
+              <strong>Are you sure?</strong> This cut has a related transfer. Do you want to delete just this cut, or do you want to delete this cut and the associated transfer? This cannot be undone.
             </div>
             <div class="modal-footer">
               <button name="deleteCommand" value="cut" type="submit" class="btn btn-sm btn-warning" style="outline: none;"><i class="fa fa-trash" aria-hidden="true"></i> Delete Cut Only</button>

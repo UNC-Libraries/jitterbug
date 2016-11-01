@@ -468,8 +468,7 @@ class TransfersController extends Controller {
     }
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
-        '<strong>Gone!</strong> ' . 
-        "Transfer was successfully deleted."));
+        '<strong>Gone!</strong> Transfer was successfully deleted.'));
 
     return redirect()->route('transfers.index');
   }
@@ -531,8 +530,7 @@ class TransfersController extends Controller {
     }
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
-        '<strong>Voila!</strong> ' . 
-        "Transfers were successfully deleted."));
+        '<strong>Voila!</strong> Transfers were successfully deleted.'));
 
     return redirect()->route('masters.index');
   }

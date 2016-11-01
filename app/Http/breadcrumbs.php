@@ -27,10 +27,10 @@ Breadcrumbs::register('items.edit', function($breadcrumbs, $item)
 });
 
 // Items / Create Item
-Breadcrumbs::register('items.create', function($breadcrumbs, $item)
+Breadcrumbs::register('items.create', function($breadcrumbs)
 {
     $breadcrumbs->parent('items.index');
-    $breadcrumbs->push('Create Item', route('items.create', $item->id));
+    $breadcrumbs->push('Create Item', route('items.create'));
 });
 
 /*
@@ -74,17 +74,17 @@ Breadcrumbs::register('masters.cuts.edit', function($breadcrumbs, $master, $cut)
 });
 
 // Masters / View Master / Create Cut
-Breadcrumbs::register('masters.cuts.create', function($breadcrumbs, $master, $cut)
+Breadcrumbs::register('masters.cuts.create', function($breadcrumbs, $master)
 {
     $breadcrumbs->parent('masters.show', $master);
-    $breadcrumbs->push('Create Cut', route('masters.cuts.create', [$master->id, $cut->id]));
+    $breadcrumbs->push('Create Cut', route('masters.cuts.create', $master->id));
 });
 
 // Masters / Create Master
-Breadcrumbs::register('masters.create', function($breadcrumbs, $master)
+Breadcrumbs::register('masters.create', function($breadcrumbs)
 {
     $breadcrumbs->parent('masters.index');
-    $breadcrumbs->push('Create Master', route('masters.create', $master->id));
+    $breadcrumbs->push('Create Master', route('masters.create'));
 });
 
 /*
@@ -114,9 +114,9 @@ Breadcrumbs::register('transfers.edit', function($breadcrumbs, $transfer)
 });
 
 // Transfers / Create Transfer
-Breadcrumbs::register('transfers.create', function($breadcrumbs, $transfer)
+Breadcrumbs::register('transfers.create', function($breadcrumbs)
 {
     $breadcrumbs->parent('transfers.index');
-    $breadcrumbs->push('Create Transfer', route('transfers.create', $transfer->id));
+    $breadcrumbs->push('Create Transfer', route('transfers.create'));
 });
 

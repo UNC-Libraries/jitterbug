@@ -93,8 +93,7 @@ class CutsController extends Controller
     $request->session()->put('alert', array('type' => 'success', 'message' => 
       '<strong>Done!</strong> Cut was successfully created.'));
 
-    return redirect()->route('masters.cuts.show', 
-      [$cut->preservationMasterId, $cut->transfer->id]);
+    return redirect()->route('transfers.show', $cut->transfer);
   }
 
   /**
@@ -145,6 +144,45 @@ class CutsController extends Controller
 
     return redirect()->route('masters.cuts.show', [$masterId, $cutId]);
 
+  }
+
+  public function destroy(Request $request, $masterid, $cutId)
+  {
+    $cut = Cut::findOrFail($cutId);
+
+    $command = $request->deleteCommand;
+
+    // Update MySQL
+    DB::transaction(function () use ($cut, $command) {
+      $transactionId = Uuid::uuid4();
+      DB::statement("set @transaction_id = '$transactionId';");
+      
+      if ($command === 'all') {
+        $cut->transfer->delete();
+      }
+      $cut->delete();
+
+      DB::statement('set @transaction_id = null;');      
+    });
+
+    // Update Solr
+    $item = AudioVisualItem::where('call_number', $cut->callNumber)->first();
+    $this->solrItems->update($item);
+    $this->solrMasters->update($cut->preservationMaster);
+    if ($command !== 'all') {
+      $this->solrTransfers->update($cut->transfer);
+    } else {
+      $this->solrTransfers->delete($cut->transfer);
+    }
+
+    $request->session()->put('alert', array('type' => 'success', 'message' => 
+        '<strong>Gone!</strong> Cut was successfully deleted.'));
+
+    if ($command === 'all') {
+      return redirect()->route('masters.show', $cut->preservationMaster);
+    } else {
+      return redirect()->route('transfers.show', $cut->transfer);
+    }
   }
 
 }
