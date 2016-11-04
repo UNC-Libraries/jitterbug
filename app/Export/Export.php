@@ -117,7 +117,7 @@ abstract class Export {
    *
    * @return array
    */
-  abstract protected function exportableFields();
+  abstract public function exportableFields();
 
   /**
    * Get the value for the specified field from the specified model instance.

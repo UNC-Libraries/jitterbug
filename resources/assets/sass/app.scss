@@ -491,6 +491,8 @@ Data Import
   height: 90px;
 }
 
+// Audio Import
+
 #audio-import-dialog {
   width: 400px;
   transition: width .5s;
@@ -519,6 +521,38 @@ Data Import
 
 #audio-import-result-container {
   width: 665px;
+}
+
+// Video Import
+
+#video-import-dialog {
+  width: 400px;
+  transition: width .5s;
+}
+
+#video-import-dialog-content {
+  width: 400px;
+  transition: width .5s;
+}
+
+#video-import-step-2 .modal-body {
+  transition: height .5s;
+  overflow-x: scroll;
+  overflow-y: scroll;
+}
+
+#video-import-step-3 .modal-body {
+  transition: height .5s;
+  overflow-x: scroll;
+  overflow-y: scroll;
+}
+
+#video-upload-data-container {
+  width: 1580px;
+}
+
+#video-import-result-container {
+  width: 1580px;
 }
 
 .empty-required {

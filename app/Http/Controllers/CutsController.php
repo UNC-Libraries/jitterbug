@@ -146,6 +146,9 @@ class CutsController extends Controller
 
   }
 
+  /**
+   * Delete a cut and potentially a transfer.
+   */
   public function destroy(Request $request, $masterid, $cutId)
   {
     $cut = Cut::findOrFail($cutId);

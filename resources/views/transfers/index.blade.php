@@ -19,7 +19,7 @@
             <a id="transfers-batch-delete" class="dropdown-item" href="#">Delete</a>
             <div class="dropdown-divider"></div>
             <a id="transfers-batch-audio-import" class="dropdown-item" href="#">Audio Import</a>
-            <a id="transfers-batch-vendor-import" class="dropdown-item" href="#">Vendor Import</a>
+            <a id="transfers-batch-video-import" class="dropdown-item" href="#">Video Import</a>
           </div>
         </div>
       </div>
@@ -51,76 +51,8 @@
       </div>
       {!! Form::close() !!}
 
-      <div id="audio-import-modal" class="modal fade" tabindex="-1" role="dialog">
-        <div id="audio-import-dialog" class="modal-dialog modal-sm">
-          <div id="audio-import-dialog-content" class="modal-content">
-
-            <div id="audio-import-step-1">
-              {!! Form::open(array('route' => 'transfers.audio.import.upload', 'files' => true, 'id' => 'audio-upload-form')) !!}
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Audio Import - Step 1 of 3</h4>
-              </div>
-              <div class="modal-body import-modal-body">
-                <div class="file-select-label">File to Import (.csv, UTF-8, quoted text)</div>
-                <div class="input-group">
-                  <span class="input-group-btn">
-                    <label class="btn btn-sm btn-secondary btn-file-select">Browse<input id="audio-import-file" name="audio-import-file" type="file" style="display: none;">
-                    </label>
-                  </span>
-                  <input id="audio-import-filename" type="text" class="form-control form-control-sm" placeholder="No file selected" style="background-color: #fff" readonly>
-                </div>
-                <div id="audio-upload-form-error" class="text-danger upload-form-error"></div>
-              </div>
-              <div class="modal-footer">
-                <button name="upload" type="submit" class="btn btn-sm btn-secondary" style="outline: none;"><i class="fa fa-upload" aria-hidden="true"></i> Upload and Continue</button>
-                <i id="audio-upload-spinner" class="fa fa-spinner fa-pulse import-spinner" style="display: none;"></i>
-              </div>
-              {!! Form::close() !!}
-            </div>
-
-            <div id="audio-import-step-2" style="display: none;">
-              {!! Form::open(array('route' => 'transfers.audio.import.execute', 'id' => 'audio-import-form')) !!}
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Audio Import - Step 2 of 3</h4>
-              </div>
-              <div class="modal-body import-modal-body">
-                <div id="audio-upload-data-container"></div>
-              </div>
-              <div class="modal-footer">
-                <div class="success-actions">
-                  <button name="import" type="submit" class="btn btn-sm btn-primary" style="outline: none; margin-right: .5rem"><i class="fa fa-bolt" aria-hidden="true"></i> Proceed with Import</button><a class="reset" href="#">or Start Over</a><i id="audio-import-spinner" class="fa fa-spinner fa-pulse import-spinner" style="display: none;"></i>
-                </div>
-                <div class="failure-actions" style="display: none;">
-                  <button type="submit" class="btn btn-sm btn-secondary reset" style="outline: none;"> Start Over</button>
-                </div>
-              </div>
-              {!! Form::close() !!}
-            </div>
-
-            <div id="audio-import-step-3" style="display: none;">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Audio Import - Step 3 of 3</h4>
-              </div>
-              <div class="modal-body import-modal-body">
-                <div id="audio-import-result-container"></div>
-              </div>
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-sm btn-secondary reset" style="outline: none;"> Start Over</button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
+      @include('transfers._data-import-modal', ['type' => 'audio'])
+      @include('transfers._data-import-modal', ['type' => 'video'])
 
       <div class="search-container">
         <div class="input-group">

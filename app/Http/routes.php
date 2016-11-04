@@ -98,6 +98,10 @@ Route::post('transfers/audio-import-upload',
 	'TransfersController@audioImportUpload')->name('transfers.audio.import.upload');
 Route::post('transfers/audio-import-execute', 
   'TransfersController@audioImportExecute')->name('transfers.audio.import.execute');
+Route::post('transfers/video-import-upload', 
+  'TransfersController@videoImportUpload')->name('transfers.video.import.upload');
+Route::post('transfers/video-import-execute', 
+  'TransfersController@videoImportExecute')->name('transfers.video.import.execute');
 Route::resource('transfers', 'TransfersController');
 
 /*

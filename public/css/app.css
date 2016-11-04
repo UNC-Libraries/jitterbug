@@ -4988,6 +4988,30 @@ Data Import
 #audio-import-result-container {
   width: 665px; }
 
+#video-import-dialog {
+  width: 400px;
+  transition: width .5s; }
+
+#video-import-dialog-content {
+  width: 400px;
+  transition: width .5s; }
+
+#video-import-step-2 .modal-body {
+  transition: height .5s;
+  overflow-x: scroll;
+  overflow-y: scroll; }
+
+#video-import-step-3 .modal-body {
+  transition: height .5s;
+  overflow-x: scroll;
+  overflow-y: scroll; }
+
+#video-upload-data-container {
+  width: 1580px; }
+
+#video-import-result-container {
+  width: 1580px; }
+
 .empty-required {
   border: 1px solid #d16642;
   width: 100%;

@@ -277,6 +277,10 @@ junebug = {
     $('#transfers-batch-audio-import').click(function(event) {
       $('#audio-import-modal').modal('toggle');
     });
+
+    $('#transfers-batch-video-import').click(function(event) {
+      $('#video-import-modal').modal('toggle');
+    });
   },
 
   initTransferTypeControls: function() {
@@ -322,6 +326,38 @@ junebug = {
     });
   },
 
+  initAudioImportModal: function() {
+    junebug.initDataUploadForm('audio');
+    junebug.initDataImportForm('audio');
+
+    // Click handlers for 'start over' links and buttons
+    $('#audio-import-modal .reset').click(function(event) {
+      event.preventDefault();
+      junebug.resetDataImportModal('audio');
+    });
+
+    // Clean up when modal is closed
+    $('#audio-import-modal').on('hide.bs.modal', function () {
+      junebug.resetDataImportModal('audio');
+    });
+  },
+
+  initVideoImportModal: function() {
+    junebug.initDataUploadForm('video');
+    junebug.initDataImportForm('video');
+
+    // Click handlers for 'start over' links and buttons
+    $('#video-import-modal .reset').click(function(event) {
+      event.preventDefault();
+      junebug.resetDataImportModal('video');
+    });
+
+    // Clean up when modal is closed
+    $('#video-import-modal').on('hide.bs.modal', function () {
+      junebug.resetDataImportModal('video');
+    });
+  },
+
   initFileSelect: function() {
     $(':file').change(function() {
       var input = $(this),
@@ -331,56 +367,43 @@ junebug = {
     $('#audio-import-file').on('fileselect', function(event, fileName) {
       $('#audio-import-filename').val(fileName);
     });
-    $('#vendor-import-file').on('fileselect', function(event, fileName) {
-      $('#vendor-import-filename').val(fileName);
+    $('#video-import-file').on('fileselect', function(event, fileName) {
+      $('#video-import-filename').val(fileName);
     });
   },
 
-  initAudioImportModal: function() {
-    junebug.initAudioUploadForm();
-    junebug.initAudioImportForm();
-
-    // Click handlers for 'start over' links and buttons
-    $('#audio-import-modal .reset').click(function(event) {
-      event.preventDefault();
-      junebug.resetAudioImportModal();
-    });
-
-    // Clean up when modal is closed
-    $('#audio-import-modal').on('hidden.bs.modal', function () {
-      junebug.resetAudioImportModal();
-    });
+  resetDataImportModal: function(type) {
+    $('#' + type + '-import-file').val('');
+    $('#' + type + '-import-filename').val('');
+    $('#' + type + '-upload-form-error').html('').hide();
+    $('#' + type + '-import-dialog').width(400);
+    $('#' + type + '-import-dialog-content').width(400);
+    $('#' + type + '-import-step-2 .modal-body').height(80);
+    // In order to scroll a div, it must be visible
+    $('#' + type + '-import-step-2').show();
+    $('#' + type + '-import-step-2 .modal-body').scrollTop(0);
+    $('#' + type + '-import-step-2 .modal-body').scrollLeft(0);
+    $('#' + type + '-import-step-1').show();
+    $('#' + type + '-import-step-2').hide();
+    $('#' + type + '-import-step-2 .success-actions').show();
+    $('#' + type + '-import-step-2 .failure-actions').hide();
+    $('#' + type + '-import-step-3').show();
+    $('#' + type + '-import-step-3 .modal-body').scrollTop(0);
+    $('#' + type + '-import-step-3 .modal-body').scrollLeft(0);
+    $('#' + type + '-import-step-3').hide();
   },
 
-  resetAudioImportModal: function() {
-    $('#audio-import-file').val('');
-    $('#audio-import-filename').val('');
-    $('#audio-upload-form-error').html('').hide();
-    $('#audio-import-dialog').width(400);
-    $('#audio-import-dialog-content').width(400);
-    $('#audio-import-step-2 .modal-body').height(80);
-    // In order to scroll a div, it must not be hidden
-    $('#audio-import-step-2').show();
-    $('#audio-import-step-2 .modal-body').scrollTop(0);
-    $('#audio-import-step-1').show();
-    $('#audio-import-step-2').hide();
-    $('#audio-import-step-2 .success-actions').show();
-    $('#audio-import-step-2 .failure-actions').hide();
-    $('#audio-import-step-3 .modal-body').scrollTop(0);
-    $('#audio-import-step-3').hide();
-  },
-
-  initAudioUploadForm: function() {
+  initDataUploadForm: function(type) {
     junebug.initFileSelect();
 
-    $('#audio-upload-form').submit( function(event) {
+    $('#' + type + '-upload-form').submit( function(event) {
       event.preventDefault();
 
-      if(!junebug.validateUploadForm('audio')) {
+      if(!junebug.validateDataUploadForm(type)) {
         return;
       }
 
-      $('#audio-upload-spinner').show();
+      $('#' + type + '-upload-spinner').show();
       var form = new FormData(this);
       $.ajax({
         url: $(this).attr('action'),
@@ -392,46 +415,46 @@ junebug = {
           console.log('upload success');
           var count = data['count'];
           if (count==0) {
-            $('#audio-import-step-2 .success-actions').hide();
-            $('#audio-import-step-2 .failure-actions').show();
+            $('#' + type + '-import-step-2 .success-actions').hide();
+            $('#' + type + '-import-step-2 .failure-actions').show();
           }
           // Animation is handled via CSS transition
-          $('#audio-import-dialog').width(700);
-          $('#audio-import-dialog-content').width(700);
+          $('#' + type + '-import-dialog').width(700);
+          $('#' + type + '-import-dialog-content').width(700);
           // Delay to let the css transition finish (hack)
           var delay = 500;
           setTimeout(function() {
-            $('#audio-import-step-1').hide();
-            $('#audio-import-step-2').show();
-            $('#audio-import-step-2 .modal-body').height(300);
+            $('#' + type + '-import-step-1').hide();
+            $('#' + type + '-import-step-2').show();
+            $('#' + type + '-import-step-2 .modal-body').height(300);
           }, delay);
 
-          $('#audio-upload-data-container').replaceWith(data['html']);
+          $('#' + type + '-upload-data-container').replaceWith(data['html']);
         },
         error: function (jqXHR, textStatus, error) {
           console.log('upload failure: ' + textStatus);
           if (jqXHR.status==500) {
-            $('#audio-upload-form-error').html('<small>An error occurred \
+            $('#' + type + '-upload-form-error').html('<small>An error occurred \
               while parsing your file. Check that it\'s a \
               valid .csv file.</small>').show();
           } else {
-            $('#audio-upload-form-error').html('<small>An error occurred \
+            $('#' + type + '-upload-form-error').html('<small>An error occurred \
               while uploading your file. Refresh the page and try \
               again.</small>').show();
           }
         },
         complete: function() {
-          $('#audio-upload-spinner').hide();
+          $('#' + type + '-upload-spinner').hide();
         }
       });
     });
   },
 
-  initAudioImportForm: function() {
-    $('#audio-import-form').submit( function(event) {
+  initDataImportForm: function(type) {
+    $('#' + type + '-import-form').submit( function(event) {
       event.preventDefault();
 
-      $('#audio-import-spinner').show();
+      $('#' + type + '-import-spinner').show();
       var form = new FormData(this);
       $.ajax({
         url: $(this).attr('action'),
@@ -442,12 +465,12 @@ junebug = {
         success: function (data) {
           var status = data['status'];
 
-          $('#audio-import-result-container').replaceWith(data['html']);
-          $('#audio-import-step-2').hide();
-          $('#audio-import-step-3 .modal-body').height(300);
-          $('#audio-import-step-3').show();
+          $('#' + type + '-import-result-container').replaceWith(data['html']);
+          $('#' + type + '-import-step-2').hide();
+          $('#' + type + '-import-step-3 .modal-body').height(300);
+          $('#' + type + '-import-step-3').show();
           if (status=='success') {
-            $('#audio-import-step-3 .modal-body').height(50); 
+            $('#' + type + '-import-step-3 .modal-body').height(50); 
           }
           // Initialize popovers which contain any errors
           junebug.initPopovers();
@@ -456,13 +479,13 @@ junebug = {
           console.log('import failure: ' + textStatus);
         },
         complete: function() {
-          $('#audio-import-spinner').hide();
+          $('#' + type + '-import-spinner').hide();
         }
       });
     });
   },
 
-  validateUploadForm: function(type) {
+  validateDataUploadForm: function(type) {
     if ($('#' + type + '-import-file').val() == '' ||
         $('#' + type + '-import-filename').val() == '') {
       $('#' + type + '-upload-form-error').html('<small>Please select a \

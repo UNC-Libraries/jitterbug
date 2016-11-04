@@ -116,6 +116,7 @@ JUNEBUG = {
       junebug.initTransfersIndex();
       junebug.initTableKeyboardShortcuts();
       junebug.initAudioImportModal();
+      junebug.initVideoImportModal();
       junebug.initTransfersNewButton();
       junebug.initTransfersBatchMenu();
       junebug.initBatchDeleteForm();
