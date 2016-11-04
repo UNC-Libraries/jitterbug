@@ -97,6 +97,11 @@ class VideoImport extends Import {
           $bag->add($key, $key . ' must be an integer.');
         }
         // Validate file size is an integer
+        if ($key==='Sound' 
+          && !empty($row[$key]) && !$this->validSound($row[$key])) {
+          $bag->add($key, $key . ' must be either "Mono" or "Stereo".');
+        }
+        // Validate file size is an integer
         if ($key==='Date' 
           && !empty($row[$key]) && !strtotime($row[$key])) {
           $bag->add(
@@ -218,7 +223,7 @@ class VideoImport extends Import {
         // Update the video item
         $videoItem = VideoItem::where('call_number', $callNumber)->first();
         $videoItem->color = $row['Color'];
-        $videoItem->monoStereo = $row['Sound'];
+        $videoItem->monoStereo = $this->toMonoStereo($row['Sound']);
         $videoItem->save();
         $updated++;
 
@@ -245,6 +250,19 @@ class VideoImport extends Import {
   {
     $item = AudioVisualItem::where('call_number', $callNumber)->first();
     return $item !== null && $item->subclassType === 'VideoItem';
+  }
+
+  private function validSound($sound)
+  {
+    return $sound === 'Mono' || $sound === 'Stereo';
+  }
+
+  /**
+   * Trim off all but 'S' or 'M'
+   */
+  private function toMonoStereo($sound)
+  {
+    return substr($sound, 0, 1);
   }
 
 }
