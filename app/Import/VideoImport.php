@@ -96,12 +96,12 @@ class VideoImport extends Import {
           && !empty($row[$key]) && !ctype_digit($row[$key])) {
           $bag->add($key, $key . ' must be an integer.');
         }
-        // Validate file size is an integer
+        // Validate sound is either mono or stereo
         if ($key==='Sound' 
           && !empty($row[$key]) && !$this->validSound($row[$key])) {
           $bag->add($key, $key . ' must be either "Mono" or "Stereo".');
         }
-        // Validate file size is an integer
+        // Validate date is formatted correctly
         if ($key==='Date' 
           && !empty($row[$key]) && !strtotime($row[$key])) {
           $bag->add(
