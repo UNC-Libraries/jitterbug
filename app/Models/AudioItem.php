@@ -1,4 +1,4 @@
-<?php namespace Junebug\Models;
+<?php namespace Jitterbug\Models;
 
 use Log;
 use Illuminate\Database\Eloquent\Model;

@@ -1,4 +1,4 @@
-<?php namespace Junebug\Models;
+<?php namespace Jitterbug\Models;
 
 use Log;
 use Illuminate\Database\Eloquent\Model;
@@ -60,23 +60,23 @@ class AudioVisualItem extends Model {
 
   public function collection()
   {
-    return $this->belongsTo('Junebug\Models\Collection');
+    return $this->belongsTo('Jitterbug\Models\Collection');
   }
 
   public function format()
   {
-    return $this->belongsTo('Junebug\Models\Format');
+    return $this->belongsTo('Jitterbug\Models\Format');
   }
 
   public function preservationMasters()
   {
-    return $this->hasMany('Junebug\Models\PreservationMaster', 
+    return $this->hasMany('Jitterbug\Models\PreservationMaster', 
       'call_number', 'call_number');
   }
 
   public function cuts()
   {
-    return $this->hasMany('Junebug\Models\Cut', 
+    return $this->hasMany('Jitterbug\Models\Cut', 
       'call_number', 'call_number');
   }
 

@@ -1,4 +1,4 @@
-<?php namespace Junebug\Console\Commands;
+<?php namespace Jitterbug\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Inspiring;

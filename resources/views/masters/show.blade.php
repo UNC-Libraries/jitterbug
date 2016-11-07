@@ -154,7 +154,7 @@
       
       {{-- Begin subclass fields --}}
 
-      @if (get_class($master->subclass) === 'Junebug\Models\AudioMaster')
+      @if (get_class($master->subclass) === 'Jitterbug\Models\AudioMaster')
       @if ($master->subclass->samplingRate)
       <div class="row">
         <div class="col-xs-4 detail-label">
@@ -196,7 +196,7 @@
       </div>
       @endif
       @endif
-      @if (get_class($master->subclass) === 'Junebug\Models\FilmMaster')
+      @if (get_class($master->subclass) === 'Jitterbug\Models\FilmMaster')
       @if ($master->subclass->frameSize)
       <div class="row">
         <div class="col-xs-4 detail-label">
@@ -218,7 +218,7 @@
       </div>
       @endif
       @endif
-      @if (get_class($master->subclass) === 'Junebug\Models\VideoMaster')
+      @if (get_class($master->subclass) === 'Jitterbug\Models\VideoMaster')
       @if ($master->subclass->frameSize)
       <div class="row">
         <div class="col-xs-4 detail-label">

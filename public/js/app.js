@@ -1,4 +1,4 @@
-junebug = {
+jitterbug = {
   clearStorage: function() {
     // clear items state
     localStorage.removeItem('itemsSearchField');
@@ -49,7 +49,7 @@ junebug = {
     $.get('/alerts', function(data) {
       if (!$.isEmptyObject(data)) {
         $.ajax({url: '/alerts', type: 'delete'});
-        junebug.displayAlert(data['type'],data['message']);
+        jitterbug.displayAlert(data['type'],data['message']);
       }
     });
   },
@@ -79,31 +79,31 @@ junebug = {
 
   initItemsNewButton: function() {
     $('#items-new').click(function(event) {
-      junebug.tableSelection.clear();
+      jitterbug.tableSelection.clear();
     });
   },
 
   initItemsBatchMenu: function() {
     $('#items-batch-edit').click(function(event) {
-      var tableSelection = junebug.tableSelection;
-      if (!junebug.validateBatchSelection(tableSelection, 'editing', 500)) {
+      var tableSelection = jitterbug.tableSelection;
+      if (!jitterbug.validateBatchSelection(tableSelection, 'editing', 500)) {
         return;
       }
-      junebug.submitBatchEditForm('items', tableSelection);
+      jitterbug.submitBatchEditForm('items', tableSelection);
     });
 
-    junebug.initDataExportModal('items');
+    jitterbug.initDataExportModal('items');
     $('#items-batch-export').click(function(event) {
-      var tableSelection = junebug.tableSelection;
-      if (!junebug.validateBatchSelection(tableSelection, 'exporting')) {
+      var tableSelection = jitterbug.tableSelection;
+      if (!jitterbug.validateBatchSelection(tableSelection, 'exporting')) {
         return;
       }
-      junebug.openDataExportModal('items', tableSelection);
+      jitterbug.openDataExportModal('items', tableSelection);
     });
 
     $('#items-batch-delete').click(function(event) {
-      var tableSelection = junebug.tableSelection;
-      if (!junebug.validateBatchSelection(tableSelection, 'deleting', 100)) {
+      var tableSelection = jitterbug.tableSelection;
+      if (!jitterbug.validateBatchSelection(tableSelection, 'deleting', 100)) {
         return;
       }
       $('#confirm-batch-delete-modal').modal('toggle');
@@ -183,31 +183,31 @@ junebug = {
 
   initMastersNewButton: function() {
     $('#masters-new').click(function(event) {
-      junebug.tableSelection.clear();
+      jitterbug.tableSelection.clear();
     });
   },
 
   initMastersBatchMenu: function() {
     $('#masters-batch-edit').click(function(event) {
-      var tableSelection = junebug.tableSelection;
-      if (!junebug.validateBatchSelection(tableSelection, 'editing', 500)) {
+      var tableSelection = jitterbug.tableSelection;
+      if (!jitterbug.validateBatchSelection(tableSelection, 'editing', 500)) {
         return;
       }
-      junebug.submitBatchEditForm('masters', tableSelection);
+      jitterbug.submitBatchEditForm('masters', tableSelection);
     });
 
-    junebug.initDataExportModal('masters');
+    jitterbug.initDataExportModal('masters');
     $('#masters-batch-export').click(function(event) {
-      var tableSelection = junebug.tableSelection;
-      if (!junebug.validateBatchSelection(tableSelection, 'exporting')) {
+      var tableSelection = jitterbug.tableSelection;
+      if (!jitterbug.validateBatchSelection(tableSelection, 'exporting')) {
         return;
       }
-      junebug.openDataExportModal('masters', tableSelection);
+      jitterbug.openDataExportModal('masters', tableSelection);
     });
 
     $('#masters-batch-delete').click(function(event) {
-      var tableSelection = junebug.tableSelection;
-      if (!junebug.validateBatchSelection(tableSelection, 'deleting', 100)) {
+      var tableSelection = jitterbug.tableSelection;
+      if (!jitterbug.validateBatchSelection(tableSelection, 'deleting', 100)) {
         return;
       }
       $('#confirm-batch-delete-modal').modal('toggle');
@@ -243,31 +243,31 @@ junebug = {
 
   initTransfersNewButton: function() {
     $('#transfers-new').click(function(event) {
-      junebug.tableSelection.clear();
+      jitterbug.tableSelection.clear();
     });
   },
 
   initTransfersBatchMenu: function() {
     $('#transfers-batch-edit').click(function(event) {
-      var tableSelection = junebug.tableSelection;
-      if (!junebug.validateBatchSelection(tableSelection, 'editing', 500)) {
+      var tableSelection = jitterbug.tableSelection;
+      if (!jitterbug.validateBatchSelection(tableSelection, 'editing', 500)) {
         return;
       }
-      junebug.submitBatchEditForm('transfers', tableSelection);
+      jitterbug.submitBatchEditForm('transfers', tableSelection);
     });
 
-    junebug.initDataExportModal('transfers');
+    jitterbug.initDataExportModal('transfers');
     $('#transfers-batch-export').click(function(event) {
-      var tableSelection = junebug.tableSelection;
-      if (!junebug.validateBatchSelection(tableSelection, 'exporting')) {
+      var tableSelection = jitterbug.tableSelection;
+      if (!jitterbug.validateBatchSelection(tableSelection, 'exporting')) {
         return;
       }
-      junebug.openDataExportModal('transfers', tableSelection);
+      jitterbug.openDataExportModal('transfers', tableSelection);
     });
 
     $('#transfers-batch-delete').click(function(event) {
-      var tableSelection = junebug.tableSelection;
-      if (!junebug.validateBatchSelection(tableSelection, 'deleting', 100)) {
+      var tableSelection = jitterbug.tableSelection;
+      if (!jitterbug.validateBatchSelection(tableSelection, 'deleting', 100)) {
         return;
       }
       $('#confirm-batch-delete-modal').modal('toggle');
@@ -321,40 +321,40 @@ junebug = {
 
   initBatchDeleteForm: function() {
     $('#batch-delete-form').submit( function(event) {
-      junebug.tableSelection.clear();
-      junebug.tableParams.setPage(1);
+      jitterbug.tableSelection.clear();
+      jitterbug.tableParams.setPage(1);
     });
   },
 
   initAudioImportModal: function() {
-    junebug.initDataUploadForm('audio');
-    junebug.initDataImportForm('audio');
+    jitterbug.initDataUploadForm('audio');
+    jitterbug.initDataImportForm('audio');
 
     // Click handlers for 'start over' links and buttons
     $('#audio-import-modal .reset').click(function(event) {
       event.preventDefault();
-      junebug.resetDataImportModal('audio');
+      jitterbug.resetDataImportModal('audio');
     });
 
     // Clean up when modal is closed
     $('#audio-import-modal').on('hide.bs.modal', function () {
-      junebug.resetDataImportModal('audio');
+      jitterbug.resetDataImportModal('audio');
     });
   },
 
   initVideoImportModal: function() {
-    junebug.initDataUploadForm('video');
-    junebug.initDataImportForm('video');
+    jitterbug.initDataUploadForm('video');
+    jitterbug.initDataImportForm('video');
 
     // Click handlers for 'start over' links and buttons
     $('#video-import-modal .reset').click(function(event) {
       event.preventDefault();
-      junebug.resetDataImportModal('video');
+      jitterbug.resetDataImportModal('video');
     });
 
     // Clean up when modal is closed
     $('#video-import-modal').on('hide.bs.modal', function () {
-      junebug.resetDataImportModal('video');
+      jitterbug.resetDataImportModal('video');
     });
   },
 
@@ -394,12 +394,12 @@ junebug = {
   },
 
   initDataUploadForm: function(type) {
-    junebug.initFileSelect();
+    jitterbug.initFileSelect();
 
     $('#' + type + '-upload-form').submit( function(event) {
       event.preventDefault();
 
-      if(!junebug.validateDataUploadForm(type)) {
+      if(!jitterbug.validateDataUploadForm(type)) {
         return;
       }
 
@@ -473,7 +473,7 @@ junebug = {
             $('#' + type + '-import-step-3 .modal-body').height(50); 
           }
           // Initialize popovers which contain any errors
-          junebug.initPopovers();
+          jitterbug.initPopovers();
         },
         error: function (jqXHR, textStatus, error) {
           console.log('import failure: ' + textStatus);
@@ -590,21 +590,21 @@ junebug = {
 
   validateBatchSelection: function(tableSelection, action, max) {
     if (tableSelection.count() == 0) {
-      junebug.displayAlert('warning',
+      jitterbug.displayAlert('warning',
         '<strong>Here\'s a tip:</strong> Batch actions require a table \
         selection. Make a selection by \'shift-clicking\' \
         or \'command-clicking\' on rows of the table.');
       return false;
     }
     if (tableSelection.count() == 1) {
-      junebug.displayAlert('warning',
+      jitterbug.displayAlert('warning',
         '<strong>More please!</strong> Batch actions require at least \
         2 records to be selected. Make a selection by \
         \'shift-clicking\' or \'command-clicking\' on rows of the table.');
       return false;
     }
     if (tableSelection.count() > max) {
-      junebug.displayAlert('warning',
+      jitterbug.displayAlert('warning',
         '<strong>Whoa there!</strong> Batch ' + action + ' is limited \
         to ' + max + ' records at a time. Please narrow your selection.');
       return false;
@@ -647,17 +647,17 @@ junebug = {
   // have changed the value.
   initBatchEditMixed: function() {
     $("input[value='<mixed>']").change(function() {
-      junebug.handleMixedValueChange(this);
+      jitterbug.handleMixedValueChange(this);
     });
 
     $('textarea').filter(function () {
       return $(this).val() === '<mixed>';
     }).change(function() {
-      junebug.handleMixedValueChange(this);
+      jitterbug.handleMixedValueChange(this);
     });
 
     $('select:has(option[value="<mixed>"]:selected)').change(function() {
-      junebug.handleMixedValueChange(this);
+      jitterbug.handleMixedValueChange(this);
     });
   },
 
@@ -669,7 +669,7 @@ junebug = {
     if ($(that).val() !== '<mixed>' && parent.hasClass('col-xs-7')) {
       parent.removeClass('col-xs-7');
       parent.addClass('col-xs-6');
-      var divId = junebug.sequence++, linkId = junebug.sequence++;
+      var divId = jitterbug.sequence++, linkId = jitterbug.sequence++;
       parent.after('\
         <div id=' + divId + ' class="col-xs-1 detail-value">\
           <a id=' + linkId + ' href="#" title="Reset">\
@@ -714,11 +714,11 @@ junebug = {
         // Cmd/ctrl-a (select all)
         } else if (event.which == 65 && (event.ctrlKey || event.metaKey)) {
           event.preventDefault();
-          junebug.tableSelection.selectAll();
+          jitterbug.tableSelection.selectAll();
         // Escape (deselect all)
         } else if (event.which == 27) {
-          junebug.tableSelection.clear();
-          junebug.tableSelection.render();
+          jitterbug.tableSelection.clear();
+          jitterbug.tableSelection.render();
         }
       }
     });
@@ -759,9 +759,9 @@ junebug = {
   },
 
   initIndexPage: function(resourceName) {
-    var searchField = junebug.SearchField.load(resourceName + 'SearchField');
+    var searchField = jitterbug.SearchField.load(resourceName + 'SearchField');
     if (searchField==null) {
-      searchField = new junebug.SearchField({
+      searchField = new jitterbug.SearchField({
           key:resourceName + 'SearchField',
           selector:'#search'});
       searchField.init();
@@ -769,11 +769,11 @@ junebug = {
     } else {
       searchField.init();
     }
-    junebug.searchField = searchField;
+    jitterbug.searchField = searchField;
 
-    var filterPanel = junebug.FilterPanel.load(resourceName + 'FilterPanel');
+    var filterPanel = jitterbug.FilterPanel.load(resourceName + 'FilterPanel');
     if (filterPanel==null) {
-      filterPanel = new junebug.FilterPanel({
+      filterPanel = new jitterbug.FilterPanel({
           key:resourceName + 'FilterPanel',
           selector:'#filter-panel',
           listSelector: '.filter-list'});
@@ -782,20 +782,20 @@ junebug = {
     } else {
       filterPanel.init();
     }
-    junebug.filterPanel = filterPanel;
+    jitterbug.filterPanel = filterPanel;
 
-    var tableParams = junebug.TableParams.load(resourceName + 'TableParams');
+    var tableParams = jitterbug.TableParams.load(resourceName + 'TableParams');
     if (tableParams==null) {
-      tableParams = new junebug.TableParams({
+      tableParams = new jitterbug.TableParams({
           key:resourceName + 'TableParams'});
       tableParams.store();
     }
-    junebug.tableParams = tableParams;
+    jitterbug.tableParams = tableParams;
 
     var tableSelection = 
-      junebug.TableSelection.load(resourceName + 'TableSelection','session');
+      jitterbug.TableSelection.load(resourceName + 'TableSelection','session');
     if (tableSelection==null) {
-      tableSelection = new junebug.TableSelection({
+      tableSelection = new jitterbug.TableSelection({
           key:resourceName + 'TableSelection',
           resource: resourceName,
           location:'session',
@@ -807,28 +807,28 @@ junebug = {
       tableSelection.init();
       tableSelection.render();
     }
-    junebug.tableSelection = tableSelection;
+    jitterbug.tableSelection = tableSelection;
 
-    var queryManager = new junebug.QueryManager(searchField, filterPanel, 
+    var queryManager = new jitterbug.QueryManager(searchField, filterPanel, 
                                 tableParams, tableSelection, resourceName);
-    junebug.tableSelection.setQueryManager(queryManager);
+    jitterbug.tableSelection.setQueryManager(queryManager);
 
     queryManager.init();
     queryManager.executeQuery();
 
-    junebug.queryManager = queryManager;
+    jitterbug.queryManager = queryManager;
   },
 
   initItemsIndex: function() {
-    junebug.initIndexPage('items');
+    jitterbug.initIndexPage('items');
   },
 
   initMastersIndex: function() {
-    junebug.initIndexPage('masters');
+    jitterbug.initIndexPage('masters');
   },
 
   initTransfersIndex: function() {
-    junebug.initIndexPage('transfers');
+    jitterbug.initIndexPage('transfers');
   },
 
   QueryManager: function(searchFieldInstance, filterPanelInstance,
@@ -997,7 +997,7 @@ junebug = {
 
   SearchField: function(params) {
     if (params==null || params.selector == null) {
-      throw new junebug.IllegalArgumentException("Param 'selector' " +
+      throw new jitterbug.IllegalArgumentException("Param 'selector' " +
         "is required.");
     }
 
@@ -1092,7 +1092,7 @@ junebug = {
    */
   FilterPanel: function(params) {
     if (params==null || params.selector == null || params.listSelector == null) {
-      throw new junebug.IllegalArgumentException("Params 'selector' " +
+      throw new jitterbug.IllegalArgumentException("Params 'selector' " +
         "and 'listSelector' are required.");
     }
 
@@ -1105,7 +1105,7 @@ junebug = {
 
     init = function() {
       $(selector).find(listSelector).each(function() {
-        var list = new junebug.FilterList(this);
+        var list = new jitterbug.FilterList(this);
         list.init();
 
         if (selected != null && selected[list.listType()] != null) {
@@ -1140,7 +1140,7 @@ junebug = {
       // init() may not have been called yet
       if(!lists.length) {
         $(selector).find(listSelector).each(function() {
-          var list = new junebug.FilterList(this);
+          var list = new jitterbug.FilterList(this);
           // We're not calling list.init() here on purpose
           lists.push(list);
         });
@@ -1300,7 +1300,7 @@ junebug = {
   TableSelection: function(params) {
     if (params==null || params.resource == null || params.selector == null || 
                                               params.countSelector == null) {
-      throw new junebug.IllegalArgumentException("Params 'resource', " +
+      throw new jitterbug.IllegalArgumentException("Params 'resource', " +
                             "'selector' and 'countSelector' are required.");
     }
 
@@ -1439,7 +1439,7 @@ junebug = {
               },
               statusCode: {
                 400: function() {
-                  junebug.displayAlert('danger',
+                  jitterbug.displayAlert('danger',
                     '<strong>Sorry to interrupt!</strong> It appears someone \
                     has changed the data you\'re viewing. Please reload the \
                     page and try your selection again.');
@@ -1533,7 +1533,7 @@ junebug = {
       // This is kinda gross
       var total = parseInt($('.record-count').text().trim().split(/\s+/)[0]);
       if (total > max) {
-        junebug.displayAlert('warning',
+        jitterbug.displayAlert('warning',
           '<strong>Sorry!</strong> That\'s too many records to select at \
           once. Please narrow your search to less than ' + 
           max + ' records.');
@@ -1638,10 +1638,10 @@ junebug = {
   }
 };
 
-junebug.SearchField.load = junebug.loader;
-junebug.TableParams.load = junebug.loader;
-junebug.FilterPanel.load = junebug.loader;
-junebug.TableSelection.load = junebug.loader;
+jitterbug.SearchField.load = jitterbug.loader;
+jitterbug.TableParams.load = jitterbug.loader;
+jitterbug.FilterPanel.load = jitterbug.loader;
+jitterbug.TableSelection.load = jitterbug.loader;
 
 /* jQuery Tiny Pub/Sub - v0.7 - 10/27/2011
  * http://benalman.com/

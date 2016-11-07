@@ -1,4 +1,4 @@
-<?php namespace Junebug\Models;
+<?php namespace Jitterbug\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -53,12 +53,12 @@ class Transfer extends Model {
    */
   public function cut()
   {
-    return $this->hasOne('Junebug\Models\Cut');
+    return $this->hasOne('Jitterbug\Models\Cut');
   }
 
   public function engineer()
   {
-    return $this->belongsTo('Junebug\Models\User', 'engineer_id');
+    return $this->belongsTo('Jitterbug\Models\User', 'engineer_id');
   }
 
   public function getEngineerNameAttribute()
@@ -80,17 +80,17 @@ class Transfer extends Model {
 
   public function playbackMachine()
   {
-    return $this->belongsTo('Junebug\Models\PlaybackMachine');
+    return $this->belongsTo('Jitterbug\Models\PlaybackMachine');
   }
 
   public function preservationMaster()
   {
-    return $this->belongsTo('Junebug\Models\PreservationMaster');
+    return $this->belongsTo('Jitterbug\Models\PreservationMaster');
   }
 
   public function vendor()
   {
-    return $this->belongsTo('Junebug\Models\Vendor');
+    return $this->belongsTo('Jitterbug\Models\Vendor');
   }
 
   public function subclass()

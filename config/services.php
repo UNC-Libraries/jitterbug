@@ -30,7 +30,7 @@ return [
 	],
 
 	'stripe' => [
-		'model'  => 'Junebug\User',
+		'model'  => 'Jitterbug\Models\User',
 		'secret' => '',
 	],
 

@@ -1,17 +1,17 @@
 // See: http://www.paulirish.com/2009/markup-based-unobtrusive-comprehensive-dom-ready-execution/
 
-JUNEBUG = {
+JITTERBUG = {
   common: {
     init: function() {
-      junebug.initAjax();
-      junebug.initSessionTimeout();
-      junebug.getAlert();
+      jitterbug.initAjax();
+      jitterbug.initSessionTimeout();
+      jitterbug.getAlert();
     }
   },
 
   auth: {
     showLoginForm: function() {
-      junebug.initGreeting();
+      jitterbug.initGreeting();
     }
   },
 
@@ -21,38 +21,38 @@ JUNEBUG = {
     },
 
     index: function() {
-      junebug.initItemsIndex();
-      junebug.initTableKeyboardShortcuts();
-      junebug.initItemsNewButton();
-      junebug.initItemsBatchMenu();
-      junebug.initBatchDeleteForm();
+      jitterbug.initItemsIndex();
+      jitterbug.initTableKeyboardShortcuts();
+      jitterbug.initItemsNewButton();
+      jitterbug.initItemsBatchMenu();
+      jitterbug.initBatchDeleteForm();
     },
 
     show: function() {
-      junebug.initRevisionHistory();
-      junebug.initRelatedPreservationMasters();
-      junebug.initRelatedCuts();
+      jitterbug.initRevisionHistory();
+      jitterbug.initRelatedPreservationMasters();
+      jitterbug.initRelatedCuts();
     },
 
     create: function() {
-      junebug.initItemTypeControls();
-      junebug.initItemCallNumberGeneration();
-      junebug.initDatepicker();
-      junebug.initItemSuggestions();
+      jitterbug.initItemTypeControls();
+      jitterbug.initItemCallNumberGeneration();
+      jitterbug.initDatepicker();
+      jitterbug.initItemSuggestions();
     },
 
     edit: function() {
-      junebug.initDatepicker();
-      junebug.initItemSuggestions();
-      junebug.initRevisionHistory();
-      junebug.initRelatedPreservationMasters();
-      junebug.initRelatedCuts();
+      jitterbug.initDatepicker();
+      jitterbug.initItemSuggestions();
+      jitterbug.initRevisionHistory();
+      jitterbug.initRelatedPreservationMasters();
+      jitterbug.initRelatedCuts();
     },
 
     batchEdit: function() {
-      junebug.initBatchEditMixed();
-      junebug.initDatepicker();
-      junebug.initItemSuggestions();
+      jitterbug.initBatchEditMixed();
+      jitterbug.initDatepicker();
+      jitterbug.initItemSuggestions();
     }
   },
 
@@ -62,32 +62,32 @@ JUNEBUG = {
     },
 
     index: function() {
-      junebug.initMastersIndex();
-      junebug.initTableKeyboardShortcuts();
-      junebug.initMastersNewButton();
-      junebug.initMastersBatchMenu();
-      junebug.initBatchDeleteForm();
+      jitterbug.initMastersIndex();
+      jitterbug.initTableKeyboardShortcuts();
+      jitterbug.initMastersNewButton();
+      jitterbug.initMastersBatchMenu();
+      jitterbug.initBatchDeleteForm();
     },
 
     show: function() {
-      junebug.initRevisionHistory();
-      junebug.initRelatedCuts();
-      junebug.initRelatedTransfers();
+      jitterbug.initRevisionHistory();
+      jitterbug.initRelatedCuts();
+      jitterbug.initRelatedTransfers();
     },
 
     create: function() {
-      junebug.initMasterTypeControls();
-      junebug.initMasterBatchCheckbox();
+      jitterbug.initMasterTypeControls();
+      jitterbug.initMasterBatchCheckbox();
     },
 
     edit: function() {
-      junebug.initRevisionHistory();
-      junebug.initRelatedCuts();
-      junebug.initRelatedTransfers();
+      jitterbug.initRevisionHistory();
+      jitterbug.initRelatedCuts();
+      jitterbug.initRelatedTransfers();
     },
 
     batchEdit: function() {
-      junebug.initBatchEditMixed();
+      jitterbug.initBatchEditMixed();
     }
   },
 
@@ -97,13 +97,13 @@ JUNEBUG = {
     },
 
     show: function() {
-      junebug.initRevisionHistory();
-      junebug.initRelatedTransfers();
+      jitterbug.initRevisionHistory();
+      jitterbug.initRelatedTransfers();
     },
 
     edit: function() {
-      junebug.initRevisionHistory();
-      junebug.initRelatedTransfers();
+      jitterbug.initRevisionHistory();
+      jitterbug.initRelatedTransfers();
     }
   },
 
@@ -113,31 +113,31 @@ JUNEBUG = {
     },
 
     index: function() {
-      junebug.initTransfersIndex();
-      junebug.initTableKeyboardShortcuts();
-      junebug.initAudioImportModal();
-      junebug.initVideoImportModal();
-      junebug.initTransfersNewButton();
-      junebug.initTransfersBatchMenu();
-      junebug.initBatchDeleteForm();
+      jitterbug.initTransfersIndex();
+      jitterbug.initTableKeyboardShortcuts();
+      jitterbug.initAudioImportModal();
+      jitterbug.initVideoImportModal();
+      jitterbug.initTransfersNewButton();
+      jitterbug.initTransfersBatchMenu();
+      jitterbug.initBatchDeleteForm();
     },
 
     show: function() {
-      junebug.initRevisionHistory();
-      junebug.initRelatedCuts();
+      jitterbug.initRevisionHistory();
+      jitterbug.initRelatedCuts();
     },
 
     create: function() {
-      junebug.initTransferTypeControls();
-      junebug.initTransferCallNumberQuery();
-      junebug.initDatepicker();
+      jitterbug.initTransferTypeControls();
+      jitterbug.initTransferCallNumberQuery();
+      jitterbug.initDatepicker();
     },
 
     edit: function() {
-      junebug.initDatepicker();
-      junebug.initTransferCallNumberQuery();
-      junebug.initRevisionHistory();
-      junebug.initRelatedCuts();
+      jitterbug.initDatepicker();
+      jitterbug.initTransferCallNumberQuery();
+      jitterbug.initRevisionHistory();
+      jitterbug.initRelatedCuts();
     },
   },
 
@@ -145,7 +145,7 @@ JUNEBUG = {
 
 ROUTER = {
   exec: function(controller, action) {
-    var ns = JUNEBUG,
+    var ns = JITTERBUG,
         action = (action === undefined) ? "init" : action;
     if (controller !== "" && ns[controller] && typeof ns[controller][action] == "function") {
       ns[controller][action]();

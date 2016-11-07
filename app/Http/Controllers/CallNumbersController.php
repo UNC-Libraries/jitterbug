@@ -1,11 +1,11 @@
-<?php namespace Junebug\Http\Controllers;
+<?php namespace Jitterbug\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Junebug\Http\Requests;
-use Junebug\Http\Controllers\Controller;
-use Junebug\Models\CallNumberSequence;
-use Junebug\Models\PreservationMaster;
+use Jitterbug\Http\Requests;
+use Jitterbug\Http\Controllers\Controller;
+use Jitterbug\Models\CallNumberSequence;
+use Jitterbug\Models\PreservationMaster;
 
 /**
  * Controller for operations related to call numbers.

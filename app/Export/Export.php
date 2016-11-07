@@ -1,4 +1,4 @@
-<?php namespace Junebug\Export;
+<?php namespace Jitterbug\Export;
 
 use Auth;
 
@@ -10,7 +10,7 @@ use Auth;
  * be exported.
  *
  * This class assumes the specified $exportClass uses the 
- * Junebug\Models\CamelCasing trait, as it uses the toSnakeCase()
+ * Jitterbug\Models\CamelCasing trait, as it uses the toSnakeCase()
  * method for getting the attributes in snake case.
  * 
  * This class also assumes the specified $exportClass uses the

@@ -1,8 +1,8 @@
 <?php
 
-namespace Junebug\Http\Controllers\Auth;
+namespace Jitterbug\Http\Controllers\Auth;
 
-use Junebug\Http\Controllers\Controller;
+use Jitterbug\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 
 class PasswordController extends Controller

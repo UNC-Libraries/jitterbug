@@ -1,4 +1,4 @@
-<?php namespace Junebug\Http\Controllers;
+<?php namespace Jitterbug\Http\Controllers;
 
 use Illuminate\Support\MessageBag;
 use Illuminate\Http\Request;
@@ -9,29 +9,29 @@ use DB;
 use Log;
 use Uuid;
 
-use Junebug\Export\TransfersExport;
-use Junebug\Http\Controllers\Controller;
-use Junebug\Http\Requests\TransferRequest;
-use Junebug\Import\AudioImport;
-use Junebug\Import\Import;
-use Junebug\Import\VideoImport;
-use Junebug\Models\AudioVisualItem;
-use Junebug\Models\AudioMaster;
-use Junebug\Models\AudioTransfer;
-use Junebug\Models\BatchTransfer;
-use Junebug\Models\Cut;
-use Junebug\Models\PlaybackMachine;
-use Junebug\Models\PreservationMaster;
-use Junebug\Models\Transfer;
-use Junebug\Models\TransferType;
-use Junebug\Models\TransferCollection;
-use Junebug\Models\TransferFormat;
-use Junebug\Models\User;
-use Junebug\Models\Vendor;
-use Junebug\Support\SolariumProxy;
-use Junebug\Support\SolariumPaginator;
-use Junebug\Util\CsvReader;
-use Junebug\Util\DurationFormat;
+use Jitterbug\Export\TransfersExport;
+use Jitterbug\Http\Controllers\Controller;
+use Jitterbug\Http\Requests\TransferRequest;
+use Jitterbug\Import\AudioImport;
+use Jitterbug\Import\Import;
+use Jitterbug\Import\VideoImport;
+use Jitterbug\Models\AudioVisualItem;
+use Jitterbug\Models\AudioMaster;
+use Jitterbug\Models\AudioTransfer;
+use Jitterbug\Models\BatchTransfer;
+use Jitterbug\Models\Cut;
+use Jitterbug\Models\PlaybackMachine;
+use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\Transfer;
+use Jitterbug\Models\TransferType;
+use Jitterbug\Models\TransferCollection;
+use Jitterbug\Models\TransferFormat;
+use Jitterbug\Models\User;
+use Jitterbug\Models\Vendor;
+use Jitterbug\Support\SolariumProxy;
+use Jitterbug\Support\SolariumPaginator;
+use Jitterbug\Util\CsvReader;
+use Jitterbug\Util\DurationFormat;
 
 class TransfersController extends Controller {
 
@@ -51,9 +51,9 @@ class TransfersController extends Controller {
   {
     $this->middleware('auth');
 
-    $this->solrItems = new SolariumProxy('junebug-items');
-    $this->solrMasters = new SolariumProxy('junebug-masters');
-    $this->solrTransfers = new SolariumProxy('junebug-transfers');
+    $this->solrItems = new SolariumProxy('jitterbug-items');
+    $this->solrMasters = new SolariumProxy('jitterbug-masters');
+    $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
   }
 
   /**

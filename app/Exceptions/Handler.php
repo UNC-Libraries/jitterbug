@@ -1,4 +1,4 @@
-<?php namespace Junebug\Exceptions;
+<?php namespace Jitterbug\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;

@@ -105,7 +105,7 @@
     <div class="col-xs-6">
       {{-- Begin subclass fields --}}
 
-      @if (get_class($transfer->subclass) === 'Junebug\Models\AudioTransfer')
+      @if (get_class($transfer->subclass) === 'Jitterbug\Models\AudioTransfer')
       @if ($transfer->subclass->stylus)
       <div class="row">
         <div class="col-xs-4 detail-label">
@@ -137,10 +137,10 @@
       </div>
       @endif
       @endif
-      @if (get_class($transfer->subclass) === 'Junebug\Models\FilmTransfer')
+      @if (get_class($transfer->subclass) === 'Jitterbug\Models\FilmTransfer')
         {{-- There are currently no type specific fields for film transfers --}}
       @endif
-      @if (get_class($transfer->subclass) === 'Junebug\Models\VideoTransfer')
+      @if (get_class($transfer->subclass) === 'Jitterbug\Models\VideoTransfer')
       @if ($transfer->subclass->timeBaseCorrector)
       <div class="row">
         <div class="col-xs-4 detail-label">

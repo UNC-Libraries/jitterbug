@@ -1,8 +1,8 @@
-<?php namespace Junebug\Models;
+<?php namespace Jitterbug\Models;
 
 use Log;
 
-use Junebug\Models\Transfer;
+use Jitterbug\Models\Transfer;
 
 class BatchTransfer extends Transfer {
   use MergeableAttributes;

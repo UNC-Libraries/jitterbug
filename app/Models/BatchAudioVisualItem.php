@@ -1,8 +1,8 @@
-<?php namespace Junebug\Models;
+<?php namespace Jitterbug\Models;
 
 use Log;
 
-use Junebug\Models\AudioVisualItem;
+use Jitterbug\Models\AudioVisualItem;
 
 class BatchAudioVisualItem extends AudioVisualItem {
   use MergeableAttributes;

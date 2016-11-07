@@ -1,4 +1,4 @@
-<?php namespace Junebug\Http\Requests;
+<?php namespace Jitterbug\Http\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;

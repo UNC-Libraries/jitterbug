@@ -1,9 +1,9 @@
-<?php namespace Junebug\Models;
+<?php namespace Jitterbug\Models;
 
 use Log;
 
-use Junebug\Models\PreservationMaster;
-use Junebug\Util\DurationFormat;
+use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Util\DurationFormat;
 
 class BatchPreservationMaster extends PreservationMaster {
   use MergeableAttributes;

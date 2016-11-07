@@ -1,6 +1,6 @@
 <?php
 
-namespace Junebug\Http\Controllers;
+namespace Jitterbug\Http\Controllers;
 
 use Auth;
 use DB;
@@ -9,12 +9,12 @@ use Uuid;
 
 use Illuminate\Http\Request;
 
-use Junebug\Http\Requests\CutRequest;
-use Junebug\Models\AudioVisualItem;
-use Junebug\Models\Cut;
-use Junebug\Models\PreservationMaster;
-use Junebug\Models\Transfer;
-use Junebug\Support\SolariumProxy;
+use Jitterbug\Http\Requests\CutRequest;
+use Jitterbug\Models\AudioVisualItem;
+use Jitterbug\Models\Cut;
+use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\Transfer;
+use Jitterbug\Support\SolariumProxy;
 
 class CutsController extends Controller
 {
@@ -32,9 +32,9 @@ class CutsController extends Controller
   {
     $this->middleware('auth');
 
-    $this->solrItems = new SolariumProxy('junebug-items');
-    $this->solrMasters = new SolariumProxy('junebug-masters');
-    $this->solrTransfers = new SolariumProxy('junebug-transfers');
+    $this->solrItems = new SolariumProxy('jitterbug-items');
+    $this->solrMasters = new SolariumProxy('jitterbug-masters');
+    $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
   }
 
   /**

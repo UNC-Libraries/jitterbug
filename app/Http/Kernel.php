@@ -1,4 +1,4 @@
-<?php namespace Junebug\Http;
+<?php namespace Jitterbug\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -23,8 +23,8 @@ class Kernel extends HttpKernel {
 			\Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
 			\Illuminate\Session\Middleware\StartSession::class,
 			\Illuminate\View\Middleware\ShareErrorsFromSession::class,
-			\Junebug\Http\Middleware\EncryptCookies::class,
-			\Junebug\Http\Middleware\VerifyCsrfToken::class,
+			\Jitterbug\Http\Middleware\EncryptCookies::class,
+			\Jitterbug\Http\Middleware\VerifyCsrfToken::class,
 		],
 
 		'api' => [
@@ -38,10 +38,10 @@ class Kernel extends HttpKernel {
 	 * @var array
 	 */
 	protected $routeMiddleware = [
-		'auth' => \Junebug\Http\Middleware\Authenticate::class,
+		'auth' => \Jitterbug\Http\Middleware\Authenticate::class,
 		'auth.basic' => 
 			\Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-		'guest' => \Junebug\Http\Middleware\RedirectIfAuthenticated::class,
+		'guest' => \Jitterbug\Http\Middleware\RedirectIfAuthenticated::class,
 		'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 	];
 

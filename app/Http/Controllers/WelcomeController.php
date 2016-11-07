@@ -1,4 +1,4 @@
-<?php namespace Junebug\Http\Controllers;
+<?php namespace Jitterbug\Http\Controllers;
 
 class WelcomeController extends Controller {
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Junebug\Http\Controllers;
+namespace Jitterbug\Http\Controllers;
 
-use Junebug\Http\Requests;
+use Jitterbug\Http\Requests;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller

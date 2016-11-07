@@ -1,4 +1,4 @@
-<?php namespace Junebug\Models;
+<?php namespace Jitterbug\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -37,12 +37,12 @@ class Cut extends Model {
 
   public function preservationMaster()
   {
-    return $this->belongsTo('Junebug\Models\PreservationMaster');
+    return $this->belongsTo('Jitterbug\Models\PreservationMaster');
   }
 
   public function transfer()
   {
-    return $this->belongsTo('Junebug\Models\Transfer');
+    return $this->belongsTo('Jitterbug\Models\Transfer');
   }
 
   /**

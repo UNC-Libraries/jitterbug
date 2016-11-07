@@ -1,5 +1,5 @@
 <?php
-namespace Junebug\Http\Controllers;
+namespace Jitterbug\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -11,24 +11,24 @@ use Session;
 use Solarium;
 use Uuid;
 
-use Junebug\Export\ItemsExport;
-use Junebug\Models\AudioVisualItem;
-use Junebug\Models\AudioVisualItemType;
-use Junebug\Models\AudioVisualItemCollection;
-use Junebug\Models\AudioVisualItemFormat;
-use Junebug\Models\AudioItem;
-use Junebug\Models\BatchAudioVisualItem;
-use Junebug\Models\CallNumberSequence;
-use Junebug\Models\FilmItem;
-use Junebug\Models\VideoItem;
-use Junebug\Models\Collection;
-use Junebug\Models\Cut;
-use Junebug\Models\Format;
-use Junebug\Models\Transfer;
-use Junebug\Models\PreservationMaster;
-use Junebug\Http\Requests\ItemRequest;
-use Junebug\Support\SolariumProxy;
-use Junebug\Support\SolariumPaginator;
+use Jitterbug\Export\ItemsExport;
+use Jitterbug\Models\AudioVisualItem;
+use Jitterbug\Models\AudioVisualItemType;
+use Jitterbug\Models\AudioVisualItemCollection;
+use Jitterbug\Models\AudioVisualItemFormat;
+use Jitterbug\Models\AudioItem;
+use Jitterbug\Models\BatchAudioVisualItem;
+use Jitterbug\Models\CallNumberSequence;
+use Jitterbug\Models\FilmItem;
+use Jitterbug\Models\VideoItem;
+use Jitterbug\Models\Collection;
+use Jitterbug\Models\Cut;
+use Jitterbug\Models\Format;
+use Jitterbug\Models\Transfer;
+use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Http\Requests\ItemRequest;
+use Jitterbug\Support\SolariumProxy;
+use Jitterbug\Support\SolariumPaginator;
 
 class ItemsController extends Controller
 {
@@ -45,9 +45,9 @@ class ItemsController extends Controller
   public function __construct()
   {
     $this->middleware('auth');
-    $this->solrItems = new SolariumProxy('junebug-items');
-    $this->solrMasters = new SolariumProxy('junebug-masters');
-    $this->solrTransfers = new SolariumProxy('junebug-transfers');
+    $this->solrItems = new SolariumProxy('jitterbug-items');
+    $this->solrMasters = new SolariumProxy('jitterbug-masters');
+    $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
   }
   
   /**

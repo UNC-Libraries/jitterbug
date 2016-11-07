@@ -1,4 +1,4 @@
-<?php namespace Junebug\Models;
+<?php namespace Jitterbug\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -7,7 +7,7 @@ class Department extends Model {
     
   public function preservationMasters()
   {
-     return $this->hasMany('Junebug\Models\PreservationMaster');
+     return $this->hasMany('Jitterbug\Models\PreservationMaster');
   }
 
   /**

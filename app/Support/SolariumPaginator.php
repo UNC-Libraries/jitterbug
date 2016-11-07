@@ -1,4 +1,4 @@
-<?php namespace Junebug\Support;
+<?php namespace Jitterbug\Support;
 
 use Log;
 use Solarium\QueryType\Select\Result\Result;

@@ -1,4 +1,4 @@
-<?php namespace Junebug\Events;
+<?php namespace Jitterbug\Events;
 
 abstract class Event {
 

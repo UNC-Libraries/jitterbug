@@ -1,9 +1,9 @@
-<?php namespace Junebug\Import;
+<?php namespace Jitterbug\Import;
 
 use Illuminate\Support\MessageBag;
 
-use Junebug\Models\AudioVisualItem;
-use Junebug\Models\PreservationMaster;
+use Jitterbug\Models\AudioVisualItem;
+use Jitterbug\Models\PreservationMaster;
 
 abstract class Import {
 

@@ -1,4 +1,4 @@
-<?php namespace Junebug\Util;
+<?php namespace Jitterbug\Util;
 
 
 class CsvReader {

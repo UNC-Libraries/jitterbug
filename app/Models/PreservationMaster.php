@@ -1,4 +1,4 @@
-<?php namespace Junebug\Models;
+<?php namespace Jitterbug\Models;
 
 use Log;
 use Illuminate\Database\Eloquent\Model;
@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Venturecraft\Revisionable\RevisionableTrait;
 
-use Junebug\Util\DurationFormat;
+use Jitterbug\Util\DurationFormat;
 
 class PreservationMaster extends Model {
   use CamelCasing;
@@ -65,27 +65,27 @@ class PreservationMaster extends Model {
 
   public function cuts()
   {
-    return $this->hasMany('Junebug\Models\Cut');
+    return $this->hasMany('Jitterbug\Models\Cut');
   }
 
   public function transfers()
   {
-    return $this->hasMany('Junebug\Models\Transfer');
+    return $this->hasMany('Jitterbug\Models\Transfer');
   }
 
   public function department()
   {
-    return $this->belongsTo('Junebug\Models\Department');
+    return $this->belongsTo('Jitterbug\Models\Department');
   }
 
   public function project()
   {
-    return $this->belongsTo('Junebug\Models\Project');
+    return $this->belongsTo('Jitterbug\Models\Project');
   }
 
   public function reproductionMachine()
   {
-    return $this->belongsTo('Junebug\Models\ReproductionMachine');
+    return $this->belongsTo('Jitterbug\Models\ReproductionMachine');
   }
 
   public function subclass()

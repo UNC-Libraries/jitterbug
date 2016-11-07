@@ -153,10 +153,10 @@ return [
 		/*
 		 * Application Service Providers...
 		 */
-		'Junebug\Providers\AppServiceProvider',
-        'Junebug\Providers\AuthServiceProvider',
-		'Junebug\Providers\EventServiceProvider',
-		'Junebug\Providers\RouteServiceProvider',
+		'Jitterbug\Providers\AppServiceProvider',
+        'Jitterbug\Providers\AuthServiceProvider',
+		'Jitterbug\Providers\EventServiceProvider',
+		'Jitterbug\Providers\RouteServiceProvider',
 
 		/*
 		 * Third-party Service Providers
@@ -220,19 +220,19 @@ return [
 		'Form'      => 'Collective\Html\FormFacade',
 		'Html'      => 'Collective\Html\HtmlFacade',
 
-		'AudioVisualItem'	        => 'Junebug\Models\AudioVisualItem',
-		'AudioItem'	                => 'Junebug\Models\AudioItem',
-		'VideoItem'	                => 'Junebug\Models\VideoItem',
-		'FilmItem'	                => 'Junebug\Models\FilmItem',
-		'AudioMaster'	            => 'Junebug\Models\AudioMaster',
-		'FilmMaster'	            => 'Junebug\Models\FilmMaster',
-		'VideoMaster'	            => 'Junebug\Models\VideoMaster',
-		'PreservationMaster'	    => 'Junebug\Models\PreservationMaster',
-		'Cut'                       => 'Junebug\Models\Cut',
-		'AudioTransfer'             => 'Junebug\Models\AudioTransfer',
-		'FilmTransfer'              => 'Junebug\Models\FilmTransfer',
-		'VideoTransfer'             => 'Junebug\Models\VideoTransfer',
-		'Transfer'                  => 'Junebug\Models\Transfer',
+		'AudioVisualItem'	        => 'Jitterbug\Models\AudioVisualItem',
+		'AudioItem'	                => 'Jitterbug\Models\AudioItem',
+		'VideoItem'	                => 'Jitterbug\Models\VideoItem',
+		'FilmItem'	                => 'Jitterbug\Models\FilmItem',
+		'AudioMaster'	            => 'Jitterbug\Models\AudioMaster',
+		'FilmMaster'	            => 'Jitterbug\Models\FilmMaster',
+		'VideoMaster'	            => 'Jitterbug\Models\VideoMaster',
+		'PreservationMaster'	    => 'Jitterbug\Models\PreservationMaster',
+		'Cut'                       => 'Jitterbug\Models\Cut',
+		'AudioTransfer'             => 'Jitterbug\Models\AudioTransfer',
+		'FilmTransfer'              => 'Jitterbug\Models\FilmTransfer',
+		'VideoTransfer'             => 'Jitterbug\Models\VideoTransfer',
+		'Transfer'                  => 'Jitterbug\Models\Transfer',
 
 		'Breadcrumbs' => 'DaveJamesMiller\Breadcrumbs\Facade',
 		'Uuid'        => 'Ramsey\Uuid\Uuid',

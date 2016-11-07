@@ -1,4 +1,4 @@
-<?php namespace Junebug\Models;
+<?php namespace Jitterbug\Models;
 
 use Log;
 use Illuminate\Database\Eloquent\Model;
@@ -15,7 +15,7 @@ class Format extends Model {
 
     public function audioVisualItems()
     {
-        return $this->hasMany('Junebug\Models\AudioVisualItem');
+        return $this->hasMany('Jitterbug\Models\AudioVisualItem');
     }
 
     public function identifiableName()

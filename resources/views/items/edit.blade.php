@@ -34,13 +34,13 @@
     </div>
     <div class="col-xs-6">
       {{-- Begin subclass fields --}}
-      @if (get_class($item->subclass) === 'Junebug\Models\AudioItem')
+      @if (get_class($item->subclass) === 'Jitterbug\Models\AudioItem')
         @include('items._form-audio')
       @endif
-      @if (get_class($item->subclass) === 'Junebug\Models\FilmItem')
+      @if (get_class($item->subclass) === 'Jitterbug\Models\FilmItem')
         @include('items._form-film')
       @endif
-      @if (get_class($item->subclass) === 'Junebug\Models\VideoItem')
+      @if (get_class($item->subclass) === 'Jitterbug\Models\VideoItem')
         @include('items._form-video')
       @endif
       {{-- End subclass fields --}}

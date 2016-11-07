@@ -10,7 +10,7 @@ and are used to route JavaScript in router.js --}}
   <div class="container">
 
     <header class="centered" style="margin-top: 7rem; margin-bottom: -1rem">
-      {!! Html::image('img/junebug-logo.svg', 'Junebug logo', array('width' => 84 , 'height' => 81)) !!}
+      {!! Html::image('img/jitterbug-logo.svg', 'Jitterbug logo', array('width' => 84 , 'height' => 81)) !!}
     </header>
 
     <section class="centered">

@@ -1,7 +1,7 @@
-<?php namespace Junebug\Http\Controllers;
+<?php namespace Jitterbug\Http\Controllers;
 
-use Junebug\Http\Requests;
-use Junebug\Http\Controllers\Controller;
+use Jitterbug\Http\Requests;
+use Jitterbug\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 

@@ -1,8 +1,8 @@
-<?php namespace Junebug\Http\Requests;
+<?php namespace Jitterbug\Http\Requests;
 
 use Log;
 
-use Junebug\Http\Requests\Request;
+use Jitterbug\Http\Requests\Request;
 
 class ItemRequest extends Request {
 

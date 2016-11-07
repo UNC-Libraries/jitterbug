@@ -59,11 +59,11 @@ return [
     'providers' => [
         'adldap' => [
             'driver' => 'adldap',
-            'model' => Junebug\Models\User::class,
+            'model' => Jitterbug\Models\User::class,
         ],
         'users' => [
             'driver' => 'eloquent',
-            'model' => Junebug\Models\User::class,
+            'model' => Jitterbug\Models\User::class,
         ],
         // 'users' => [
         //     'driver' => 'database',

@@ -29,7 +29,7 @@
  http://wiki.apache.org/solr/SchemaXml
 -->
 
-<schema name="masters" version="1.6">
+<schema name="items" version="1.6">
   <!-- attribute "name" is the name of this schema and is only used for display purposes.
        version="x.y" is Solr's version number for the schema syntax and 
        semantics.  It should not normally be changed by applications.
@@ -112,15 +112,15 @@
    -->   
    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
 
-   <!-- Junebug specific fields -->
+   <!-- Jitterbug specific fields -->
    <field name="callNumber" type="string" indexed="true" stored="true" required="false" />
-   <field name="fileName" type="string" indexed="true" stored="true" required="false" />
-   <field name="durationInSeconds" type="string" indexed="false" stored="true" required="false" />
-   <field name="departmentId" type="int" indexed="true" stored="true" required="false" />
-   <field name="departmentName" type="text_general" indexed="true" stored="true" required="false" />
-   <field name="collectionId" type="int" indexed="true" stored="true" required="false" />
+   <field name="title" type="text_general" indexed="true" stored="true" required="false" />
+   <field name="containerNote" type="text_general" indexed="true" stored="true" required="false" />
+   <field name="recordingLocation" type="text_general" indexed="true" stored="true" required="false" />
+   <field name="itemDate" type="date" indexed="true" stored="true" required="false" />
+   <field name="collectionId" type="string" indexed="true" stored="true" required="false" />
    <field name="collectionName" type="text_general" indexed="true" stored="true" required="false" />
-   <field name="formatId" type="int" indexed="true" stored="true" required="false" />
+   <field name="formatId" type="string" indexed="true" stored="true" required="false" />
    <field name="formatName" type="text_general" indexed="true" stored="true" required="false" />
    <field name="typeId" type="string" indexed="true" stored="true" required="false" />
    <field name="typeName" type="string" indexed="true" stored="true" required="false" />

@@ -1,14 +1,12 @@
-<?php
-
-namespace Junebug\Http\Controllers\Auth;
+<?php namespace Jitterbug\Http\Controllers\Auth;
 
 use Validator;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
-use Junebug\Http\Controllers\Controller;
-use Junebug\Models\User;
+use Jitterbug\Http\Controllers\Controller;
+use Jitterbug\Models\User;
 
 class AuthController extends Controller
 {

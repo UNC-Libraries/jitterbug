@@ -1,4 +1,4 @@
-<?php namespace Junebug\Http\Middleware;
+<?php namespace Jitterbug\Http\Middleware;
 
 use Illuminate\Cookie\Middleware\EncryptCookies as BaseEncrypter;
 

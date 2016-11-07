@@ -1,4 +1,4 @@
-<?php namespace Junebug\Import;
+<?php namespace Jitterbug\Import;
 
 use Illuminate\Support\MessageBag;
 
@@ -7,18 +7,18 @@ use DB;
 use Log;
 use Uuid;
 
-use Junebug\Models\AudioVisualItem;
-use Junebug\Models\PlaybackMachine;
-use Junebug\Models\PreservationMaster;
-use Junebug\Models\Transfer;
-use Junebug\Models\User;
-use Junebug\Models\Vendor;
-use Junebug\Models\VideoItem;
-use Junebug\Models\VideoMaster;
-use Junebug\Models\VideoTransfer;
-use Junebug\Util\CsvReader;
-use Junebug\Util\DurationFormat;
-use Junebug\Support\SolariumProxy;
+use Jitterbug\Models\AudioVisualItem;
+use Jitterbug\Models\PlaybackMachine;
+use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\Transfer;
+use Jitterbug\Models\User;
+use Jitterbug\Models\Vendor;
+use Jitterbug\Models\VideoItem;
+use Jitterbug\Models\VideoMaster;
+use Jitterbug\Models\VideoTransfer;
+use Jitterbug\Util\CsvReader;
+use Jitterbug\Util\DurationFormat;
+use Jitterbug\Support\SolariumProxy;
 
 
 class VideoImport extends Import {
@@ -41,9 +41,9 @@ class VideoImport extends Import {
         'A/Dconverter', 'CaptureEngineer', 'Date', 'Color', 'Sound', 
         'Format'));
 
-    $this->solrItems = new SolariumProxy('junebug-items');
-    $this->solrMasters = new SolariumProxy('junebug-masters');
-    $this->solrTransfers = new SolariumProxy('junebug-transfers');
+    $this->solrItems = new SolariumProxy('jitterbug-items');
+    $this->solrMasters = new SolariumProxy('jitterbug-masters');
+    $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
 
     $reader = new CsvReader($filePath);
     $this->data = $reader->fetchKeys($this->videoImportKeys);

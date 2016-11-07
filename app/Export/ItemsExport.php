@@ -1,10 +1,10 @@
-<?php namespace Junebug\Export;
+<?php namespace Jitterbug\Export;
 
 use DB;
 use Log;
 
-use Junebug\Export\Export;
-use Junebug\Models\AudioVisualItem;
+use Jitterbug\Export\Export;
+use Jitterbug\Models\AudioVisualItem;
 
 /**
  * Class for exporting AudioVisualItems. See 

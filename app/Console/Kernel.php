@@ -1,4 +1,4 @@
-<?php namespace Junebug\Console;
+<?php namespace Jitterbug\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -11,7 +11,7 @@ class Kernel extends ConsoleKernel {
 	 * @var array
 	 */
 	protected $commands = [
-		'Junebug\Console\Commands\Inspire',
+		'Jitterbug\Console\Commands\Inspire',
 	];
 
 	/**

@@ -1,4 +1,4 @@
-<?php namespace Junebug\Http\Controllers;
+<?php namespace Jitterbug\Http\Controllers;
 
 use Illuminate\Http\Request;
 
@@ -9,29 +9,29 @@ use Session;
 use Solarium;
 use Uuid;
 
-use Junebug\Export\MastersExport;
-use Junebug\Http\Controllers\Controller;
-use Junebug\Http\Requests\MasterRequest;
-use Junebug\Models\AudioVisualItem;
-use Junebug\Models\AudioMaster;
-use Junebug\Models\BatchPreservationMaster;
-use Junebug\Models\Cut;
-use Junebug\Models\Department;
-use Junebug\Models\FilmMaster;
-use Junebug\Models\PmSpeed;
-use Junebug\Models\PreservationMaster;
-use Junebug\Models\PreservationMasterType;
-use Junebug\Models\PreservationMasterCollection;
-use Junebug\Models\PreservationMasterFormat;
-use Junebug\Models\PreservationMasterDepartment;
-use Junebug\Models\Project;
-use Junebug\Models\ReproductionMachine;
-use Junebug\Models\SamplingRate;
-use Junebug\Models\TapeBrand;
-use Junebug\Models\Transfer;
-use Junebug\Models\VideoMaster;
-use Junebug\Support\SolariumProxy;
-use Junebug\Support\SolariumPaginator;
+use Jitterbug\Export\MastersExport;
+use Jitterbug\Http\Controllers\Controller;
+use Jitterbug\Http\Requests\MasterRequest;
+use Jitterbug\Models\AudioVisualItem;
+use Jitterbug\Models\AudioMaster;
+use Jitterbug\Models\BatchPreservationMaster;
+use Jitterbug\Models\Cut;
+use Jitterbug\Models\Department;
+use Jitterbug\Models\FilmMaster;
+use Jitterbug\Models\PmSpeed;
+use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationMasterType;
+use Jitterbug\Models\PreservationMasterCollection;
+use Jitterbug\Models\PreservationMasterFormat;
+use Jitterbug\Models\PreservationMasterDepartment;
+use Jitterbug\Models\Project;
+use Jitterbug\Models\ReproductionMachine;
+use Jitterbug\Models\SamplingRate;
+use Jitterbug\Models\TapeBrand;
+use Jitterbug\Models\Transfer;
+use Jitterbug\Models\VideoMaster;
+use Jitterbug\Support\SolariumProxy;
+use Jitterbug\Support\SolariumPaginator;
 
 
 class MastersController extends Controller {
@@ -48,9 +48,9 @@ class MastersController extends Controller {
   public function __construct()
   {
     $this->middleware('auth');
-    $this->solrItems = new SolariumProxy('junebug-items');
-    $this->solrMasters = new SolariumProxy('junebug-masters');
-    $this->solrTransfers = new SolariumProxy('junebug-transfers');
+    $this->solrItems = new SolariumProxy('jitterbug-items');
+    $this->solrMasters = new SolariumProxy('jitterbug-masters');
+    $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
   }
 
   /**

@@ -1,4 +1,4 @@
-<?php namespace Junebug\Http\Middleware;
+<?php namespace Jitterbug\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;

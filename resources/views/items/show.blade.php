@@ -127,7 +127,7 @@
     </div>
     <div class="col-xs-6">
       {{-- Begin subclass fields --}}
-      @if (get_class($item->subclass) === 'Junebug\Models\AudioItem')
+      @if (get_class($item->subclass) === 'Jitterbug\Models\AudioItem')
       <div class="row">
         <div class="col-xs-4 detail-label">
           Listening Copy
@@ -187,7 +187,7 @@
       </div>
       @endif
       @endif
-      @if (get_class($item->subclass) === 'Junebug\Models\FilmItem')
+      @if (get_class($item->subclass) === 'Jitterbug\Models\FilmItem')
       @if ($item->subclass->element)
       <div class="row">
         <div class="col-xs-4 detail-label">
@@ -289,7 +289,7 @@
       </div>
       @endif
       @endif
-      @if (get_class($item->subclass) === 'Junebug\Models\VideoItem')
+      @if (get_class($item->subclass) === 'Jitterbug\Models\VideoItem')
       @if ($item->subclass->monoStereoDisplay)
       <div class="row">
         <div class="col-xs-4 detail-label">

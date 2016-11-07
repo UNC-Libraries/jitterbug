@@ -1,10 +1,10 @@
-<?php namespace Junebug\Http\Requests;
+<?php namespace Jitterbug\Http\Requests;
 
 use Log;
 
-use Junebug\Http\Requests\Request;
-use Junebug\Models\AudioVisualItem;
-use Junebug\Util\DurationFormat;
+use Jitterbug\Http\Requests\Request;
+use Jitterbug\Models\AudioVisualItem;
+use Jitterbug\Util\DurationFormat;
 
 class MasterRequest extends Request {
 

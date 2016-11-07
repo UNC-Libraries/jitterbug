@@ -1,4 +1,4 @@
-<?php namespace Junebug\Import;
+<?php namespace Jitterbug\Import;
 
 use Illuminate\Support\MessageBag;
 
@@ -7,17 +7,17 @@ use DB;
 use Log;
 use Uuid;
 
-use Junebug\Models\AudioVisualItem;
-use Junebug\Models\AudioMaster;
-use Junebug\Models\AudioTransfer;
-use Junebug\Models\Cut;
-use Junebug\Models\PlaybackMachine;
-use Junebug\Models\PreservationMaster;
-use Junebug\Models\Transfer;
-use Junebug\Models\User;
-use Junebug\Util\CsvReader;
-use Junebug\Util\DurationFormat;
-use Junebug\Support\SolariumProxy;
+use Jitterbug\Models\AudioVisualItem;
+use Jitterbug\Models\AudioMaster;
+use Jitterbug\Models\AudioTransfer;
+use Jitterbug\Models\Cut;
+use Jitterbug\Models\PlaybackMachine;
+use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\Transfer;
+use Jitterbug\Models\User;
+use Jitterbug\Util\CsvReader;
+use Jitterbug\Util\DurationFormat;
+use Jitterbug\Support\SolariumProxy;
 
 
 class AudioImport extends Import {
@@ -37,8 +37,8 @@ class AudioImport extends Import {
     $this->audioImportKeys = array_merge($this->requiredAudioImportKeys, 
       array('OriginalPm'));
 
-    $this->solrMasters = new SolariumProxy('junebug-masters');
-    $this->solrTransfers = new SolariumProxy('junebug-transfers');
+    $this->solrMasters = new SolariumProxy('jitterbug-masters');
+    $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
 
     $reader = new CsvReader($filePath);
     $this->data = $reader->fetchKeys($this->audioImportKeys);

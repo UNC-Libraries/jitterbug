@@ -1,6 +1,6 @@
 <dataConfig>
 	<dataSource driver="com.mysql.jdbc.Driver" type="JdbcDataSource"
-		url="jdbc:mysql://localhost:3306/junebug" user="root" password="" />
+		url="jdbc:mysql://localhost:3306/jitterbug" user="root" password="" />
 		<document>
 			<!-- this entity is the 'root' entity. -->
 			<entity name="audio_visual_item" query="select * from audio_visual_items" deltaQuery="select id from item where updated_at > '${dataimporter.last_index_time}'">

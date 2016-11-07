@@ -1,13 +1,13 @@
-<?php namespace Junebug\Support;
+<?php namespace Jitterbug\Support;
 
 use Illuminate\Support\Facades\Config;
 use Log;
 use Solarium;
 
-use Junebug\Models\AudioVisualItem;
-use Junebug\Models\Cut;
-use Junebug\Models\PreservationMaster;
-use Junebug\Models\Transfer;
+use Jitterbug\Models\AudioVisualItem;
+use Jitterbug\Models\Cut;
+use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\Transfer;
 
 class SolariumProxy {
 
@@ -44,16 +44,16 @@ class SolariumProxy {
     if(strlen($searchTerms)==0) {
       $dismax->setQueryAlternative('*:*');
     }
-    if ($this->core==='junebug-items') {
+    if ($this->core==='jitterbug-items') {
       // Query fields with boost values
       $dismax->setQueryFields('callNumber^5 title^4 collectionName^3 ' .
       'containerNote^2 cutTitles cutPerformerComposers formatName');
 
-    } else if ($this->core==='junebug-masters') {
+    } else if ($this->core==='jitterbug-masters') {
       $dismax->setQueryFields('id, callNumber^5 fileName^4 collectionName^3 ' .
       'cutTitles cutPerformerComposers formatName departmentName');
 
-    } else if ($this->core==='junebug-transfers') {
+    } else if ($this->core==='jitterbug-transfers') {
       $dismax->setQueryFields('id, callNumber^5 engineerFirstName^4 ' . 
       ' engineerLastName^4 collectionName^3 cutTitle cutPerformerComposer ' .
       ' formatName departmentName');
@@ -87,15 +87,15 @@ class SolariumProxy {
 
     $update = $this->client->createUpdate();
 
-    if ($this->core==='junebug-items') {
+    if ($this->core==='jitterbug-items') {
       foreach ($modelOrModels as $item) {
         $this->addItemDocument($item, $update);
       }
-    } else if ($this->core==='junebug-masters') {
+    } else if ($this->core==='jitterbug-masters') {
       foreach ($modelOrModels as $master) {
         $this->addMasterDocument($master, $update);
       }
-    } else if ($this->core==='junebug-transfers') {
+    } else if ($this->core==='jitterbug-transfers') {
       foreach ($modelOrModels as $transfer) {
         $this->addTransferDocument($transfer, $update);
       }

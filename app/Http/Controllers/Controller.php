@@ -1,4 +1,4 @@
-<?php namespace Junebug\Http\Controllers;
+<?php namespace Jitterbug\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesResources;
@@ -21,7 +21,7 @@ abstract class Controller extends BaseController {
    * and ending ids would not be known.
    *
    * @param Illuminate\Http\Request request
-   * @param Junebug\Support\SolariumProxy proxy
+   * @param Jitterbug\Support\SolariumProxy proxy
    */
   protected function rangeFor(Request $request, $proxy)
   {

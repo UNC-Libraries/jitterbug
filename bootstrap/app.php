@@ -28,17 +28,17 @@ $app = new Illuminate\Foundation\Application(
 
 $app->singleton(
 	'Illuminate\Contracts\Http\Kernel',
-	'Junebug\Http\Kernel'
+	'Jitterbug\Http\Kernel'
 );
 
 $app->singleton(
 	'Illuminate\Contracts\Console\Kernel',
-	'Junebug\Console\Kernel'
+	'Jitterbug\Console\Kernel'
 );
 
 $app->singleton(
 	'Illuminate\Contracts\Debug\ExceptionHandler',
-	'Junebug\Exceptions\Handler'
+	'Jitterbug\Exceptions\Handler'
 );
 
 /*

@@ -1,4 +1,4 @@
-<?php namespace Junebug\Providers;
+<?php namespace Jitterbug\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

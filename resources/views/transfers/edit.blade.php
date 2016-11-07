@@ -34,13 +34,13 @@
     </div>
     <div class="col-xs-6">
       {{-- Begin subclass fields --}}
-      @if (get_class($transfer->subclass) === 'Junebug\Models\AudioTransfer')
+      @if (get_class($transfer->subclass) === 'Jitterbug\Models\AudioTransfer')
         @include('transfers._form-audio')
       @endif
-      @if (get_class($transfer->subclass) === 'Junebug\Models\FilmTransfer')
+      @if (get_class($transfer->subclass) === 'Jitterbug\Models\FilmTransfer')
         @include('transfers._form-film')
       @endif
-      @if (get_class($transfer->subclass) === 'Junebug\Models\VideoTransfer')
+      @if (get_class($transfer->subclass) === 'Jitterbug\Models\VideoTransfer')
         @include('transfers._form-video')
       @endif
       {{-- End subclass fields --}}

@@ -1,4 +1,4 @@
-<?php namespace Junebug\Models;
+<?php namespace Jitterbug\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -34,17 +34,17 @@ class AudioMaster extends Model {
 
   public function tapeBrand()
   {
-    return $this->belongsTo('Junebug\Models\TapeBrand');
+    return $this->belongsTo('Jitterbug\Models\TapeBrand');
   }
 
   public function pmSpeed()
   {
-    return $this->belongsTo('Junebug\Models\PmSpeed');
+    return $this->belongsTo('Jitterbug\Models\PmSpeed');
   }
 
   public function samplingRate()
   {
-    return $this->belongsTo('Junebug\Models\SamplingRate');
+    return $this->belongsTo('Jitterbug\Models\SamplingRate');
   }
 
 }

@@ -1,9 +1,9 @@
-<?php namespace Junebug\Http\Requests;
+<?php namespace Jitterbug\Http\Requests;
 
 use Log;
 
-use Junebug\Http\Requests\Request;
-use Junebug\Models\PreservationMaster;
+use Jitterbug\Http\Requests\Request;
+use Jitterbug\Models\PreservationMaster;
 
 class TransferRequest extends Request {
 
