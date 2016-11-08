@@ -116,12 +116,14 @@
    <field name="callNumber" type="string" indexed="true" stored="true" required="false" />
    <field name="fileName" type="string" indexed="true" stored="true" required="false" />
    <field name="durationInSeconds" type="string" indexed="false" stored="true" required="false" />
-   <field name="departmentId" type="int" indexed="true" stored="true" required="false" />
+   <field name="departmentId" type="string" indexed="true" stored="true" required="false" />
    <field name="departmentName" type="text_general" indexed="true" stored="true" required="false" />
-   <field name="collectionId" type="int" indexed="true" stored="true" required="false" />
+   <field name="collectionId" type="string" indexed="true" stored="true" required="false" />
    <field name="collectionName" type="text_general" indexed="true" stored="true" required="false" />
-   <field name="formatId" type="int" indexed="true" stored="true" required="false" />
+   <field name="formatId" type="string" indexed="true" stored="true" required="false" />
    <field name="formatName" type="text_general" indexed="true" stored="true" required="false" />
+   <field name="projectId" type="string" indexed="true" stored="true" required="false" />
+   <field name="projectName" type="string" indexed="true" stored="true" required="false" />
    <field name="typeId" type="string" indexed="true" stored="true" required="false" />
    <field name="typeName" type="string" indexed="true" stored="true" required="false" />
    <field name="createdAt" type="date" indexed="false" stored="true" required="false" />

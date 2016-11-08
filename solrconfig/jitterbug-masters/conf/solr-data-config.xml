@@ -11,11 +11,13 @@
                 masters.file_name AS file_name,
                 masters.duration_in_seconds AS duration_in_seconds,
                 masters.department_id AS department_id,
+                masters.project_id AS project_id,
                 items.collection_id AS collection_id,
                 collections.name AS collection_name,
                 items.format_id AS format_id,
                 formats.name AS format_name,
                 departments.name AS department_name,
+                projects.name AS project_name,
                 types.id AS type_id,
                 TRIM(TRAILING 'Master' FROM masters.subclass_type) AS type_name,
                 masters.created_at AS created_at,
@@ -30,6 +32,8 @@
                 items.format_id = formats.id
             LEFT JOIN departments ON
                 masters.department_id = departments.id
+            LEFT JOIN projects ON
+                masters.project_id = projects.id
             LEFT JOIN media_types AS types ON
                 TRIM(TRAILING 'Master' FROM masters.subclass_type) = types.name
             WHERE
@@ -43,6 +47,8 @@
             <field column="duration_in_seconds" name="durationInSeconds" />
             <field column="department_id" name="departmentId" />
             <field column="department_name" name="departmentName" />
+            <field column="project_id" name="projectId" />
+            <field column="project_name" name="projectName" />
             <field column="collection_id" name="collectionId" />
             <field column="collection_name" name="collectionName" />
             <field column="format_id" name="formatId" />

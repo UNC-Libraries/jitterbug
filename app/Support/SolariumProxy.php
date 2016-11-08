@@ -51,7 +51,7 @@ class SolariumProxy {
 
     } else if ($this->core==='jitterbug-masters') {
       $dismax->setQueryFields('id, callNumber^5 fileName^4 collectionName^3 ' .
-      'cutTitles cutPerformerComposers formatName departmentName');
+      'cutTitles cutPerformerComposers formatName departmentName projectName');
 
     } else if ($this->core==='jitterbug-transfers') {
       $dismax->setQueryFields('id, callNumber^5 engineerFirstName^4 ' . 
@@ -156,6 +156,10 @@ class SolariumProxy {
       $master->department ? $master->department->id : null, null, 'set');
     $doc->setField('departmentName', 
       $master->department ? $master->department->name : null, null, 'set');
+    $doc->setField('projectId', 
+      $master->project ? $master->project->id : null, null, 'set');
+    $doc->setField('projectName', 
+      $master->project ? $master->project->name : null, null, 'set');
     $doc->setField('typeName', $master->type, null, 'set');
     $doc->setField('typeId', $master->typeId, null, 'set');
     $doc->setField('createdAt', $master->createdAt, null, 'set');
