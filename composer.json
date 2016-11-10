@@ -32,7 +32,7 @@
 			"database"
 		],
 		"psr-4": {
-			"Junebug\\": "app/"
+			"Jitterbug\\": "app/"
 		}
 	},
 	"autoload-dev": {
