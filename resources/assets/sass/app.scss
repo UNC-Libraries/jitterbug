@@ -55,6 +55,30 @@ body {
 }
 
 /* -------------------------------------------
+Errors
+------------------------------------------- */
+
+#error-panel {
+  color: #a5a5a5;
+  font-size: 1rem;
+  font-weight: 300;
+  margin: 0 auto;
+  padding: 2.5rem 4rem;
+}
+
+#error-panel hr {
+  border-top: 1px dashed #c7c7c7;
+}
+
+#error-panel h4 {
+  font-family: 'Yanone Kaffeesatz', 'YanoneKaffeesatz-Light', sans-serif;
+  font-weight: 300;
+  font-size: 2.3rem;
+  color: #4a4a4a;
+}
+
+
+/* -------------------------------------------
 Sign In/Out
 ------------------------------------------- */
 
@@ -435,7 +459,7 @@ Record Details
 }
 
 #detail hr {
-  border-top: 1px dashed #c7c7c7
+  border-top: 1px dashed #c7c7c7;
 }
 
 #detail hr.before {
