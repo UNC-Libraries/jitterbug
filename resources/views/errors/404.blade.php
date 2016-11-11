@@ -2,10 +2,10 @@
 
 @section('panel')
 <div id="error-panel">
-    <h4>Page not found</h4>
+    <h4>Resource not found</h4>
     <div style="margin-top: 1rem;">
-      Sorry, but the page you requested was not found.
+      Sorry, but the resource you requested was not found.
     </div>
-    <hr style="width: 320px;">
+    <hr style="width: 340px;">
 </div>
 @endsection
