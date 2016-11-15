@@ -53,6 +53,16 @@
         </div>
       </div>
       @endif
+      @if ($item->accessionNumber)
+      <div class="row">
+        <div class="col-xs-4 col-xs-offset-1 detail-label">
+          Accession Num
+        </div>
+        <div class="col-xs-7 detail-value">
+          {{$item->accessionNumber}}
+        </div>
+      </div>
+      @endif
       @if ($item->format)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">

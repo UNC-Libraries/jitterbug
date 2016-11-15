@@ -34,6 +34,7 @@ class ItemRequest extends Request {
     $this->addRuleIfNotMixed($rules, 'title', 'required|min:3|max:255');
     $this->addRuleIfNotMixed($rules, 'containerNote', 'max:1000');
     $this->addRuleIfNotMixed($rules, 'collectionId', 'required');
+    $this->addRuleIfNotMixed($rules, 'accessionNumber', 'integer|digits_between:0,15');
     $this->addRuleIfNotMixed($rules, 'formatId', 'required');
     $this->addRuleIfNotMixed($rules, 'recordingLocation', 'max:255');
     $this->addRuleIfNotMixed($rules, 'oclc', 'integer|digits_between:0,15');
@@ -82,6 +83,7 @@ class ItemRequest extends Request {
     return [
       // Messages for audio visual item fields
       'formatId.required' => 'The format field is required.',
+      'accessionNumber.digits_between' => 'The accession number must be less than :max digits.',
       'collectionId.required' => 'The collection field is required.',
       'oclc.integer' => 'The OCLC id must be an integer.',
       'oclc.digits_between' => 'The OCLC id must be less than :max digits.',
