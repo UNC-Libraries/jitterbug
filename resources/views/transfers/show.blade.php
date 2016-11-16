@@ -14,6 +14,9 @@
   </div>
   {{-- Transfer fields --}}
   <div class="row first detail-container">
+    <div class="mark @if ($transfer->marked()) marked @endif" role="button" data-markable-type="{{get_class($transfer)}}" data-markable-id="{{$transfer->id}}">
+      <div class="mark-tail"></div>
+    </div>
     <div class="col-xs-6">
       {{--
         In the past, there have been transfers without call numbers. In other

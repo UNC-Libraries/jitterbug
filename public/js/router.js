@@ -29,6 +29,7 @@ JITTERBUG = {
     },
 
     show: function() {
+      jitterbug.initMarkRibbon();
       jitterbug.initRevisionHistory();
       jitterbug.initRelatedPreservationMasters();
       jitterbug.initRelatedCuts();
@@ -70,6 +71,7 @@ JITTERBUG = {
     },
 
     show: function() {
+      jitterbug.initMarkRibbon();
       jitterbug.initRevisionHistory();
       jitterbug.initRelatedCuts();
       jitterbug.initRelatedTransfers();
@@ -123,6 +125,7 @@ JITTERBUG = {
     },
 
     show: function() {
+      jitterbug.initMarkRibbon();
       jitterbug.initRevisionHistory();
       jitterbug.initRelatedCuts();
     },

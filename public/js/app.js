@@ -627,6 +627,26 @@ jitterbug = {
     form.appendTo(document.body).submit().remove();
   },
 
+  initMarkRibbon: function() {
+    $('.mark').click(function(event) {
+      var mark = $(this);
+      var data = {};
+      data['markableType'] = mark.data('markable-type');
+      data['markableId'] = mark.data('markable-id');
+      
+      if (mark.hasClass('marked')) {
+        data['_method'] = 'DELETE'
+        $.post('/marks', data, function(data) {
+          mark.removeClass('marked');
+        });
+      } else {
+        $.post('/marks', data, function(data) {
+          mark.addClass('marked');
+        });
+      }
+    });
+  },
+
   initPopovers: function() {
     $('[data-toggle="popover"]').popover();
   },

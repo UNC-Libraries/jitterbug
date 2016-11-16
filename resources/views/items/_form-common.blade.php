@@ -62,7 +62,7 @@
       <div class="row">
         <div class="form-group @if ($errors->has('accessionNumber')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('accessionNumber', 'Accession Num', array('class' => 'form-control-label')) !!}
+            {!! Form::label('accessionNumber', 'Accession Number', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::text('accessionNumber', null, array('class' => 'form-control form-control-sm')) !!}

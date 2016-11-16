@@ -14,7 +14,7 @@
     <tbody>
       <?php $index = 0; ?>
       @foreach ($transfers as $transfer)
-      <tr role="button" data-id="{{ $transfer->id }}" data-index="{{ $start + $index }}">
+      <tr role="button" class="@if ($marks->contains($transfer->id)) marked @endif" data-id="{{ $transfer->id }}" data-index="{{ $start + $index }}">
         <td>{{ $transfer->callNumber }}</td>
         <td>{{ $transfer->transferDate }}</td>
         <td title="{{ $transfer->engineerFirstName }} {{ $transfer->engineerLastName }}">{{ $transfer->engineerFirstName }} {{ $transfer->engineerLastName }}</td>

@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 
+use Auth;
 use DB;
 use Log;
 use Session;
@@ -19,13 +20,14 @@ use Jitterbug\Models\AudioVisualItemFormat;
 use Jitterbug\Models\AudioItem;
 use Jitterbug\Models\BatchAudioVisualItem;
 use Jitterbug\Models\CallNumberSequence;
-use Jitterbug\Models\FilmItem;
-use Jitterbug\Models\VideoItem;
 use Jitterbug\Models\Collection;
 use Jitterbug\Models\Cut;
+use Jitterbug\Models\FilmItem;
 use Jitterbug\Models\Format;
-use Jitterbug\Models\Transfer;
+use Jitterbug\Models\Mark;
 use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\Transfer;
+use Jitterbug\Models\VideoItem;
 use Jitterbug\Http\Requests\ItemRequest;
 use Jitterbug\Support\SolariumProxy;
 use Jitterbug\Support\SolariumPaginator;
@@ -56,8 +58,6 @@ class ItemsController extends Controller
    */
   public function index(Request $request)
   {
-    $items = array();
-
     if ($request->ajax()) {
       // The query string consists of search terms and an array of
       // selected filters for each filter list
@@ -68,9 +68,19 @@ class ItemsController extends Controller
       $perPage = $request->query('perPage');
       $start = $perPage * ($page - 1);
 
-      $resultSet = $this->solrItems->query($queryParams,$start,$perPage);
-      $items = new SolariumPaginator($resultSet,$page,$perPage);
-      return view('items._items', compact('items', 'start'));
+      $resultSet = $this->solrItems->query($queryParams, $start, $perPage);
+      $items = new SolariumPaginator($resultSet, $page, $perPage);
+
+      $itemIds = array();
+      foreach ($items as $item) {
+        array_push($itemIds, $item->id);
+      }
+      $marks = Mark::whereIn('markable_id', $itemIds)
+            ->where('markable_type', 'Jitterbug\\Models\\AudioVisualItem')
+            ->where('user_id', Auth::user()->id)
+            ->get()->pluck('markable_id');
+
+      return view('items._items', compact('items', 'marks', 'start'));
     }
 
     $types = AudioVisualItemType::all();

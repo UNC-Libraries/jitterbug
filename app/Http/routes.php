@@ -32,6 +32,15 @@ Route::group(['prefix' => 'suggestions'], function () {
 
 /*
 |--------------------------------------------------------------------------
+| Marks
+|--------------------------------------------------------------------------
+*/
+
+Route::post('marks', 'MarksController@store')->name('marks.store');
+Route::delete('marks', 'MarksController@destroy')->name('marks.destroy');
+
+/*
+|--------------------------------------------------------------------------
 | Audio Visual Items
 |--------------------------------------------------------------------------
 */
@@ -113,5 +122,3 @@ Route::resource('transfers', 'TransfersController');
 Route::get('login', 'Auth\AuthController@showLoginForm')->name('loginForm');
 Route::post('login', 'Auth\AuthController@login')->name('login');
 Route::get('logout', 'Auth\AuthController@logout')->name('logout');
-
-Route::get('/home', 'HomeController@index');

@@ -19,6 +19,7 @@ class ItemsExport extends Export {
     'Title' => 'title',
     'Container Note' => 'container_note',
     'Collection' => 'collection_id',
+    'Accession Number' => 'accession_number',
     'Format' => 'format_id',
     'Recording Location' => 'recording_location',
     'OCLC Id' => 'oclc',

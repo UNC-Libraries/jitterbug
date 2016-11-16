@@ -13,7 +13,7 @@
     <tbody>
       <?php $index = 0; ?>
       @foreach ($masters as $master)
-      <tr role="button" data-id="{{ $master->id }}" data-index="{{ $start + $index }}">
+      <tr role="button" class="@if ($marks->contains($master->id)) marked @endif" data-id="{{ $master->id }}" data-index="{{ $start + $index }}">
         <td>{{ $master->callNumber }}</td>
         <td>{{ $master->fileName }}</td>
         <td title="{{ $master->collectionName}}">{{ $master->collectionName }}</td>

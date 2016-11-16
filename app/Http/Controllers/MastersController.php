@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 
+use Auth;
 use DB;
 use Exception;
 use Log;
@@ -18,6 +19,7 @@ use Jitterbug\Models\BatchPreservationMaster;
 use Jitterbug\Models\Cut;
 use Jitterbug\Models\Department;
 use Jitterbug\Models\FilmMaster;
+use Jitterbug\Models\Mark;
 use Jitterbug\Models\PmSpeed;
 use Jitterbug\Models\PreservationMaster;
 use Jitterbug\Models\PreservationMasterType;
@@ -59,8 +61,6 @@ class MastersController extends Controller {
    */
   public function index(Request $request)
   {
-    $masters = array();
-
     if ($request->ajax()) {
       // The query string consists of search terms and an array of
       // selected filters for each filter list
@@ -73,7 +73,17 @@ class MastersController extends Controller {
 
       $resultSet = $this->solrMasters->query($queryParams,$start,$perPage);
       $masters = new SolariumPaginator($resultSet,$page,$perPage);
-      return view('masters._masters', compact('masters', 'start'));
+
+      $masterIds = array();
+      foreach ($masters as $master) {
+        array_push($masterIds, $master->id);
+      }
+      $marks = Mark::whereIn('markable_id', $masterIds)
+            ->where('markable_type', 'Jitterbug\\Models\\PreservationMaster')
+            ->where('user_id', Auth::user()->id)
+            ->get()->pluck('markable_id');
+
+      return view('masters._masters', compact('masters', 'marks', 'start'));
     }
 
     $types = PreservationMasterType::all();

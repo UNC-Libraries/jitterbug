@@ -14,6 +14,9 @@
   </div>
   {{-- AudioVisualItem fields --}}
   <div class="row first detail-container">
+    <div class="mark @if ($item->marked()) marked @endif" role="button" data-markable-type="{{get_class($item)}}" data-markable-id="{{$item->id}}">
+      <div class="mark-tail"></div>
+    </div>
     <div class="col-xs-6">
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
@@ -56,7 +59,7 @@
       @if ($item->accessionNumber)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
-          Accession Num
+          Accession Number
         </div>
         <div class="col-xs-7 detail-value">
           {{$item->accessionNumber}}

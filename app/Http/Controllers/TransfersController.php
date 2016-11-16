@@ -20,6 +20,7 @@ use Jitterbug\Models\AudioMaster;
 use Jitterbug\Models\AudioTransfer;
 use Jitterbug\Models\BatchTransfer;
 use Jitterbug\Models\Cut;
+use Jitterbug\Models\Mark;
 use Jitterbug\Models\PlaybackMachine;
 use Jitterbug\Models\PreservationMaster;
 use Jitterbug\Models\Transfer;
@@ -62,8 +63,6 @@ class TransfersController extends Controller {
    */
   public function index(Request $request)
   {
-    $transfers = array();
-
     if ($request->ajax()) {
       // The query string consists of search terms and an array of
       // selected filters for each filter list
@@ -76,7 +75,17 @@ class TransfersController extends Controller {
 
       $resultSet = $this->solrTransfers->query($queryParams, $start, $perPage);
       $transfers = new SolariumPaginator($resultSet, $page, $perPage);
-      return view('transfers._transfers', compact('transfers', 'start'));
+
+      $transferIds = array();
+      foreach ($transfers as $transfer) {
+        array_push($transferIds, $transfer->id);
+      }
+      $marks = Mark::whereIn('markable_id', $transferIds)
+            ->where('markable_type', 'Jitterbug\\Models\\Transfer')
+            ->where('user_id', Auth::user()->id)
+            ->get()->pluck('markable_id');
+
+      return view('transfers._transfers', compact('transfers', 'marks', 'start'));
     }
 
     $types = TransferType::all();

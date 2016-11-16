@@ -14,6 +14,7 @@ class PreservationMaster extends Model {
   use RevisionableTrait;
   use CompositeHistory;
   use SoftDeletes;
+  use Markable;
 
   protected $dates = ['deleted_at'];
   
