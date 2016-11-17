@@ -165,6 +165,9 @@ class TransfersController extends Controller {
       $transfer->subclassId = $subclass->id;
       $transfer->save();
 
+      $mark = isset($input['mark']) ? true : false;
+      if ($mark) $transfer->addMark();
+
       DB::statement('set @transaction_id = null;');
     });
 
@@ -508,6 +511,7 @@ class TransfersController extends Controller {
         $cut->delete();
       }
 
+      $transfer->removeMark();
       $transfer->delete();
       $subclass->delete();
 
@@ -562,6 +566,7 @@ class TransfersController extends Controller {
 
       foreach ($transfers as $transfer) {
         $transfer->subclass->delete();
+        $transfer->removeMark();
         $transfer->delete();
       }
 
@@ -595,7 +600,7 @@ class TransfersController extends Controller {
     $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>Voila!</strong> Transfers were successfully deleted.'));
 
-    return redirect()->route('masters.index');
+    return redirect()->route('transfers.index');
   }
 
   /**

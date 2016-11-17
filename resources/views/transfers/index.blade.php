@@ -16,6 +16,8 @@
           <div class="dropdown-menu">
             <a id="transfers-batch-edit" class="dropdown-item" href="#">Edit</a>
             <a id="transfers-batch-export" class="dropdown-item" href="#">Export</a>
+            <a id="transfers-batch-mark" class="dropdown-item" href="#">Mark</a>
+            <a id="transfers-batch-unmark" class="dropdown-item" href="#">Unmark</a>
             <a id="transfers-batch-delete" class="dropdown-item" href="#">Delete</a>
             <div class="dropdown-divider"></div>
             <a id="transfers-batch-audio-import" class="dropdown-item" href="#">Audio Import</a>

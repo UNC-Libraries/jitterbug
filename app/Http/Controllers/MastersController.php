@@ -149,13 +149,14 @@ class MastersController extends Controller {
     $input = $request->all();
     $batch = isset($input['batch']) ? true : false;
     $batchSize = $input['batchSize'];
+    $mark = isset($input['mark']) ? true : false;
 
     $masterId = null;
     $masters = array();
 
     // Update MySQL
     DB::transaction(
-      function () use ($request, $input, $batch, $batchSize, 
+      function () use ($request, $input, $batch, $batchSize, $mark,
                                                    &$masterId, &$masters) {
       // The transaction id will be used by the 'revisionable' package
       // when a model event is fired. We are passing it down via a connection
@@ -176,6 +177,8 @@ class MastersController extends Controller {
         $subclass->save();
         $master->subclassId = $subclass->id;
         $master->save();
+        if ($mark) $master->addMark();
+
         $masterId = $master->id;
         array_push($masters, $master);
 
@@ -445,6 +448,7 @@ class MastersController extends Controller {
         $transfers = $master->transfers;
         foreach ($transfers as $transfer) {
           $transfer->subclass->delete();
+          $transfer->removeMark();
           $transfer->delete();
         }
 
@@ -454,6 +458,7 @@ class MastersController extends Controller {
         }
       }
 
+      $master->removeMark();
       $master->delete();
       $subclass->delete();
 
@@ -516,6 +521,7 @@ class MastersController extends Controller {
         $transfers = Transfer::whereIn('call_number', $callNumbers)->get();
         foreach ($transfers as $transfer) {
           $transfer->subclass->delete();
+          $transfer->removeMark();
           $transfer->delete();
         }
 
@@ -527,6 +533,7 @@ class MastersController extends Controller {
 
       foreach ($masters as $master) {
         $master->subclass->delete();
+        $master->removeMark();
         $master->delete();
       }
 

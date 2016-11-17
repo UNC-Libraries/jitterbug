@@ -101,6 +101,22 @@ jitterbug = {
       jitterbug.openDataExportModal('items', tableSelection);
     });
 
+    $('#items-batch-mark').click(function(event) {
+      var tableSelection = jitterbug.tableSelection;
+      if (!jitterbug.validateBatchSelection(tableSelection, 'marking', 100)) {
+        return;
+      }
+      jitterbug.batchMark('items', 'Jitterbug\\Models\\AudioVisualItem', tableSelection);
+    });
+
+    $('#items-batch-unmark').click(function(event) {
+      var tableSelection = jitterbug.tableSelection;
+      if (!jitterbug.validateBatchSelection(tableSelection, 'unmarking', 100)) {
+        return;
+      }
+      jitterbug.batchUnmark('items', 'Jitterbug\\Models\\AudioVisualItem', tableSelection);
+    });
+
     $('#items-batch-delete').click(function(event) {
       var tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'deleting', 100)) {
@@ -205,6 +221,22 @@ jitterbug = {
       jitterbug.openDataExportModal('masters', tableSelection);
     });
 
+    $('#masters-batch-mark').click(function(event) {
+      var tableSelection = jitterbug.tableSelection;
+      if (!jitterbug.validateBatchSelection(tableSelection, 'marking', 100)) {
+        return;
+      }
+      jitterbug.batchMark('masters', 'Jitterbug\\Models\\PreservationMaster', tableSelection);
+    });
+
+    $('#masters-batch-unmark').click(function(event) {
+      var tableSelection = jitterbug.tableSelection;
+      if (!jitterbug.validateBatchSelection(tableSelection, 'unmarking', 500)) {
+        return;
+      }
+      jitterbug.batchUnmark('masters', 'Jitterbug\\Models\\PreservationMaster', tableSelection);
+    });
+
     $('#masters-batch-delete').click(function(event) {
       var tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'deleting', 100)) {
@@ -263,6 +295,22 @@ jitterbug = {
         return;
       }
       jitterbug.openDataExportModal('transfers', tableSelection);
+    });
+
+    $('#transfers-batch-mark').click(function(event) {
+      var tableSelection = jitterbug.tableSelection;
+      if (!jitterbug.validateBatchSelection(tableSelection, 'marking', 100)) {
+        return;
+      }
+      jitterbug.batchMark('transfers', 'Jitterbug\\Models\\Transfer', tableSelection);
+    });
+
+    $('#transfers-batch-unmark').click(function(event) {
+      var tableSelection = jitterbug.tableSelection;
+      if (!jitterbug.validateBatchSelection(tableSelection, 'unmarking', 500)) {
+        return;
+      }
+      jitterbug.batchUnmark('transfers', 'Jitterbug\\Models\\Transfer', tableSelection);
     });
 
     $('#transfers-batch-delete').click(function(event) {
@@ -632,10 +680,10 @@ jitterbug = {
       var mark = $(this);
       var data = {};
       data['markableType'] = mark.data('markable-type');
-      data['markableId'] = mark.data('markable-id');
-      
+      data['markableIds'] = [mark.data('markable-id')];
+
       if (mark.hasClass('marked')) {
-        data['_method'] = 'DELETE'
+        data['_method'] = 'DELETE';
         $.post('/marks', data, function(data) {
           mark.removeClass('marked');
         });
@@ -644,6 +692,37 @@ jitterbug = {
           mark.addClass('marked');
         });
       }
+    });
+  },
+
+  batchMark: function(resourceName, type, tableSelection) {
+    var data = {};
+    data['markableType'] = type;
+    data['markableIds'] = tableSelection.selectedIds();
+    $.post('/marks', data, function(data) {
+      // Render marks currently in view in the data table
+      $('#' + resourceName + '-data tr[role="button"]').each(function() {
+        var id = $(this).data('id');
+        if ($.inArray(id, tableSelection.selectedIds()) != -1) {
+          $(this).addClass('marked');
+        }
+      });
+    });
+  },
+
+  batchUnmark: function(resourceName, type, tableSelection) {
+    var data = {};
+    data['markableType'] = type;
+    data['markableIds'] = tableSelection.selectedIds();
+    data['_method'] = 'DELETE';
+    $.post('/marks', data, function(data) {
+      // Remove marks currently in view in the data table
+      $('#' + resourceName + '-data tr[role="button"]').each(function() {
+        var id = $(this).data('id');
+        if ($.inArray(id, tableSelection.selectedIds()) != -1) {
+          $(this).removeClass('marked');
+        }
+      });
     });
   },
 

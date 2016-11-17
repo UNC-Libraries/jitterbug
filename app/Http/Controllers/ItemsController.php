@@ -126,13 +126,14 @@ class ItemsController extends Controller
     $input = $request->all();
     $batch = isset($input['batch']) ? true : false;
     $batchSize = $input['batchSize'];
+    $mark = isset($input['mark']) ? true : false;
 
     $itemId = null;
     $items = array();
 
     // Update MySQL
     DB::transaction(
-      function () use ($request, $input, $batch, $batchSize, 
+      function () use ($request, $input, $batch, $batchSize, $mark,
                                                    &$itemId, &$items) {
       // The transaction id will be used by the 'revisionable' package
       // when a model event is fired. We are passing it down via a connection
@@ -159,6 +160,8 @@ class ItemsController extends Controller
         $subclass->save();
         $item->subclassId = $subclass->id;
         $item->save();
+        if ($mark) $item->addMark();
+
         $itemId = $item->id;
         array_push($items, $item);
 
@@ -481,6 +484,7 @@ class ItemsController extends Controller
         $masters = 
           PreservationMaster::where('call_number', $callNumber)->get();
         foreach ($masters as $master) {
+          $master->removeMark();
           $master->subclass->delete();
           $master->delete();
         }
@@ -492,11 +496,13 @@ class ItemsController extends Controller
 
         $transfers = Transfer::where('call_number', $callNumber)->get();
         foreach ($transfers as $transfer) {
+          $transfer->removeMark();
           $transfer->subclass->delete();
           $transfer->delete();
         }
       }
 
+      $item->removeMark();
       $item->delete();
       $subclass->delete();
 
@@ -553,12 +559,14 @@ class ItemsController extends Controller
           PreservationMaster::whereIn('call_number', $callNumbers)->get();
         foreach ($masters as $master) {
           $master->subclass->delete();
+          $master->removeMark();
           $master->delete();
         }
 
         $transfers = Transfer::whereIn('call_number', $callNumbers)->get();
         foreach ($transfers as $transfer) {
           $transfer->subclass->delete();
+          $transfer->removeMark();
           $transfer->delete();
         }
 
@@ -570,6 +578,7 @@ class ItemsController extends Controller
 
       foreach ($items as $item) {
         $item->subclass->delete();
+        $item->removeMark();
         $item->delete();
       }
 

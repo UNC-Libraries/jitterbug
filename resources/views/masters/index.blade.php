@@ -17,6 +17,8 @@
           <div class="dropdown-menu">
             <a id="masters-batch-edit" class="dropdown-item" href="#">Edit</a>
             <a id="masters-batch-export" class="dropdown-item" href="#">Export</a>
+            <a id="masters-batch-mark" class="dropdown-item" href="#">Mark</a>
+            <a id="masters-batch-unmark" class="dropdown-item" href="#">Unmark</a>
             <a id="masters-batch-delete" class="dropdown-item" href="#">Delete</a>
           </div>
         </div>

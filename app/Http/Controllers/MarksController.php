@@ -21,7 +21,7 @@ class MarksController extends Controller {
   }
 
   /**
-   * Create a new mark if it doesn't exist, or
+   * Create a new mark or marks if they don't exist, or
    * touch it if it already exists.
    */
   public function store(Request $request)
@@ -29,58 +29,47 @@ class MarksController extends Controller {
     if ($request->ajax()) {
       $input = $request->all();
       $markableType = $input['markableType'];
-      $markableId = $input['markableId'];
+      $markableIds = $input['markableIds'];
       $userId = Auth::user()->id;
-      $mark = Mark::where('markable_type', $markableType)
-                  ->where('markable_id', $markableId)
-                  ->where('user_id', $userId)->first();
-      if ($mark === null) {
-        $mark = new Mark;
-        $mark->markableType = $markableType;
-        $mark->markableId = $markableId;
-        $mark->userId = $userId;
-      } else {
-        $mark->touch();
+
+      foreach ($markableIds as $markableId) {
+        $mark = Mark::where('markable_type', $markableType)
+                    ->where('markable_id', $markableId)
+                    ->where('user_id', $userId)->first();
+        if ($mark === null) {
+          $mark = new Mark;
+          $mark->markableType = $markableType;
+          $mark->markableId = $markableId;
+          $mark->userId = $userId;
+        } else {
+          $mark->touch();
+        }
+
+        $mark->save();
       }
-
-      $mark->save();
-
-      $response = array('status'=>'success', 'id'=>$mark->id);
-      return response()->json($response);
     }
   }
 
-  public function batchStore(Request $request)
-  {
-    $markableType = $request->query('markableType');
-    $markableIds = $request->query('markableIds');
-    Auth::user()->id;
-  }
-
+  /**
+   * Delete a new mark or marks if they exist.
+   */
   public function destroy(Request $request)
   {
     if ($request->ajax()) {
       $input = $request->all();
       $markableType = $input['markableType'];
-      $markableId = $input['markableId'];
+      $markableIds = $input['markableIds'];
       $userId = Auth::user()->id;
-      $mark = Mark::where('markable_type', $markableType)
-                  ->where('markable_id', $markableId)
-                  ->where('user_id', $userId)->first();
-      if ($mark !== null) {
-        $mark->delete();
+
+      foreach ($markableIds as $markableId) {
+        $mark = Mark::where('markable_type', $markableType)
+                    ->where('markable_id', $markableId)
+                    ->where('user_id', $userId)->first();
+        if ($mark !== null) {
+          $mark->delete();
+        }
       }
-
-      $response = array('status'=>'success');
-      return response()->json($response);
     }
-  }
-
-  public function batchDestroy(Request $request)
-  {
-    $markableType = $request->query('markableType');
-    $markableIds = $request->query('markableIds');
-    Auth::user()->id;
   }
 
 }

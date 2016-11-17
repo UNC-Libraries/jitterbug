@@ -17,7 +17,7 @@
       <tr role="button" class="@if ($marks->contains($transfer->id)) marked @endif" data-id="{{ $transfer->id }}" data-index="{{ $start + $index }}">
         <td>{{ $transfer->callNumber }}</td>
         <td>{{ $transfer->transferDate }}</td>
-        <td title="{{ $transfer->engineerFirstName }} {{ $transfer->engineerLastName }}">{{ $transfer->engineerFirstName }} {{ $transfer->engineerLastName }}</td>
+        <td @if ($transfer->engineerName) title="{{ $transfer->engineerFirstName }} {{ $transfer->engineerLastName }}" @endif>{{ $transfer->engineerFirstName }} {{ $transfer->engineerLastName }}</td>
         <td>{{ $transfer->vendorName }}</td>
         <td title="{{ $transfer->collectionName }}">{{ $transfer->collectionName }}</td>
         <td>{{ $transfer->formatName }}</td>

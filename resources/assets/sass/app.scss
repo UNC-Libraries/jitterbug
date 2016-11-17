@@ -43,7 +43,7 @@ $global-nav-color-active:      #fff;
 
 $content-bg:                   #f7f7f7;
 $link-color:                   #707070;
-
+$marked-color:                 #f4c04d;
 
 a:link, a:visited, a:hover, a:active {
   color: $link-color;
@@ -276,7 +276,7 @@ Data Panel
 }
 
 #data-panel table tr.marked {
-  border-left: 4px solid #f4c04d;
+  border-left: 4px solid $marked-color;
 }
 
 #data-panel table tr.selected {
@@ -515,7 +515,7 @@ Record Details
 }
 
 #detail .marked {
-  background-color: #f4c04d;
+  background-color: $marked-color;
 }
 
 /* -------------------------------------------

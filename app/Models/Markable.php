@@ -4,10 +4,49 @@ use Log;
 
 trait Markable
 {
+  /**
+   * Test if this object is marked by the user.
+   */
   public function marked()
+  {
+    return $this->getMark() !== null;
+  }
+
+  /**
+   * Create a new mark for this object for the current user. 
+   * Note: we can't call this method simply 'mark' because 
+   * that's apparently a method name in Laravel that is 
+   * called by the framework.
+   */
+  public function addMark()
+  {
+    $mark = $this->getMark();
+    if ($mark === null) {
+      $mark = new Mark;
+      $mark->markableType = get_class($this);
+      $mark->markableId = $this->id;
+      $mark->userId = \Auth::user()->id;
+    } else {
+      $mark->touch();
+    }
+    $mark->save();
+  }
+
+  /**
+   * Remove the mark from this object if it exists.
+   */
+  public function removeMark()
+  {
+    $mark = $this->getMark();
+    if ($mark !== null) {
+      $mark->delete();
+    }
+  }
+
+  private function getMark()
   {
     return Mark::where('markable_type', get_class($this))
                ->where('markable_id', $this->id)
-               ->where('user_id', \Auth::user()->id)->first() !== null;
+               ->where('user_id', \Auth::user()->id)->first();
   }
 }
