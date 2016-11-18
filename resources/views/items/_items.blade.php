@@ -1,4 +1,5 @@
 <div id="data-container">
+  {{-- The ID of this table needs to be unique across Jitterbug (i.e. different than the data table in masters or transfers) so that the colResizable plugin persists unique column widths for each index page table. --}}
   <table id="items-data" class="table table-sm table-hover">
     <thead>
       <tr>

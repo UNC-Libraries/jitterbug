@@ -899,7 +899,7 @@ jitterbug = {
           resource: resourceName,
           location:'session',
           selector: '#' + resourceName + '-data tr[role="button"]',
-          countSelector:'.selection-count'});
+          countSelector:'#data-panel .selection-count'});
       tableSelection.init();
       tableSelection.store();
     } else {
@@ -1322,6 +1322,10 @@ jitterbug = {
             }
           }
 
+          if (scrollable()) {
+            renderSelectionCount();
+          }
+
           $.publish('filterChanged');
         });
       });
@@ -1329,12 +1333,13 @@ jitterbug = {
 
     setSelected = function(selectedFilters) {
       $.each(checkboxes, function(i, checkbox) {
-        if ($.inArray(checkbox.value,selectedFilters) != -1) {
+        if ($.inArray(checkbox.value, selectedFilters) != -1) {
           checkbox.checked = true;
         } else {
           checkbox.checked = false;
         }
       });
+      renderSelectionCount();
     },
 
     setDefault = function() {
@@ -1358,8 +1363,39 @@ jitterbug = {
         values.push(selected[i].value);
       }
       return values;
+    },
+
+    count = function() {
+      if (selectedFilters()[0] == 0) {
+        return 0;
+      } else {
+        return selectedFilters().length;
+      }
+    },
+
+    scrollable = function() {
+      return $(list).height() < $(list)[0].scrollHeight;
+    },
+
+    renderSelectionCount = function() {
+      var countSelector = '#' + listType() + '-selection-count';
+      if (count() > 0) {
+        $(countSelector).html(count() + ' selected' + 
+          ' <a id="' + listType() + '-clear-selection" href="#" style="color: #fff">\
+              <i class="fa fa-times-circle" aria-hidden="true"></i>\
+            </a>');
+        $('#' + listType() + '-clear-selection').click(function(event) {
+          event.preventDefault();
+          // Turn on the 'Any' filter
+          setSelected(['0']);
+          $.publish('filterChanged');
+        });
+      } else {
+        $(countSelector).html('');
+      }
     };
 
+    
     return {
       init: init,
       setDefault: setDefault,

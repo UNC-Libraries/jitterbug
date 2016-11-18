@@ -210,10 +210,13 @@ Filter Panel
   border-bottom: 1px dashed #c7c7c7;
   padding-left: 5px;
   padding-top: 8px;
-  padding-bottom: 8px;
+  padding-bottom: 6px;
   margin-top: 12px;
   font-weight: bold;
   font-size: .95rem;
+  line-height: 1.3rem;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 #filter-panel .checkbox {
@@ -222,6 +225,12 @@ Filter Panel
 
 #filter-panel .checkbox input[type=checkbox] {
   position: relative;
+}
+
+#filter-panel .selection-count {
+  font-size: 80%;
+  font-weight: normal;
+  background-color: #818a91;
 }
 
 .filter-list {
