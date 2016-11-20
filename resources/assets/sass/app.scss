@@ -116,7 +116,7 @@ Header & Footer
   margin-top: -.9rem;
   margin-bottom: .5rem;
   margin-left: -.2rem;
-  margin-right: .6rem;
+  margin-right: 1.2rem;
 }
 
 #support-nav {
@@ -195,6 +195,103 @@ Global Navigation
 #global-nav nav li a:hover {
   text-decoration: none;
   background-color: $global-nav-button-hover-bg;
+}
+
+/* -------------------------------------------
+Dashboard
+------------------------------------------- */
+
+#dashboard {
+  padding-top: 1.2rem;
+}
+
+#dashboard h6 {
+  font-size: 1.1rem;
+  margin-bottom: .5rem;
+}
+
+#dashboard .dropdown-menu {
+  padding: 0;
+  font-size: .9rem;
+}
+
+#dashboard .dropdown-scrollable {
+  height: auto;
+  max-height: 200px;
+  overflow-x: hidden;
+}
+
+#dashboard .overview {
+  padding-top: 1rem;
+  padding-bottom: .75rem;
+  margin-left: .975rem;
+  margin-right: .975rem;
+  margin-bottom: 1.2rem;
+  background-color: #fff;
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);
+}
+
+#dashboard .dashboard-module {
+  font-size: .9rem;
+  padding: .3rem .1rem;
+  margin-bottom: 1.5rem;
+  background-color: #fff;
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);
+}
+
+#dashboard .dashboard-module ol {
+  padding: 0;
+  list-style-type: none;
+}
+
+#dashboard .dashboard-module li {
+  padding: .4rem;
+  border-bottom: 1px solid #efefef;
+}
+
+#dashboard .dashboard-module li:hover {
+  background-color: $content-bg;
+}
+
+#dashboard .recent-activity-module {
+  padding: 0 .5rem;
+  height: 375px;
+  overflow-y: scroll;
+}
+
+#dashboard .recent-activity-module .user {
+  font-weight: bold;
+}
+
+#dashboard .recent-activity-module .timestamp {
+  color: #9a9a9a;
+}
+
+#dashboard .marks-module {
+  padding: 0 .5rem;
+}
+
+#dashboard .marks {
+  height: 331px;
+  overflow-y: scroll;
+}
+
+#dashboard .marks-module .timestamp {
+  color: #9a9a9a;
+}
+
+#dashboard .marks-module .delete {
+  margin-right: .5rem;
+  float: right;
+  color: #d6d6d6;
+}
+
+#dashboard .marks-module .delete:hover {
+  color: $brand-danger;
+}
+
+#dashboard .marks-controls {
+  margin-bottom: .5rem;
 }
 
 /* -------------------------------------------
@@ -675,6 +772,12 @@ Bootstrap Overrides
 .btn-secondary {
   color: $gray-dark;
   background-color: #fff;
+  border: 1px solid $gray-light;
+}
+
+.btn-secondary.active, .btn-secondary.active:hover {
+  color: $gray-dark;
+  background-color: darken($gray-light, 6%);
   border: 1px solid $gray-light;
 }
 

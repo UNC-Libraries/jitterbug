@@ -18,7 +18,7 @@
           <nav>
             <ul>
               <li>
-                <a class="{{$section==='dashboard' ? 'active' : ''}}" href="#"><i class="fa fa-dashboard fa-fw" aria-hidden="true"></i> Dashboard</a>
+                <a class="{{$section==='dashboard' ? 'active' : ''}}" href="{{route('dashboard.index')}}"><i class="fa fa-dashboard fa-fw" aria-hidden="true"></i> Dashboard</a>
               </li>
               <li>
                 <a class="{{$section==='items' ? 'active' : ''}}" href="{{route('items.index')}}"><i class="fa fa-headphones fa-fw" aria-hidden="true"></i> Audio Visual Items</a>
