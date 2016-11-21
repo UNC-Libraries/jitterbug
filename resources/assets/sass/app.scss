@@ -254,7 +254,9 @@ Dashboard
 }
 
 #dashboard .recent-activity-module {
-  padding: 0 .5rem;
+  padding-left: .5rem;
+  padding-right: .1rem;
+  margin-right: .4rem;
   height: 375px;
   overflow-y: scroll;
 }
@@ -271,9 +273,8 @@ Dashboard
   padding: 0 .5rem;
 }
 
-#dashboard .marks {
-  height: 331px;
-  overflow-y: scroll;
+#dashboard .marks-module button {
+  margin: 0;
 }
 
 #dashboard .marks-module .timestamp {
@@ -292,6 +293,11 @@ Dashboard
 
 #dashboard .marks-controls {
   margin-bottom: .5rem;
+}
+
+#dashboard .marks {
+  height: 331px;
+  overflow-y: scroll;
 }
 
 /* -------------------------------------------

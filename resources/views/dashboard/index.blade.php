@@ -64,6 +64,7 @@
       <h6>Marks</h6>
       <div class="dashboard-module">
         <div class="marks-module">
+
           <div class="marks-controls">
             <div class="btn-group" data-toggle="buttons">
               <label class="btn btn-sm btn-secondary active">
@@ -81,46 +82,50 @@
             </div>
 
             <div class="btn-group" style="margin-top: .3rem; float: right;">
-              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user" data-toggle="dropdown" aria-hidden="true"></i>&nbsp; Andrew Shirk</button>
+              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user" data-toggle="dropdown" aria-hidden="true"></i>&nbsp; Erica Titkeme...</button>
               <div id="user-dropdown" class="dropdown-menu dropdown-menu-right dropdown-scrollable">
                 <a class="dropdown-item" href="#">Erica Titkemeyer</a>
                 <a class="dropdown-item" href="#">John Loy</a>
                 <a class="dropdown-item" href="#">Brian Paulson</a>
+                <a class="dropdown-item" href="#">Gerals Schoenherr</a>
               </div>
             </div>
 
-            {{--
+{{--              
             <div style="margin-top: .3rem; float: right; width: 200px;">
               <select class="form-control form-control-sm">
                 <option value="volvo">Andrew Shirk</option>
+                <option value="volvo">Mr. Longname Johnson III of Three</option>
                 <option value="saab">Erica Titkemeyer</option>
                 <option value="mercedes">John Loy</option>
                 <option value="audi">Brian Paulson</option>
               </select>
             </div>
-            --}}
+--}}
           </div>
+      
           <div class="marks">
             <ol>
-              <li role="button" data-object-type="item" data-object-id="12002">Audio Item FS-10478 - <span class="timestamp">10 days ago</span><a href="#" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
-              <li role="button" data-object-type="item" data-object-id="12002">Audio Item FS-10479 - <span class="timestamp">10 days ago</span><a href="#" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
-              <li role="button" data-object-type="item" data-object-id="12002">Audio Item FS-10480 - <span class="timestamp">10 days ago</span><a href="#" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
-              <li role="button" data-object-type="item" data-object-id="12002">Audio Item FS-10481 - <span class="timestamp">10 days ago</span><a href="#" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
-              <li role="button" data-object-type="item" data-object-id="12002">Audio Master 27021 - <span class="timestamp">11 days ago</span><a href="#" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
-              <li role="button" data-object-type="item" data-object-id="12002">Audio Master 27021 - <span class="timestamp">11 days ago</span><a href="#" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
-              <li role="button" data-object-type="item" data-object-id="12002">Audio Transfer 58732 - <span class="timestamp">1 week ago</span><a href="#" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
-              <li role="button" data-object-type="item" data-object-id="12002">Audio Transfer 58733 - <span class="timestamp">1 week ago</span><a href="#" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
+              <li role="button" data-object-type="item" data-object-id="12002">Audio Item FS-10478 - <span class="timestamp">10 days ago</span><a href="#" role="button" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
+              <li role="button" data-object-type="item" data-object-id="12002">Audio Item FS-10479 - <span class="timestamp">10 days ago</span><a href="#" role="button" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
+              <li role="button" data-object-type="item" data-object-id="12002">Audio Item FS-10480 - <span class="timestamp">10 days ago</span><a href="#" role="button" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
+              <li role="button" data-object-type="item" data-object-id="12002">Audio Item FS-10481 - <span class="timestamp">10 days ago</span><a href="#" role="button" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
+              <li role="button" data-object-type="item" data-object-id="12002">Audio Master 27021 - <span class="timestamp">11 days ago</span><a href="#" role="button" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
+              <li role="button" data-object-type="item" data-object-id="12002">Audio Master 27021 - <span class="timestamp">11 days ago</span><a href="#" role="button" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
+              <li role="button" data-object-type="item" data-object-id="12002">Audio Transfer 58732 - <span class="timestamp">1 week ago</span><a href="#" role="button" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
+              <li role="button" data-object-type="item" data-object-id="12002">Audio Transfer 58733 - <span class="timestamp">1 week ago</span><a href="#" role="button" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
 
-              <li role="button" data-object-type="item" data-object-id="12002">Audio Item FS-10478 - <span class="timestamp">1 month ago</span><a href="#" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
-              <li role="button" data-object-type="item" data-object-id="12002">Audio Item FS-10479 - <span class="timestamp">1 month ago</span><a href="#" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
-              <li role="button" data-object-type="item" data-object-id="12002">Audio Item FS-10480 - <span class="timestamp">1 month ago</span><a href="#" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
-              <li role="button" data-object-type="item" data-object-id="12002">Audio Item FS-10481 - <span class="timestamp">1 month ago</span><a href="#" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
-              <li role="button" data-object-type="item" data-object-id="12002">Audio Master 27021 - <span class="timestamp">2 months ago</span><a href="#" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
-              <li role="button" data-object-type="item" data-object-id="12002">Audio Master 27021 - <span class="timestamp">2 months ago</span><a href="#" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
-              <li role="button" data-object-type="item" data-object-id="12002">Audio Transfer 58732 - <span class="timestamp">2 months ago</span><a href="#" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
-              <li role="button" data-object-type="item" data-object-id="12002">Audio Transfer 58733 - <span class="timestamp">2 months ago</span><a href="#" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
+              <li role="button" data-object-type="item" data-object-id="12002">Audio Item FS-10478 - <span class="timestamp">1 month ago</span><a href="#" role="button" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
+              <li role="button" data-object-type="item" data-object-id="12002">Audio Item FS-10479 - <span class="timestamp">1 month ago</span><a href="#" role="button" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
+              <li role="button" data-object-type="item" data-object-id="12002">Audio Item FS-10480 - <span class="timestamp">1 month ago</span><a href="#" role="button" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
+              <li role="button" data-object-type="item" data-object-id="12002">Audio Item FS-10481 - <span class="timestamp">1 month ago</span><a href="#" role="button" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
+              <li role="button" data-object-type="item" data-object-id="12002">Audio Master 27021 - <span class="timestamp">2 months ago</span><a href="#" role="button" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
+              <li role="button" data-object-type="item" data-object-id="12002">Audio Master 27021 - <span class="timestamp">2 months ago</span><a href="#" role="button" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
+              <li role="button" data-object-type="item" data-object-id="12002">Audio Transfer 58732 - <span class="timestamp">2 months ago</span><a href="#" role="button" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
+              <li role="button" data-object-type="item" data-object-id="12002">Audio Transfer 58733 - <span class="timestamp">2 months ago</span><a href="#" role="button" class="delete"><i class="fa fa-times" aria-hidden="true"></i></a></li>
             </ol>
           </div>
+
         </div>
       </div>
     </div>

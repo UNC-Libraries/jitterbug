@@ -4770,7 +4770,9 @@ Dashboard
   background-color: #f7f7f7; }
 
 #dashboard .recent-activity-module {
-  padding: 0 .5rem;
+  padding-left: .5rem;
+  padding-right: .1rem;
+  margin-right: .4rem;
   height: 375px;
   overflow-y: scroll; }
 
@@ -4783,9 +4785,8 @@ Dashboard
 #dashboard .marks-module {
   padding: 0 .5rem; }
 
-#dashboard .marks {
-  height: 331px;
-  overflow-y: scroll; }
+#dashboard .marks-module button {
+  margin: 0; }
 
 #dashboard .marks-module .timestamp {
   color: #9a9a9a; }
@@ -4800,6 +4801,10 @@ Dashboard
 
 #dashboard .marks-controls {
   margin-bottom: .5rem; }
+
+#dashboard .marks {
+  height: 331px;
+  overflow-y: scroll; }
 
 /* -------------------------------------------
 Filter Panel
