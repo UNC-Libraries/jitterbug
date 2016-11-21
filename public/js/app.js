@@ -66,6 +66,62 @@ jitterbug = {
     }
   },
 
+  initDashboard: function() {
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(jitterbug.drawDashboardCharts);
+  },
+
+  drawDashboardCharts: function() {
+    var itemsData = new google.visualization.DataTable();
+    itemsData.addColumn('string', 'Type');
+    itemsData.addColumn('number', 'Records');
+    itemsData.addRows([
+      ['Audio', 99600],
+      ['Film', 2428],
+      ['Video', 2847],
+    ]);
+
+    var mastersData = new google.visualization.DataTable();
+    mastersData.addColumn('string', 'Type');
+    mastersData.addColumn('number', 'Records');
+    mastersData.addRows([
+      ['Audio', 26935],
+      ['Film', 0],
+      ['Video', 179],
+    ]);
+
+    var transfersData = new google.visualization.DataTable();
+    transfersData.addColumn('string', 'Type');
+    transfersData.addColumn('number', 'Records');
+    transfersData.addRows([
+      ['Audio', 58102],
+      ['Film', 0],
+      ['Video', 172],
+    ]);
+
+    var options = {
+      width:200,
+      height:200,
+      legend: 'none',
+      fontName: 'Source Sans Pro',
+      fontSize: 12,
+      chartArea: {width: '80%', height: '80%'},
+      colors:['#317da1', '#d1a842', '#d16642']
+    };
+
+    var itemsChart = 
+      new google.visualization.PieChart(document.getElementById('items-chart'));
+    itemsChart.draw(itemsData, options);
+
+    var mastersChart = 
+      new google.visualization.PieChart(document.getElementById('masters-chart'));
+    mastersChart.draw(mastersData, options);
+
+    var transfersChart =
+      new google.visualization.PieChart(document.getElementById('transfers-chart'));
+    transfersChart.draw(transfersData, options);
+  },
+
   /* 
    * These properties are set to deserialized instances for each
    * index page (items, masters, and transfers). They aren't used

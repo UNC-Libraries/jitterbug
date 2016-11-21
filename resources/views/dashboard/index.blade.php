@@ -11,14 +11,17 @@
     <div class="col-xs-12">
       <div class="row">
         <div class="col-xs-4 centered">
+          <div id="items-chart" class="chart"></div>
           <h1>104,873</h1>
           <p>Audio Visual Items</p>
         </div>
         <div class="col-xs-4 centered">
+          <div id="masters-chart" class="chart"></div>
           <h1>26,935</h1>
           <p>Preservation Masters</p>
         </div>
         <div class="col-xs-4 centered">
+          <div id="transfers-chart" class="chart"></div>
           <h1>58,102</h1>
           <p>Transfers</p>
         </div>
@@ -91,7 +94,7 @@
               </div>
             </div>
 
-{{--              
+{{--
             <div style="margin-top: .3rem; float: right; width: 200px;">
               <select class="form-control form-control-sm">
                 <option value="volvo">Andrew Shirk</option>
