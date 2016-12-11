@@ -47,7 +47,7 @@ class User extends Model implements AuthenticatableContract,
     } else {
       $fullName = $this->firstName . ' ' . $this->lastName;
     }
-    return $fullName;
+    return trim($fullName);
   }
 
   /**

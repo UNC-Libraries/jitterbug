@@ -36,6 +36,11 @@ class VideoItem extends Model {
     'videoColor', 'videoMonoStereo', 
     'videoContentDescription', 'recordingStandard');
 
+  public function superclass()
+  {
+    return $this->morphOne('AudioVisualItem', 'subclass')->withTrashed();
+  }
+
   public function getMonoStereoDisplayAttribute($value)
   {
     $monoStereo = ($value==null ? $this->monoStereo : $value);

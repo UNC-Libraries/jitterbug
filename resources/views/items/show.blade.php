@@ -14,7 +14,7 @@
   </div>
   {{-- AudioVisualItem fields --}}
   <div class="row first detail-container">
-    <div class="mark @if ($item->marked()) marked @endif" role="button" data-markable-type="{{get_class($item)}}" data-markable-id="{{$item->id}}">
+    <div class="mark @if ($item->marked()) marked @endif" role="button" data-markable-type="{{class_basename(get_class($item))}}" data-markable-id="{{$item->id}}">
       <div class="mark-tail"></div>
     </div>
     <div class="col-xs-6">

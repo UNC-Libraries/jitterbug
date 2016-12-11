@@ -79,7 +79,7 @@ class MastersController extends Controller {
         array_push($masterIds, $master->id);
       }
       $marks = Mark::whereIn('markable_id', $masterIds)
-            ->where('markable_type', 'Jitterbug\\Models\\PreservationMaster')
+            ->where('markable_type', 'PreservationMaster')
             ->where('user_id', Auth::user()->id)
             ->get()->pluck('markable_id');
 

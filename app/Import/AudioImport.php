@@ -46,6 +46,7 @@ class AudioImport extends Import {
 
   public function validate()
   {
+    $originalPms = array();
     $originatorReferences = array();
     $messages = array();
     foreach($this->data as $row) {
@@ -103,6 +104,13 @@ class AudioImport extends Import {
           && !empty($row[$key]) && !empty($row['CallNumber'])
           && !$this->belongsToItem($row[$key], $row['CallNumber'])) {
           $bag->add($key, $key . ' does not belong to the given call number.');
+        }
+        // Validate the pm is unqiue amongst pm values in the rest of the file
+        if ($key==='OriginalPm' 
+          && !empty($row[$key]) && in_array($row[$key], $originalPms)) {
+          $bag->add($key, $key . ' has already been used in this file.');
+        } else if ($key==='OriginalPm' && !empty($row[$key])) {
+          array_push($originalPms, $row[$key]);
         }
       }
     }

@@ -76,7 +76,7 @@ class ItemsController extends Controller
         array_push($itemIds, $item->id);
       }
       $marks = Mark::whereIn('markable_id', $itemIds)
-            ->where('markable_type', 'Jitterbug\\Models\\AudioVisualItem')
+            ->where('markable_type', 'AudioVisualItem')
             ->where('user_id', Auth::user()->id)
             ->get()->pluck('markable_id');
 

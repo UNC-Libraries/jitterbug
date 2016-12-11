@@ -1,36 +1,13 @@
-<?php
-namespace Jitterbug\Http\Controllers;
+<?php namespace Jitterbug\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Str;
-
-use Auth;
-use DB;
 use Log;
-use Session;
-use Solarium;
-use Uuid;
 
-use Jitterbug\Export\ItemsExport;
-use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\AudioVisualItemType;
-use Jitterbug\Models\AudioVisualItemCollection;
-use Jitterbug\Models\AudioVisualItemFormat;
-use Jitterbug\Models\AudioItem;
-use Jitterbug\Models\BatchAudioVisualItem;
-use Jitterbug\Models\CallNumberSequence;
-use Jitterbug\Models\Collection;
-use Jitterbug\Models\Cut;
-use Jitterbug\Models\FilmItem;
-use Jitterbug\Models\Format;
 use Jitterbug\Models\Mark;
-use Jitterbug\Models\PreservationMaster;
-use Jitterbug\Models\Transfer;
-use Jitterbug\Models\VideoItem;
-use Jitterbug\Http\Requests\ItemRequest;
-use Jitterbug\Support\SolariumProxy;
-use Jitterbug\Support\SolariumPaginator;
+use Jitterbug\Models\PreservationMasterType;
+use Jitterbug\Models\TransferType;
+use Jitterbug\Presenters\TypeCounts;
+use Jitterbug\Presenters\ActivityStream;
 
 class DashboardController extends Controller
 {
@@ -45,10 +22,21 @@ class DashboardController extends Controller
     $this->middleware('auth');
   }
   
-  public function index(Request $request)
+  public function index()
   {
+    // Overview counts
+    $itemCounts = new TypeCounts(AudioVisualItemType::all());
+    $masterCounts = new TypeCounts(PreservationMasterType::all());
+    $transferCounts = new TypeCounts(TransferType::all());
 
-    return view('dashboard.index');
+    // Recent activity
+    $stream = new ActivityStream;
+    $activities = $stream->activities();
+
+    //dd($activities);
+
+    return view('dashboard.index', compact('itemCounts', 'masterCounts', 
+      'transferCounts', 'activities'));
   }
 
 }

@@ -106,6 +106,19 @@ class PreservationMaster extends Model {
     return $type;
   }
 
+  public function getTypeIdAttribute()
+  {
+    // Rather than doing a query, we'll just return hardcoded values
+    $type = $this->getAttribute("type");
+    if($type==='Audio') {
+      return 1;
+    } else if ($type==='Film') {
+      return 2;
+    } else if ($type==='Video') {
+      return 3;
+    }
+  }
+  
   /* File format accessors / mutators */
 
   public function getAudioFileFormatAttribute($value)

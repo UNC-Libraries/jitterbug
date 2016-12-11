@@ -21,7 +21,8 @@ JITTERBUG = {
     },
 
     index: function() {
-      jitterbug.initDashboard();
+      jitterbug.initDashboardCharts();
+      jitterbug.initDashboardActivityStream();
     }
   },
 

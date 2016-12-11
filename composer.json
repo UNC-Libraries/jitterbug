@@ -17,7 +17,8 @@
 		"venturecraft/revisionable": "dev-master",
 		"davejamesmiller/laravel-breadcrumbs": "^3.0",
 		"ramsey/uuid": "^3.5",
-		"adldap2/adldap2-laravel": "2.1.*"
+		"adldap2/adldap2-laravel": "2.1.*",
+		"jimmiw/php-time-ago": "^0.4.14"
 	},
 	"require-dev": {
         "fzaninotto/faker": "~1.4",

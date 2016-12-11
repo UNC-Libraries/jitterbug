@@ -32,9 +32,14 @@ class AudioItem extends Model {
     'content_description' => 'content description',
   );
 
-  protected $fillable = array('callNumber','listeningCopy',
-    'audioMonoStereo', 'trackConfiguration','size','audioBase',
+  protected $fillable = array('callNumber', 'listeningCopy',
+    'audioMonoStereo', 'trackConfiguration', 'size', 'audioBase',
     'audioContentDescription');
+
+  public function superclass()
+  {
+    return $this->morphOne('AudioVisualItem', 'subclass')->withTrashed();
+  }
 
   public function getListeningCopyDisplayAttribute($value)
   {
@@ -67,19 +72,23 @@ class AudioItem extends Model {
     return $value;
   }
 
-  public function getAudioMonoStereoAttribute($value) {
+  public function getAudioMonoStereoAttribute($value)
+  {
     return $value===null ? $this->monoStereo : $value;
   }
 
-  public function setAudioMonoStereoAttribute($value) {
+  public function setAudioMonoStereoAttribute($value)
+  {
     $this->monoStereo = $value;
   }
 
-  public function getAudioBaseAttribute($value) {
+  public function getAudioBaseAttribute($value)
+  {
     return $value===null ? $this->base : $value;
   }
 
-  public function setAudioBaseAttribute($value) {
+  public function setAudioBaseAttribute($value)
+  {
     $this->base = $value;
   }
 

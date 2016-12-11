@@ -28,4 +28,9 @@ class VideoTransfer extends Model {
   protected $fillable = array('timeBaseCorrector', 
     'adConverter');
 
+  public function superclass()
+  {
+    return $this->morphOne('Transfer', 'subclass')->withTrashed();
+  }
+  
 }

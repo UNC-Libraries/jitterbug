@@ -32,6 +32,11 @@ class AudioMaster extends Model {
   protected $fillable = array('tapeBrandId', 'pmSpeedId',
     'samplingRateId', 'testTones');
 
+  public function superclass()
+  {
+    return $this->morphOne('PreservationMaster', 'subclass')->withTrashed();
+  }
+
   public function tapeBrand()
   {
     return $this->belongsTo('Jitterbug\Models\TapeBrand');

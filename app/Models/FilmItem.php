@@ -43,6 +43,11 @@ class FilmItem extends Model {
     'filmColor', 'soundType','lengthInFeet','filmStock','edgeCode',
         'shrinkagePercent','canNumber','filmContentDescription');
 
+  public function superclass()
+  {
+    return $this->morphOne('AudioVisualItem', 'subclass')->withTrashed();
+  }
+
   public function getFilmColorAttribute($value)
   {
     return $value===null ? $this->color : $value;

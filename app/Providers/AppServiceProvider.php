@@ -1,6 +1,21 @@
 <?php namespace Jitterbug\Providers;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
+
+use Jitterbug\Models\AudioVisualItem;
+use Jitterbug\Models\AudioItem;
+use Jitterbug\Models\FilmItem;
+use Jitterbug\Models\VideoItem;
+use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\AudioMaster;
+use Jitterbug\Models\FilmMaster;
+use Jitterbug\Models\VideoMaster;
+use Jitterbug\Models\Cut;
+use Jitterbug\Models\Transfer;
+use Jitterbug\Models\AudioTransfer;
+use Jitterbug\Models\FilmTransfer;
+use Jitterbug\Models\VideoTransfer;
 
 class AppServiceProvider extends ServiceProvider {
 
@@ -25,6 +40,27 @@ class AppServiceProvider extends ServiceProvider {
         $view->with(compact('controller', 'action'));
        }
     });
+
+
+    // Setup the morphMap for the different object types
+    Relation::morphMap([
+      'AudioVisualItem' => AudioVisualItem::class,
+      'AudioItem' => AudioItem::class,
+      'FilmItem' => FilmItem::class,
+      'VideoItem' => VideoItem::class,
+
+      'PreservationMaster' => PreservationMaster::class,
+      'AudioMaster' => AudioMaster::class,
+      'FilmMaster' => FilmMaster::class,
+      'VideoMaster' => VideoMaster::class,
+      'Cut' => Cut::class,
+
+      'Transfer' => Transfer::class,
+      'AudioTransfer' => AudioTransfer::class,
+      'FilmTransfer' => FilmTransfer::class,
+      'VideoTransfer' => VideoTransfer::class,
+    ]);
+
   }
 
  /**

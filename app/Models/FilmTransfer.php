@@ -15,4 +15,9 @@ class FilmTransfer extends Model {
 
   protected $revisionCreationsEnabled = true;
 
+  public function superclass()
+  {
+    return $this->morphOne('Transfer', 'subclass')->withTrashed();
+  }
+
 }

@@ -23,7 +23,7 @@ trait Markable
     $mark = $this->getMark();
     if ($mark === null) {
       $mark = new Mark;
-      $mark->markableType = get_class($this);
+      $mark->markableType = class_basename(get_class($this));
       $mark->markableId = $this->id;
       $mark->userId = \Auth::user()->id;
     } else {
@@ -45,7 +45,7 @@ trait Markable
 
   private function getMark()
   {
-    return Mark::where('markable_type', get_class($this))
+    return Mark::where('markable_type', class_basename(get_class($this)))
                ->where('markable_id', $this->id)
                ->where('user_id', \Auth::user()->id)->first();
   }

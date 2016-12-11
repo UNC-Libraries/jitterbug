@@ -1,7 +1,7 @@
 <?php
 
 Route::get('/', function () {
-    return redirect()->route('items.index');
+    return redirect()->route('dashboard.index');
 });
 
 /*
@@ -69,6 +69,7 @@ Route::post('items/batch/export-build',
 Route::post('items/batch/export-download', 
   'ItemsController@batchExportDownload')->name('items.batch.export.download');
 Route::resource('items', 'ItemsController');
+Route::get('cuts/{id}', 'CutsController@get');
 
 /*
 |--------------------------------------------------------------------------

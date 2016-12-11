@@ -188,4 +188,17 @@ class CutsController extends Controller
     }
   }
 
+  /**
+   * Display the details of a cut, coming from the dashboard. This
+   * is somewhat of a hack to get around the fact that on the dashboard
+   * we don't have the associated preservation master id, so we have
+   * this special direct route.
+   */
+  public function get($cutId)
+  {
+    $cut = Cut::findOrFail($cutId);
+    return redirect()->route('masters.cuts.show', 
+        [$cut->preservationMasterId, $cut->id]);
+  }
+
 }

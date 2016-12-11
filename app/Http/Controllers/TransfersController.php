@@ -81,7 +81,7 @@ class TransfersController extends Controller {
         array_push($transferIds, $transfer->id);
       }
       $marks = Mark::whereIn('markable_id', $transferIds)
-            ->where('markable_type', 'Jitterbug\\Models\\Transfer')
+            ->where('markable_type', 'Transfer')
             ->where('user_id', Auth::user()->id)
             ->get()->pluck('markable_id');
 

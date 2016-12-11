@@ -66,60 +66,71 @@ jitterbug = {
     }
   },
 
-  initDashboard: function() {
+  initDashboardCharts: function() {
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(jitterbug.drawDashboardCharts);
   },
 
   drawDashboardCharts: function() {
-    var itemsData = new google.visualization.DataTable();
-    itemsData.addColumn('string', 'Type');
-    itemsData.addColumn('number', 'Records');
-    itemsData.addRows([
-      ['Audio', 99600],
-      ['Film', 2428],
-      ['Video', 2847],
+    var itemChart = $('#item-chart');
+    var itemCounts = itemChart.data('counts').split(',').map(Number);
+    var itemData = new google.visualization.DataTable();
+    itemData.addColumn('string', 'Type');
+    itemData.addColumn('number', 'Count');
+    itemData.addRows([
+      ['Audio', itemCounts[0]],
+      ['Film', itemCounts[1]],
+      ['Video', itemCounts[2]],
     ]);
 
-    var mastersData = new google.visualization.DataTable();
-    mastersData.addColumn('string', 'Type');
-    mastersData.addColumn('number', 'Records');
-    mastersData.addRows([
-      ['Audio', 26935],
-      ['Film', 0],
-      ['Video', 179],
+    var masterChart = $('#master-chart');
+    var masterCounts = masterChart.data('counts').split(',').map(Number);
+    var masterData = new google.visualization.DataTable();
+    masterData.addColumn('string', 'Type');
+    masterData.addColumn('number', 'Count');
+    masterData.addRows([
+      ['Audio', masterCounts[0]],
+      ['Film', masterCounts[1]],
+      ['Video', masterCounts[2]],
     ]);
 
-    var transfersData = new google.visualization.DataTable();
-    transfersData.addColumn('string', 'Type');
-    transfersData.addColumn('number', 'Records');
-    transfersData.addRows([
-      ['Audio', 58102],
-      ['Film', 0],
-      ['Video', 172],
+    var transferChart = $('#transfer-chart');
+    var transferCounts = transferChart.data('counts').split(',').map(Number);
+    var transferData = new google.visualization.DataTable();
+    transferData.addColumn('string', 'Type');
+    transferData.addColumn('number', 'Count');
+    transferData.addRows([
+      ['Audio', transferCounts[0]],
+      ['Film', transferCounts[1]],
+      ['Video', transferCounts[2]],
     ]);
 
     var options = {
-      width:200,
-      height:200,
+      width: 200,
+      height: 200,
       legend: 'none',
       fontName: 'Source Sans Pro',
       fontSize: 12,
       chartArea: {width: '80%', height: '80%'},
-      colors:['#317da1', '#d1a842', '#d16642']
+      colors: ['#317da1', '#d1a842', '#d16642']
     };
 
-    var itemsChart = 
-      new google.visualization.PieChart(document.getElementById('items-chart'));
-    itemsChart.draw(itemsData, options);
+    itemChart = new google.visualization.PieChart(itemChart[0]);
+    itemChart.draw(itemData, options);
 
-    var mastersChart = 
-      new google.visualization.PieChart(document.getElementById('masters-chart'));
-    mastersChart.draw(mastersData, options);
+    masterChart = new google.visualization.PieChart(masterChart[0]);
+    masterChart.draw(masterData, options);
 
-    var transfersChart =
-      new google.visualization.PieChart(document.getElementById('transfers-chart'));
-    transfersChart.draw(transfersData, options);
+    transferChart = new google.visualization.PieChart(transferChart[0]);
+    transferChart.draw(transferData, options);
+  },
+
+  initDashboardActivityStream: function() {
+    $('.recent-activity li[role="button"]').click(function(event) {
+      var type = $(this).data('object-type');
+      var id = $(this).data('object-id');
+      window.location.href='/' + type + 's/' + id;
+    });
   },
 
   /* 
@@ -162,7 +173,7 @@ jitterbug = {
       if (!jitterbug.validateBatchSelection(tableSelection, 'marking', 100)) {
         return;
       }
-      jitterbug.batchMark('items', 'Jitterbug\\Models\\AudioVisualItem', tableSelection);
+      jitterbug.batchMark('items', 'AudioVisualItem', tableSelection);
     });
 
     $('#items-batch-unmark').click(function(event) {
@@ -170,7 +181,7 @@ jitterbug = {
       if (!jitterbug.validateBatchSelection(tableSelection, 'unmarking', 100)) {
         return;
       }
-      jitterbug.batchUnmark('items', 'Jitterbug\\Models\\AudioVisualItem', tableSelection);
+      jitterbug.batchUnmark('items', 'AudioVisualItem', tableSelection);
     });
 
     $('#items-batch-delete').click(function(event) {
@@ -282,7 +293,7 @@ jitterbug = {
       if (!jitterbug.validateBatchSelection(tableSelection, 'marking', 100)) {
         return;
       }
-      jitterbug.batchMark('masters', 'Jitterbug\\Models\\PreservationMaster', tableSelection);
+      jitterbug.batchMark('masters', 'PreservationMaster', tableSelection);
     });
 
     $('#masters-batch-unmark').click(function(event) {
@@ -290,7 +301,7 @@ jitterbug = {
       if (!jitterbug.validateBatchSelection(tableSelection, 'unmarking', 500)) {
         return;
       }
-      jitterbug.batchUnmark('masters', 'Jitterbug\\Models\\PreservationMaster', tableSelection);
+      jitterbug.batchUnmark('masters', 'PreservationMaster', tableSelection);
     });
 
     $('#masters-batch-delete').click(function(event) {
@@ -358,7 +369,7 @@ jitterbug = {
       if (!jitterbug.validateBatchSelection(tableSelection, 'marking', 100)) {
         return;
       }
-      jitterbug.batchMark('transfers', 'Jitterbug\\Models\\Transfer', tableSelection);
+      jitterbug.batchMark('transfers', 'Transfer', tableSelection);
     });
 
     $('#transfers-batch-unmark').click(function(event) {
@@ -366,7 +377,7 @@ jitterbug = {
       if (!jitterbug.validateBatchSelection(tableSelection, 'unmarking', 500)) {
         return;
       }
-      jitterbug.batchUnmark('transfers', 'Jitterbug\\Models\\Transfer', tableSelection);
+      jitterbug.batchUnmark('transfers', 'Transfer', tableSelection);
     });
 
     $('#transfers-batch-delete').click(function(event) {
@@ -1378,9 +1389,7 @@ jitterbug = {
             }
           }
 
-          if (scrollable()) {
-            renderSelectionCount();
-          }
+          renderSelectionCount();
 
           $.publish('filterChanged');
         });
@@ -1430,24 +1439,26 @@ jitterbug = {
     },
 
     scrollable = function() {
-      return $(list).height() < $(list)[0].scrollHeight;
+      return $(list).height() < list.scrollHeight;
     },
 
     renderSelectionCount = function() {
-      var countSelector = '#' + listType() + '-selection-count';
-      if (count() > 0) {
-        $(countSelector).html(count() + ' selected' + 
-          ' <a id="' + listType() + '-clear-selection" href="#" style="color: #fff">\
-              <i class="fa fa-times-circle" aria-hidden="true"></i>\
-            </a>');
-        $('#' + listType() + '-clear-selection').click(function(event) {
-          event.preventDefault();
-          // Turn on the 'Any' filter
-          setSelected(['0']);
-          $.publish('filterChanged');
-        });
-      } else {
-        $(countSelector).html('');
+      if (scrollable()) {
+        var countSelector = '#' + listType() + '-selection-count';
+        if (count() > 0) {
+          $(countSelector).html(count() + ' selected' + 
+            ' <a id="' + listType() + '-clear-selection" href="#" style="color: #fff">\
+                <i class="fa fa-times-circle" aria-hidden="true"></i>\
+              </a>');
+          $('#' + listType() + '-clear-selection').click(function(event) {
+            event.preventDefault();
+            // Turn on the 'Any' filter
+            setSelected(['0']);
+            $.publish('filterChanged');
+          });
+        } else {
+          $(countSelector).html('');
+        }
       }
     };
 

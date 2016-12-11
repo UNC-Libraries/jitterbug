@@ -27,19 +27,28 @@ class VideoMaster extends Model {
 
   protected $fillable = array('videoFrameSize', 'videoAspectRatio');
 
-  public function getVideoFrameSizeAttribute($value) {
+  public function superclass()
+  {
+    return $this->morphOne('PreservationMaster', 'subclass')->withTrashed();
+  }
+  
+  public function getVideoFrameSizeAttribute($value)
+  {
     return $value===null ? $this->frameSize : $value;
   }
 
-  public function setVideoFrameSizeAttribute($value) {
+  public function setVideoFrameSizeAttribute($value)
+  {
     $this->frameSize = $value;
   }
 
-  public function getVideoAspectRatioAttribute($value) {
+  public function getVideoAspectRatioAttribute($value)
+  {
     return $value===null ? $this->aspectRatio : $value;
   }
 
-  public function setVideoAspectRatioAttribute($value) {
+  public function setVideoAspectRatioAttribute($value)
+  {
     $this->aspectRatio = $value;
   }
 }

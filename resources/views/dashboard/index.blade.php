@@ -11,18 +11,18 @@
     <div class="col-xs-12">
       <div class="row">
         <div class="col-xs-4 centered">
-          <div id="items-chart" class="chart"></div>
-          <h1>104,873</h1>
+          <div id="item-chart" class="chart" data-counts="{{$itemCounts->counts()}}"></div>
+          <h1>{{$itemCounts->total()}}</h1>
           <p>Audio Visual Items</p>
         </div>
         <div class="col-xs-4 centered">
-          <div id="masters-chart" class="chart"></div>
-          <h1>26,935</h1>
+          <div id="master-chart" class="chart" data-counts="{{$masterCounts->counts()}}"></div>
+          <h1>{{$masterCounts->total()}}</h1>
           <p>Preservation Masters</p>
         </div>
         <div class="col-xs-4 centered">
-          <div id="transfers-chart" class="chart"></div>
-          <h1>58,102</h1>
+          <div id="transfer-chart" class="chart" data-counts="{{$transferCounts->counts()}}"></div>
+          <h1>{{$transferCounts->total()}}</h1>
           <p>Transfers</p>
         </div>
       </div>
@@ -35,29 +35,25 @@
         <div class="recent-activity-module">
           <div class="recent-activity">
             <ol>
-              <li role="button" data-object-type="item" data-object-id="12002"><span class="user">Andrew Shirk</span> <span class="action">updated</span> the <span class="field">recording location</span> of <span class="object-type">audio item</span> <span class="object-id">FT-3992</span> - <span class="timestamp">5 minutes ago</span></li>
-              <li role="button"><span class="user">Andrew Shirk</span> <span class="action">updated</span> the <span class="field">collection</span> of <span class="object-type">audio item</span> <span class="object-id">FT-3992</span> - <span class="timestamp">5 minutes ago</span></li>
-              <li role="button"><span class="user">Erica Titkemeyer</span> <span class="action">created</span> <span class="object-type">video item</span> <span class="object-id">VT-10094</span> - <span class="timestamp">20 minutes ago</span></li>
-              <li role="button"><span class="user">Erica Titkemeyer</span> <span class="action">created</span> <span class="object-type">video item</span> <span class="object-id">VT-10095</span> - <span class="timestamp">25 minutes ago</span></li>
-              <li role="button"><span class="user">John Loy</span> <span class="action">created</span> a <span class="object-type">video transfer</span> for item <span class="object-id">BC-4959</span> - <span class="timestamp">1 day ago</span></li>
+              @foreach($activities as $activity)
 
-              <li role="button"><span class="user">Andrew Shirk</span> <span class="action">updated</span> the <span class="field">recording location</span> of <span class="object-type">audio item</span> <span class="object-id">FT-3992</span> - <span class="timestamp">1 day ago</span></li>
-              <li role="button"><span class="user">Andrew Shirk</span> <span class="action">updated</span> the <span class="field">collection</span> of <span class="object-type">audio item</span> <span class="object-id">FT-3992</span> - <span class="timestamp">1 day ago</span></li>
-              <li role="button"><span class="user">Erica Titkemeyer</span> <span class="action">created</span> <span class="object-type">video item</span> <span class="object-id">VT-10094</span> - <span class="timestamp">2 days ago</span></li>
-              <li role="button"><span class="user">Erica Titkemeyer</span> <span class="action">created</span> <span class="object-type">video item</span> <span class="object-id">VT-10095</span> - <span class="timestamp">2 days ago</span></li>
-              <li role="button"><span class="user">John Loy</span> <span class="action">created</span> a <span class="object-type">video transfer</span> for item <span class="object-id">BC-4959</span> - <span class="timestamp">3 days ago</span></li>
+              @if ($activity->batch)
+              <li><span class="user">{{$activity->user}}</span> <span class="action">{{$activity->action}}</span> {{$activity->objectArticle()}} <span class="object">{{$activity->object()}}</span> - <span class="timestamp">{{$activity->timestamp}}</span></li>
+              @endif
 
-              <li role="button"><span class="user">Andrew Shirk</span> <span class="action">updated</span> the <span class="field">recording location</span> of <span class="object-type">audio item</span> <span class="object-id">FT-3992</span> - <span class="timestamp">5 minutes ago</span></li>
-              <li role="button"><span class="user">Andrew Shirk</span> <span class="action">updated</span> the <span class="field">collection</span> of <span class="object-type">audio item</span> <span class="object-id">FT-3992</span> - <span class="timestamp">5 minutes ago</span></li>
-              <li role="button"><span class="user">Erica Titkemeyer</span> <span class="action">created</span> <span class="object-type">video item</span> <span class="object-id">VT-10094</span> - <span class="timestamp">20 minutes ago</span></li>
-              <li role="button"><span class="user">Erica Titkemeyer</span> <span class="action">created</span> <span class="object-type">video item</span> <span class="object-id">VT-10095</span> - <span class="timestamp">25 minutes ago</span></li>
-              <li role="button"><span class="user">John Loy</span> <span class="action">created</span> a <span class="object-type">video transfer</span> for item <span class="object-id">BC-4959</span> - <span class="timestamp">1 day ago</span></li>
-              <li role="button"><span class="user">Andrew Shirk</span> <span class="action">updated</span> the <span class="field">recording location</span> of <span class="object-type">audio item</span> <span class="object-id">FT-3992</span> - <span class="timestamp">1 day ago</span></li>
-              <li role="button"><span class="user">Andrew Shirk</span> <span class="action">updated</span> the <span class="field">collection</span> of <span class="object-type">audio item</span> <span class="object-id">FT-3992</span> - <span class="timestamp">1 day ago</span></li>
-              <li role="button"><span class="user">Erica Titkemeyer</span> <span class="action">created</span> <span class="object-type">video item</span> <span class="object-id">VT-10094</span> - <span class="timestamp">2 days ago</span></li>
-              <li role="button"><span class="user">Erica Titkemeyer</span> <span class="action">created</span> <span class="object-type">video item</span> <span class="object-id">VT-10095</span> - <span class="timestamp">2 days ago</span></li>
-              <li role="button"><span class="user">John Loy</span> <span class="action">created</span> a <span class="object-type">video transfer</span> for item <span class="object-id">BC-4959</span> - <span class="timestamp">3 days ago</span></li>
+              @if ($activity->field === null && $activity->numFields === null && !$activity->batch)
+              <li @if ($activity->objectExists()) role="button" data-object-type="{{$activity->objectType()}}" data-object-id="{{$activity->objectId()}}" @endif><span class="user">{{$activity->user}}</span> <span class="action">{{$activity->action}}</span> {{$activity->objectArticle()}} <span class="object">{{$activity->object()}}</span> @if (!$activity->objectIsItem()) for {{$activity->itemType}} item {{$activity->itemCallNumber}} @else {{$activity->itemCallNumber}} @endif - <span class="timestamp">{{$activity->timestamp}}</span></li>
+              @endif
 
+              @if ($activity->field !== null)
+              <li @if ($activity->objectExists()) role="button" data-object-type="{{$activity->objectType()}}" data-object-id="{{$activity->objectId()}}" @endif><span class="user">{{$activity->user}}</span> <span class="action">{{$activity->action}}</span> the <span class="field">{{$activity->field}}</span> field of {{$activity->objectArticle()}} <span class="object">{{$activity->object()}}</span> @if (!$activity->objectIsItem()) for {{$activity->itemType}} item {{$activity->itemCallNumber}} @else {{$activity->itemCallNumber}} @endif - <span class="timestamp">{{$activity->timestamp}}</span></li>
+              @endif
+
+              @if ($activity->numFields !== null)
+              <li @if ($activity->objectExists()) role="button" data-object-type="{{$activity->objectType()}}" data-object-id="{{$activity->objectId()}}" @endif><span class="user">{{$activity->user}}</span> <span class="action">{{$activity->action}}</span> {{$activity->numFields}} fields of {{$activity->objectArticle()}} <span class="object">{{$activity->object()}}</span> @if (!$activity->objectIsItem()) for {{$activity->itemType}} item {{$activity->itemCallNumber}} @else {{$activity->itemCallNumber}} @endif - <span class="timestamp">{{$activity->timestamp}}</span></li>
+              @endif
+
+              @endforeach
             </ol>
           </div>
         </div>

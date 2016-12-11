@@ -15,6 +15,11 @@ class AudioTransfer extends Model {
 
   protected $revisionCreationsEnabled = true;
 
+  public function superclass()
+  {
+    return $this->morphOne('Transfer', 'subclass')->withTrashed();
+  }
+
   protected $revisionFormattedFields = array(
     'stylus' => 'isEmpty:nothing|%s',
     'cartridge' => 'isEmpty:nothing|%s',

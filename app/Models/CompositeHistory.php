@@ -7,9 +7,9 @@ trait CompositeHistory
 
   public function completeRevisionHistory()
   {
-    $revisionHistory = $this->revisionHistory()->get();
+    $revisionHistory = $this->revisionHistory;
     $childRevisionHistory = null;
-    $childRevisionHistory = $this->subclass->revisionHistory()->get();
+    $childRevisionHistory = $this->subclass->revisionHistory;
     $completeRevisionHistory = $revisionHistory->merge($childRevisionHistory);
     $completeRevisionHistory = $completeRevisionHistory->sortBy('created_at');
 
@@ -20,7 +20,7 @@ trait CompositeHistory
     $historyKeys = array();
     foreach ($completeRevisionHistory as $arrayKey => $history) {
       $historyKey = $history->transaction_id.$history->field;
-      if (in_array($historyKey,$historyKeys)) {
+      if (in_array($historyKey, $historyKeys)) {
         $completeRevisionHistory->pull($arrayKey);
       } else {
         array_push($historyKeys,$historyKey);

@@ -27,19 +27,28 @@ class FilmMaster extends Model {
 
   protected $fillable = array('filmFrameSize', 'filmAspectRatio');
 
-  public function getFilmFrameSizeAttribute($value) {
+  public function superclass()
+  {
+    return $this->morphOne('PreservationMaster', 'subclass')->withTrashed();
+  }
+  
+  public function getFilmFrameSizeAttribute($value)
+  {
     return $value===null ? $this->frameSize : $value;
   }
 
-  public function setFilmFrameSizeAttribute($value) {
+  public function setFilmFrameSizeAttribute($value)
+  {
     $this->frameSize = $value;
   }
 
-  public function getFilmAspectRatioAttribute($value) {
+  public function getFilmAspectRatioAttribute($value)
+  {
     return $value===null ? $this->aspectRatio : $value;
   }
 
-  public function setFilmAspectRatioAttribute($value) {
+  public function setFilmAspectRatioAttribute($value)
+  {
     $this->aspectRatio = $value;
   }
 

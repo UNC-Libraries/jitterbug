@@ -14,7 +14,7 @@
   </div>
   {{-- PreservationMaster fields --}}
   <div class="row first detail-container">
-    <div class="mark @if ($master->marked()) marked @endif" role="button" data-markable-type="{{get_class($master)}}" data-markable-id="{{$master->id}}">
+    <div class="mark @if ($master->marked()) marked @endif" role="button" data-markable-type="{{class_basename(get_class($master))}}" data-markable-id="{{$master->id}}">
       <div class="mark-tail"></div>
     </div>
     <div class="col-xs-6">
