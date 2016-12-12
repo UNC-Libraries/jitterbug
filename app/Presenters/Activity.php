@@ -49,13 +49,11 @@ class Activity
   public function object()
   {
     if ($this->action === 'imported' && $this->importType === 'audio') {
-      return 'audio record';
-    }
-    if ($this->action === 'imported' && $this->importType === 'film') {
-      return 'film record';
-    }
-    if ($this->action === 'imported' && $this->importType === 'video') {
-      return 'video record';
+      return 'batch of ' . $this->batchSize . ' video records'; 
+    } else if ($this->action === 'imported' && $this->importType === 'film') {
+      return 'batch of ' . $this->batchSize . ' film records'; 
+    } else if ($this->action === 'imported' && $this->importType === 'video') {
+      return 'batch of ' . $this->batchSize . ' film records'; 
     }
 
     $objectType = $this->objectType();
@@ -101,7 +99,7 @@ class Activity
       // this will be a cut
       return $object;
     } else if (count($types) === 1) {
-      // this will the usual case
+      // this will be the usual case, e.g. update
       return $types[0] . ' ' . $object;
     } else if (count($types) === 2) {
       // this will only ever be a batch delete
