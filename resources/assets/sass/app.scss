@@ -295,6 +295,14 @@ Dashboard
   color: $brand-danger;
 }
 
+#dashboard .marks-module .no-marks {
+  display: none;
+}
+
+#dashboard .marks-module .no-marks:hover {
+  background-color: #fff;
+}
+
 #dashboard .marks-controls {
   margin-bottom: .5rem;
 }

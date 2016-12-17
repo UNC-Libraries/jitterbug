@@ -51,7 +51,7 @@ class MarksController extends Controller {
   }
 
   /**
-   * Delete a new mark or marks if they exist.
+   * Delete a mark or marks if they exist.
    */
   public function destroy(Request $request)
   {

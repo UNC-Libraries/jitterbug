@@ -25,7 +25,7 @@ jitterbug = {
 
   initSessionTimeout: function() {
     var oneHour = 3600000;
-    window.setTimeout(function(){
+    window.setTimeout(function() {
       window.location.href='/logout'
     }, oneHour);
   },
@@ -127,10 +127,120 @@ jitterbug = {
 
   initDashboardActivityStream: function() {
     $('.recent-activity li[role="button"]').click(function(event) {
-      var type = $(this).data('object-type');
-      var id = $(this).data('object-id');
+      var type = $(this).data('object-type'),
+      id = $(this).data('object-id');
       window.location.href='/' + type + 's/' + id;
     });
+  },
+
+  initDashboardMarks: function() {
+    var marks = $('.marks li[role="button"]');
+    // If only the 'no marks' element is present
+    if (marks.length == 0) {
+      $('.no-marks').text('Marks are like shortcuts to records. Try them out!');
+      $('.no-marks').show();
+    }
+    // Hook up the filter buttons.
+    // Binding click events to the radio buttons themselves didn't work,
+    // because Bootstrap was not propagating events, so we're binding to
+    // the labels instead.
+    $('#marks-filters label').click(function(event) {
+      var filter = $(this).data('filter');
+      jitterbug.renderDashboardMarks(filter);
+    });
+
+    jitterbug.linkDashboardMarks();
+
+    // Hook up user selection drop down
+    $('.marks-user').click(function(event) {
+      var userId = $(this).data('user-id');
+      var that = this;
+
+      query = {};
+      query['id'] = userId;
+      $.get('/dashboard/marks-for-user', query, function(data) {
+        $('.marks').replaceWith(data);
+        jitterbug.linkDashboardMarks();
+        // Set the current selected user in the dropdown
+        var userFullName = $(that).text();
+        var truncatedUser = userFullName.length > 13 ? 
+          userFullName.substr(0, 13) + '...' : userFullName;
+        $('#selected-marks-user').text(truncatedUser);
+
+        // Select the 'all' filter since we've loaded in the other user's marks
+        $('#marks-filters label').first().trigger('click');
+
+      });
+    });
+    
+  },
+
+  linkDashboardMarks: function() {
+    // Hook up individual marks to their associated objects
+    $('.marks li[role="button"]').click(function(event) {
+      var type = $(this).data('object-type'),
+      id = $(this).data('object-id');
+      window.location.href='/' + type + 's/' + id;
+    });
+
+    // Hook up delete x's if they are present
+    $('.marks .delete').click(function(event) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      // This will be the mark's li
+      var parent = $(this).parent();
+
+      var data = {};
+      data['markableType'] = parent.data('object-type');
+      data['markableIds'] = [parent.data('object-id')];
+      data['_method'] = 'DELETE';
+      $.post('/marks', data, function(data) {
+        parent.remove();
+        var filter = $('#marks-filters .active').data('filter');
+        renderDashboardMarks(filter);
+      });
+
+    });
+  },
+
+  renderDashboardMarks: function(filter) {
+    // Get the element that is used to inform users there are no marks for
+    // the selected type, or at all.
+    var noMarksEl = $('.no-marks'),
+    hasOne = false;
+    $('.marks li').each(function() {
+      if (filter == 'all' && !$(this).is(noMarksEl)) {
+        $(this).show();
+        hasOne = true;
+        return true;
+      }
+      var type = $(this).data('object-type');
+      if (filter == type) {
+        $(this).show();
+        hasOne = true;
+      } else {
+        $(this).hide();
+      }
+    });
+    if (!hasOne) {
+      switch (filter) {
+         case 'all':
+           noMarksEl.text('Marks are like shortcuts to records. Try them out!');
+           break;
+         case 'item':
+           noMarksEl.text('No audio visual items are currently marked.');
+           break;
+         case 'master':
+           noMarksEl.text('No preservation masters are currently marked.');
+           break;
+         case 'transfer':
+           noMarksEl.text('No transfers are currently marked.');
+           break;
+      }
+      noMarksEl.show();
+    } else {
+      noMarksEl.hide();
+    }
   },
 
   /* 
@@ -1052,6 +1162,7 @@ jitterbug = {
         // Bind click handlers to all data table rows
         $(dataEl + ' tr[role="button"]').click(function(event) {
           tableSelection.clear();
+          tableSelection.render();
           window.location.href='/' + resource + '/' + $(this).data('id');
         });
 
@@ -1462,7 +1573,6 @@ jitterbug = {
       }
     };
 
-    
     return {
       init: init,
       setDefault: setDefault,

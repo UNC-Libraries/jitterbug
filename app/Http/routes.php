@@ -37,6 +37,7 @@ Route::group(['prefix' => 'suggestions'], function () {
 */
 
 Route::get('dashboard', 'DashboardController@index')->name('dashboard.index');
+Route::get('dashboard/marks-for-user', 'DashboardController@marksForUser');
 
 /*
 |--------------------------------------------------------------------------

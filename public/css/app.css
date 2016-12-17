@@ -4802,6 +4802,12 @@ Dashboard
 #dashboard .marks-module .delete:hover {
   color: #d16642; }
 
+#dashboard .marks-module .no-marks {
+  display: none; }
+
+#dashboard .marks-module .no-marks:hover {
+  background-color: #fff; }
+
 #dashboard .marks-controls {
   margin-bottom: .5rem; }
 

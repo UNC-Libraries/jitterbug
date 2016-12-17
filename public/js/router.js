@@ -23,6 +23,7 @@ JITTERBUG = {
     index: function() {
       jitterbug.initDashboardCharts();
       jitterbug.initDashboardActivityStream();
+      jitterbug.initDashboardMarks();
     }
   },
 
@@ -33,6 +34,7 @@ JITTERBUG = {
 
     index: function() {
       jitterbug.initItemsIndex();
+      // jitterbug.renderMarks();
       jitterbug.initTableKeyboardShortcuts();
       jitterbug.initItemsNewButton();
       jitterbug.initItemsBatchMenu();
@@ -75,6 +77,7 @@ JITTERBUG = {
 
     index: function() {
       jitterbug.initMastersIndex();
+      // jitterbug.renderMarks();
       jitterbug.initTableKeyboardShortcuts();
       jitterbug.initMastersNewButton();
       jitterbug.initMastersBatchMenu();
@@ -127,6 +130,7 @@ JITTERBUG = {
 
     index: function() {
       jitterbug.initTransfersIndex();
+      // jitterbug.renderMarks();
       jitterbug.initTableKeyboardShortcuts();
       jitterbug.initAudioImportModal();
       jitterbug.initVideoImportModal();

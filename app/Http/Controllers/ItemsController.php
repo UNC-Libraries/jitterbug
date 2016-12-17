@@ -1,16 +1,16 @@
 <?php
 namespace Jitterbug\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Str;
-
 use Auth;
 use DB;
 use Log;
 use Session;
 use Solarium;
 use Uuid;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
 
 use Jitterbug\Export\ItemsExport;
 use Jitterbug\Models\AudioVisualItem;
