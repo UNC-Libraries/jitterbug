@@ -15,6 +15,8 @@ jitterbug = {
     localStorage.removeItem('transfersFilterPanel');
     sessionStorage.removeItem('transfersTableSelection');
     localStorage.removeItem('transfersTableParams');
+    // clear marks module
+    sessionStorage.removeItem('dashboardMarks');
   },
 
   initAjax: function() {
@@ -134,113 +136,21 @@ jitterbug = {
   },
 
   initDashboardMarks: function() {
-    var marks = $('.marks li[role="button"]');
-    // If only the 'no marks' element is present
-    if (marks.length == 0) {
-      $('.no-marks').text('Marks are like shortcuts to records. Try them out!');
-      $('.no-marks').show();
-    }
-    // Hook up the filter buttons.
-    // Binding click events to the radio buttons themselves didn't work,
-    // because Bootstrap was not propagating events, so we're binding to
-    // the labels instead.
-    $('#marks-filters label').click(function(event) {
-      var filter = $(this).data('filter');
-      jitterbug.renderDashboardMarks(filter);
-    });
-
-    jitterbug.linkDashboardMarks();
-
-    // Hook up user selection drop down
-    $('.marks-user').click(function(event) {
-      var userId = $(this).data('user-id');
-      var that = this;
-
-      query = {};
-      query['id'] = userId;
-      $.get('/dashboard/marks-for-user', query, function(data) {
-        $('.marks').replaceWith(data);
-        jitterbug.linkDashboardMarks();
-        // Set the current selected user in the dropdown
-        var userFullName = $(that).text();
-        var truncatedUser = userFullName.length > 13 ? 
-          userFullName.substr(0, 13) + '...' : userFullName;
-        $('#selected-marks-user').text(truncatedUser);
-
-        // Select the 'all' filter since we've loaded in the other user's marks
-        $('#marks-filters label').first().trigger('click');
-
+    var marksModule = jitterbug.MarksModule.load('dashboardMarks', 'session');
+    if (marksModule == null) {
+      marksModule = new jitterbug.MarksModule({ 
+        key: 'dashboardMarks',
+        location: 'session',
+        marksContainer: '.marks',
+        marksSelector: '.marks li[role="button"]',
+        noMarksSelector: '.no-marks',
+        filtersSelector: '#marks-filters label',
+        usersSelector: '.marks-user',
+        selectedUserSelector: '#selected-marks-user'
       });
-    });
-    
-  },
-
-  linkDashboardMarks: function() {
-    // Hook up individual marks to their associated objects
-    $('.marks li[role="button"]').click(function(event) {
-      var type = $(this).data('object-type'),
-      id = $(this).data('object-id');
-      window.location.href='/' + type + 's/' + id;
-    });
-
-    // Hook up delete x's if they are present
-    $('.marks .delete').click(function(event) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      // This will be the mark's li
-      var parent = $(this).parent();
-
-      var data = {};
-      data['markableType'] = parent.data('object-type');
-      data['markableIds'] = [parent.data('object-id')];
-      data['_method'] = 'DELETE';
-      $.post('/marks', data, function(data) {
-        parent.remove();
-        var filter = $('#marks-filters .active').data('filter');
-        renderDashboardMarks(filter);
-      });
-
-    });
-  },
-
-  renderDashboardMarks: function(filter) {
-    // Get the element that is used to inform users there are no marks for
-    // the selected type, or at all.
-    var noMarksEl = $('.no-marks'),
-    hasOne = false;
-    $('.marks li').each(function() {
-      if (filter == 'all' && !$(this).is(noMarksEl)) {
-        $(this).show();
-        hasOne = true;
-        return true;
-      }
-      var type = $(this).data('object-type');
-      if (filter == type) {
-        $(this).show();
-        hasOne = true;
-      } else {
-        $(this).hide();
-      }
-    });
-    if (!hasOne) {
-      switch (filter) {
-         case 'all':
-           noMarksEl.text('Marks are like shortcuts to records. Try them out!');
-           break;
-         case 'item':
-           noMarksEl.text('No audio visual items are currently marked.');
-           break;
-         case 'master':
-           noMarksEl.text('No preservation masters are currently marked.');
-           break;
-         case 'transfer':
-           noMarksEl.text('No transfers are currently marked.');
-           break;
-      }
-      noMarksEl.show();
-    } else {
-      noMarksEl.hide();
     }
+    marksModule.init();
+    marksModule.store();
   },
 
   /* 
@@ -1883,9 +1793,9 @@ jitterbug = {
 
     store = function() {
       if (key != null) {
-        if (location=='local' || location==null) {
+        if (location == 'local' || location == null) {
           localStorage.setItem(key, toString());
-        } else if (location=='session') {
+        } else if (location == 'session') {
           sessionStorage.setItem(key, toString());
         }
       }
@@ -1924,6 +1834,215 @@ jitterbug = {
 
   },
 
+  MarksModule: function(params) {
+    if (params == null || params.marksContainer == null || 
+      params.marksSelector == null || params.noMarksSelector == null ||
+      params.filtersSelector == null || params.usersSelector == null || 
+      params.selectedUserSelector == null) {
+      throw new jitterbug.IllegalArgumentException("Params 'marksContainer', " +
+                            "'marksSelector', 'noMarksSelector', " +
+                            "'filtersSelector', 'usersSelector' and " + 
+                            "'selectedUserSelector' are required.");
+    }
+
+    var key = params.key,
+        location = params.location,
+        marksContainer = params.marksContainer,
+        marksSelector = params.marksSelector,
+        noMarksSelector = params.noMarksSelector,
+        filtersSelector = params.filtersSelector,
+        usersSelector = params.usersSelector,
+        selectedUserSelector = params.selectedUserSelector,
+        currentFilter = params.currentFilter,
+        selectedUserId = params.selectedUserId,
+
+    init = function() {
+      // Check if selected user is present in the users list. If
+      // not present, it means the selected user has removed all
+      // of their marks and is no longer showing up in the menu,
+      // in which case we will default to the current user.
+      if (!selectedUserIdPresent()) {
+        selectedUserId = currentUser().id;
+      }
+      // Hook up the filter radios.
+      // Binding click events to the radio buttons themselves didn't work,
+      // because Bootstrap was not propagating events, so we're binding to
+      // the labels instead.
+      $(filtersSelector).click(function(event) {
+        currentFilter = $(this).data('filter');
+        store();
+        render();
+      });
+
+      // Hook up user selection drop down
+      $(usersSelector).click(function(event) {
+        selectedUserId = $(this).data('user-id');
+        store();
+        getMarks();
+      });
+
+      // Set up the filter radio buttons
+      if (currentFilter == null) {
+        currentFilter = 'all';
+      } else {
+        $(filtersSelector).each(function() {
+          if (currentFilter == $(this).data('filter')) {
+            $(this).addClass('active');
+          } else {
+            $(this).removeClass('active');
+          }
+        });
+      }
+
+      getMarks();
+    },
+
+    getMarks = function() {
+      // Load the marks for the selected user
+      query = {};
+      query['id'] = selectedUserId;
+      $.get('/dashboard/marks-for-user', query, function(data) {
+        $(marksContainer).replaceWith(data);
+        link();
+        render();
+        var selectedUserFullName = selectedUserName();
+        var truncatedUser = selectedUserFullName.length > 13 ? 
+          selectedUserFullName.substr(0, 13) + '...' : selectedUserFullName;
+        $(selectedUserSelector).text(truncatedUser);
+      });
+    },
+
+    link = function() {
+      // Hook up individual marks to their associated objects
+      $(marksSelector).click(function(event) {
+        var type = $(this).data('object-type'),
+        id = $(this).data('object-id');
+        window.location.href='/' + type + 's/' + id;
+      });
+
+      // Hook up delete x's if they are present
+      $(marksSelector + ' .delete').click(function(event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        // This will be the mark's li
+        var parent = $(this).parent();
+
+        var data = {};
+        data['markableType'] = parent.data('object-type');
+        data['markableIds'] = [parent.data('object-id')];
+        data['_method'] = 'DELETE';
+        $.post('/marks', data, function(data) {
+          parent.remove();
+          render();
+        });
+
+      });
+    },
+
+    render = function() {
+      var hasOne = false;
+      $(marksSelector).each(function() {
+        if (currentFilter == 'all') {
+          $(this).show();
+          hasOne = true;
+          return true;
+        }
+        var type = $(this).data('object-type');
+        if (currentFilter == type) {
+          $(this).show();
+          hasOne = true;
+        } else {
+          $(this).hide();
+        }
+      });
+      if (!hasOne) {
+        switch (currentFilter) {
+          case 'all':
+            $(noMarksSelector).text('Marks are like shortcuts to records. Try them out!');
+            break;
+          case 'item':
+            $(noMarksSelector).text('No audio visual items are currently marked.');
+            break;
+          case 'master':
+            $(noMarksSelector).text('No preservation masters are currently marked.');
+            break;
+          case 'transfer':
+            $(noMarksSelector).text('No transfers are currently marked.');
+            break;
+        }
+        $(noMarksSelector).show();
+      } else {
+        $(noMarksSelector).hide();
+      }
+    },
+
+    currentUser = function() {
+      var currentUser = {};
+      $(usersSelector).each(function() {
+        if ($(this).hasClass('current-user')) {
+          currentUser.id = $(this).data('user-id');
+          currentUser.fullName = $(this).text();
+        }
+      });
+      return currentUser;
+    },
+
+    selectedUserIdPresent = function() {
+      isPresent = false;
+      $(usersSelector).each(function() {
+        if (selectedUserId == $(this).data('user-id')) {
+          isPresent = true;
+        }
+      });
+      return isPresent;
+    },
+
+    selectedUserName = function() {
+      fullName = null;
+      $(usersSelector).each(function() {
+        if (selectedUserId == $(this).data('user-id')) {
+          fullName = $(this).text();
+        }
+      });
+      return fullName;
+    },
+
+    store = function() {
+      if (key != null) {
+        if (location == 'local' || location == null) {
+          localStorage.setItem(key, toString());
+        } else if (location == 'session') {
+          sessionStorage.setItem(key, toString());
+        }
+      }
+    },
+
+    toJson = function() {
+      return {
+        key: key,
+        location: location,
+        marksContainer: marksContainer,
+        marksSelector: marksSelector,
+        noMarksSelector: noMarksSelector,
+        filtersSelector: filtersSelector,
+        usersSelector: usersSelector,
+        selectedUserSelector: selectedUserSelector,
+        currentFilter: currentFilter,
+        selectedUserId: selectedUserId
+      };
+    },
+
+    toString = function() {
+      return JSON.stringify(toJson());
+    };
+
+    return {
+      init: init,
+      store: store  
+    };
+        
+  },
+
   IllegalArgumentException: function(message) {
      this.message = message;
   },
@@ -1954,6 +2073,7 @@ jitterbug.SearchField.load = jitterbug.loader;
 jitterbug.TableParams.load = jitterbug.loader;
 jitterbug.FilterPanel.load = jitterbug.loader;
 jitterbug.TableSelection.load = jitterbug.loader;
+jitterbug.MarksModule.load = jitterbug.loader;
 
 /* jQuery Tiny Pub/Sub - v0.7 - 10/27/2011
  * http://benalman.com/

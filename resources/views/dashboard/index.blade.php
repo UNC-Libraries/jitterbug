@@ -88,7 +88,7 @@
               <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user" data-toggle="dropdown" aria-hidden="true"></i>&nbsp; <span id="selected-marks-user">{{str_limit($currentUser->fullName(), 13)}}</span></button>
               <div id="user-dropdown" class="dropdown-menu dropdown-menu-right dropdown-scrollable">
                 @foreach ($marksUsers as $user)
-                <a class="dropdown-item marks-user" href="#" data-user-id="{{$user->id}}">{{$user->fullName()}}</a>
+                <a class="dropdown-item marks-user @if ($currentUser->id === $user->id) current-user @endif" href="#" data-user-id="{{$user->id}}">{{$user->fullName()}}</a>
                 @endforeach
               </div>
             </div>
@@ -106,7 +106,11 @@
 --}}
           </div>
       
-          @include('dashboard._marks', ['marks' => $marks, 'currentUser' => $currentUser, 'selectedMarksUserId' => $selectedMarksUserId])
+          <div class="marks">
+            <ol>
+              <li class="no-marks"></li>
+            </ol>
+          </div>
 
         </div>
       </div>
