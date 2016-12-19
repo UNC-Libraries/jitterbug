@@ -70,7 +70,7 @@
 
           <div class="marks-controls">
             <div id="marks-filters" class="btn-group" data-toggle="buttons">
-              <label class="btn btn-sm btn-secondary active" data-filter='all' title="Show all marks">
+              <label class="btn btn-sm btn-secondary" data-filter='all' title="Show all marks">
                 <input type="radio" name="marks-filter" value="all" checked="checked"><i class="fa fa-bookmark" aria-hidden="true"></i>
               </label>
               <label class="btn btn-sm btn-secondary" data-filter='item' title="Show item marks">

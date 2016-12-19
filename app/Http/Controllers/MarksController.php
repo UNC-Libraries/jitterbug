@@ -1,6 +1,7 @@
 <?php namespace Jitterbug\Http\Controllers;
 
 use Auth;
+use Log;
 
 use Illuminate\Http\Request;
 
@@ -60,7 +61,6 @@ class MarksController extends Controller {
       $markableType = $input['markableType'];
       $markableIds = $input['markableIds'];
       $userId = Auth::user()->id;
-
       foreach ($markableIds as $markableId) {
         $mark = Mark::where('markable_type', $markableType)
                     ->where('markable_id', $markableId)

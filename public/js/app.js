@@ -1928,12 +1928,20 @@ jitterbug = {
         var parent = $(this).parent();
 
         var data = {};
-        data['markableType'] = parent.data('object-type');
+        var markableType = parent.data('object-type');
+        if (markableType == 'item') {
+          markableType = 'AudioVisualItem';
+        } else if (markableType == 'master') {
+          markableType = 'PreservationMaster';
+        } else if (markableType == 'transfer') {
+          markableType = 'Transfer';
+        }
+        data['markableType'] = markableType;
         data['markableIds'] = [parent.data('object-id')];
         data['_method'] = 'DELETE';
         $.post('/marks', data, function(data) {
           parent.remove();
-          render();
+          getMarks();
         });
 
       });
