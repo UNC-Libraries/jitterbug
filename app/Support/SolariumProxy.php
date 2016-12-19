@@ -50,13 +50,13 @@ class SolariumProxy {
       'containerNote^2 cutTitles cutPerformerComposers formatName');
 
     } else if ($this->core==='jitterbug-masters') {
-      $dismax->setQueryFields('id, callNumber^5 fileName^4 collectionName^3 ' .
+      $dismax->setQueryFields('id callNumber^5 fileName^4 collectionName^3 ' .
       'cutTitles cutPerformerComposers formatName departmentName projectName');
 
     } else if ($this->core==='jitterbug-transfers') {
-      $dismax->setQueryFields('id, callNumber^5 engineerFirstName^4 ' . 
-      ' engineerLastName^4 collectionName^3 cutTitle cutPerformerComposer ' .
-      ' formatName departmentName');
+      $dismax->setQueryFields('preservationMasterId callNumber^5 engineerFirstName^4 ' . 
+      'engineerLastName^4 collectionName^3 cutTitle cutPerformerComposer ' .
+      'formatName departmentName');
     }
 
     $this->createFilterQueries($solariumQuery,$queryParams);
@@ -186,6 +186,8 @@ class SolariumProxy {
     $doc->setKey('id', $transfer->id);
     $doc->setField('callNumber', $transfer->callNumber, null, 'set');
     $doc->setField('transferDate', $transfer->transferDate, null, 'set');
+    $doc->setField('preservationMasterId',
+      $transfer->preservationMasterId, null, 'set');
     $doc->setField('vendorId', 
       $transfer->vendor != null ? $transfer->vendor->id : null, null, 'set');
     $doc->setField('vendorName', 
