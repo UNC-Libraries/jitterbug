@@ -46,14 +46,12 @@ class DashboardController extends Controller
       return $user->id === $currentUser->id;
     });
     if (!$hasCurrentUser) $marksUsers->prepend($currentUser);
-    $selectedMarksUserId = $currentUser->id;
 
     $marks = DashboardMark::fromMarks(
       $currentUser->marks()->orderBy('updated_at', 'desc')->get());
 
     return view('dashboard.index', compact('itemCounts', 'masterCounts', 
-      'transferCounts', 'activities', 'marksUsers', 'selectedMarksUserId', 
-      'currentUser', 'marks'));
+      'transferCounts', 'activities', 'marksUsers', 'currentUser', 'marks'));
   }
 
   /**
