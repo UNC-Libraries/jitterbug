@@ -92,18 +92,6 @@
                 @endforeach
               </div>
             </div>
-
-{{-- An alternative to using the Bootstrap menu is using a traditional (and ugly) select menu
-            <div style="margin-top: .3rem; float: right; width: 200px;">
-              <select class="form-control form-control-sm">
-                <option value="1">Andrew Shirk</option>
-                <option value="2">Mr. Longname Johnson III of Three</option>
-                <option value="3">Erica Titkemeyer</option>
-                <option value="4">John Loy</option>
-                <option value="5">Brian Paulson</option>
-              </select>
-            </div>
---}}
           </div>
       
           <div class="marks">
