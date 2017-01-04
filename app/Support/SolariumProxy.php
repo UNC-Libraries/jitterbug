@@ -192,6 +192,7 @@ class SolariumProxy {
       $transfer->vendor != null ? $transfer->vendor->id : null, null, 'set');
     $doc->setField('vendorName', 
       $transfer->vendor != null ? $transfer->vendor->name : null, null, 'set');
+    $doc->setField('engineerId', $transfer->engineerId, null, 'set');
     $doc->setField('engineerFirstName', 
       $transfer->engineer != null ? 
       $transfer->engineer->firstName : null, null, 'set');
