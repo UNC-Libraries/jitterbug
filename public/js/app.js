@@ -1869,6 +1869,7 @@ jitterbug = {
       // because Bootstrap was not propagating events, so we're binding to
       // the labels instead.
       $(filtersSelector).click(function(event) {
+        event.preventDefault();
         currentFilter = $(this).data('filter');
         store();
         render();
@@ -1876,6 +1877,7 @@ jitterbug = {
 
       // Hook up user selection drop down
       $(usersSelector).click(function(event) {
+        event.preventDefault();
         selectedUserId = $(this).data('user-id');
         store();
         getMarks();
@@ -1884,6 +1886,7 @@ jitterbug = {
       // Set up the filter radio buttons
       if (currentFilter == null) {
         currentFilter = 'all';
+        $(filtersSelector).first().addClass('active');
       } else {
         $(filtersSelector).each(function() {
           if (currentFilter == $(this).data('filter')) {
@@ -1926,7 +1929,6 @@ jitterbug = {
         event.stopImmediatePropagation();
         // This will be the mark's li
         var parent = $(this).parent();
-
         var data = {};
         var markableType = parent.data('object-type');
         if (markableType == 'item') {
@@ -1941,6 +1943,9 @@ jitterbug = {
         data['_method'] = 'DELETE';
         $.post('/marks', data, function(data) {
           parent.remove();
+          // Reload the marks part of the DOM so if the user
+          // navigates away from the page, and then uses
+          // the back button, the current state is cached.
           getMarks();
         });
 
