@@ -12,4 +12,13 @@ class PlaybackMachine extends Model {
   {
     return $this->name;
   }
+
+  /**
+   * Used by Revisionable when a related parent model has a null
+   * foreign key value.
+   */
+  public function getRevisionNullString()
+  {
+    return 'nothing';
+  }
 }

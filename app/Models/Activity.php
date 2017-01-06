@@ -1,38 +1,65 @@
-<?php namespace Jitterbug\Presenters;
+<?php namespace Jitterbug\Models;
 
 use Log;
 
-class Activity
-{
-  // The transaction UUID.
-  public $transactionId = null;
-  // Created, updated, deleted or imported.
-  public $action = null;
-  // True or false if batch.
-  public $batch = null;
-  // The total number of objects that the user selected for modification.
-  public $batchSize = null;
-  // The field that was updated, only populated for updates.
-  public $field = null;
-  // It it was an import, the type (audio, film or video).
-  public $importType = null;
-  // The call number of the related item, not populated for batch operations.
-  public $itemCallNumber = null;
-  // The type of the related item, (audio, film or video).
-  public $itemType = null;
-  // The number of fields that were updated, only populated for single object 
+use Illuminate\Database\Eloquent\Model;
+
+class Activity extends Model {
+  use CamelCasing;
+
+  // Fields in this model:
+  // transactionId: the transaction UUID.
+  // action: created, updated, deleted or imported.
+  // batch: true or false if batch. (stored as tiny int in the database)
+  // batchSize: the total number of objects that the user selected for modification.
+  // field: the field that was updated, only populated for updates.
+  // importType: it it was an import, the type (audio, film or video).
+  // itemCallNumber: the call number of the related item, not populated for 
+  // batch operations.
+  // itemType: the type of the related item, (audio, film or video).
+  // numFields: the number of fields that were updated, only populated for single object 
   // update transactions.
-  public $numFields = null;
-  // The number of records that were affected by the activity.
-  public $numAffected = null;
-  // The types of objects that were affected (audio item, video item, audio 
-  // master, etc) mapped to the base object ids that were affected for 
-  // each type.
-  public $objectTypesToIds = null;
-  // The time that the activity occurred.
-  public $timestamp = null;
-  // The name of the user responsible for the activity.
-  public $user = null;
+  // numAffected: the number of records that were affected by the activity.
+  // objectTypesToIds: the types of objects that were affected (audio item, video item, 
+  // audio master, etc) mapped to the base object ids that were affected for 
+  // each type. stored as a serialized array in the database.
+  // timestamp: the time that the activity occurred.
+  // user: the name of the user responsible for the activity.
+
+  protected $unserializedObjectTypesToIds = null;
+
+  public function getBatchAttribute($value)
+  {
+    if ($value === null) $value = $this->batch;
+    return $value === 1;
+  }
+  
+  public function setBatchAttribute($value)
+  {
+    $this->attributes['batch'] = ($value === true ? 1 : 0);
+  }
+
+  public function getObjectTypesToIdsAttribute($value)
+  {
+    if ($value === null) $value = $this->objectTypesToIds;
+    if ($this->unserializedObjectTypesToIds === null) {
+      $this->unserializedObjectTypesToIds = unserialize($value);
+      return $this->unserializedObjectTypesToIds;
+    } else {
+      return $this->unserializedObjectTypesToIds;
+    }
+  }
+
+  public function setObjectTypesToIdsAttribute($value)
+  {
+    $this->attributes['object_types_to_ids'] = serialize($value);
+  }
+
+  public function getTimeAgoAttribute($value)
+  {
+    if ($value === null) $value = $this->timestamp;
+    return timeAgoInWords($value);
+  }
 
   /**
    * Return a formatted string representation of the original object this 
@@ -64,7 +91,7 @@ class Activity
     }
 
     $mediaTypes = array();
-    foreach ($this->objectTypesToIds as $key => $value) {
+    foreach ($this->getAttribute('objectTypesToIds') as $key => $value) {
       $explodedKey = explode(' ', $key);
       if ($explodedKey[0] === 'cut') {
         break;
@@ -125,8 +152,9 @@ class Activity
     // means it will be the first one when the revisions are fetched in 
     // descending order of their ids, which is done in the constructor
     // of TransactionDigest.
-    reset($this->objectTypesToIds);
-    $objectKey = key($this->objectTypesToIds);
+    $objectTypesToIds = $this->getAttribute('objectTypesToIds');
+    reset($objectTypesToIds);
+    $objectKey = key($objectTypesToIds);
     if ($objectKey === 'cut') {
       return 'cut';
     }
@@ -148,8 +176,9 @@ class Activity
    */
   public function objectId()
   {
-    reset($this->objectTypesToIds);
-    return key(current($this->objectTypesToIds));
+    $objectTypesToIds = $this->getAttribute('objectTypesToIds');
+    reset($objectTypesToIds);
+    return key(current($objectTypesToIds));
   }
 
   /**
@@ -160,8 +189,9 @@ class Activity
    */
   public function objectExists()
   {
-    reset($this->objectTypesToIds);
-    return current($this->objectTypesToIds)[key(current($this->objectTypesToIds))];
+    $objectTypesToIds = $this->getAttribute('objectTypesToIds');
+    reset($objectTypesToIds);
+    return current($objectTypesToIds)[key(current($objectTypesToIds))];
   }
 
   /**
@@ -190,4 +220,3 @@ class Activity
   }
 
 }
-

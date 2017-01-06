@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 
 use Venturecraft\Revisionable\Revision;
 
+use Jitterbug\Models\Activity;
 use Jitterbug\Models\AudioVisualItem;
 
 /**
@@ -241,8 +242,7 @@ class TransactionDigest
     $activity->batch = $this->batch;
     $activity->batchSize = $this->batchSize;
     $activity->numAffected = $this->numAffected;
-    $activity->timestamp = 
-      timeAgoInWords($this->revisions->first()->created_at);
+    $activity->timestamp = $this->revisions->first()->created_at;
     $activity->user = $this->getUserResponsibleName();
     // If batch, itemCallNumber & itemType will be null
     $activity->itemCallNumber = $this->associatedCallNumber;
@@ -257,7 +257,7 @@ class TransactionDigest
       foreach ($this->revisions as $key => $revision) {
         if ($revision->field === 'call_number' 
           && $revision->revisionable_type !== 'AudioVisualItem') {
-          $this->revisions->forget($key); 
+          $this->revisions->forget($key);
         }
       }
      
