@@ -33,12 +33,26 @@ trait Markable
   }
 
   /**
-   * Remove the mark from this object if it exists.
+   * Remove the mark for the current user from this object if 
+   * one exists.
    */
   public function removeMark()
   {
     $mark = $this->getMark();
     if ($mark !== null) {
+      $mark->delete();
+    }
+  }
+
+  /**
+   * Remove all marks for all users from this object if any
+   * exist.
+   */
+  public function removeAllMarks()
+  {
+    $marks = Mark::where('markable_type', class_basename(get_class($this)))
+                 ->where('markable_id', $this->id)->get();
+    foreach ($marks as $mark) {
       $mark->delete();
     }
   }

@@ -484,7 +484,7 @@ class ItemsController extends Controller
         $masters = 
           PreservationMaster::where('call_number', $callNumber)->get();
         foreach ($masters as $master) {
-          $master->removeMark();
+          $master->removeAllMarks();
           $master->subclass->delete();
           $master->delete();
         }
@@ -496,13 +496,13 @@ class ItemsController extends Controller
 
         $transfers = Transfer::where('call_number', $callNumber)->get();
         foreach ($transfers as $transfer) {
-          $transfer->removeMark();
+          $transfer->removeAllMarks();
           $transfer->subclass->delete();
           $transfer->delete();
         }
       }
 
-      $item->removeMark();
+      $item->removeAllMarks();
       $item->delete();
       $subclass->delete();
 
@@ -559,14 +559,14 @@ class ItemsController extends Controller
           PreservationMaster::whereIn('call_number', $callNumbers)->get();
         foreach ($masters as $master) {
           $master->subclass->delete();
-          $master->removeMark();
+          $master->removeAllMarks();
           $master->delete();
         }
 
         $transfers = Transfer::whereIn('call_number', $callNumbers)->get();
         foreach ($transfers as $transfer) {
           $transfer->subclass->delete();
-          $transfer->removeMark();
+          $transfer->removeAllMarks();
           $transfer->delete();
         }
 
@@ -578,7 +578,7 @@ class ItemsController extends Controller
 
       foreach ($items as $item) {
         $item->subclass->delete();
-        $item->removeMark();
+        $item->removeAllMarks();
         $item->delete();
       }
 

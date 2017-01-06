@@ -511,7 +511,7 @@ class TransfersController extends Controller {
         $cut->delete();
       }
 
-      $transfer->removeMark();
+      $transfer->removeAllMarks();
       $transfer->delete();
       $subclass->delete();
 
@@ -566,7 +566,7 @@ class TransfersController extends Controller {
 
       foreach ($transfers as $transfer) {
         $transfer->subclass->delete();
-        $transfer->removeMark();
+        $transfer->removeAllMarks();
         $transfer->delete();
       }
 

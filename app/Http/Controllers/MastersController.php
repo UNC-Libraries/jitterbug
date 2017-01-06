@@ -448,7 +448,7 @@ class MastersController extends Controller {
         $transfers = $master->transfers;
         foreach ($transfers as $transfer) {
           $transfer->subclass->delete();
-          $transfer->removeMark();
+          $transfer->removeAllMarks();
           $transfer->delete();
         }
 
@@ -458,7 +458,7 @@ class MastersController extends Controller {
         }
       }
 
-      $master->removeMark();
+      $master->removeAllMarks();
       $master->delete();
       $subclass->delete();
 
@@ -521,7 +521,7 @@ class MastersController extends Controller {
         $transfers = Transfer::whereIn('call_number', $callNumbers)->get();
         foreach ($transfers as $transfer) {
           $transfer->subclass->delete();
-          $transfer->removeMark();
+          $transfer->removeAllMarks();
           $transfer->delete();
         }
 
@@ -533,7 +533,7 @@ class MastersController extends Controller {
 
       foreach ($masters as $master) {
         $master->subclass->delete();
-        $master->removeMark();
+        $master->removeAllMarks();
         $master->delete();
       }
 
