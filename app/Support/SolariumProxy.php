@@ -47,16 +47,18 @@ class SolariumProxy {
     if ($this->core==='jitterbug-items') {
       // Query fields with boost values
       $dismax->setQueryFields('callNumber^5 title^4 collectionName^3 ' .
-      'containerNote^2 cutTitles cutPerformerComposers formatName');
+      'collectionId containerNote^2 cutTitles cutPerformerComposers ' .
+      'formatName');
 
     } else if ($this->core==='jitterbug-masters') {
       $dismax->setQueryFields('id callNumber^5 fileName^4 collectionName^3 ' .
-      'cutTitles cutPerformerComposers formatName departmentName projectName');
+      'collectionId cutTitles cutPerformerComposers formatName ' . 
+      'departmentName projectName');
 
     } else if ($this->core==='jitterbug-transfers') {
-      $dismax->setQueryFields('preservationMasterId callNumber^5 engineerFirstName^4 ' . 
-      'engineerLastName^4 collectionName^3 cutTitle cutPerformerComposer ' .
-      'formatName departmentName');
+      $dismax->setQueryFields('preservationMasterId callNumber^5 ' . 
+      'engineerFirstName^4 engineerLastName^4 collectionName^3 collectionId ' . 
+      'cutTitle cutPerformerComposer formatName departmentName');
     }
 
     $this->createFilterQueries($solariumQuery,$queryParams);
