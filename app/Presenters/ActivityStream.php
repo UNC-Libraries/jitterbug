@@ -14,6 +14,13 @@ class ActivityStream
 
   protected $transactions = array();
 
+  /**
+   * Generate the activities in the stream and store them in the database.
+   * This method is called by the Laravel scheduler in 
+   * Jitterbug\Console\Kernel and may take a while to run as there can be
+   * many db queries involved depending on the number of records
+   * in the recent transactions.
+   */
   public function generate()
   {
     $numTransactionsToDigest = 20;
