@@ -29,7 +29,7 @@ class MasterRequest extends Request {
     $rules = array();
     $rules['batchSize'] = 'required_if:batch,1|integer|between:2,100';
     $this->addRuleIfNotMixed($rules, 'callNumber',
-      'required|min:4|max:30|exists:audio_visual_items,call_number');
+      'required|min:4|max:30|exists:audio_visual_items,call_number,deleted_at,null');
     // If this is a batch create or update, don't require a file name since it
     // needs to be unique across every master.
     if (!$this->input('batch') && $this->route()->getName()!=='masters.batch.update') {

@@ -25,7 +25,7 @@ class CutRequest extends Request {
   public function rules()
   {
     return [
-      'preservationMasterId' => 'required|exists:preservation_masters,id',
+      'preservationMasterId' => 'required|exists:preservation_masters,id,deleted_at,null',
       'side' => 'required|max:4',
       'cutNumber' => 'integer',
       'title' => 'max:255',
