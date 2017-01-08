@@ -4,6 +4,14 @@ use Log;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Models a single entry in the recent activity module of the dashboard.
+ * Instances of this model should not be created directly. Rather, a 
+ * TransactionDigest is used to summarize and generate activities for a 
+ * particular revision transaction id, which may include hundreds of 
+ * revisions. Instances of this class are meant to be short lived, and
+ * only for the purpose of display in the recent activity stream. 
+ */
 class Activity extends Model {
   use CamelCasing;
 
