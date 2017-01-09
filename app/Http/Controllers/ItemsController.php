@@ -76,9 +76,9 @@ class ItemsController extends Controller
         array_push($itemIds, $item->id);
       }
       $marks = Mark::whereIn('markable_id', $itemIds)
-            ->where('markable_type', 'AudioVisualItem')
-            ->where('user_id', Auth::user()->id)
-            ->get()->pluck('markable_id');
+                   ->where('markable_type', 'AudioVisualItem')
+                   ->where('user_id', Auth::user()->id)
+                   ->get()->pluck('markable_id');
 
       return view('items._items', compact('items', 'marks', 'start'));
     }
@@ -119,7 +119,8 @@ class ItemsController extends Controller
   }
 
   /**
-   * Save the details of a new item and its subclass, then update solr.
+   * Save the details of a new item (or a batch of new items) and its
+   * subclass, then update solr.
    */
   public function store(ItemRequest $request)
   {
@@ -234,7 +235,7 @@ class ItemsController extends Controller
     // back get the ids from the session instead of from
     // the request.
     if ($request->method()==='POST') {
-      $request->session()->put('batchItemIds',$itemIds);
+      $request->session()->put('batchItemIds', $itemIds);
     } else if ($request->method()==='GET') {
       $itemIds = $request->session()->get('batchItemIds');
     }

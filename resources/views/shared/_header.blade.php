@@ -3,7 +3,7 @@
           <div id="support-nav">
             <ul>
               <li>
-                <a href="#">Admin</a>
+                <a href="{{route('admin.index')}}">Admin</a>
               </li>
               <li class="last">
                 <a href="/logout">Sign Out</a>
