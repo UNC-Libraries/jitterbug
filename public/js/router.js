@@ -15,6 +15,16 @@ JITTERBUG = {
     }
   },
 
+  admin: {
+    init: function() {
+      // controller-wide code 
+    },
+
+    index: function() {
+      jitterbug.initAdmin();
+    }
+  },
+
   dashboard: {
     init: function() {
       // controller-wide code 

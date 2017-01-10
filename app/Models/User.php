@@ -46,6 +46,15 @@ class User extends Model implements AuthenticatableContract,
   }
 
   /**
+   * Return users that have logged into the system. Basically
+   * filters out legacy users and the system user.
+   */
+  public function scopeHasLoggedIn($query)
+  {
+      return $query->where('password', '<>', 'null');
+  }
+
+  /**
    * Return the user's full name or, in the case of legacy
    * users, their initials.
    */
@@ -97,7 +106,7 @@ class User extends Model implements AuthenticatableContract,
    * Nobody can remember who they were, and thus we have no first
    * or last name.
    * 
-   * @return string
+   * @return boolean
    */
   public function legacy()
   {

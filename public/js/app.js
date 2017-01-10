@@ -1,5 +1,7 @@
 jitterbug = {
   clearStorage: function() {
+    // clear admin table
+    sessionStorage.removeItem('selectedAdminTable');
     // clear items state
     localStorage.removeItem('itemsSearchField');
     localStorage.removeItem('itemsFilterPanel');
@@ -66,6 +68,44 @@ jitterbug = {
       $('#alert').replaceWith(alert);
       $('#alert').delay(500).slideDown(200).delay(8000).slideUp(200);
     }
+  },
+
+  initAdmin: function() {
+    var selectedTable = sessionStorage.getItem('selectedAdminTable');
+    if (selectedTable == null) {
+      selectedTable = 'users';
+      sessionStorage.setItem('selectedAdminTable', 'users');
+    }
+    $('input[name=table]').click(function(event) {
+      var query = {};
+      query['table'] = $(this).val();
+      $.get('/admin/records-for-table', query, function(data) {
+        $('#record-container').replaceWith(data);
+        if (selectedTable == 'users') {
+          var adminCheckboxes = $('#table-container input:checkbox');
+          adminCheckboxes.click(function(event) {
+            var makeAdmin = $(this).is(':checked');
+            var route = makeAdmin == true ? '/admin/make-admin' 
+              : '/admin/remove-admin';
+            var data = {};
+            var username = $(this).data('username')
+            data['username'] = username;
+            $.post(route, data, function(data) {
+              var message = makeAdmin == true 
+                ? 'User ' + username + ' was successfully made admin.'
+                : 'User ' + username + ' is no longer an admin.'
+              jitterbug.displayAlert('success', message);
+            });
+          });
+        }
+      });
+    });
+
+    $('input[name=table]').each(function() {
+      if ($(this).val() == selectedTable) {
+        $(this).trigger('click');
+      }
+    });
   },
 
   initDashboardCharts: function() {
