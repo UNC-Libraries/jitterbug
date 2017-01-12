@@ -158,8 +158,8 @@ class AudioImport extends Import {
           $playbackMachine->save();
           $created++;
         }
-
-        $originalPm = $row['OriginalPm'];
+        
+        $originalPm = isset($row['OriginalPm']) ? $row['OriginalPm'] : null;
         
         if (!empty($originalPm)) { 
           // Original PM not empty so this is an update
