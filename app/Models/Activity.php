@@ -84,7 +84,7 @@ class Activity extends Model {
   public function object()
   {
     if ($this->action === 'imported' && $this->importType === 'audio') {
-      return 'batch of ' . $this->batchSize . ' video records';
+      return 'batch of ' . $this->batchSize . ' audio records';
     } else if ($this->action === 'imported' && $this->importType === 'film') {
       return 'batch of ' . $this->batchSize . ' film records';
     } else if ($this->action === 'imported' && $this->importType === 'video') {
