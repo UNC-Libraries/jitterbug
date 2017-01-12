@@ -167,6 +167,12 @@ JITTERBUG = {
       jitterbug.initRevisionHistory();
       jitterbug.initRelatedCuts();
     },
+
+    batchEdit: function() {
+      jitterbug.initDatepicker();
+      jitterbug.initTransferCallNumberQuery();
+      jitterbug.initBatchEditMixed();
+    }
   },
 
 };
