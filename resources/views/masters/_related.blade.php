@@ -24,7 +24,7 @@
             <td>{{$transfer->transferDate}}</td>
             <td>@if ($transfer->playbackMachine != null){{$transfer->playbackMachine->name}}@endif</td>
             <td>{{$transfer->engineerName}}</td>
-            <td>{{--$transfer->vendor->name--}}</td>
+            <td>@if ($transfer->vendor != null){{$transfer->vendor->name}}@endif</td>
             <td>{{$transfer->conditionNote}}</td>
           </tr>
           @endforeach                       
