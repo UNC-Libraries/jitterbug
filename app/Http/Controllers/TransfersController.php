@@ -431,7 +431,7 @@ class TransfersController extends Controller {
     $master = PreservationMaster::findOrFail($input['preservationMasterId']);
     $transfer->callNumber = $master->callNumber;
     $transfer->fill($input);
-    $subclass->fill($input['subclass']); 
+    $subclass->fill($input['subclass']);
 
     // Update MySQL
     DB::transaction(function () use ($transfer, $subclass) {
@@ -464,13 +464,22 @@ class TransfersController extends Controller {
     unset($input['ids']);
     $transfers = Transfer::whereIn('id',$transferIds)->get();
 
+    $callNumber = null;
+    // If the preservation master id has set for the entire batch, we need
+    // to get the corresponding call number to set on all the transfers.
+    if (isset($input['preservationMasterId'])) {
+      $master = PreservationMaster::findOrFail($input['preservationMasterId']);
+      $callNumber = $master->callNumber;
+    }
+
     // Update MySQL
-    DB::transaction(function () use ($transfers, $input) {
+    DB::transaction(function () use ($transfers, $callNumber, $input) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
       
       foreach ($transfers as $transfer) {
         $transfer->fill($input);
+        if ($callNumber !== null) $transfer->callNumber = $callNumber;
         $transfer->touch(); // Touch in case not dirty and subclass is dirty
         $subclass=$transfer->subclass;
         $subclass->fill($input['subclass']);
