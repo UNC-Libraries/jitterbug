@@ -136,51 +136,59 @@ class VideoImport extends Import {
         // We need to lookup the playback machine record to get the 
         // id. In order to avoid hitting the database, we will utilize
         // a simple cache.
-        $playbackMachineName = $row['TransferMachine'];
+        $playbackMachineName = 
+          isset($row['TransferMachine']) ? $row['TransferMachine'] : null;
         // Check the cache first for this playback machine record
         $playbackMachine = 
           isset($playbackMachineCache[$playbackMachineName]) ? 
                         $playbackMachineCache[$playbackMachineName] : null;
-        // Not in cache, so get from database and add to cache
-        if ($playbackMachine === null) {
-          $playbackMachine =
-            PlaybackMachine::where('name', $playbackMachineName)->first();
-          if ($playbackMachine) {
-            $playbackMachineCache[$playbackMachineName] = $playbackMachine;
+        if ($playbackMachineName !== null) {
+          // Not in cache, so get from database and add to cache
+          if ($playbackMachine === null) {
+            $playbackMachine =
+              PlaybackMachine::where('name', $playbackMachineName)->first();
+            if ($playbackMachine) {
+              $playbackMachineCache[$playbackMachineName] = $playbackMachine;
+            }
           }
-        }
-        // Not in cache and not in the database, so create a new record
-        if ($playbackMachine === null) {
-          $playbackMachine = new PlaybackMachine;
-          $playbackMachine->name = $playbackMachineName;
-          $playbackMachine->save();
-          $created++;
+          // Not in cache and not in the database, so create a new record
+          if ($playbackMachine === null) {
+            $playbackMachine = new PlaybackMachine;
+            $playbackMachine->name = $playbackMachineName;
+            $playbackMachine->save();
+            $created++;
+          }
         }
 
         // Same as playback machine, we will use a cache for the vendor
-        $vendorName = $row['CaptureEngineer'];
+        $vendorName = 
+          isset($row['CaptureEngineer']) ? $row['CaptureEngineer'] : null;
         // Check the cache first for this vendor record
         $vendor = 
           isset($vendorCache[$vendorName]) ? $vendorCache[$vendorName] : null;
-        // Not in cache, so get from database and add to cache
-        if ($vendor === null) {
-          $vendor =
-            Vendor::where('name', $vendorName)->first();
-          if ($vendor) {
-            $vendorCache[$vendorName] = $vendor;
+        if ($vendorName !== null) {
+          // Not in cache, so get from database and add to cache
+          if ($vendor === null) {
+            $vendor =
+              Vendor::where('name', $vendorName)->first();
+            if ($vendor) {
+              $vendorCache[$vendorName] = $vendor;
+            }
           }
-        }
-        // Not in cache and not in the database, so create a new record
-        if ($vendor === null) {
-          $vendor = new Vendor;
-          $vendor->name = $vendorName;
-          $vendor->save();
-          $created++;
+
+          // Not in cache and not in the database, so create a new record
+          if ($vendor === null) {
+            $vendor = new Vendor;
+            $vendor->name = $vendorName;
+            $vendor->save();
+            $created++;
+          }
         }
 
         // Create the video master which we need for the PM.
         $videoMaster = new VideoMaster;
-        $videoMaster->aspectRatio = $row['AspectRatio'];
+        $videoMaster->aspectRatio = 
+          isset($row['AspectRatio']) ? $row['AspectRatio'] : null;
         $videoMaster->save();
         $created++;
 
@@ -188,12 +196,13 @@ class VideoImport extends Import {
         $master = new PreservationMaster;
         $master->callNumber = $callNumber;
         $master->fileName = $row['FileName'];
-        $master->fileSizeInBytes = $row['FileSize'];
-        $master->checksum = $row['PreservationChecksum'];
+        $master->fileSizeInBytes = isset($row['FileSize']) ? $row['FileSize'] : null;
+        $master->checksum = 
+          isset($row['PreservationChecksum']) ? $row['PreservationChecksum'] : null;
         $master->durationInSeconds = 
-            DurationFormat::toSeconds($row['Duration']);
-        $master->fileFormat = $row['Format'];
-        $master->fileCodec = $row['Codec'];
+          isset($row['Duration']) ? DurationFormat::toSeconds($row['Duration']) : null;
+        $master->fileFormat = isset($row['Format']) ? $row['Format'] : null;
+        $master->fileCodec = isset($row['Codec']) ? $row['Codec'] : null;
         $master->subclassType = 'VideoMaster';
         $master->subclassId = $videoMaster->id;
         $master->save();
@@ -202,8 +211,10 @@ class VideoImport extends Import {
 
         // Create the video transfer
         $videoTransfer = new VideoTransfer;
-        $videoTransfer->timeBaseCorrector = $row['TimeBaseCorrector'];
-        $videoTransfer->adConverter = $row['A/Dconverter'];
+        $videoTransfer->timeBaseCorrector = 
+          isset($row['TimeBaseCorrector']) ? $row['TimeBaseCorrector'] : null;
+        $videoTransfer->adConverter = 
+          isset($row['A/Dconverter']) ? $row['A/Dconverter'] : null;
         $videoTransfer->save();
         $created++;
 
@@ -211,9 +222,11 @@ class VideoImport extends Import {
         $transfer = new Transfer;
         $transfer->callNumber = $callNumber;
         $transfer->preservationMasterId = $master->id;
-        $transfer->playbackMachineId = $playbackMachine->id;
-        $transfer->vendorId = $vendor->id;
-        $transfer->transferDate = date('Y-m-d', strtotime($row['Date']));
+        $transfer->playbackMachineId = 
+          ($playbackMachine !== null) ? $playbackMachine->id : null;
+        $transfer->vendorId = ($vendor !== null) ? $vendor->id : null;
+        $transfer->transferDate = 
+          isset($row['Date']) ? date('Y-m-d', strtotime($row['Date'])) : null;
         $transfer->subclassType = 'VideoTransfer';
         $transfer->subclassId = $videoTransfer->id;
         $transfer->save();
@@ -222,8 +235,9 @@ class VideoImport extends Import {
 
         // Update the video item
         $videoItem = VideoItem::where('call_number', $callNumber)->first();
-        $videoItem->color = $row['Color'];
-        $videoItem->monoStereo = $this->toMonoStereo($row['Sound']);
+        $videoItem->color = isset($row['Color']) ? $row['Color'] : null;
+        $videoItem->monoStereo = 
+          isset($row['Sound']) ? $this->toMonoStereo($row['Sound']) : null;
         $videoItem->save();
         $updated++;
 
