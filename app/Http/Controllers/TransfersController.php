@@ -428,16 +428,37 @@ class TransfersController extends Controller {
     $transfer = Transfer::findOrFail($id);
     $subclass = $transfer->subclass;
 
-    $master = PreservationMaster::findOrFail($input['preservationMasterId']);
-    $transfer->callNumber = $master->callNumber;
+    $originalMaster = $transfer->preservationMaster;
+    $originalCallNumber = $transfer->callNumber;
+
     $transfer->fill($input);
     $subclass->fill($input['subclass']);
 
+    $pmChanged = $transfer->isDirty('preservation_master_id');
+
+    // If the preservation master id has been updated, the call number may
+    // have changed also, so we need to update the call number and the 
+    // associated cut call number.
+    $cut = null;
+    $newMaster = null;
+    if ($pmChanged) {
+      // Get the new preservation master
+      $newMaster = PreservationMaster::findOrFail($transfer->preservationMasterId);
+      $transfer->callNumber = $newMaster->callNumber;
+
+      $cut = $transfer->cut;
+      if ($cut !== null) {
+        $cut->callNumber = $newMaster->callNumber;
+        $cut->preservationMasterId = $newMaster->id;
+      }
+    }
+
     // Update MySQL
-    DB::transaction(function () use ($transfer, $subclass) {
+    DB::transaction(function () use ($transfer, $subclass, $cut) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
 
+      if ($cut !== null) $cut->save();
       $subclass->save();
       $transfer->touch();
       $transfer->save();
@@ -446,6 +467,18 @@ class TransfersController extends Controller {
     });
 
     // Update Solr
+    if ($pmChanged) {
+      // Since cut information is a part of both items and masters Solr
+      // cores, we need to update the original item and master to reflect
+      // the fact that the cut is no longer on them. And we need to update
+      // the new item and master to add the cut.
+      $originalItem = 
+        AudioVisualItem::where('call_number', $originalCallNumber)->first();
+      $newItem = 
+        AudioVisualItem::where('call_number', $newMaster->callNumber)->first();
+      $this->solrItems->update(array($originalItem, $newItem));
+      $this->solrMasters->update(array($originalMaster, $newMaster));
+    }
     $this->solrTransfers->update($transfer);
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
@@ -464,27 +497,52 @@ class TransfersController extends Controller {
     unset($input['ids']);
     $transfers = Transfer::whereIn('id',$transferIds)->get();
 
-    $callNumber = null;
-    // If the preservation master id has set for the entire batch, we need
-    // to get the corresponding call number to set on all the transfers.
-    if (isset($input['preservationMasterId'])) {
-      $master = PreservationMaster::findOrFail($input['preservationMasterId']);
-      $callNumber = $master->callNumber;
+    $newItem = null;
+    $newMaster = null;
+    $pmChanged = isset($input['preservationMasterId']) && 
+      $transfers->first()->preservationMasterId !== 
+                                        intval($input['preservationMasterId']);
+    if ($pmChanged) {
+      $newMaster = 
+        PreservationMaster::findOrFail($input['preservationMasterId']);
+      $newItem = 
+        AudioVisualItem::where('call_number', $newMaster->callNumber)->first();
     }
 
+    $originaItems = array();
+    $originalMasters = array();
     // Update MySQL
-    DB::transaction(function () use ($transfers, $callNumber, $input) {
+    DB::transaction(function () 
+      use ($transfers, $pmChanged, $newMaster, $input, &$originaItems, 
+        &$originalMasters) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
       
       foreach ($transfers as $transfer) {
+        $originalMaster = $transfer->preservationMaster;
+        $originalCallNumber = $transfer->callNumber;
+
         $transfer->fill($input);
-        if ($callNumber !== null) $transfer->callNumber = $callNumber;
-        $transfer->touch(); // Touch in case not dirty and subclass is dirty
         $subclass=$transfer->subclass;
         $subclass->fill($input['subclass']);
 
+        if ($pmChanged) {
+          $transfer->callNumber = $newMaster->callNumber;
+          $cut = $transfer->cut;
+          if ($cut !== null) {
+            $cut->preservationMasterId = $newMaster->id;
+            $cut->callNumber = $newMaster->callNumber;
+            $cut->save();
+          }
+
+          $originalItem = 
+            AudioVisualItem::where('call_number', $originalCallNumber)->first();
+          array_push($originalMasters, $originalMaster);
+          array_push($originaItems, $originalItem);
+        }
+
         $subclass->save();
+        $transfer->touch(); // Touch in case not dirty and subclass is dirty
         $transfer->save();
       }
 
@@ -492,6 +550,12 @@ class TransfersController extends Controller {
     });
 
     // Update Solr
+    if ($pmChanged) {
+      $this->solrItems->update($originaItems);
+      $this->solrItems->update($newItem);
+      $this->solrMasters->update($originalMasters);
+      $this->solrMasters->update($newMaster);
+    }
     $this->solrTransfers->update($transfers);
 
     $request->session()->forget('batchTransferIds');
