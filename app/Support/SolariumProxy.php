@@ -135,7 +135,7 @@ class SolariumProxy {
     $doc->setField('createdAt', $item->createdAt, null, 'set');
     $doc->setField('updatedAt', $item->updatedAt, null, 'set');
 
-    $this->appendCuts($item->callNumber, $doc);
+    $this->appendCutsForItem($item->callNumber, $doc);
 
     $update->addDocument($doc);
   }
@@ -170,7 +170,7 @@ class SolariumProxy {
     // Get other fields from the associated audio visual item since that's where
     // they reside, not on the master
     $this->appendCollectionAndFormat($master->callNumber, $doc);
-    $this->appendCuts($master->callNumber, $doc);
+    $this->appendCutsForMaster($master->id, $doc);
 
     $update->addDocument($doc);
   }
@@ -260,9 +260,20 @@ class SolariumProxy {
       $item->format ? $item->format->name : null, null, 'set');
   }
 
-  private function appendCuts($callNumber, &$doc)
+  private function appendCutsForItem($callNumber, &$doc)
   {
     $cuts = Cut::where('call_number', $callNumber)->get();
+    $this->appendCuts($cuts, $doc);
+  }
+
+  private function appendCutsForMaster($preservationMasterId, &$doc)
+  {
+    $cuts = Cut::where('preservation_master_id', $preservationMasterId)->get();
+    $this->appendCuts($cuts, $doc);
+  }
+
+  private function appendCuts($cuts, &$doc)
+  {
     $cutIds = array();
     $cutTitles = array();
     $cutPerformerComposers = array();
