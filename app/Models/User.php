@@ -37,6 +37,11 @@ class User extends Model implements AuthenticatableContract,
    */
   protected $hidden = ['password', 'remember_token'];
 
+  public function isAdmin()
+  {
+    return $this->admin === 1;
+  }
+
   /**
    * Return the marks for this user.
    */
