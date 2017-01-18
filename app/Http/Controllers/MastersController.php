@@ -363,13 +363,44 @@ class MastersController extends Controller {
     $master = PreservationMaster::findOrFail($id);
     $subclass = $master->subclass;
 
+    $originalCallNumber = $master->callNumber;
+
     $master->fill($input);
-    $subclass->fill($input['subclass']); 
+    $subclass->fill($input['subclass']);
+
+    $callNumberChanged = $master->isDirty('call_number');
+
+    $transfers = null;
+    $cuts = null;
+    if ($callNumberChanged) {
+      $transfers = $master->transfers;
+      foreach ($transfers as $transfer) {
+        $transfer->callNumber = $master->callNumber;
+      }
+      $cuts = $master->cuts;
+      foreach ($cuts as $cut) {
+        $cut->callNumber = $master->callNumber;
+      }
+    }
 
     // Update MySQL
-    DB::transaction(function () use ($master, $subclass) {
+    DB::transaction(function () use ($master, $subclass, $transfers, $cuts) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
+
+      // Call number has changed
+      if ($transfers !== null) {
+        foreach ($transfers as $transfer) {
+          $transfer->save();
+        }
+      }
+
+      // Call number has changed
+      if ($cuts !== null) {
+        foreach ($cuts as $cut) {
+          $cut->save();
+        }
+      }
 
       $subclass->save();
       $master->touch();
@@ -379,6 +410,17 @@ class MastersController extends Controller {
     });
 
     // Update Solr
+    if ($callNumberChanged) {
+      // Need to update the original and new related items in Solr in case cuts 
+      // were on the original.
+      $originalItem = 
+        AudioVisualItem::where('call_number', $originalCallNumber)->first();
+      $newItem = 
+        AudioVisualItem::where('call_number', $master->callNumber)->first();
+      $this->solrItems->update(array($originalItem, $newItem));
+      // Need to update transfers since the call number has changed.
+      $this->solrTransfers->update($transfers);
+    }
     $this->solrMasters->update($master);
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
@@ -389,7 +431,7 @@ class MastersController extends Controller {
   }
 
   /**
-   * Update multple masters at once.
+   * Update multiple masters at once.
    */
   public function batchUpdate(MasterRequest $request)
   {
