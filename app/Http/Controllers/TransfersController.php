@@ -422,7 +422,7 @@ class TransfersController extends Controller {
     return parent::rangeFor($request, $this->solrTransfers);
   }
 
-  public function update(TransferRequest $request, $id)
+  public function update($id, TransferRequest $request)
   {
     $input = $request->all();
     $transfer = Transfer::findOrFail($id);
@@ -458,7 +458,9 @@ class TransfersController extends Controller {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
 
+      // Preservation master has changed
       if ($cut !== null) $cut->save();
+
       $subclass->save();
       $transfer->touch();
       $transfer->save();
@@ -495,13 +497,25 @@ class TransfersController extends Controller {
     $input = $request->allWithoutMixed();
     $transferIds = explode(',', $input['ids']);
     unset($input['ids']);
-    $transfers = Transfer::whereIn('id',$transferIds)->get();
+    $transfers = Transfer::whereIn('id', $transferIds)->get();
 
+    $pmChanged = false;
+    // Determine if PM has been changed
+    if (isset($input['preservationMasterId'])) {
+      foreach ($transfers as $transfer) {
+        if ($transfer->preservationMasterId !== 
+             intval($input['preservationMasterId'])) {
+          $pmChanged = true;
+          break;
+        }
+      }
+    }
+
+    // If the PM has changed, we need to fetch the new PM and also the
+    // related audio visual item, because it might have changed as a
+    // result.
     $newItem = null;
     $newMaster = null;
-    $pmChanged = isset($input['preservationMasterId']) && 
-      $transfers->first()->preservationMasterId !== 
-                                        intval($input['preservationMasterId']);
     if ($pmChanged) {
       $newMaster = 
         PreservationMaster::findOrFail($input['preservationMasterId']);
