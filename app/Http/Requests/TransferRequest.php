@@ -27,7 +27,7 @@ class TransferRequest extends Request {
     // Add rules for base transfer
     $rules = array();
     $this->addRuleIfNotMixed($rules, 'preservationMasterId',
-      'required|exists:preservation_masters,id');
+      'required|exists:preservation_masters,id,deleted_at,NULL');
     $this->addRuleIfNotMixed($rules, 'transferDate', 'required|date_format:Y-m-d');
     $this->addRuleIfNotMixed($rules, 'playbackMachineId', 'required');
     $this->addRuleIfNotMixed($rules, 'transferNote', 'max:1000');
