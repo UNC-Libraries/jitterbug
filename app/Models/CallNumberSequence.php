@@ -33,7 +33,8 @@ class CallNumberSequence extends Model {
         '\'' . ' with collection id ' . $collectionId);
     }
 
-    // Do a final check in items to make sure there isn't an item with this call number?
+    // TODO Do a final check in audio visual items to make sure there isn't 
+    // already an item with this call number?
 
     return $sequence;
   }

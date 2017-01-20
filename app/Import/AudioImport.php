@@ -159,6 +159,7 @@ class AudioImport extends Import {
           $created++;
         }
         
+        // Original PM is optional, so the column may not be present in the file
         $originalPm = isset($row['OriginalPm']) ? $row['OriginalPm'] : null;
         
         if (!empty($originalPm)) { 

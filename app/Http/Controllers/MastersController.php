@@ -368,42 +368,29 @@ class MastersController extends Controller {
     $master->fill($input);
     $subclass->fill($input['subclass']);
 
+    // This will be uncommon
     $callNumberChanged = $master->isDirty('call_number');
 
-    $transfers = null;
-    $cuts = null;
-    if ($callNumberChanged) {
-      $transfers = $master->transfers;
-      foreach ($transfers as $transfer) {
-        $transfer->callNumber = $master->callNumber;
-      }
-      $cuts = $master->cuts;
-      foreach ($cuts as $cut) {
-        $cut->callNumber = $master->callNumber;
-      }
-    }
-
     // Update MySQL
-    DB::transaction(function () use ($master, $subclass, $transfers, $cuts) {
+    DB::transaction(function () use ($master, $subclass, $callNumberChanged) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
 
-      // Call number has changed
-      if ($transfers !== null) {
+      if ($callNumberChanged) {
+        $transfers = $master->transfers;
         foreach ($transfers as $transfer) {
+          $transfer->callNumber = $master->callNumber;
           $transfer->save();
         }
-      }
-
-      // Call number has changed
-      if ($cuts !== null) {
+        $cuts = $master->cuts;
         foreach ($cuts as $cut) {
+          $cut->callNumber = $master->callNumber;
           $cut->save();
         }
       }
 
       $subclass->save();
-      $master->touch();
+      $master->touch(); // Touch in case not dirty and subclass is dirty
       $master->save();
 
       DB::statement('set @transaction_id = null;');      
@@ -419,7 +406,7 @@ class MastersController extends Controller {
         AudioVisualItem::where('call_number', $master->callNumber)->first();
       $this->solrItems->update(array($originalItem, $newItem));
       // Need to update transfers since the call number has changed.
-      $this->solrTransfers->update($transfers);
+      $this->solrTransfers->update($master->transfers);
     }
     $this->solrMasters->update($master);
 
@@ -438,27 +425,69 @@ class MastersController extends Controller {
     $input = $request->allWithoutMixed();
     $masterIds = explode(',', $input['ids']);
     unset($input['ids']);
-    $masters = PreservationMaster::whereIn('id',$masterIds)->get();
+    $masters = PreservationMaster::whereIn('id', $masterIds)->get();
 
+    $callNumberChanged = false;
+    // Determine if the call number has changed, which will be uncommon
+    if (isset($input['callNumber'])) {
+      foreach ($masters as $master) {
+        if ($master->callNumber !== $input['callNumber']) {
+          $callNumberChanged = true;
+          break;
+        }
+      }
+    }
+
+    $originalCallNumbers = array();
+    $transfersToUpateInSolr = array();
     // Update MySQL
-    DB::transaction(function () use ($masters, $input) {
+    DB::transaction(function () use ($masters, $callNumberChanged, $input,
+                              &$originalCallNumbers, &$transfersToUpateInSolr) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
       
       foreach ($masters as $master) {
+        array_push($originalCallNumbers, $master->callNumber);
+
         $master->fill($input);
-        $master->touch(); // Touch in case not dirty and subclass is dirty
-        $subclass=$master->subclass;
+        $subclass = $master->subclass;
         $subclass->fill($input['subclass']);
 
+        if ($callNumberChanged) {
+          $transfers = $master->transfers;
+          foreach ($transfers as $transfer) {
+            $transfer->callNumber = $master->callNumber;
+            $transfer->save();
+            array_push($transfersToUpateInSolr, $transfer);
+          }
+          $cuts = $master->cuts;
+          foreach ($cuts as $cut) {
+            $cut->callNumber = $master->callNumber;
+            $cut->save();
+          }
+        }
+
         $subclass->save();
+        $master->touch(); // Touch in case not dirty and subclass is dirty
         $master->save();
       }
 
-      DB::statement('set @transaction_id = null;');      
+      DB::statement('set @transaction_id = null;');
     });
 
     // Update Solr
+    if ($callNumberChanged) {
+      // Need to update the items core because cuts may have moved from one call
+      // number to another
+      $items =
+        AudioVisualItem::whereIn('call_number', $originalCallNumbers)->get();
+      $newItem = 
+        AudioVisualItem::where('call_number', $input['callNumber'])->first();
+      $items->push($newItem);
+      $this->solrItems->update($items);
+      // Need to update transfers since the call number has changed.
+      $this->solrTransfers->update($transfersToUpateInSolr);
+    }
     $this->solrMasters->update($masters);
 
     $request->session()->forget('batchMasterIds');
@@ -538,7 +567,7 @@ class MastersController extends Controller {
     $max = 100;
 
     $masterIds = explode(',', $request->ids);
-    $masters = PreservationMaster::whereIn('id',$masterIds)->get();
+    $masters = PreservationMaster::whereIn('id', $masterIds)->get();
 
     if ($masters->count() > $max) {
       $request->session()->put('alert', array('type' => 'danger', 'message' =>
@@ -552,22 +581,21 @@ class MastersController extends Controller {
     $transfers = $cuts = null;
 
     // Update MySQL
-    DB::transaction(function () use ($command, $masters,
+    DB::transaction(function () use ($command, $masterIds, $masters,
                                                    &$transfers, &$cuts) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
 
-      $callNumbers = $masters->pluck('call_number')->unique()->all();
-
       if ($command==='all') {
-        $transfers = Transfer::whereIn('call_number', $callNumbers)->get();
+        $transfers = 
+          Transfer::whereIn('preservation_master_id', $masterIds)->get();
         foreach ($transfers as $transfer) {
           $transfer->subclass->delete();
           $transfer->removeAllMarks();
           $transfer->delete();
         }
 
-        $cuts = Cut::whereIn('call_number', $callNumbers)->get();
+        $cuts = Cut::whereIn('preservation_master_id', $masterIds)->get();
         foreach ($cuts as $cut) {
           $cut->delete();
         }
