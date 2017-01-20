@@ -116,6 +116,8 @@ class SolariumProxy {
    */
   protected function addItemDocument($item, &$update)
   {
+    if ($item === null) return;
+
     $doc = $update->createDocument();
 
     $doc->setKey('id', $item->id);
@@ -148,6 +150,8 @@ class SolariumProxy {
    */
   protected function addMasterDocument($master, &$update)
   {
+    if ($master === null) return;
+
     $doc = $update->createDocument();
 
     $doc->setKey('id', $master->id);
@@ -183,6 +187,8 @@ class SolariumProxy {
    */
   protected function addTransferDocument($transfer, &$update)
   {
+    if ($transfer === null) return;
+
     $doc = $update->createDocument();
 
     $doc->setKey('id', $transfer->id);
