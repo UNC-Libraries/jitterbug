@@ -76,11 +76,17 @@ jitterbug = {
       selectedTable = 'users';
       sessionStorage.setItem('selectedAdminTable', 'users');
     }
+    // Bind click handlers to each table radio button in the admin section
     $('input[name=table]').click(function(event) {
+      var table = $(this).val();
       var query = {};
-      query['table'] = $(this).val();
+      query['table'] = table;
+      // Get the records for the chosen table
       $.get('/admin/records-for-table', query, function(data) {
+        sessionStorage.setItem('selectedAdminTable', table);
         $('#record-container').replaceWith(data);
+        // If this is the users table, bind click handlers to the 
+        // admin checkboxes
         if (selectedTable == 'users') {
           var adminCheckboxes = $('#table-container input:checkbox');
           adminCheckboxes.click(function(event) {

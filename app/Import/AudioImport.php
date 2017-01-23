@@ -174,7 +174,7 @@ class AudioImport extends Import {
           $updated++;
 
           // Update related transfers, which should exist
-          $relatedTransfers = $master->transfers()->get();
+          $relatedTransfers = $master->transfers;
           if ($relatedTransfers->count() > 0) {
             foreach ($relatedTransfers as $transfer) {
               $transfer->playbackMachineId = $playbackMachine->id;
@@ -188,7 +188,7 @@ class AudioImport extends Import {
           }
 
           // Update related cuts, which should exist
-          $relatedCuts = $master->cuts()->get();
+          $relatedCuts = $master->cuts;
           if ($relatedCuts->count() > 0) {
             foreach ($relatedCuts as $cut) {
               $cut->side = $row['Side'];

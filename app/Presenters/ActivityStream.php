@@ -28,8 +28,6 @@ class ActivityStream
     if ($this->hasNewTransactions()) {
 
       DB::transaction(function() use ($numTransactionsToDigest) {
-        // Delete all activities
-        Activity::truncate();
 
         // Fetch recent transaction ids
         $results = DB::table('revisions')->select('transaction_id')
@@ -50,6 +48,9 @@ class ActivityStream
         foreach($digests as $digest) {
           $activities = array_merge($activities, $digest->activities());
         }
+        
+        // Delete all activities
+        Activity::truncate();
         
         // Insert activities into the database
         foreach($activities as $activity) {

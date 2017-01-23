@@ -107,6 +107,9 @@ class TransactionDigest
 
   /**
    * The number of revisionable records affected by the transaction.
+   * This is the number the user should potentially know about, not
+   * necessarily the actual number of jitterbug records that changed
+   * behind the scenes.
    *
    * @var int
    */
@@ -179,7 +182,7 @@ class TransactionDigest
    * Perform the analysis of the transaction revisions to determine
    * the action that took place, and to what objects. 
    */
-  private function analyzeRevisions()
+  protected function analyzeRevisions()
   {
     $this->buildObjectTypesToIds();
 
@@ -231,7 +234,7 @@ class TransactionDigest
    *
    * @return void
    */
-  private function generateActivities()
+  protected function generateActivities()
   {
     $this->activities = array();
 
@@ -241,7 +244,6 @@ class TransactionDigest
     $activity->action = $this->action;
     $activity->batch = $this->batch;
     $activity->batchSize = $this->batchSize;
-    $activity->numAffected = $this->numAffected;
     $activity->timestamp = $this->revisions->first()->created_at;
     $activity->user = $this->getUserResponsibleName();
     // If batch, itemCallNumber & itemType will be null
@@ -249,25 +251,12 @@ class TransactionDigest
     $activity->itemType = $this->associatedItemType;
     $activity->importType = $this->importType;
 
-    // If this is an update where the call number was updated, let's filter
-    // out revisions and object types that aren't audio visual item call 
-    // number updates.
-    if ($this->action === 'updated' 
-                           && !$this->batch && $this->callNumberUpdated()) {
-      foreach ($this->revisions as $key => $revision) {
-        if ($revision->field === 'call_number' 
-          && $revision->revisionable_type !== 'AudioVisualItem') {
-          $this->revisions->forget($key);
-        }
-      }
-     
-      foreach ($this->objectTypesToIds as $key => $ids) {
-        if (!ends_with($key, 'item')) {
-          unset($this->objectTypesToIds[$key]);
-        }
-      }
-    }
+    $this->filterCallNumberUpdates();
 
+    // filterCallNumberUpdates() may change the numAffected value and
+    // objectTypesToIds map, so setting these need to come after that 
+    // function call
+    $activity->numAffected = $this->numAffected;
     $activity->objectTypesToIds = $this->objectTypesToIds;
 
     // Since this is a regular update, each revision will
@@ -277,7 +266,7 @@ class TransactionDigest
     // to summarize so as not to fill up the user's activity
     // stream with a single transaction.
     if ($this->action === 'updated' 
-                           && !$this->batch && $this->revisions->count() < 4) {
+                           && !$this->batch && $this->revisions->count() < 5) {
       foreach ($this->revisions as $revision) {
         $updateActivity = clone $activity;
         $updateActivity->field = $revision->fieldName();
@@ -294,7 +283,7 @@ class TransactionDigest
   /**
    * Test whether or not a call number was updated.
    */
-  private function callNumberUpdated()
+  protected function callNumberUpdated()
   {
     foreach ($this->revisions as $revision) {
       if ($revision->field === 'call_number') {
@@ -305,11 +294,74 @@ class TransactionDigest
   }
 
   /**
+   * If this is an update where the call number was updated, this function
+   * filters out revisions and object types that aren't for the original
+   * object type. We use call numbers as foreign keys on preservation
+   * masters, transfers, and cuts, so those need to change if a call number 
+   * on an original object changes (such as an audio visual item), but 
+   * the user probably doesn't need to know that.
+   */
+  protected function filterCallNumberUpdates()
+  {
+    if ($this->action === 'updated' && $this->callNumberUpdated()) {
+
+      $objectType;
+      reset($this->objectTypesToIds);
+      $objectKey = key($this->objectTypesToIds);
+      if ($objectKey === 'cut') {
+        $objectType = $objectKey;
+      } else {
+        // e.g. will explode 'audio item' to ['audio', 'item']
+        $explodedKey = explode(' ', $objectKey);
+        // This will get the last element of the array, which is the object type 
+        // (item, master or transfer)
+        $objectType = $explodedKey[1];
+      }
+
+      $revisionableType = null;
+      if ($objectType === 'item') {
+        $revisionableType = 'AudioVisualItem';
+      } else if ($objectType === 'master') {
+        $revisionableType = 'PreservationMaster';
+      } else if ($objectType === 'transfer') {
+        $revisionableType = 'Transfer';
+      } else if ($objectType === 'cut') {
+        $revisionableType = 'Cut';
+      }
+
+      foreach ($this->revisions as $key => $revision) {
+        if ($revision->field === 'call_number' 
+          && $revision->revisionable_type !== $revisionableType) {
+          $this->revisions->forget($key);
+        }
+        // The preservation master id of a cut changes only
+        // if the call number changes on the associated transfer, 
+        // so we will filter this out too.
+        if ($revision->field === 'preservation_master_id' 
+          && $revision->revisionable_type === 'Cut') {
+          $this->revisions->forget($key);
+        }
+      }
+      
+      foreach ($this->objectTypesToIds as $key => $ids) {
+        if (!ends_with($key, $objectType)) {
+          unset($this->objectTypesToIds[$key]);
+        }
+      }
+
+      // We've potentially changed the objectTypesToIds map, so we need to
+      // recalculate the num affected.
+      $this->computeNumAffected();
+    }
+
+  }
+  
+  /**
    * Return the name of the user that carried out the transaction.
    *
    * @return string
    */
-  private function getUserResponsibleName()
+  protected function getUserResponsibleName()
   {
     $firstRev = $this->revisions->first();
     return $firstRev->userResponsible()->fullName();
@@ -322,7 +374,7 @@ class TransactionDigest
    *
    * @return string
    */
-  private function findAssociatedItem()
+  protected function findAssociatedItem()
   {
     if ($this->associatedItem) return $this->associatedItem;
     if ($this->batch) return null;
@@ -346,7 +398,7 @@ class TransactionDigest
    *
    * @return string
    */
-  private function findAssociatedItemType()
+  protected function findAssociatedItemType()
   {
     if ($this->associatedItemType) return $this->associatedItemType;
     $item = AudioVisualItem::withTrashed()
@@ -365,7 +417,7 @@ class TransactionDigest
    *
    * @return string
    */
-  private function findAssociatedCallNumber()
+  protected function findAssociatedCallNumber()
   {
     if ($this->associatedCallNumber) return $this->associatedCallNumber;
     $firstRev = $this->revisions->first();
@@ -384,7 +436,7 @@ class TransactionDigest
    *
    * @return boolean
    */
-  private function wasCreate()
+  protected function wasCreate()
   {
     foreach ($this->revisions as $revision) {
       if ($revision->field !== 'created_at') {
@@ -399,7 +451,7 @@ class TransactionDigest
    *
    * @return boolean
    */
-  private function wasUpdate()
+  protected function wasUpdate()
   {
     foreach ($this->revisions as $revision) {
       if ($revision->field === 'created_at' ||
@@ -415,7 +467,7 @@ class TransactionDigest
    *
    * @return boolean
    */
-  private function wasDelete()
+  protected function wasDelete()
   {
     foreach ($this->revisions as $revision) {
       if ($revision->field !== 'deleted_at') {
@@ -432,14 +484,20 @@ class TransactionDigest
    *
    * @return boolean
    */
-  private function wasAudioImport()
+  protected function wasAudioImport()
   {
     if ($this->action === 'deleted') {
       return false;
     }
 
+    // Audio imports do not update audio visual items
     $types = $this->uniqueRevisionableTypes();
     if (array_key_exists('AudioVisualItem', $types)) {
+      return false;
+    }
+
+    // Audio imports do not change any call numbers
+    if ($this->callNumberUpdated()) {
       return false;
     }
 
@@ -454,14 +512,20 @@ class TransactionDigest
    *
    * @return boolean
    */
-  private function wasVideoImport()
+  protected function wasVideoImport()
   {
     if ($this->action === 'deleted') {
       return false;
     }
 
+    // Video imports do not update audio visual items
     $types = $this->uniqueRevisionableTypes();
     if (array_key_exists('AudioVisualItem', $types)) {
+      return false;
+    }
+
+    // Video imports do not change any call numbers
+    if ($this->callNumberUpdated()) {
       return false;
     }
 
@@ -472,7 +536,7 @@ class TransactionDigest
   /**
    * Computes the number of records that were in the batch import.
    */
-  private function computeImportSize()
+  protected function computeImportSize()
   {
     if ($this->batchSize) return $this->batchSize;
     // Since this is an import, we can just count the number of unique
@@ -493,7 +557,7 @@ class TransactionDigest
    *
    * @return boolean
    */
-  private function wasBatch()
+  protected function wasBatch()
   {
     $totalItems = 0;
     $totalMasters = 0;
@@ -536,7 +600,7 @@ class TransactionDigest
    *
    * @return array
    */
-  private function uniqueRevisionableTypes()
+  protected function uniqueRevisionableTypes()
   {
     if ($this->uniqueRevisionableTypes !== null) {
       return $this->uniqueRevisionableTypes;
@@ -555,11 +619,12 @@ class TransactionDigest
   /**
    * Iterates through the revisions in this transaction, finding the object types
    * that were modified in the transaction, along with the ids that were modified.
-   * Returns an array of object types with each type mapped to an array of ids.
+   * Returns an array of object types with each type mapped to an array of ids that
+   * were modified.
    *
    * @return array
    */
-  private function buildObjectTypesToIds()
+  protected function buildObjectTypesToIds()
   {
     if ($this->objectTypesToIds !== null) return $this->objectTypesToIds;
 
@@ -602,10 +667,8 @@ class TransactionDigest
    *
    * @return int
    */
-  private function computeNumAffected()
+  protected function computeNumAffected()
   {
-    if ($this->numAffected) return $this->numAffected;
-
     $total = 0;
     foreach ($this->objectTypesToIds as $type => $ids) {
       $total = $total + count($ids);

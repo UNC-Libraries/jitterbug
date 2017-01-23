@@ -29,7 +29,8 @@ class Activity extends Model {
   // update transactions.
   // numAffected: the number of records that were affected by the activity.
   // objectTypesToIds: the types of objects that were affected (audio item, video item, 
-  // audio master, etc) mapped to the base object ids that were affected for 
+  // audio master, etc) mapped to the base object ids that were affected. the array
+  // is stored serialized in the database.
   // each type. stored as a serialized array in the database.
   // timestamp: the time that the activity occurred.
   // user: the name of the user responsible for the activity.
