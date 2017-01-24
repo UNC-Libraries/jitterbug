@@ -38,6 +38,7 @@ class Kernel extends HttpKernel {
 	 * @var array
 	 */
 	protected $routeMiddleware = [
+		'admin' => \Jitterbug\Http\Middleware\Admin::class,
 		'auth' => \Jitterbug\Http\Middleware\Authenticate::class,
 		'auth.basic' => 
 			\Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
