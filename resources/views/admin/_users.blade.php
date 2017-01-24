@@ -19,7 +19,7 @@
               <td>{{ $record->firstName }}</td>
               <td>{{ $record->lastName }}</td>
               <td>{{ $record->updatedAt }}</td>
-              <td><input role="button" data-username="{{$record->username}}" type="checkbox" @if ($record->admin === 1) checked="checked" @endif></td>
+              <td><input role="button" data-username="{{$record->username}}" type="checkbox" @if ($record->admin === 1) checked="checked" @if (\Auth::user()->id === $record->id) disabled="disabled" @endif @endif></td>
             </tr>
             @endforeach
           </tbody>
