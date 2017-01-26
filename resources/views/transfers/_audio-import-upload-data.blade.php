@@ -18,6 +18,8 @@
         <td>{{isset($row['PlaybackMachine']) ? $row['PlaybackMachine'] : ''}}</td>
         <td>{{isset($row['FileSize']) ? $row['FileSize'] : ''}}</td>
         <td>{{isset($row['Duration']) ? $row['Duration'] : ''}}</td>
+        <td>{{isset($row['OriginationDate']) ? $row['OriginationDate'] : ''}}</td>
+        <td>{{isset($row['IART']) ? $row['IART'] : ''}}</td>
         <td>{{isset($row['OriginalPm']) ? $row['OriginalPm'] : ''}}</td>
       </tr>
       <?php $index++; ?>

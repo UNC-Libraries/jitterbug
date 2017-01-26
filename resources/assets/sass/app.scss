@@ -265,6 +265,20 @@ Admin
   text-overflow: ellipsis;
 }
 
+#record-panel .delete {
+  margin-right: .5rem;
+  float: right;
+  color: #d6d6d6;
+}
+
+#record-panel .delete:hover {
+  color: $brand-danger;
+}
+
+#record-panel .popover {
+  max-width: none;
+}
+
 /* -------------------------------------------
 Dashboard
 ------------------------------------------- */
@@ -759,11 +773,11 @@ Data Import
 }
 
 #audio-upload-data-container {
-  width: 665px;
+  width: 900px;
 }
 
 #audio-import-result-container {
-  width: 665px;
+  width: 900px;
 }
 
 // Video Import

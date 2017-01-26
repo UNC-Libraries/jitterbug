@@ -11,6 +11,7 @@ use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\AudioMaster;
 use Jitterbug\Models\AudioTransfer;
 use Jitterbug\Models\Cut;
+use Jitterbug\Models\Department;
 use Jitterbug\Models\PlaybackMachine;
 use Jitterbug\Models\PreservationMaster;
 use Jitterbug\Models\Transfer;
@@ -33,7 +34,8 @@ class AudioImport extends Import {
   public function __construct($filePath)
   {
     $this->requiredAudioImportKeys = array('CallNumber', 
-      'OriginatorReference', 'Side', 'PlaybackMachine', 'FileSize', 'Duration');
+      'OriginatorReference', 'Side', 'PlaybackMachine', 'FileSize', 
+      'Duration', 'OriginationDate', 'IART');
     $this->audioImportKeys = array_merge($this->requiredAudioImportKeys, 
       array('OriginalPm'));
 
@@ -93,6 +95,18 @@ class AudioImport extends Import {
           $bag->add($key, 
             $key . ' must adhere to the following format: HH:MM:SS.mmm.');
         }
+        // Validate transfer date is formatted correctly
+        if ($key==='OriginationDate' 
+          && !empty($row[$key]) && !strtotime($row[$key])) {
+          $bag->add(
+            $key, $key . ' must be adhere to the following format: ' 
+            . 'YYYY-MM-DD');
+        }
+        // Validate department exists
+        if ($key==='IART' 
+          && !empty($row[$key]) && !$this->departmentExists($row[$key])) {
+          $bag->add($key, $key . ' is not a recognized department.');
+        }
         // Validate pm is an integer
         if ($key==='OriginalPm' 
           && !empty($row[$key]) && !ctype_digit($row[$key])) {
@@ -131,6 +145,7 @@ class AudioImport extends Import {
       DB::statement("set @transaction_id = '$transactionId';");
 
       $playbackMachineCache = array();
+      $departmentCache = array();
 
       foreach($this->data as $row) {
         $callNumber = $row['CallNumber'];
@@ -158,6 +173,20 @@ class AudioImport extends Import {
           $playbackMachine->save();
           $created++;
         }
+
+        // Same as playback machine, we will use a cache for the department
+        $departmentName = $row['IART'];
+        // Check the cache first for this department record
+        $department = 
+          isset($departmentCache[$departmentName]) ? 
+                        $departmentCache[$departmentName] : null;
+        // Not in cache, so get from database and add to cache
+        if ($department === null) {
+          $department =
+            Department::where('name', $departmentName)->first();
+          // Department should never be null as the validation proves it exists
+          $departmentCache[$departmentName] = $department;
+        }
         
         // Original PM is optional, so the column may not be present in the file
         $originalPm = isset($row['OriginalPm']) ? $row['OriginalPm'] : null;
@@ -169,6 +198,7 @@ class AudioImport extends Import {
           $master->fileSizeInBytes = $row['FileSize'];
           $master->durationInSeconds = 
             DurationFormat::toSeconds($row['Duration']);
+          $master->departmentId = $department->id;
           $master->save();
           array_push($masters, $master);
           $updated++;
@@ -181,6 +211,7 @@ class AudioImport extends Import {
               // Right now we will assume the person importing is the
               // engineer, but that might change in the future.
               $transfer->engineerId = Auth::user()->id;
+              $transfer->transferDate = $row['OriginationDate'];
               $transfer->save();
               array_push($transfers, $transfer);
               $updated++;
@@ -211,6 +242,7 @@ class AudioImport extends Import {
           $master->fileSizeInBytes = $row['FileSize'];
           $master->durationInSeconds = 
               DurationFormat::toSeconds($row['Duration']);
+          $master->departmentId = $department->id;
           $master->subclassType = 'AudioMaster';
           $master->subclassId = $audioMaster->id;
           $master->save();
@@ -231,6 +263,7 @@ class AudioImport extends Import {
           // Right now we will assume the person importing is the
           // engineer, but that might change in the future.
           $transfer->engineerId = Auth::user()->id;
+          $transfer->transferDate = $row['OriginationDate'];
           $transfer->subclassType = 'AudioTransfer';
           $transfer->subclassId = $audioTransfer->id;
           $transfer->save();
@@ -260,7 +293,7 @@ class AudioImport extends Import {
   }
 
   private function belongsToItem($pmId, $callNumber)
-  {
+  { // TODO can reduce to 1 query by querying preservation masters directly
     $item = AudioVisualItem::where('call_number', $callNumber)->first();
     if ($item != null) {
       $masters = $item->preservationMasters;
@@ -269,6 +302,15 @@ class AudioImport extends Import {
           return true;
         }
       }
+    }
+    return false;
+  }
+
+  private function departmentExists($department)
+  {
+    $department = Department::where('name', $department)->first();
+    if ($department != null) {
+      return true;
     }
     return false;
   }

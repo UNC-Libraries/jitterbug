@@ -4781,6 +4781,17 @@ Admin
   overflow: hidden;
   text-overflow: ellipsis; }
 
+#record-panel .delete {
+  margin-right: .5rem;
+  float: right;
+  color: #d6d6d6; }
+
+#record-panel .delete:hover {
+  color: #d16642; }
+
+#record-panel .popover {
+  max-width: none; }
+
 /* -------------------------------------------
 Dashboard
 ------------------------------------------- */
@@ -5184,10 +5195,10 @@ Data Import
   overflow-y: scroll; }
 
 #audio-upload-data-container {
-  width: 665px; }
+  width: 900px; }
 
 #audio-import-result-container {
-  width: 665px; }
+  width: 900px; }
 
 #video-import-dialog {
   width: 400px;
