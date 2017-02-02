@@ -202,9 +202,11 @@ class ItemsController extends Controller
                ->orderBy('cut_number', 'asc')
                ->get();
     $collections = ['' => 
-              'Select a collection'] + Collection::pluck('name', 'id')->all();
+              'Select a collection'] + Collection::orderBy('name', 'asc')
+              ->pluck('name', 'id')->all();
     $formats = ['' => 
-              'Select a format'] + Format::pluck('name', 'id')->all();
+              'Select a format'] + Format::orderBy('name', 'asc')
+              ->pluck('name', 'id')->all();
     return view('items.edit', 
       compact('item', 'cuts', 'collections', 'formats'));
   }
@@ -286,20 +288,24 @@ class ItemsController extends Controller
     if ($item->collectionId === '<mixed>') {
       $collections = ['' => 'Select a collection'] + 
                      ['<mixed>' => '<mixed>'] +
-                     Collection::pluck('name', 'id')->all();
+                     Collection::orderBy('name', 'asc')
+                     ->pluck('name', 'id')->all();
     } else {
       $collections = ['' => 'Select a collection'] + 
-                     Collection::pluck('name', 'id')->all();
+                     Collection::orderBy('name', 'asc')
+                     ->pluck('name', 'id')->all();
     }
 
     $formats = array();
     if ($item->formatId === '<mixed>') {
       $formats = ['' => 'Select a format'] + 
                  ['<mixed>' => '<mixed>'] +
-                 Format::pluck('name', 'id')->all();
+                 Format::orderBy('name', 'asc')
+                 ->pluck('name', 'id')->all();
     } else {
       $formats = ['' => 'Select a format'] + 
-                 Format::pluck('name', 'id')->all();
+                 Format::orderBy('name', 'asc')
+                 ->pluck('name', 'id')->all();
     }
 
     return view('items.edit', 
