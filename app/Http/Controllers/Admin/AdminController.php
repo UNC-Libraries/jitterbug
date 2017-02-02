@@ -1,4 +1,4 @@
-<?php namespace Jitterbug\Http\Controllers;
+<?php namespace Jitterbug\Http\Controllers\Admin;
 
 use Auth;
 use DB;
@@ -6,6 +6,7 @@ use Log;
 
 use Illuminate\Http\Request;
 
+use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Models\User;
 
 class AdminController extends Controller
@@ -48,20 +49,4 @@ class AdminController extends Controller
     }
   }
 
-  public function recordsForTable(Request $request)
-  {
-    if ($request->ajax()) {
-      $table = $request->query('table');
-      
-      $records = null;
-      if ($table === 'users') {
-        $records = User::hasLoggedIn()->get();
-      } else {
-        $records = DB::table($table)->get();
-      }
-
-      $partial = 'admin._' . str_replace('_', '-', $table);
-      return view($partial, compact('records'));
-    }
-  }
 }

@@ -36,10 +36,12 @@ Route::group(['prefix' => 'suggestions'], function () {
 |--------------------------------------------------------------------------
 */
 
-Route::get('admin', 'AdminController@index')->name('admin.index');
-Route::post('admin/make-admin', 'AdminController@makeAdmin');
-Route::post('admin/remove-admin', 'AdminController@removeAdmin');
-Route::get('admin/records-for-table', 'AdminController@recordsForTable');
+Route::get('admin', 'Admin\AdminController@index')->name('admin.index');
+Route::post('admin/make-admin', 'Admin\AdminController@makeAdmin');
+Route::post('admin/remove-admin', 'Admin\AdminController@removeAdmin');
+Route::get('users', 'Admin\UsersController@index');
+Route::resource('collections', 
+  'Admin\CollectionsController', ['except' => ['show', 'create', 'edit']]);
 
 /*
 |--------------------------------------------------------------------------

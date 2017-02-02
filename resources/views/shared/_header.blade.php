@@ -2,9 +2,11 @@
         <div class="col-md-12">
           <div id="support-nav">
             <ul>
+              @if (\Auth::user()->isAdmin())
               <li>
                 <a href="{{route('admin.index')}}">Admin</a>
               </li>
+              @endif
               <li class="last">
                 <a href="/logout">Sign Out</a>
               </li>

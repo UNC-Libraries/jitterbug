@@ -1,11 +1,11 @@
 <?php namespace Jitterbug\Import;
 
-use Illuminate\Support\MessageBag;
-
 use Auth;
 use DB;
 use Log;
 use Uuid;
+
+use Illuminate\Support\MessageBag;
 
 use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\AudioMaster;
