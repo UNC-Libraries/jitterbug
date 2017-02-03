@@ -162,6 +162,8 @@ jitterbug = {
                     // Hookup the new field popovers
                     jitterbug.createAdminEditableFieldPopover(resource, this);
                   });
+                  var deleteAnchor = templateRow.find('.delete');
+                  jitterbug.bindAdminRecordDelete(resource, deleteAnchor);
 
                   // Insert row
                   templateRow.prependTo('#table-container > table > tbody');
@@ -212,7 +214,7 @@ jitterbug = {
 
           // Hookup the delete x's
           $('.delete').each(function() {
-            jitterbug.enableAdminRecordDelete(resource, this);
+            jitterbug.bindAdminRecordDelete(resource, this);
           });
 
           // This will hide any editable field popover, canceling the edit
@@ -255,7 +257,7 @@ jitterbug = {
 
   createAdminEditableFieldPopover: function(resource, span) {
     var fieldName = $(span).data('field'),
-    fieldText = $(span).text(),
+    fieldText = $(span).text().trim(),
     formSelector = '#edit-' + fieldName + '-form',
     field = $(formSelector + ' input[name=' + fieldName + ']');
     // Must use .attr() method here instead of .val() otherwise it 
@@ -271,7 +273,7 @@ jitterbug = {
 
       $(this).popover('show');
       // The popover doesn't exist until the user has clicked the
-      // field, and the aria-describedby attribte (which is the 
+      // field, and the aria-describedby attribute (which is the 
       // popover id) is undefined until the popover has been
       // shown.
       var popover = $('#' + $(this).attr('aria-describedby'));
@@ -285,7 +287,7 @@ jitterbug = {
       // value, and then reopens the popover.
       var popoverInput = 
           popover.find('input[name=' + fieldName + ']');
-      popoverInput.attr('value', $(fieldSpan).text());
+      popoverInput.attr('value', $(fieldSpan).text().trim());
       
       // Hookup the field popover form submit
       popover.find('form').submit(function(event) {
@@ -346,7 +348,7 @@ jitterbug = {
     });
   },
 
-  enableAdminRecordDelete: function(resource, anchor) {
+  bindAdminRecordDelete: function(resource, anchor) {
     $(anchor).click(function(event) {
       event.preventDefault();
       
@@ -368,7 +370,7 @@ jitterbug = {
             // Get the first error, no matter which it is.
             for (var key in errors) if (errors.hasOwnProperty(key)) break;
             jitterbug.displayAlert('danger', 
-              '<strong>There\'s a problem.</strong> ' + errors[key]);
+              '<strong>Hmm.</strong> ' + errors[key]);
           } else {
             jitterbug.displayAlert('danger', 
               '<strong>Uh oh.</strong> An error has occurred: ' + error);

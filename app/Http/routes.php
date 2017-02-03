@@ -42,6 +42,8 @@ Route::post('admin/remove-admin', 'Admin\AdminController@removeAdmin');
 Route::get('users', 'Admin\UsersController@index');
 Route::resource('collections', 
   'Admin\CollectionsController', ['except' => ['show', 'create', 'edit']]);
+Route::resource('formats', 
+  'Admin\FormatsController', ['except' => ['show', 'create', 'edit']]);
 
 /*
 |--------------------------------------------------------------------------

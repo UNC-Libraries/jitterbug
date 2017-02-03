@@ -2,7 +2,7 @@
       <div style="margin-top: .75rem;">
         <a id="new-record-button" class="btn btn-sm btn-secondary" href="#" role="button"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
       </div>
-      <div id="table-container" style="height: 739px; overflow-y: scroll; margin-top: .25rem; margin-bottom: 1rem;">
+      <div id="table-container">
         <table style="margin-top: .5rem;" class="table table-sm table-hover">
           <thead>
             <tr>
@@ -25,27 +25,27 @@
     </div>
  
     {{--Need the surrounding div here to keep the form displaying inline--}}
-    <div id="new-record-form" style="display: none;">
+    <div id="new-record-form" class="hidden">
       <form class="form-inline">
         <input type="text" name="id" class="form-control form-control-sm" maxlength="8" placeholder="Id" autocomplete="off" style="width: 65px;">
         <input type="text" name="name" class="form-control form-control-sm" maxlength="255" placeholder="Name" autocomplete="off" style="width: 250px;">
-        <button class="btn btn-sm btn-secondary" type="submit" style="margin-left: 3px"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
+        <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
         <button class="btn btn-sm btn-secondary cancel-new-record"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
       </form>
     </div>
 
-    <div id="edit-id-form" style="display: none;">
+    <div id="edit-id-form" class="hidden">
       <form class="form-inline">
         <input type="text" name="id" class="form-control form-control-sm" maxlength="8" placeholder="Id" autocomplete="off" style="width: 65px;">
-        <button class="btn btn-sm btn-secondary" type="submit" style="margin-left: 3px"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
+        <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
         <button class="btn btn-sm btn-secondary cancel-edit"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
       </form>
     </div>
 
-    <div id="edit-name-form" style="display: none;">
+    <div id="edit-name-form" class="hidden">
       <form class="form-inline">
         <input type="text" name="name" class="form-control form-control-sm" maxlength="255" placeholder="Name" autocomplete="off" style="width: 250px;">
-        <button class="btn btn-sm btn-secondary" type="submit" style="margin-left: 3px"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
+        <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
         <button class="btn btn-sm btn-secondary cancel-edit"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
       </form>
     </div>

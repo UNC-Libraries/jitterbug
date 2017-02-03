@@ -279,6 +279,17 @@ Admin
   max-width: none;
 }
 
+#table-container {
+ height: 739px; 
+ margin-top: .25rem;
+ margin-bottom: 1rem;
+ overflow-y: scroll;
+}
+
+.popover-submit {
+  margin-left: 3px;
+}
+
 /* -------------------------------------------
 Dashboard
 ------------------------------------------- */
@@ -1166,6 +1177,10 @@ Miscellaneous
 
 .col-e0 {
   background-color: #e0e0e0;
+}
+
+.hidden {
+  display: none;
 }
 
 button {

@@ -8,17 +8,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 
 use Jitterbug\Http\Controllers\Controller;
-use Jitterbug\Http\Requests\CollectionRequest;
+use Jitterbug\Http\Requests\FormatRequest;
 use Jitterbug\Models\AudioVisualItem;
-use Jitterbug\Models\Collection;
+use Jitterbug\Models\Format;
 use Jitterbug\Models\PreservationMaster;
 use Jitterbug\Models\Transfer;
 use Jitterbug\Support\SolariumProxy;
 
 /**
- * Controller for the management of collections in the Admin area.
+ * Controller for the management of formats in the Admin area.
  */
-class CollectionsController extends Controller
+class FormatsController extends Controller
 {
 
   protected $solrItems;
@@ -40,49 +40,38 @@ class CollectionsController extends Controller
 
   public function index(Request $request) {
     if ($request->ajax()) {
-      $records = Collection::orderBy('name')->get();
-      return view('admin._collections', compact('records'));
+      $records = Format::orderBy('name')->get();
+      return view('admin._formats', compact('records'));
     }
   }
 
-  public function store(CollectionRequest $request) {
+  public function store(FormatRequest $request) {
     if ($request->ajax()) {
       $input = $request->all();
-      $collection = new Collection;
-      $collection->fill($input);
-      $collection->save();
-      return response()->json($collection);
+      $format = new Format;
+      $format->fill($input);
+      $format->save();
+      return response()->json($format);
     }
   }
 
-  public function update($id, CollectionRequest $request) {
+  public function update($id, FormatRequest $request) {
     if ($request->ajax()) {
       $input = $request->all();
 
-      // If $input['id'] isn't set, the user is editing the name form
-      if (!isset($input['id'])) {
-        $input['id'] = $id;
-      }
+      $format = Format::findOrFail($id);
+      $format->fill($input);
 
-      $collection = Collection::findOrFail($id);
-      $collection->fill($input);
-
-      if ($collection->isDirty()) {
+      if ($format->isDirty()) {
         $affectedItems;
 
         // Update MySQL
         DB::transaction(function () 
-          use ($id, $collection, &$affectedItems) {
-          if($collection->isDirty('id')) {
-            // Mass update rather than item by item, otherwise
-            // revision tracking will kick in.
-            AudioVisualItem::where('collection_id', $id)
-              ->update(['collection_id' => $collection->id]);
-          }
-          $collection->save();
+          use ($id, $format, &$affectedItems) {
+          $format->save();
 
           $affectedItems = 
-              AudioVisualItem::where('collection_id', $collection->id)->get();
+              AudioVisualItem::where('format_id', $format->id)->get();
         });
 
         // Update Solr
@@ -91,7 +80,7 @@ class CollectionsController extends Controller
           PreservationMaster::whereIn('call_number', $callNumbers)->get();
         $affectedTransfers =
           Transfer::whereIn('call_number', $callNumbers)->get();
-        // We have to update all 3 cores because collection information 
+        // We have to update all 3 cores because format information 
         // is stored in each core
         $this->solrItems->update($affectedItems);
         $this->solrMasters->update($affectedMasters);
@@ -102,16 +91,17 @@ class CollectionsController extends Controller
 
   public function destroy($id, Request $request) {
     if ($request->ajax()) {
-      $count = AudioVisualItem::where('collection_id', $id)->count();
+      $count = AudioVisualItem::where('format_id', $id)->count();
       if ($count === 0) {
-        $collection = Collection::findOrFail($id);
-        $collection->delete();
+        $format = Format::findOrFail($id);
+        $format->delete();
         $response = array('status'=>'success');
         return response()->json($response);
       } else {
         $bag = new MessageBag();
-        $bag->add('status', 'Looks like that collection is currently in use. ' . 
-          'Remove audio visual items from the collection before deleting.');
+        $bag->add('status', 'Looks like that format is currently in use. ' . 
+          'Change the format of the related audio visual items before ' .
+          'deleting.');
         $response = $bag;
         return response()->json($bag, 422);
       }
