@@ -233,7 +233,9 @@ jitterbug = {
               if ($(this).is(target)) {
                 return true;
               } else {
-                $(this).popover('hide');
+                if ($(this).attr('aria-describedby')) {
+                  $(this).popover('hide');
+                }
               }
             });
             if (!$('#new-record-button').is(target)) {
