@@ -906,6 +906,9 @@ jitterbug = {
     $('#' + type + '-import-form').submit( function(event) {
       event.preventDefault();
 
+      var submitButton = $(this).find('button[type="submit"]');
+      submitButton.attr('disabled', true);
+
       $('#' + type + '-import-spinner').show();
       var form = new FormData(this);
       $.ajax({
@@ -932,6 +935,7 @@ jitterbug = {
         },
         complete: function() {
           $('#' + type + '-import-spinner').hide();
+          submitButton.attr('disabled', false);
         }
       });
     });
