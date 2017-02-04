@@ -1,10 +1,16 @@
 <?php namespace Jitterbug\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Department extends Model {
   use CamelCasing;
-    
+  use SoftDeletes;
+
+  protected $dates = array('deleted_at');
+  
+  protected $fillable = array('name');
+
   public function preservationMasters()
   {
      return $this->hasMany('Jitterbug\Models\PreservationMaster');

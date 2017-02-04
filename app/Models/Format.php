@@ -9,8 +9,8 @@ class Format extends Model {
   use SoftDeletes;
 
   protected $dates = array('deleted_at');
-  
-  protected $fillable = array('id', 'name', 'prefix', 'legacyPrefix');
+
+  protected $fillable = array('name', 'prefix', 'legacyPrefix');
 
   // Filters out formats that will not be used for new items
   public function scopeWithFutureUse($query)

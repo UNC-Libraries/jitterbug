@@ -157,7 +157,9 @@ jitterbug = {
                   templateRow.find('[data-field]').each(function() {
                     var field = $(this).attr('data-field');
                     $(this).attr('data-id', data.id);
-                    $(this).text(data[field]);
+                    $(this).html(  // If field is empty, add non-breaking spaces so 
+                      // there is something to click on
+                      data[field] == '' ? '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : data[field]);
 
                     // Hookup the new field popovers
                     jitterbug.createAdminEditableFieldPopover(resource, this);

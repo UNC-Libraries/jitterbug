@@ -44,6 +44,22 @@ Route::resource('collections',
   'Admin\CollectionsController', ['except' => ['show', 'create', 'edit']]);
 Route::resource('formats', 
   'Admin\FormatsController', ['except' => ['show', 'create', 'edit']]);
+Route::resource('projects', 
+  'Admin\ProjectsController', ['except' => ['show', 'create', 'edit']]);
+Route::resource('vendors', 
+  'Admin\VendorsController', ['except' => ['show', 'create', 'edit']]);
+Route::resource('departments', 
+  'Admin\DepartmentsController', ['except' => ['show', 'create', 'edit']]);
+Route::resource('playback-machines', 
+  'Admin\PlaybackMachinesController', ['except' => ['show', 'create', 'edit']]);
+Route::resource('reproduction-machines', 
+  'Admin\ReproductionMachinesController', ['except' => ['show', 'create', 'edit']]);
+Route::resource('sampling-rates', 
+  'Admin\SamplingRatesController', ['except' => ['show', 'create', 'edit']]);
+Route::resource('pm-speeds', 
+  'Admin\PmSpeedsController', ['except' => ['show', 'create', 'edit']]);
+Route::resource('tape-brands', 
+  'Admin\TapeBrandsController', ['except' => ['show', 'create', 'edit']]);
 
 /*
 |--------------------------------------------------------------------------
