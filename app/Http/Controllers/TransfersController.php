@@ -651,15 +651,15 @@ class TransfersController extends Controller {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
 
+      $cuts = Cut::whereIn('transfer_id', $transferIds)->get();
+      foreach ($cuts as $cut) {
+        $cut->delete();
+      }
+      
       foreach ($transfers as $transfer) {
         $transfer->subclass->delete();
         $transfer->removeAllMarks();
         $transfer->delete();
-      }
-
-      $cuts = Cut::whereIn('transfer_id', $transferIds)->get();
-      foreach ($cuts as $cut) {
-        $cut->delete();
       }
 
       DB::statement('set @transaction_id = null;');      
