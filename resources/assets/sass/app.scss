@@ -958,6 +958,11 @@ Bootstrap Overrides
   border: none;
 }
 
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 1;
+}
+
 .form-control-sm {
   line-height: 1.3;
 }

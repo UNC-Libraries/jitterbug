@@ -70,6 +70,13 @@ jitterbug = {
     }
   },
 
+  initSubmitButton: function() {
+    $('button[type="submit"]').click(function(event){
+      $(this).attr('disabled', true);
+      $(this).closest('form').submit();
+    });
+  },
+
   initAdmin: function() {
     var selectedTable = sessionStorage.getItem('selectedAdminTable');
     if (selectedTable == null) {
@@ -775,6 +782,8 @@ jitterbug = {
     $('#batch-delete-form').submit( function(event) {
       jitterbug.tableSelection.clear();
       jitterbug.tableParams.setPage(1);
+      var submitButtons = $(this).find('button[type="submit"]');
+      submitButtons.attr('disabled', true);
     });
   },
 
@@ -979,9 +988,11 @@ jitterbug = {
         return;
       }
 
-      // Build export file
       $('#export-building-spinner').show();
+      var submitButton = $(this).find('button[type="submit"]');
+      submitButton.attr('disabled', true);
 
+      // Build export file
       var form = new FormData(this);
       $.ajax({
         url: $(this).attr('action'),
@@ -1003,6 +1014,7 @@ jitterbug = {
           $('#export-building-spinner').hide();
           $('#data-export-modal .modal-body').scrollTop(0);
           $('#data-export-modal').modal('toggle');
+          submitButton.attr('disabled', false);
         },
         error: function (jqXHR, textStatus, error) {
           console.log('Export failed: ' + error);

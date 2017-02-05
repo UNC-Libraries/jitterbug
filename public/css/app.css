@@ -5344,6 +5344,10 @@ Bootstrap Overrides
   background-color: #c55530;
   border: none; }
 
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 1; }
+
 .form-control-sm, .input-group-sm > .form-control,
 .input-group-sm > .input-group-addon,
 .input-group-sm > .input-group-btn > .btn {

@@ -111,10 +111,11 @@ class ItemsController extends Controller
   {
     $item = new AudioVisualItem;
     $collections = ['' => 
-             'Select a collection'] + Collection::pluck('name', 'id')->all();
+             'Select a collection'] + Collection::orderBy('name', 'asc')
+                                            ->pluck('name', 'id')->all();
     $formats = ['' => 
-             'Select a format'] + Format::withFutureUse()->
-                                                  pluck('name', 'id')->all();
+             'Select a format'] + Format::withFutureUse()->orderBy('name', 'asc')
+                                            ->pluck('name', 'id')->all();
     return view('items.create', compact('item', 'collections', 'formats'));
   }
 

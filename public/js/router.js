@@ -63,6 +63,7 @@ JITTERBUG = {
       jitterbug.initItemCallNumberGeneration();
       jitterbug.initDatepicker();
       jitterbug.initItemSuggestions();
+      jitterbug.initSubmitButton();
     },
 
     edit: function() {
@@ -71,12 +72,14 @@ JITTERBUG = {
       jitterbug.initRevisionHistory();
       jitterbug.initRelatedPreservationMasters();
       jitterbug.initRelatedCuts();
+      jitterbug.initSubmitButton();
     },
 
     batchEdit: function() {
       jitterbug.initBatchEditMixed();
       jitterbug.initDatepicker();
       jitterbug.initItemSuggestions();
+      jitterbug.initSubmitButton();
     }
   },
 
@@ -104,16 +107,19 @@ JITTERBUG = {
     create: function() {
       jitterbug.initMasterTypeControls();
       jitterbug.initMasterBatchCheckbox();
+      jitterbug.initSubmitButton();
     },
 
     edit: function() {
       jitterbug.initRevisionHistory();
       jitterbug.initRelatedCuts();
       jitterbug.initRelatedTransfers();
+      jitterbug.initSubmitButton();
     },
 
     batchEdit: function() {
       jitterbug.initBatchEditMixed();
+      jitterbug.initSubmitButton();
     }
   },
 
@@ -130,6 +136,7 @@ JITTERBUG = {
     edit: function() {
       jitterbug.initRevisionHistory();
       jitterbug.initRelatedTransfers();
+      jitterbug.initSubmitButton();
     }
   },
 
@@ -159,6 +166,7 @@ JITTERBUG = {
       jitterbug.initTransferTypeControls();
       jitterbug.initTransferCallNumberQuery();
       jitterbug.initDatepicker();
+      jitterbug.initSubmitButton();
     },
 
     edit: function() {
@@ -166,12 +174,14 @@ JITTERBUG = {
       jitterbug.initTransferCallNumberQuery();
       jitterbug.initRevisionHistory();
       jitterbug.initRelatedCuts();
+      jitterbug.initSubmitButton();
     },
 
     batchEdit: function() {
       jitterbug.initDatepicker();
       jitterbug.initTransferCallNumberQuery();
       jitterbug.initBatchEditMixed();
+      jitterbug.initSubmitButton();
     }
   },
 
