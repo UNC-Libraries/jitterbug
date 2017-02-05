@@ -35,6 +35,11 @@ class Cut extends Model {
 
   protected $revisionCreationsEnabled = true;
 
+  public function item()
+  {
+    return $this->belongsTo('Jitterbug\Models\AudioVisualItem', 'call_number', 'call_number');
+  }
+  
   public function preservationMaster()
   {
     return $this->belongsTo('Jitterbug\Models\PreservationMaster');

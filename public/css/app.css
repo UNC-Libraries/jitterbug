@@ -5166,6 +5166,9 @@ Record Details
 #detail .marked {
   background-color: #f4c04d; }
 
+#detail .detail-link {
+  color: #373a3c; }
+
 /* -------------------------------------------
 Data Import
 ------------------------------------------- */

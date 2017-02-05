@@ -28,7 +28,11 @@
           Call Number
         </div>
         <div class="col-xs-7 detail-value">
-          {{$cut->callNumber}}
+          @if ($cut->item)
+            <a href="{{route('items.show', $cut->item->id)}}" class="detail-link">{{$cut->callNumber}}</a>
+          @else
+            <span class="text-danger" title="Missing audio visual item">{{$cut->callNumber}}&nbsp;<i class="fa fa-question" aria-hidden="true"></i></span>
+          @endif
         </div>
       </div>
       @if ($cut->side)

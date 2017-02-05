@@ -49,6 +49,11 @@ class Transfer extends Model {
     parent::__construct();
   }
 
+  public function item()
+  {
+    return $this->belongsTo('Jitterbug\Models\AudioVisualItem', 'call_number', 'call_number');
+  }
+  
   /**
    * Return the associated cut, if there is one.
    */

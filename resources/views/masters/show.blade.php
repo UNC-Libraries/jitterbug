@@ -37,7 +37,11 @@
           Call Number
         </div>
         <div class="col-xs-7 detail-value">
-          {{$master->callNumber}}
+          @if ($master->item)
+            <a href="{{route('items.show', $master->item->id)}}" class="detail-link">{{$master->callNumber}}</a>
+          @else
+            <span class="text-danger" title="Missing audio visual item">{{$master->callNumber}}&nbsp;<i class="fa fa-question" aria-hidden="true"></i></span>
+          @endif
         </div>
       </div>
       @endif
@@ -299,8 +303,8 @@
               Do you want to delete just this master, or do you want to delete this master <strong>and all</strong> associated records? This cannot be undone.
             </div>
             <div class="modal-footer">
-              <button name="deleteCommand" value="master" type="submit" class="btn btn-sm btn-warning" style="outline: none;"><i class="fa fa-trash" aria-hidden="true"></i> Delete Master Only</button>
               <button name="deleteCommand" value="all" type="submit" class="btn btn-sm btn-danger" style="outline: none;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Delete All</button>
+              <button name="deleteCommand" value="master" type="submit" class="btn btn-sm btn-warning" style="outline: none;"><i class="fa fa-trash" aria-hidden="true"></i> Delete Master Only</button>
             </div>
 
           </div>

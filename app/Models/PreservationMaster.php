@@ -64,6 +64,11 @@ class PreservationMaster extends Model {
     return false;
   }
 
+  public function item()
+  {
+    return $this->belongsTo('Jitterbug\Models\AudioVisualItem', 'call_number', 'call_number');
+  }
+
   public function cuts()
   {
     return $this->hasMany('Jitterbug\Models\Cut');

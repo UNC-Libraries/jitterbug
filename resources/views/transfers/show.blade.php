@@ -39,7 +39,11 @@
           Call Number
         </div>
         <div class="col-xs-7 detail-value">
-          {{$transfer->callNumber}}
+          @if ($transfer->item)
+            <a href="{{route('items.show', $transfer->item->id)}}" class="detail-link">{{$transfer->callNumber}}</a>
+          @else
+            <span class="text-danger" title="Missing audio visual item">{{$transfer->callNumber}}&nbsp;<i class="fa fa-question" aria-hidden="true"></i></span>
+          @endif
         </div>
       </div>
       @endif
