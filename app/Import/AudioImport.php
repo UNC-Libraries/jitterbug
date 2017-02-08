@@ -199,8 +199,17 @@ class AudioImport extends Import {
           $master->durationInSeconds = 
             DurationFormat::toSeconds($row['Duration']);
           $master->departmentId = $department->id;
+          // APPDEV-6760
+          $master->fileFormat = 'BWF';
+          $master->fileCodec = 'Uncompressed PCM';
           $master->save();
           array_push($masters, $master);
+          $updated++;
+
+          $audioMaster = AudioMaster::find($master->subclassId);
+          // APPDEV-6760  Sampling rate id 8 = 96kHz/24bit
+          $audioMaster->samplingRateId = 8;
+          $audioMaster->save();
           $updated++;
 
           // Update related transfers, which should exist
@@ -232,6 +241,8 @@ class AudioImport extends Import {
           // For the audio PM, there is nothing to save, we just need the
           // ID for the new PM record.
           $audioMaster = new AudioMaster;
+          // Sampling rate id 8 = 96kHz/24bit
+          $audioMaster->samplingRateId = 8;
           $audioMaster->save();
           $created++;
 
@@ -243,6 +254,10 @@ class AudioImport extends Import {
           $master->durationInSeconds = 
               DurationFormat::toSeconds($row['Duration']);
           $master->departmentId = $department->id;
+          // APPDEV-6760
+          $master->fileFormat = 'BWF';
+          $master->fileCodec = 'Uncompressed PCM';
+
           $master->subclassType = 'AudioMaster';
           $master->subclassId = $audioMaster->id;
           $master->save();
