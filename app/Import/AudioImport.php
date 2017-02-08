@@ -97,7 +97,7 @@ class AudioImport extends Import {
         }
         // Validate transfer date is formatted correctly
         if ($key==='OriginationDate' 
-          && !empty($row[$key]) && !strtotime($row[$key])) {
+          && !empty($row[$key]) && !$this->isValidDate($row[$key])) {
           $bag->add(
             $key, $key . ' must be adhere to the following format: ' 
             . 'YYYY-MM-DD');
@@ -334,6 +334,12 @@ class AudioImport extends Import {
   {
     $item = AudioVisualItem::where('call_number', $callNumber)->first();
     return $item !== null && $item->subclassType === 'AudioItem';
+  }
+
+  private function isValidDate($date)
+  {
+    $format = 'Y-m-d';
+    return date($date) == date($format, strtotime($date));
   }
 
 }
