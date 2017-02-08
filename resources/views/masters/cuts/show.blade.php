@@ -20,7 +20,11 @@
           PM #
         </div>
         <div class="col-xs-7 detail-value">
-          {{$cut->preservationMasterId}}
+          @if ($cut->preservationMaster)
+            <a href="{{route('masters.show', $cut->preservationMaster->id)}}" class="detail-link">{{$cut->preservationMasterId}}</a>
+          @else
+            <span class="text-danger" title="Missing preservation master">{{$cut->preservationMasterId}}&nbsp;<i class="fa fa-question" aria-hidden="true"></i></span>
+          @endif
         </div>
       </div>
       <div class="row">
