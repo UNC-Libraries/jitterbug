@@ -11,6 +11,8 @@ use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Http\Requests\CollectionRequest;
 use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\Collection;
+use Jitterbug\Models\Format;
+use Jitterbug\Models\NewCallNumberSequence;
 use Jitterbug\Models\PreservationMaster;
 use Jitterbug\Models\Transfer;
 use Jitterbug\Support\SolariumProxy;
@@ -50,7 +52,26 @@ class CollectionsController extends Controller
       $input = $request->all();
       $collection = new Collection;
       $collection->fill($input);
-      $collection->save();
+
+      // Update MySQL
+      DB::transaction(function () use ($collection) {
+        $collection->save();
+
+        // Since this is a new collection, create new sequences 
+        // for all format prefixes
+        $results = DB::table('formats')->select('prefix')
+                                       ->distinct()
+                                       ->get();
+        foreach ($results as $result) {
+          $prefix = $result->prefix;
+          $sequence = new NewCallNumberSequence;
+          $sequence->prefix = $prefix;
+          $sequence->collectionId = $collection->id;
+          $sequence->next = 1;
+          $sequence->save();
+        }
+      });
+
       return response()->json($collection);
     }
   }
@@ -77,6 +98,8 @@ class CollectionsController extends Controller
             // Mass update rather than item by item, otherwise
             // revision tracking will kick in.
             AudioVisualItem::where('collection_id', $id)
+              ->update(['collection_id' => $collection->id]);
+            NewCallNumberSequence::where('collection_id', $id)
               ->update(['collection_id' => $collection->id]);
           }
           $collection->save();
