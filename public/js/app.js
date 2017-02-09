@@ -1064,7 +1064,8 @@ jitterbug = {
         or \'command-clicking\' on rows of the table.');
       return false;
     }
-    if (tableSelection.count() == 1) {
+    // APPDEV-6771 - Allow exporting only 1 record
+    if (tableSelection.count() == 1 && action != 'exporting') {
       jitterbug.displayAlert('warning',
         '<strong>More please!</strong> Batch actions require at least \
         2 records to be selected. Make a selection by \
