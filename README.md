@@ -119,6 +119,7 @@ $ php artisan key:generate
 
 ## Asset Compilation
 1. Run Gulp
+
 ```bash
 $ cd $JITTERBUG_HOME
 $ gulp watch
@@ -126,9 +127,12 @@ $ gulp watch
 
 ## Running
 1. Start the local PHP web server.
+
 ```bash
 $ cd $JITTERBUG_HOME
 $ php artisan serve
 ```
    In your favorite web browser, go to http://localhost:8000/
+   
+
 
