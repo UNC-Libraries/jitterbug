@@ -20,35 +20,35 @@ A Laravel / MySQL database management application for the Southern Folklife Coll
 ```
 $ sed -i '' 's/DEFINER=[^*]*\*/\*/g' jitterbug-20170206.sql
 ```
-4. Create an empty MySQL database locally.
+4. Create an empty MySQL database locally.  
 ```
 $ mysql -u username -p
 mysql> create database jitterbug
 ```
-5. Import the MySQL dump.
+5. Import the MySQL dump.  
 ```
 $ mysql -u username jitterbug < jitterbug-20170206.sql -p
 ```
-6. Clone the repo to your local machine ($JITTERBUG_HOME).
+6. Clone the repo to your local machine ($JITTERBUG_HOME).  
 ```
 $ git clone git@github.com:UNC-Libraries/jitterbug.git jitterbug
 ```
-7. If you have not already, unzip the MySQL Connector/J archive, then copy the jar file (mysql-connector-java-5.1.38-bin.jar) into $SOLR_HOME/contrib/dataimporthandler-extras/lib
+7. If you have not already, unzip the MySQL Connector/J archive, then copy the jar file (mysql-connector-java-5.1.38-bin.jar) into $SOLR_HOME/contrib/dataimporthandler-extras/lib  
 
-8. Create the Solr core directories.
+8. Create the Solr core directories.  
 ```
 $ cd $SOLR_HOME/server/solr
 $ mkdir jitterbug-items
 $ mkdir jitterbug-masters
 $ mkdir jitterbug-transfers
 ```
-9. Symlink core conf directories to those in the git repo.
+9. Symlink core conf directories to those in the git repo.  
 ```
 $ ln -s $JITTERBUG_HOME/solrconfig/jitterbug-items/conf jitterbug-items/conf
 $ ln -s $JITTERBUG_HOME/solrconfig/jitterbug-masters/conf jitterbug-masters/conf
 $ ln -s $JITTERBUG_HOME/solrconfig/jitterbug-transfers/conf jitterbug-transfers/conf
 ```
-10. Create a core.properties file in each core directory.
+10. Create a core.properties file in each core directory.  
 ```
 $ cd jitterbug-items
 $ nano core.properties
@@ -65,11 +65,11 @@ $ nano core.properties
    importDataSourceUser=username  
    importDataSourcePassword=password  
 ```
-11. Start Solr. It might be helpful to run it in the foreground when developing, hence the -f flag.
+11. Start Solr. It might be helpful to run it in the foreground when developing, hence the -f flag.  
 ```
 $ $SOLR_HOME/bin/solr start -f
 ```
-12. Create the new cores in Solr.
+12. Create the new cores in Solr.  
 ```
 $ $SOLR_HOME/bin/solr create -c jitterbug-items
 $ $SOLR_HOME/bin/solr create -c jitterbug-masters
@@ -83,22 +83,22 @@ $ $SOLR_HOME/bin/solr create -c jitterbug-transfers
 	5. Click Execute.
 	6. When jitterbug-items is finished indexing, repeat these steps for each core.
 
-14. Add a crontab entry for the Jitterbug (Laravel) [scheduler](https://laravel.com/docs/5.2/scheduling). This job will run every minute and will create the activity stream when there have been new transactions.
+14. Add a crontab entry for the Jitterbug (Laravel) [scheduler](https://laravel.com/docs/5.2/scheduling). This job will run every minute and will create the activity stream when there have been new transactions.  
 ```
 $ crontab -e
 ```
-   Paste the following into the editor (where $JITTERBUG_HOME is the absolute path to your Jitterbug repo) then save:
+   Paste the following into the editor (where $JITTERBUG_HOME is the absolute path to your Jitterbug repo) then save:  
 ```  
    * * * * * php $JITTERBUG_HOME/artisan schedule:run >> /dev/null 2>&1  
 ```
-15. Install Jitterbug dependencies.
+15. Install Jitterbug dependencies.  
 
 ```
 $ cd $JITTERBUG_HOME
 $ composer update #PHP dependencies
 $ npm install 
 ```
-16. Create a new application key.
+16. Create a new application key.  
 
 ```
 $ php artisan key:generate
@@ -109,14 +109,14 @@ $ php artisan key:generate
 2. Edit the DB_\* and ADLDAP_\* properties in ```$JITTERBUG_HOME/.env```. The DB_\* properties will be determined by you, the developer, based on your database configuration. The ADLDAP_\* properites you should get from a UNC sysadmin or another Jitterbug developer. The SOLR_\* properties will likely be the same as what is in the .env.example file.
 
 ## Asset Compilation
-1. Run Gulp
+1. Run Gulp  
 ```
 $ cd $JITTERBUG_HOME
 $ gulp watch
 ```
 
 ## Running
-1. Start the local PHP web server.
+1. Start the local PHP web server.  
 ```
 $ cd $JITTERBUG_HOME
 $ php artisan serve
