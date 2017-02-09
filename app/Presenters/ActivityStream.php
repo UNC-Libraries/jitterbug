@@ -4,7 +4,6 @@ use DB;
 use Log;
 
 use Jitterbug\Models\Activity;
-use Jitterbug\Models\Revision;
 
 /**
  * Models a stream of recent activity, culled from the revisions table.
