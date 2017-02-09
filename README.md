@@ -30,6 +30,7 @@ mysql> create database jitterbug
 $ mysql -u username jitterbug < jitterbug-20170206.sql -p
 ```
 6. Clone the repo to your local machine ($JITTERBUG_HOME).
+
 ```bash
 $ git clone git@github.com:UNC-Libraries/jitterbug.git jitterbug
 ```
