@@ -115,7 +115,7 @@ $ php artisan key:generate
 
 ## Configuration
 1. Copy ```$JITTERBUG_HOME/.env.example``` to ```$JITTERBUG_HOME/.env```.
-2. Edit the DB_\* and ADLDAP_\* properties in ```$JITTERBUG_HOME/.env```. The DB_\* properties will be determined by you, the developer, based on your database configuration. The ADLDAP_\* properites you should get from a UNC sysadmin or another Jitterbug developer. The SOLR_\* properties will likely be the same as what is in the .env.example file.
+2. Edit the DB_\* and ADLDAP_\* properties in ```$JITTERBUG_HOME/.env```. The DB_\* properties will be determined by you, the developer, based on your database configuration. The ADLDAP_\* properites you should get from a UNC sysadmin or another Jitterbug developer. Specifically, you will need the credentials for the LDAP admin user, and the LDAP group search string to put in the limitation filter after the = sign. The SOLR_\* properties will likely be the same as what is in the .env.example file.
 
 ## Asset Compilation
 1. Run Gulp
