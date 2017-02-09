@@ -17,39 +17,39 @@ A Laravel / MySQL database management application for the Southern Folklife Coll
 1. If you are not a member of the Jitterbug LDAP group, submit a ticket and request access. You must be a member of the group in order to log into Jitterbug.
 2. Get a fresh Jitterbug MySQL production database dump from a UNC library sysadmin.
 3. Because the dump will contain views, you will need to remove the SQL security definers in the dump file. Using sed (on Mac OSX):
-```bash
+```
 $ sed -i '' 's/DEFINER=[^*]*\*/\*/g' jitterbug-20170206.sql
 ```
 4. Create an empty MySQL database locally.
-```bash
+```
 $ mysql -u username -p
 mysql> create database jitterbug
 ```
 5. Import the MySQL dump.
-```bash
+```
 $ mysql -u username jitterbug < jitterbug-20170206.sql -p
 ```
 6. Clone the repo to your local machine ($JITTERBUG_HOME).
-```bash
+```
 $ git clone git@github.com:UNC-Libraries/jitterbug.git jitterbug
 ```
 7. If you have not already, unzip the MySQL Connector/J archive, then copy the jar file (mysql-connector-java-5.1.38-bin.jar) into $SOLR_HOME/contrib/dataimporthandler-extras/lib
 
 8. Create the Solr core directories.
-```bash
+```
 $ cd $SOLR_HOME/server/solr
 $ mkdir jitterbug-items
 $ mkdir jitterbug-masters
 $ mkdir jitterbug-transfers
 ```
 9. Symlink core conf directories to those in the git repo.
-```bash
+```
 $ ln -s $JITTERBUG_HOME/solrconfig/jitterbug-items/conf jitterbug-items/conf
 $ ln -s $JITTERBUG_HOME/solrconfig/jitterbug-masters/conf jitterbug-masters/conf
 $ ln -s $JITTERBUG_HOME/solrconfig/jitterbug-transfers/conf jitterbug-transfers/conf
 ```
 10. Create a core.properties file in each core directory.
-```bash
+```
 $ cd jitterbug-items
 $ nano core.properties
 ```
@@ -66,11 +66,11 @@ $ nano core.properties
    importDataSourcePassword=password  
 ```
 11. Start Solr. It might be helpful to run it in the foreground when developing, hence the -f flag.
-```bash
+```
 $ $SOLR_HOME/bin/solr start -f
 ```
 12. Create the new cores in Solr.
-```bash
+```
 $ $SOLR_HOME/bin/solr create -c jitterbug-items
 $ $SOLR_HOME/bin/solr create -c jitterbug-masters
 $ $SOLR_HOME/bin/solr create -c jitterbug-transfers
@@ -84,7 +84,7 @@ $ $SOLR_HOME/bin/solr create -c jitterbug-transfers
 	6. When jitterbug-items is finished indexing, repeat these steps for each core.
 
 14. Add a crontab entry for the Jitterbug (Laravel) [scheduler](https://laravel.com/docs/5.2/scheduling). This job will run every minute and will create the activity stream when there have been new transactions.
-```bash
+```
 $ crontab -e
 ```
    Paste the following into the editor (where $JITTERBUG_HOME is the absolute path to your Jitterbug repo) then save:
@@ -93,14 +93,14 @@ $ crontab -e
 ```
 15. Install Jitterbug dependencies.
 
-```bash
+```
 $ cd $JITTERBUG_HOME
 $ composer update #PHP dependencies
 $ npm install 
 ```
 16. Create a new application key.
 
-```bash
+```
 $ php artisan key:generate
 ```
 
@@ -110,14 +110,14 @@ $ php artisan key:generate
 
 ## Asset Compilation
 1. Run Gulp
-```bash
+```
 $ cd $JITTERBUG_HOME
 $ gulp watch
 ```
 
 ## Running
 1. Start the local PHP web server.
-```bash
+```
 $ cd $JITTERBUG_HOME
 $ php artisan serve
 ```
