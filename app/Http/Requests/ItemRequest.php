@@ -29,7 +29,7 @@ class ItemRequest extends Request {
     if ($this->route()->getName()!=='items.store') {
       $this->addRuleIfNotMixed($rules, 'callNumber',
         'required|min:4|max:30|unique:audio_visual_items,call_number,'.
-         $this->input('id'));
+         $this->input('id').',id,deleted_at,NULL' );
     }
     $this->addRuleIfNotMixed($rules, 'title', 'required|min:3|max:255');
     $this->addRuleIfNotMixed($rules, 'containerNote', 'max:1000');

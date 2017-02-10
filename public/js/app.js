@@ -338,7 +338,7 @@ jitterbug = {
             // Validation error
             if (jqXHR.status==422) {
               var errors = JSON.parse(jqXHR.responseText);
-              // Get the first error, no matter which it is.
+              // Get the first error, no matter which field it is for.
               for (var key in errors) if (errors.hasOwnProperty(key)) break;
               jitterbug.displayAlert('danger', 
                 '<strong>Whoops.</strong> ' + errors[key]);
@@ -378,7 +378,7 @@ jitterbug = {
           // Validation error
           if (jqXHR.status==422) {
             var errors = JSON.parse(jqXHR.responseText);
-            // Get the first error, no matter which it is.
+            // Get the first error
             for (var key in errors) if (errors.hasOwnProperty(key)) break;
             jitterbug.displayAlert('danger', 
               '<strong>Hmm.</strong> ' + errors[key]);

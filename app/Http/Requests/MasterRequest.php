@@ -34,8 +34,9 @@ class MasterRequest extends Request {
     // needs to be unique across every master.
     if (!$this->input('batch') && $this->route()->getName()!=='masters.batch.update') {
       $this->addRuleIfNotMixed($rules, 'fileName', 
-        'required|max:60|unique:preservation_masters,file_name,NULL,id,deleted_at,NULL' . 
-        $this->input('id'));
+        'required|max:60|unique:preservation_masters,file_name,'. 
+          $this->input('id').',id,deleted_at,NULL' 
+        );
     }
     $this->addRuleIfNotMixed($rules, 'fileLocation', 'max:60');
     $this->addRuleIfNotMixed($rules, 'fileSizeInBytes', 
