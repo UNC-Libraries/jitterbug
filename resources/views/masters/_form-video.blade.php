@@ -32,7 +32,7 @@
             {!! Form::label('subclass[videoFrameSize]', 'Frame Size', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('subclass[videoFrameSize]', routeName() === 'masters.create' ? '720 x 480' : null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. 720 x 480')) !!}
+            {!! Form::text('subclass[videoFrameSize]', routeName() === 'masters.create' ? '720 x 486' : null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. 720 x 486')) !!}
             @if ($errors->has('subclass.videoFrameSize'))
               <div class="form-control-label"><small>{!! $errors->first('subclass.videoFrameSize') !!}</small></div>
             @endif
