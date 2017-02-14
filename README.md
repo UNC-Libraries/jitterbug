@@ -122,6 +122,7 @@ $ php artisan key:generate
 
 ```bash
 $ cd $JITTERBUG_HOME
+$ gulp
 $ gulp watch
 ```
 

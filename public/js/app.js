@@ -105,7 +105,7 @@ jitterbug = {
             var route = makeAdmin == true ? '/admin/make-admin' 
               : '/admin/remove-admin';
             var data = {};
-            var username = $(this).data('username')
+            var username = $(this).data('username');
             data['username'] = username;
             $.post(route, data, function(data) {
               var message = makeAdmin == true 

@@ -23,7 +23,7 @@ use Jitterbug\Support\SolariumProxy;
 
 class AudioImport extends Import {
 
-  protected $requiredAudioImportKeys = array(); 
+  protected $requiredAudioImportKeys = array();
   protected $audioImportKeys = array();
 
   protected $solrMasters;

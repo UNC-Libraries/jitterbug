@@ -67,13 +67,13 @@
       </div>
       <div class="col-xs-6">
         {{-- Begin subclass fields --}}
-        <div id="audio-form" @if (old('subclassType') !== null && old('subclassType') !== 'AudioItem') style="display: none" @endif>
+        <div id="audio-form" @if (old('subclassType') !== null && old('subclassType') !== 'AudioItem') style="display: none;" @endif>
           @include('items._form-audio')
         </div>
-        <div id="film-form" @if (old('subclassType') !== 'FilmItem') style="display: none" @endif>
+        <div id="film-form" @if (old('subclassType') !== 'FilmItem') style="display: none;" @endif>
           @include('items._form-film')
         </div>
-        <div id="video-form" @if (old('subclassType') !== 'VideoItem') style="display: none" @endif>
+        <div id="video-form" @if (old('subclassType') !== 'VideoItem') style="display: none;" @endif>
           @include('items._form-video')
         </div>
         {{-- End subclass fields --}}
