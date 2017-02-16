@@ -12,6 +12,7 @@ use Jitterbug\Models\AudioMaster;
 use Jitterbug\Models\AudioTransfer;
 use Jitterbug\Models\Cut;
 use Jitterbug\Models\Department;
+use Jitterbug\Models\ImportTransaction;
 use Jitterbug\Models\PlaybackMachine;
 use Jitterbug\Models\PreservationMaster;
 use Jitterbug\Models\Transfer;
@@ -143,6 +144,11 @@ class AudioImport extends Import {
       use (&$masters, &$transfers, &$created, &$updated) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
+
+      $importTransaction = new ImportTransaction;
+      $importTransaction->transactionId = $transactionId;
+      $importTransaction->importType = 'audio';
+      $importTransaction->save();
 
       $playbackMachineCache = array();
       $departmentCache = array();

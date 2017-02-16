@@ -8,6 +8,7 @@ use Log;
 use Uuid;
 
 use Jitterbug\Models\AudioVisualItem;
+use Jitterbug\Models\ImportTransaction;
 use Jitterbug\Models\PlaybackMachine;
 use Jitterbug\Models\PreservationMaster;
 use Jitterbug\Models\Transfer;
@@ -126,6 +127,11 @@ class VideoImport extends Import {
       use (&$items, &$masters, &$transfers, &$created, &$updated) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
+
+      $importTransaction = new ImportTransaction;
+      $importTransaction->transactionId = $transactionId;
+      $importTransaction->importType = 'video';
+      $importTransaction->save();
 
       $playbackMachineCache = array();
       $vendorCache = array();

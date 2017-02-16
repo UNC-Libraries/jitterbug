@@ -9,6 +9,7 @@ use Venturecraft\Revisionable\Revision;
 
 use Jitterbug\Models\Activity;
 use Jitterbug\Models\AudioVisualItem;
+use Jitterbug\Models\ImportTransaction;
 
 /**
  * Analyzes and summarizes a revision transaction and compiles a
@@ -481,19 +482,16 @@ class TransactionDigest
     return true;
   }
 
-  // TODO
+  /**
+   * Determine if this transaction was for importing audio visual items.
+   */
   protected function wasItemsImport()
   {
-    if ($this->action === 'deleted') {
-      return false;
-    }
+    $importTransaction = 
+      ImportTransaction::where('transaction_id', $this->transactionId)
+                       ->where('import_type', 'items')->first();
 
-    // Currently it's impossible to do a retrospective analysis of the
-    // revsions to distinguish between a batch import and a batch create
-    // of items. Will need to create a new table to store the action
-    // at the time of the transaction.
-    
-    return false;
+    return $importTransaction !== null;
   }
 
   /**
@@ -558,15 +556,26 @@ class TransactionDigest
   protected function computeImportSize()
   {
     if ($this->batchSize) return $this->batchSize;
-    // Since this is an import, we can just count the number of unique
-    // preservation master revisions.
-    $ids = array();
-    foreach ($this->revisions as $revision) {
-      if ($revision->revisionable_type === 'PreservationMaster') {
-        $ids[$revision->revisionable_id] = 1;
+    
+    if ($this->importType === 'items') {
+      $totalItems = 0;
+      foreach ($this->objectTypesToIds as $key => $value) {
+        if (ends_with($key, 'item')) {
+          $totalItems = $totalItems + count($value);
+        }
       }
+      $this->batchSize = $totalItems;
+    } else { // This is an audio, film or video import
+      // We can just count the number of unique preservation master revisions.
+      $ids = array();
+      foreach ($this->revisions as $revision) {
+        if ($revision->revisionable_type === 'PreservationMaster') {
+          $ids[$revision->revisionable_id] = 1;
+        }
+      }
+      $this->batchSize = count($ids);
     }
-    $this->batchSize = count($ids);
+
     return $this->batchSize;
   }
 

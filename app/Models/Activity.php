@@ -90,6 +90,8 @@ class Activity extends Model {
       return 'batch of ' . $this->batchSize . ' film records';
     } else if ($this->action === 'imported' && $this->importType === 'video') {
       return 'batch of ' . $this->batchSize . ' video records';
+    } else if ($this->action === 'imported' && $this->importType === 'items') {
+      return 'batch of ' . $this->batchSize . ' audio visual item records';
     }
 
     $objectType = $this->objectType();
@@ -138,10 +140,10 @@ class Activity extends Model {
       // this will be the usual case, e.g. update
       return $types[0] . ' ' . $object;
     } else if (count($types) === 2) {
-      // this will only ever be a batch delete or item import
+      // this will only ever be a batch delete
       return $types[0] . ' and ' . $types[1] . ' ' . $object;
     } else if (count($types) === 3) {
-      // this will only ever be a batch delete or item import
+      // this will only ever be a batch delete
       return $types[0] . ', ' . $types[1] . ', and ' 
         . $types[2] . ' ' . $object;
     }

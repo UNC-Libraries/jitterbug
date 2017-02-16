@@ -13,6 +13,7 @@ use Jitterbug\Models\CallNumberSequence;
 use Jitterbug\Models\Collection;
 use Jitterbug\Models\FilmItem;
 use Jitterbug\Models\Format;
+use Jitterbug\Models\ImportTransaction;
 use Jitterbug\Models\VideoItem;
 use Jitterbug\Util\CsvReader;
 use Jitterbug\Support\SolariumProxy;
@@ -122,6 +123,11 @@ class ItemsImport extends Import {
       use (&$items, &$created) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
+      
+      $importTransaction = new ImportTransaction;
+      $importTransaction->transactionId = $transactionId;
+      $importTransaction->importType = 'items';
+      $importTransaction->save();
 
       foreach($this->data as $row) {
         $subclassType = studly_case($row['Type'] . '_item');
