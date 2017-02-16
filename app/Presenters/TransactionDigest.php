@@ -44,7 +44,7 @@ class TransactionDigest
   /**
    * The classes invovled in the import of video records. We use this
    * array as a way to identify after-the-fact that a transaction was
-   * for the import of video records. 
+   * for the import of video records.
    *
    * @var array
    */
@@ -197,11 +197,15 @@ class TransactionDigest
     if ($this->wasAudioImport()) {
       $this->action = 'imported';
       $this->importType = 'audio';
-      $this->batch = true;
-      $this->batchSize = $this->computeImportSize();
     } else if ($this->wasVideoImport()) {
       $this->action = 'imported';
       $this->importType = 'video';
+    } else if ($this->wasItemsImport()) {
+      $this->action = 'imported';
+      $this->importType = 'items';
+    }
+
+    if ($this->action === 'imported') {
       $this->batch = true;
       $this->batchSize = $this->computeImportSize();
     }
@@ -475,6 +479,21 @@ class TransactionDigest
       }
     }
     return true;
+  }
+
+  // TODO
+  protected function wasItemsImport()
+  {
+    if ($this->action === 'deleted') {
+      return false;
+    }
+
+    // Currently it's impossible to do a retrospective analysis of the
+    // revsions to distinguish between a batch import and a batch create
+    // of items. Will need to create a new table to store the action
+    // at the time of the transaction.
+    
+    return false;
   }
 
   /**

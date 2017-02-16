@@ -506,7 +506,6 @@ Data Panel
 }
 
 #data-panel .dropdown-menu {
-  padding: 0;
   font-size: .9rem;
 }
 
@@ -761,6 +760,38 @@ Data Import
 .import-modal-body {
   margin-bottom: 1rem;
   height: 90px;
+}
+
+// Items Import
+
+#items-import-dialog {
+  width: 400px;
+  transition: width .5s;
+}
+
+#items-import-dialog-content {
+  width: 400px;
+  transition: width .5s;
+}
+
+#items-import-step-2 .modal-body {
+  transition: height .5s;
+  overflow-x: scroll;
+  overflow-y: scroll;
+}
+
+#items-import-step-3 .modal-body {
+  transition: height .5s;
+  overflow-x: scroll;
+  overflow-y: scroll;
+}
+
+#items-upload-data-container {
+  width: 1380px;
+}
+
+#items-import-result-container {
+  width: 1380px;
 }
 
 // Audio Import
@@ -1113,7 +1144,7 @@ Datepicker Plugin
 }
 
 /* Makes the datepicker plugin look nicer */
-.dropdown-menu {
+.datepicker-dropdown {
   padding: 5px 10px;
 }
 

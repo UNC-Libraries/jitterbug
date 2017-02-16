@@ -487,6 +487,12 @@ jitterbug = {
   tableParams: null,
   tableSelection: null,
   queryManager: null,
+  /* 
+   * This is used to determine, when a data import modal is closed,
+   * if the page should be refreshed. It is set to true when a data
+   * import is successfully executed.
+   */
+  dataImported: false,
 
   initItemsNewButton: function() {
     $('#items-new').click(function(event) {
@@ -535,6 +541,29 @@ jitterbug = {
       }
       $('#confirm-batch-delete-modal').modal('toggle');
       $('#batch-delete-form input[name="ids"]').val(tableSelection.selectedIds());
+    });
+
+    $('#items-batch-items-import').click(function(event) {
+      $('#items-import-modal').modal('toggle');
+    });
+  },
+
+  initItemsImportModal: function() {
+    jitterbug.initDataUploadForm('items');
+    jitterbug.initDataImportForm('items');
+
+    // Click handlers for 'start over' links and buttons
+    $('#items-import-modal .reset').click(function(event) {
+      event.preventDefault();
+      jitterbug.resetDataImportModal('items');
+    });
+
+    // Clean up when modal is closed
+    $('#items-import-modal').on('hide.bs.modal', function () {
+      jitterbug.resetDataImportModal('items');
+      if (jitterbug.dataImported) {
+        location.reload();
+      }
     });
   },
 
@@ -800,6 +829,9 @@ jitterbug = {
     // Clean up when modal is closed
     $('#audio-import-modal').on('hide.bs.modal', function () {
       jitterbug.resetDataImportModal('audio');
+      if (jitterbug.dataImported) {
+        location.reload();
+      }
     });
   },
 
@@ -816,6 +848,9 @@ jitterbug = {
     // Clean up when modal is closed
     $('#video-import-modal').on('hide.bs.modal', function () {
       jitterbug.resetDataImportModal('video');
+      if (jitterbug.dataImported) {
+        location.reload();
+      }
     });
   },
 
@@ -824,6 +859,9 @@ jitterbug = {
       var input = $(this),
       fileName = input.val().replace(/\\/g, '/').replace(/.*\//, '');
       input.trigger('fileselect', fileName);
+    });
+    $('#items-import-file').on('fileselect', function(event, fileName) {
+      $('#items-import-filename').val(fileName);
     });
     $('#audio-import-file').on('fileselect', function(event, fileName) {
       $('#audio-import-filename').val(fileName);
@@ -925,7 +963,7 @@ jitterbug = {
         type: 'post',
         data: form,
         processData: false,
-        contentType: false, 
+        contentType: false,
         success: function (data) {
           var status = data['status'];
 
@@ -935,6 +973,7 @@ jitterbug = {
           $('#' + type + '-import-step-3').show();
           if (status=='success') {
             $('#' + type + '-import-step-3 .modal-body').height(50); 
+            jitterbug.dataImported = true;
           }
           // Initialize popovers which contain any errors
           jitterbug.initPopovers();

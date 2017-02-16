@@ -100,6 +100,10 @@ Route::post('items/batch/export-build',
   'ItemsController@batchExportBuild')->name('items.batch.export.build');
 Route::post('items/batch/export-download', 
   'ItemsController@batchExportDownload')->name('items.batch.export.download');
+Route::post('items/batch/audio-import-upload', 
+  'ItemsController@itemsImportUpload')->name('items.batch.items.import.upload');
+Route::post('items/batch/audio-import-execute', 
+  'ItemsController@itemsImportExecute')->name('items.batch.items.import.execute');
 Route::resource('items', 'ItemsController');
 Route::get('cuts/{id}', 'CutsController@get');
 
@@ -144,14 +148,14 @@ Route::post('transfers/batch/export-build',
   'TransfersController@batchExportBuild')->name('transfers.batch.export.build');
 Route::post('transfers/batch/export-download',
   'TransfersController@batchExportDownload')->name('transfers.batch.export.download'); 
-Route::post('transfers/audio-import-upload', 
-	'TransfersController@audioImportUpload')->name('transfers.audio.import.upload');
-Route::post('transfers/audio-import-execute', 
-  'TransfersController@audioImportExecute')->name('transfers.audio.import.execute');
-Route::post('transfers/video-import-upload', 
-  'TransfersController@videoImportUpload')->name('transfers.video.import.upload');
-Route::post('transfers/video-import-execute', 
-  'TransfersController@videoImportExecute')->name('transfers.video.import.execute');
+Route::post('transfers/batch/audio-import-upload', 
+	'TransfersController@audioImportUpload')->name('transfers.batch.audio.import.upload');
+Route::post('transfers/batch/audio-import-execute', 
+  'TransfersController@audioImportExecute')->name('transfers.batch.audio.import.execute');
+Route::post('transfers/batch/video-import-upload', 
+  'TransfersController@videoImportUpload')->name('transfers.batch.video.import.upload');
+Route::post('transfers/batch/video-import-execute', 
+  'TransfersController@videoImportExecute')->name('transfers.batch.video.import.execute');
 Route::resource('transfers', 'TransfersController');
 
 /*

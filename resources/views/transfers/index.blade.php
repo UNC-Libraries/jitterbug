@@ -53,8 +53,8 @@
       </div>
       {!! Form::close() !!}
 
-      @include('transfers._data-import-modal', ['type' => 'audio'])
-      @include('transfers._data-import-modal', ['type' => 'video'])
+      @include('shared._data-import-modal', ['section' => 'transfers', 'type' => 'audio'])
+      @include('shared._data-import-modal', ['section' => 'transfers', 'type' => 'video'])
 
       <div class="search-container">
         <div class="input-group">

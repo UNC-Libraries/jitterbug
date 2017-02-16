@@ -138,10 +138,10 @@ class Activity extends Model {
       // this will be the usual case, e.g. update
       return $types[0] . ' ' . $object;
     } else if (count($types) === 2) {
-      // this will only ever be a batch delete
+      // this will only ever be a batch delete or item import
       return $types[0] . ' and ' . $types[1] . ' ' . $object;
     } else if (count($types) === 3) {
-      // this will only ever be a batch delete
+      // this will only ever be a batch delete or item import
       return $types[0] . ', ' . $types[1] . ', and ' 
         . $types[2] . ' ' . $object;
     }

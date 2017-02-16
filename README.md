@@ -134,6 +134,19 @@ $ cd $JITTERBUG_HOME
 $ php artisan serve
 ```
    In your favorite web browser, go to http://localhost:8000/
+
+## Adding a Field
+1. Determine what object type the field is related to (audio visual items, preservation masters, or transfers).
+2. Determine if the field is specific to a certain media type (i.e. audio only) or if it is common to all media types for the object type.
+3. Create a migration to add the field to the appropriate database table. For example, if the field is common to all types of audio visual items, the field would go on the audio_visual_items table. If the field is specific to film items only, it would go on the film_items table. Do not name the column with a trailing ‘_id’ unless it’s actually a foreign key.
+5. Run the migration.
+6. Add the field to the show page corresponding to the object type (items, masters, or transfers). Ask the project director in what order it should be placed (before or after a certain field).
+7. Add the field to the form partial corresponding to the object and media type (e.g. _form-audio.blade.php).
+8. Add validation rules and messages to the form request class corresponding to the object type.
+9. In the model that corresponds to the object and media type (e.g. AudioTransfer, or just Transfer if the field is common to all transfer types) add an appropriate element to the $revisionFormattedFields array. This array is used by the ‘revisionable’ package to determine how to format field values in revision histories. For more information on the syntax, see [https://github.com/VentureCraft/revisionable](https://github.com/VentureCraft/revisionable).
+10. If the field name contains multiple words, in the model that corresponds to the object and media type (e.g. AudioTransfer, or just Transfer if the field is common to all transfer types) add an appropriate element to the $revisionFormattedFieldNames array. This array is used by the ‘revisionable’ package to determine how to render the field name in revision histories.
+11. In the model that corresponds to the object and media type (e.g. AudioTransfer, or just Transfer if the field is common to all transfer types) add an element to the $fillable array so that Laravel can mass assign field values to the field.
+12. Add the field to the Export class corresponding to the object type so the field will be made available in the user interface for exporting to .csv format.
    
 
 

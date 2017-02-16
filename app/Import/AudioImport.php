@@ -264,8 +264,8 @@ class AudioImport extends Import {
           array_push($masters, $master);
           $created++;
 
-          // Again, there's really no information to import
-          // here, we just need a new id for the Transfer.
+          // There's really no information to import here, 
+          // we just need a new id for the Transfer.
           $audioTransfer = new AudioTransfer;
           $audioTransfer->save();
           $created++;
@@ -310,7 +310,7 @@ class AudioImport extends Import {
   private function belongsToItem($pmId, $callNumber)
   { // TODO can reduce to 1 query by querying preservation masters directly
     $item = AudioVisualItem::where('call_number', $callNumber)->first();
-    if ($item != null) {
+    if ($item !== null) {
       $masters = $item->preservationMasters;
       foreach ($masters as $master) {
         if ($master->id == $pmId) {
@@ -324,7 +324,7 @@ class AudioImport extends Import {
   private function departmentExists($department)
   {
     $department = Department::where('name', $department)->first();
-    if ($department != null) {
+    if ($department !== null) {
       return true;
     }
     return false;
@@ -334,12 +334,6 @@ class AudioImport extends Import {
   {
     $item = AudioVisualItem::where('call_number', $callNumber)->first();
     return $item !== null && $item->subclassType === 'AudioItem';
-  }
-
-  private function isValidDate($date)
-  {
-    $format = 'Y-m-d';
-    return date($date) == date($format, strtotime($date));
   }
 
 }

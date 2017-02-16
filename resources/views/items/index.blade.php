@@ -19,6 +19,8 @@
             <a id="items-batch-mark" class="dropdown-item" href="#">Mark</a>
             <a id="items-batch-unmark" class="dropdown-item" href="#">Unmark</a>
             <a id="items-batch-delete" class="dropdown-item" href="#">Delete</a>
+            <div class="dropdown-divider"></div>
+            <a id="items-batch-items-import" class="dropdown-item" href="#">Items Import</a>
           </div>
         </div>
       </div>
@@ -50,6 +52,8 @@
         </div>
       </div>
       {!! Form::close() !!}
+
+      @include('shared._data-import-modal', ['section' => 'items', 'type' => 'items'])
 
       <div class="search-container">
         <div class="input-group">

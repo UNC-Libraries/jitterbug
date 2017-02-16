@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 
 use Jitterbug\Export\ItemsExport;
+use Jitterbug\Import\Import;
+use Jitterbug\Import\ItemsImport;
 use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\AudioVisualItemType;
 use Jitterbug\Models\AudioVisualItemCollection;
@@ -609,6 +611,63 @@ class ItemsController extends Controller
         'Audio visual items were successfully deleted.'));
 
     return redirect()->route('items.index');
+  }
+
+  /**
+   * Process an uploaded items import file and display its contents.
+   */
+  public function itemsImportUpload(Request $request)
+  {
+    if ($request->ajax()) {
+      $dataFile = $request->file('items-import-file');
+      $fileDir = base_path() . '/storage/app/uploads';
+      $fileName = Auth::user()->username . '-items-import-' . fileTimestamp() 
+        . '.' . $dataFile->getClientOriginalExtension();
+      $dataFile->move($fileDir, $fileName);
+      $filePath = $fileDir . '/' . $fileName;
+      $request->session()->put('items-import-file', $filePath);
+ 
+      $import = new ItemsImport($filePath);
+      $data = $import->data();
+
+      $html = view('items._items-import-upload-data', 
+                                                compact('data'))->render();
+      $response = array('count'=>$import->count(), 'html'=>$html);
+      return response()->json($response);
+    }
+  }
+
+  /**
+   * Validate the contents of an uploaded items import file, then,
+   * if it passes validation, carry out the actual import.
+   */
+  public function itemsImportExecute(Request $request)
+  {
+    if ($request->ajax()) {
+      $filePath = $request->session()->get('items-import-file');
+      if ($filePath === null) {
+        abort(400, 'Import file not found.');
+      }
+
+      $import = new ItemsImport($filePath);
+      $data = $import->data();
+      $messages = $import->validate($data);
+      
+      $response = array();
+      if (Import::hasErrors($messages)) {
+        $html = view('items._items-import-errors', 
+                                compact('data', 'messages'))->render();
+        $response = array('status'=>'error', 'html'=>$html);
+      } else {
+        $result = $import->execute($data);
+        $created = $result['created'];
+        $html = view('items._items-import-success', 
+                              compact('created'))->render();
+        $response = array('status'=>'success', 'html'=>$html);
+      }
+
+      return response()->json($response);
+    }
   }
 
   /**

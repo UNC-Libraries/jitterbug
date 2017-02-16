@@ -33,6 +33,12 @@ abstract class Import {
       $fileName)->first() !== null;
   }
 
+  protected function isValidDate($date)
+  {
+    $format = 'Y-m-d';
+    return date($date) == date($format, strtotime($date));
+  }
+
   public static function hasErrors($messageBags)
   {
     foreach($messageBags as $bag) {

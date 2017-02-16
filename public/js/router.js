@@ -44,8 +44,13 @@ JITTERBUG = {
 
     index: function() {
       jitterbug.initItemsIndex();
+      // TODO Will fix a bug where batch marking, 
+      // then navigating away from the index page,
+      // then using the back button renders the 
+      // page without the new marks
       // jitterbug.renderMarks();
       jitterbug.initTableKeyboardShortcuts();
+      jitterbug.initItemsImportModal();
       jitterbug.initItemsNewButton();
       jitterbug.initItemsBatchMenu();
       jitterbug.initBatchDeleteForm();

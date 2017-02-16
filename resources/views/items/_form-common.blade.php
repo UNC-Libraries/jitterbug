@@ -73,6 +73,19 @@
         </div>
       </div>
       <div class="row">
+        <div class="form-group @if ($errors->has('legacy')) has-danger @endif">
+          <div class="col-xs-4 col-xs-offset-1 detail-label">
+            {!! Form::label('legacy', 'Legacy Id', array('class' => 'form-control-label')) !!}
+          </div>
+          <div class="col-xs-7 detail-value">
+            {!! Form::text('legacy', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. V8M-135')) !!}
+            @if ($errors->has('legacy'))
+              <div class="form-control-label"><small>{!! $errors->first('legacy') !!}</small></div>
+            @endif
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <div class="form-group @if ($errors->has('formatId')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
             {!! Form::label('formatId', 'Format', array('class' => 'form-control-label')) !!}

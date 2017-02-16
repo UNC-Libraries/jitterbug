@@ -4977,7 +4977,6 @@ Data Panel
   margin-bottom: 60px; }
 
 #data-panel .dropdown-menu {
-  padding: 0;
   font-size: .9rem; }
 
 #data-panel .search-container {
@@ -5187,6 +5186,30 @@ Data Import
 .import-modal-body {
   margin-bottom: 1rem;
   height: 90px; }
+
+#items-import-dialog {
+  width: 400px;
+  transition: width .5s; }
+
+#items-import-dialog-content {
+  width: 400px;
+  transition: width .5s; }
+
+#items-import-step-2 .modal-body {
+  transition: height .5s;
+  overflow-x: scroll;
+  overflow-y: scroll; }
+
+#items-import-step-3 .modal-body {
+  transition: height .5s;
+  overflow-x: scroll;
+  overflow-y: scroll; }
+
+#items-upload-data-container {
+  width: 1380px; }
+
+#items-import-result-container {
+  width: 1380px; }
 
 #audio-import-dialog {
   width: 400px;
@@ -5467,7 +5490,7 @@ Datepicker Plugin
   background-color: #4f8d06; }
 
 /* Makes the datepicker plugin look nicer */
-.dropdown-menu {
+.datepicker-dropdown {
   padding: 5px 10px; }
 
 /* need to set year, decade, and century active */

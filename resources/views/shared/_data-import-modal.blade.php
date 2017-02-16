@@ -3,7 +3,7 @@
           <div id="{{$type}}-import-dialog-content" class="modal-content">
 
             <div id="{{$type}}-import-step-1">
-              {!! Form::open(array('route' => "transfers.$type.import.upload", 'files' => true, 'id' => "$type-upload-form")) !!}
+              {!! Form::open(array('route' => "$section.batch.$type.import.upload", 'files' => true, 'id' => "$type-upload-form")) !!}
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -29,7 +29,7 @@
             </div>
 
             <div id="{{$type}}-import-step-2" style="display: none;">
-              {!! Form::open(array('route' => "transfers.$type.import.execute", 'id' => "$type-import-form")) !!}
+              {!! Form::open(array('route' => "$section.batch.$type.import.execute", 'id' => "$type-import-form")) !!}
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
