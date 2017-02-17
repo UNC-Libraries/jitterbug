@@ -514,8 +514,8 @@ class TransfersController extends Controller {
     // If the PM has changed, we need to fetch the new PM and also the
     // related audio visual item, because it might have changed as a
     // result.
-    $newItem;
-    $newMaster;
+    $newItem = null;
+    $newMaster = null;
     if ($pmChanged) {
       $newMaster = 
         PreservationMaster::findOrFail($input['preservationMasterId']);
