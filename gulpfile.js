@@ -22,7 +22,9 @@ elixir(function(mix) {
     mix.scripts([
       'node_modules/js-cookie/src/js.cookie.js',
       'node_modules/bootstrap/dist/js/bootstrap.min.js',
-      'node_modules/colresizable/colResizable-1.6.js',
+      // We're using a very slightly modified version of colResizable, 
+      // so have made a copy of the source to the public directory.
+      'public/js/colResizable-1.6.js',
       'node_modules/devbridge-autocomplete/dist/jquery.autocomplete.js'
     ], 'public/js/vendor.js', './');
 });
