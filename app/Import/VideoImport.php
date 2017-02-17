@@ -8,6 +8,7 @@ use Log;
 use Uuid;
 
 use Jitterbug\Models\AudioVisualItem;
+use Jitterbug\Models\Department;
 use Jitterbug\Models\ImportTransaction;
 use Jitterbug\Models\PlaybackMachine;
 use Jitterbug\Models\PreservationMaster;
@@ -35,7 +36,7 @@ class VideoImport extends Import {
 
   public function __construct($filePath)
   {
-    $this->requiredVideoImportKeys = array('CallNumber', 'FileName');
+    $this->requiredVideoImportKeys = array('CallNumber', 'FileName', 'IART');
     $this->videoImportKeys = array_merge($this->requiredVideoImportKeys, 
       array('Codec', 'Duration', 'FileSize', 'PreservationChecksum', 
         'AspectRatio', 'TransferMachine', 'TimeBaseCorrector', 
@@ -101,6 +102,11 @@ class VideoImport extends Import {
         if ($key==='Sound' 
           && !empty($row[$key]) && !$this->validSound($row[$key])) {
           $bag->add($key, $key . ' must be either "Mono" or "Stereo".');
+        }
+        // Validate department exists
+        if ($key==='IART' 
+          && !empty($row[$key]) && !$this->departmentExists($row[$key])) {
+          $bag->add($key, $key . ' is not a recognized department.');
         }
         // Validate date is formatted correctly
         if ($key==='Date' 
@@ -191,6 +197,20 @@ class VideoImport extends Import {
           }
         }
 
+        // Same as playback machine, we will use a cache for the department
+        $departmentName = $row['IART'];
+        // Check the cache first for this department record
+        $department = 
+          isset($departmentCache[$departmentName]) ? 
+                        $departmentCache[$departmentName] : null;
+        // Not in cache, so get from database and add to cache
+        if ($department === null) {
+          $department =
+            Department::where('name', $departmentName)->first();
+          // Department should never be null as the validation proves it exists
+          $departmentCache[$departmentName] = $department;
+        }
+
         // Create the video master which we need for the PM.
         $videoMaster = new VideoMaster;
         $videoMaster->aspectRatio = 
@@ -209,6 +229,7 @@ class VideoImport extends Import {
           isset($row['Duration']) ? DurationFormat::toSeconds($row['Duration']) : null;
         $master->fileFormat = isset($row['Format']) ? $row['Format'] : null;
         $master->fileCodec = isset($row['Codec']) ? $row['Codec'] : null;
+        $master->departmentId = $department->id;
         $master->subclassType = 'VideoMaster';
         $master->subclassId = $videoMaster->id;
         $master->save();

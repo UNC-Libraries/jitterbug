@@ -31,6 +31,8 @@
 
             <td @if ($bag->has('CaptureEngineer')) data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="{{$bag->first('CaptureEngineer')}}" tabindex="0" class="text-danger" @endif>{!! !empty($data[$index]['CaptureEngineer']) ? $data[$index]['CaptureEngineer'] : ($bag->has('CaptureEngineer') ? '<div class="empty-required">&nbsp;</div>' : '') !!}</td>
 
+            <td @if ($bag->has('IART')) data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="{{$bag->first('IART')}}" tabindex="0" class="text-danger" @endif>{!! !empty($data[$index]['IART']) ? $data[$index]['IART'] : ($bag->has('IART') ? '<div class="empty-required">&nbsp;</div>' : '') !!}</td>
+
             <td @if ($bag->has('Date')) data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="{{$bag->first('Date')}}" tabindex="0" class="text-danger" @endif>{!! !empty($data[$index]['Date']) ? $data[$index]['Date'] : ($bag->has('Date') ? '<div class="empty-required">&nbsp;</div>' : '') !!}</td>
 
             <td @if ($bag->has('Color')) data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="{{$bag->first('Color')}}" tabindex="0" class="text-danger" @endif>{!! !empty($data[$index]['Color']) ? $data[$index]['Color'] : ($bag->has('Color') ? '<div class="empty-required">&nbsp;</div>' : '') !!}</td>

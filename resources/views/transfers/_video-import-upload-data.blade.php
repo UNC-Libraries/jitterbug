@@ -23,6 +23,7 @@
         <td>{{isset($row['TimeBaseCorrector']) ? $row['TimeBaseCorrector'] : ''}}</td>
         <td>{{isset($row['A/Dconverter']) ? $row['A/Dconverter'] : ''}}</td>
         <td>{{isset($row['CaptureEngineer']) ? $row['CaptureEngineer'] : ''}}</td>
+        <td>{{isset($row['IART']) ? $row['IART'] : ''}}</td>
         <td>{{isset($row['Date']) ? $row['Date'] : ''}}</td>
         <td>{{isset($row['Color']) ? $row['Color'] : ''}}</td>
         <td>{{isset($row['Sound']) ? $row['Sound'] : ''}}</td>

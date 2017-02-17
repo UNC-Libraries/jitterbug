@@ -3,6 +3,7 @@
 use Illuminate\Support\MessageBag;
 
 use Jitterbug\Models\AudioVisualItem;
+use Jitterbug\Models\Department;
 use Jitterbug\Models\PreservationMaster;
 
 abstract class Import {
@@ -31,6 +32,15 @@ abstract class Import {
   {
     return PreservationMaster::where('file_name', 
       $fileName)->first() !== null;
+  }
+
+  protected function departmentExists($department)
+  {
+    $department = Department::where('name', $department)->first();
+    if ($department !== null) {
+      return true;
+    }
+    return false;
   }
 
   protected function isValidDate($date)

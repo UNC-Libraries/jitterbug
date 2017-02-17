@@ -327,15 +327,6 @@ class AudioImport extends Import {
     return false;
   }
 
-  private function departmentExists($department)
-  {
-    $department = Department::where('name', $department)->first();
-    if ($department !== null) {
-      return true;
-    }
-    return false;
-  }
-
   private function isAudio($callNumber)
   {
     $item = AudioVisualItem::where('call_number', $callNumber)->first();
