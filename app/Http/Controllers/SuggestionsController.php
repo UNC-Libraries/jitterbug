@@ -22,7 +22,7 @@ use Illuminate\Http\Request;
  * 2. Add a route to routes.php in the 'suggestions' group that
  * references the controller method that was defined in step 1.
  *
- * 3. Go the form where you want the suggestions to appear, and give
+ * 3. Go to the form where you want the suggestions to appear, and give
  * the input element a css id name. e.g. #speed, or #recording-location,
  * etc.
  *

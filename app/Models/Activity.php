@@ -128,7 +128,7 @@ class Activity extends Model {
 
   /**
    * Format an array of media types along with the object name. The array
-   * will only ever be more than a single element in length if the user
+   * will only ever be more than a single element in length unless the user
    * batch deletes objects of multiple types.
    */
   private function formatMediaTypesAndObject($types, $object)
