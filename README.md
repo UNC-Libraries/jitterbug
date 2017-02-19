@@ -2,9 +2,9 @@
 A Laravel / MySQL database management application for the Southern Folklife Collection in the Wilson Special Collections Library of UNC-Chapel Hill. Funded by an Andrew W. Mellon Foundation grant, "Extending the Reach of Southern Audiovisual Sources."
 
 ## Requirements
-* [MySQL](https://dev.mysql.com/downloads/mysql/) >= 5.1 (developed using [Homebrew](http://brew.sh/) 5.7.10)
+* [MySQL](https://dev.mysql.com/downloads/mysql/) >= 5.1 (developed using the [Homebrew](http://brew.sh/) version, 5.7.10)
 * [MySQL Connector/J](https://dev.mysql.com/downloads/connector/j/) (JDBC driver for MySQL, needed for initial Solr indexing)
-* PHP 5.6 (developed using Homebrew 5.6.20)
+* PHP 5.6 (developed using the Homebrew version, 5.6.20)
 * [Composer](https://getcomposer.org/)
 	* Add composer to your path in .bashrc (export PATH=$PATH:/usr/local/bin/composer:~/.composer/vendor/bin)
 * [npm](https://www.npmjs.com/) (developed using 2.15.1)
