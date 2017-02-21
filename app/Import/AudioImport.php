@@ -297,6 +297,7 @@ class AudioImport extends Import {
           $cut->preservationMasterId = $master->id;
           $cut->transferId = $transfer->id;
           $cut->side = $row['Side'];
+          $cut->cutNumber = 1;
           $cut->save();
           $created++;
 
