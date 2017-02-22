@@ -135,7 +135,9 @@ $ php artisan serve
 ```
    In your favorite web browser, go to http://localhost:8000/
 
-## Adding a Field
+---
+
+## Adding an Items, Masters, or Transfers Field
 1. Determine what object type the field is related to (audio visual items, preservation masters, or transfers).
 2. Determine if the field is specific to a certain media type (i.e. audio only) or if it is common to all media types for the object type.
 3. Create a migration to add the field to the appropriate database table. For example, if the field is common to all types of audio visual items, the field would go on the audio_visual_items table. If the field is specific to film items only, it would go on the film_items table. Do not name the column with a trailing ‘_id’ unless it’s actually a foreign key.
@@ -147,6 +149,19 @@ $ php artisan serve
 10. If the field name contains multiple words, in the model that corresponds to the object and media type (e.g. AudioTransfer, or just Transfer if the field is common to all transfer types) add an appropriate element to the $revisionFormattedFieldNames array. This array is used by the ‘revisionable’ package to determine how to render the field name in revision histories.
 11. In the model that corresponds to the object and media type (e.g. AudioTransfer, or just Transfer if the field is common to all transfer types) add an element to the $fillable array so that Laravel can mass assign field values to the field.
 12. Add the field to the Export class corresponding to the object type so the field will be made available in the user interface for exporting to .csv format.
+
+## Adding a New Suggested Form Field
+1. Define a controller method in the SuggestionsController class for the field using plural naming conventions. You only need to copy and paste one of the exsiting methods and change the parameters for the ```getAutocompleteSuggestions()``` method call to correspnod to the model you want the suggestions for, and then the field name.
+2. Add a route to routes.php in the 'suggestions' group that references the controller method that was defined in step 1.
+3. Go to the form where you want the suggestions to appear, and give the input element a css id name. e.g. #speed, or #recording-location, etc.
+4. In app.js, add a jQuery selector using the id you created in step 3, then call autocomplete. The serviceUrl should correspond to the route you created in step 2. For example:
+```javascript
+$('#speed').autocomplete({
+  serviceUrl: '/suggestions/speeds',
+  deferRequestBy: 100
+});
+```
+
    
 
 
