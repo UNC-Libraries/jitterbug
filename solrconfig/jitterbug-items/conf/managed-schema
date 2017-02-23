@@ -113,7 +113,7 @@
    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
 
    <!-- Jitterbug specific fields -->
-   <field name="callNumber" type="string" indexed="true" stored="true" required="false" />
+   <field name="callNumber" type="text_general" indexed="true" stored="true" required="false" />
    <field name="title" type="text_general" indexed="true" stored="true" required="false" />
    <field name="containerNote" type="text_general" indexed="true" stored="true" required="false" />
    <field name="recordingLocation" type="text_general" indexed="true" stored="true" required="false" />
@@ -123,7 +123,7 @@
    <field name="formatId" type="string" indexed="true" stored="true" required="false" />
    <field name="formatName" type="text_general" indexed="true" stored="true" required="false" />
    <field name="typeId" type="string" indexed="true" stored="true" required="false" />
-   <field name="typeName" type="string" indexed="true" stored="true" required="false" />
+   <field name="typeName" type="text_general" indexed="true" stored="true" required="false" />
    <field name="createdAt" type="date" indexed="false" stored="true" required="false" />
    <field name="updatedAt" type="date" indexed="false" stored="true" required="false" />
    <field name="cutIds" type="string" indexed="false" stored="true" required="false" multiValued="true" />

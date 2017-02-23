@@ -113,14 +113,14 @@
    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
 
    <!-- Jitterbug specific fields -->
-   <field name="callNumber" type="string" indexed="true" stored="true" required="false" />
+   <field name="callNumber" type="text_general" indexed="true" stored="true" required="false" />
    <field name="transferDate" type="string" indexed="true" stored="true" required="false" />
    <field name="preservationMasterId" type="string" indexed="true" stored="true" required="false" />
    <field name="vendorId" type="string" indexed="true" stored="true" required="false" />
    <field name="vendorName" type="text_general" indexed="true" stored="true" required="false" />
    <field name="engineerId" type="string" indexed="true" stored="true" required="false" />
-   <field name="engineerFirstName" type="string" indexed="true" stored="true" required="false" />
-   <field name="engineerLastName" type="string" indexed="true" stored="true" required="false" />
+   <field name="engineerFirstName" type="text_general" indexed="true" stored="true" required="false" />
+   <field name="engineerLastName" type="text_general" indexed="true" stored="true" required="false" />
    <field name="collectionId" type="string" indexed="true" stored="true" required="false" />
    <field name="collectionName" type="text_general" indexed="true" stored="true" required="false" />
    <field name="formatId" type="string" indexed="true" stored="true" required="false" />
@@ -129,7 +129,7 @@
    <field name="cutPerformerComposer" type="text_general" indexed="true" stored="true" required="false" />
    <field name="cutTitle" type="text_general" indexed="true" stored="true" required="false" />
    <field name="typeId" type="string" indexed="true" stored="true" required="false" />
-   <field name="typeName" type="string" indexed="true" stored="true" required="false" />
+   <field name="typeName" type="text_general" indexed="true" stored="true" required="false" />
    <field name="createdAt" type="date" indexed="false" stored="true" required="false" />
    <field name="updatedAt" type="date" indexed="false" stored="true" required="false" />
 
