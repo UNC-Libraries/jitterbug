@@ -137,6 +137,14 @@ $ php artisan serve
 
 ---
 
+## Revisionable
+
+A key feature of Jitterbug is how it maintains a detailed paper trail of all changes to the four object types (items, masters, cuts, and transfers). Jitterbug leverages [a *fork*](https://gitlab.lib.unc.edu/cappdev/revisionable) of a 3rd party package for Laravel, called Revisionable, that hooks into the lifecycle of Eloquent models to maintain revision histories. Revisionable preserves the fields that are modified, what their old value was, and what their new value is. Revisionable writes to a single table, “revisions” which implements [Laravel poloymorphic relations](https://laravel.com/docs/5.2/eloquent-relationships#polymorphic-relations). By merely adding a single trait to your model class, revision histories can be tracked and will be saved to the revisions table.
+
+Forking Revisionable was necessary to add several important features needed for Jitterbug. Using Revisionable out of the box, there is no way to determine which revisions happened in the same atomic database transaction, critical information for retrospective analyses of revision histories, such as those performed by the code that generates the Dashboard activity stream. The revision timestamp cannot be used as a unique identifier because long running transactions will be made up of revisions with different timestamps. To implement this feature, a ['transaction_id' field was added](https://gitlab.lib.unc.edu/cappdev/revisionable/commit/753a3e959205375ba51933f92f3bd0afd738a0b4) to the revisions table, and code was added to persist the transaction id when creating, updating, or deleting models. The transaction id itself is a UUID4 generated key that is passed down from application code to Revisionable via a database connection variable. Look in any of the controller classes and you will see this code just after the beginning of a transaction block: `DB::statement("set @transaction_id = '$transactionId';");`. That code is Jitterbug setting the connection connection variable which is picked up by Revisionable when revisions are saved.
+
+In addition to the trasaction_id mechanics, several other small features were added to Revisionable. An IP address field was added to track user locations. Support for soft deleted foreign keys was added (used when displaying revision histories). And storing the fully qualified namespace of models was changed to storing only the base class name. 
+
 ## Adding an Items, Masters, or Transfers Field
 1. Determine what object type the field is related to (audio visual items, preservation masters, or transfers).
 2. Determine if the field is specific to a certain media type (i.e. audio only) or if it is common to all media types for the object type.
@@ -151,6 +159,8 @@ $ php artisan serve
 12. Add the field to the Export class corresponding to the object type so the field will be made available in the user interface for exporting to .csv format.
 
 ## Adding a New Suggested Form Field
+Jitterbug uses the [devbridge autocomplete plugin](https://github.com/devbridge/jQuery-Autocomplete) for jQuery to implement suggested form field values. In order to add a new suggested form field value, do the following:
+
 1. Define a controller method in the SuggestionsController class for the field using plural naming conventions. You only need to copy and paste one of the exsiting methods and change the parameters for the ```getAutocompleteSuggestions()``` method call to correspnod to the model you want the suggestions for, and then the field name.
 2. Add a route to routes.php in the 'suggestions' group that references the controller method that was defined in step 1.
 3. Go to the form where you want the suggestions to appear, and give the input element a css id name. e.g. #speed, or #recording-location, etc.
