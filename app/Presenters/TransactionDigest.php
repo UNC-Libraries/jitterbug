@@ -469,9 +469,7 @@ class TransactionDigest
   }
 
   /**
-   * Determine if this transaction was for importing audio records,
-   * which is done by checking the revisionable types of the revisions
-   * for the presence of preservation masters, transfers and cuts.
+   * Determine if this transaction was for importing audio records.
    *
    * @return boolean
    */
@@ -485,9 +483,7 @@ class TransactionDigest
   }
 
   /**
-   * Determine if this transaction was for importing video records,
-   * which is done by checking the revisionable types of the revisions
-   * for the presence of video masters and video transfers.
+   * Determine if this transaction was for importing video records.
    *
    * @return boolean
    */

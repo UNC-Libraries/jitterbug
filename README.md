@@ -16,7 +16,7 @@ A Laravel / MySQL database management application for the Southern Folklife Coll
 ## Installation
 1. If you are not a member of the Jitterbug LDAP group, submit a ticket and request access. You must be a member of the group in order to log into Jitterbug.
 2. Get a fresh Jitterbug MySQL production database dump from a UNC library sysadmin.
-3. Because the dump will contain views, you will need to remove the SQL security definers in the dump file. Using sed (on Mac OSX):
+3. Because the dump will contain views, you will need to remove the SQL security definers in the dump file. Using sed (on Mac OS X):
 ```bash
 $ sed -i '' 's/DEFINER=[^*]*\*/\*/g' jitterbug-20170206.sql
 ```
@@ -84,7 +84,7 @@ $ $SOLR_HOME/bin/solr create -c jitterbug-masters
 $ $SOLR_HOME/bin/solr create -c jitterbug-transfers
 ```
 
-13. Use the Solr web app to import data from MySQL to index each Jitterbug core. This will take about 25 minutes for all cores.
+13. Use the Solr web app to import data from MySQL to index each Jitterbug core. This will take about 25 minutes for all cores. The import configuration (including the SQL Solr will use for querying MySQL) for each core can be found in the respective conf directory, in the solr-data-config.xml file.
 	1. Point your favorite web browser to http://localhost:8983/solr.
 	2. Use the Solr "Core Selector" menu to select the jitterbug-items core.
 	3. Click the Dataimport button under the Core Selector menu.
@@ -138,8 +138,7 @@ $ php artisan serve
 ---
 
 ## Revisionable
-
-A key feature of Jitterbug is how it maintains a detailed paper trail of all changes to the four object types (items, masters, cuts, and transfers). Jitterbug leverages [a *fork*](https://gitlab.lib.unc.edu/cappdev/revisionable) of a 3rd party package for Laravel, called Revisionable, that hooks into the lifecycle of Eloquent models to maintain revision histories. Revisionable preserves the fields that are modified, what their old value was, and what their new value is. Revisionable writes to a single table, “revisions” which implements [Laravel poloymorphic relations](https://laravel.com/docs/5.2/eloquent-relationships#polymorphic-relations). By merely adding a single trait to your model class, revision histories can be tracked and will be saved to the revisions table.
+A key feature of Jitterbug is how it maintains a detailed paper trail of all changes to the four object types (items, masters, cuts, and transfers). Jitterbug leverages [a fork](https://gitlab.lib.unc.edu/cappdev/revisionable) of a 3rd party package for Laravel, called Revisionable, that hooks into the lifecycle of Eloquent models to maintain revision histories. Revisionable preserves the fields that are modified, what their old value was, and what their new value is. Revisionable writes to a single table, “revisions” which implements [Laravel poloymorphic relations](https://laravel.com/docs/5.2/eloquent-relationships#polymorphic-relations). By merely adding a single trait to your model class, revision histories can be tracked and will be saved to the revisions table.
 
 Forking Revisionable was necessary to add several important features needed for Jitterbug. Using Revisionable out of the box, there is no way to determine which revisions happened in the same atomic database transaction, critical information for retrospective analyses of revision histories, such as those performed by the code that generates the Dashboard activity stream. The revision timestamp cannot be used as a unique identifier because long running transactions will be made up of revisions with different timestamps. To implement this feature, a ['transaction_id' field was added](https://gitlab.lib.unc.edu/cappdev/revisionable/commit/753a3e959205375ba51933f92f3bd0afd738a0b4) to the revisions table, and code was added to persist the transaction id when creating, updating, or deleting models. The transaction id itself is a UUID4 generated key that is passed down from application code to Revisionable via a database connection variable. Look in any of the controller classes and you will see this code just after the beginning of a transaction block: `DB::statement("set @transaction_id = '$transactionId';");`. That code is Jitterbug setting the connection variable which is picked up by Revisionable when revisions are saved.
 
