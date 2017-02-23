@@ -93,6 +93,16 @@ class VideoImport extends Import {
           $bag->add($key, 
             $key . ' must adhere to the following format: HH:MM:SS.mmm.');
         }
+        // Validate playback machine exists
+        if ($key==='TransferMachine' 
+          && !empty($row[$key]) && !$this->playbackMachineExists($row[$key])) {
+          $bag->add($key, $key . ' is not a recognized playback machine.');
+        }
+        // Validate vendor exists
+        if ($key==='CaptureEngineer' 
+          && !empty($row[$key]) && !$this->vendorExists($row[$key])) {
+          $bag->add($key, $key . ' is not a recognized vendor.');
+        }
         // Validate file size is an integer
         if ($key==='FileSize' 
           && !empty($row[$key]) && !ctype_digit($row[$key])) {
@@ -163,13 +173,6 @@ class VideoImport extends Import {
               $playbackMachineCache[$playbackMachineName] = $playbackMachine;
             }
           }
-          // Not in cache and not in the database, so create a new record
-          if ($playbackMachine === null) {
-            $playbackMachine = new PlaybackMachine;
-            $playbackMachine->name = $playbackMachineName;
-            $playbackMachine->save();
-            $created++;
-          }
         }
 
         // Same as playback machine, we will use a cache for the vendor
@@ -186,14 +189,6 @@ class VideoImport extends Import {
             if ($vendor) {
               $vendorCache[$vendorName] = $vendor;
             }
-          }
-
-          // Not in cache and not in the database, so create a new record
-          if ($vendor === null) {
-            $vendor = new Vendor;
-            $vendor->name = $vendorName;
-            $vendor->save();
-            $created++;
           }
         }
 

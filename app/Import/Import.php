@@ -4,7 +4,9 @@ use Illuminate\Support\MessageBag;
 
 use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\Department;
+use Jitterbug\Models\PlaybackMachine;
 use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\Vendor;
 
 abstract class Import {
 
@@ -36,11 +38,18 @@ abstract class Import {
 
   protected function departmentExists($department)
   {
-    $department = Department::where('name', $department)->first();
-    if ($department !== null) {
-      return true;
-    }
-    return false;
+    return Department::where('name', $department)->first() !== null;
+  }
+
+  protected function playbackMachineExists($playbackMachine)
+  {
+    return PlaybackMachine::where('name', 
+      $playbackMachine)->first() !== null;
+  }
+
+  protected function vendorExists($vendor)
+  {
+    return Vendor::where('name', $vendor)->first() !== null;
   }
 
   protected function isValidDate($date)

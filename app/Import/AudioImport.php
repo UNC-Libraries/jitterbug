@@ -71,6 +71,11 @@ class AudioImport extends Import {
           && !empty($row[$key]) && !$this->isAudio($row[$key])) {
           $bag->add($key, $key . ' is not an audio item.');
         }
+        // Validate playback machine exists
+        if ($key==='PlaybackMachine' 
+          && !empty($row[$key]) && !$this->playbackMachineExists($row[$key])) {
+          $bag->add($key, $key . ' is not a recognized playback machine.');
+        }
         // Validate originator reference (preservation_master.file_name) 
         // doesn't exist
         if ($key==='OriginatorReference' 
@@ -172,13 +177,6 @@ class AudioImport extends Import {
             $playbackMachineCache[$playbackMachineName] = $playbackMachine;
           }
         }
-        // Not in cache and not in the database, so create a new record
-        if ($playbackMachine === null) {
-          $playbackMachine = new PlaybackMachine;
-          $playbackMachine->name = $playbackMachineName;
-          $playbackMachine->save();
-          $created++;
-        }
 
         // Same as playback machine, we will use a cache for the department
         $departmentName = $row['IART'];
@@ -190,8 +188,9 @@ class AudioImport extends Import {
         if ($department === null) {
           $department =
             Department::where('name', $departmentName)->first();
-          // Department should never be null as the validation proves it exists
-          $departmentCache[$departmentName] = $department;
+          if ($department) {
+            $departmentCache[$departmentName] = $department;
+          }
         }
         
         // Original PM is optional, so the column may not be present in the file
