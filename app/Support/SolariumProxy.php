@@ -9,6 +9,11 @@ use Jitterbug\Models\Cut;
 use Jitterbug\Models\PreservationMaster;
 use Jitterbug\Models\Transfer;
 
+/**
+ * The intermediary between Jitterbug and Solr. All interactions
+ * with Solr should go through this class, which itself uses
+ * Solarium to query and update Solr.
+ */
 class SolariumProxy {
 
   protected $client;
