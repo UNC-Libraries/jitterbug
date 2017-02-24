@@ -1,0 +1,3 @@
+"CallNumber","Side","OriginatorReference","PlaybackMachine","FileName","FileSize","Format","CodecID","Channels","SampleRate","BitRate","BitPerSample","Duration","UnsupportedChunks","bext","INFO","XMP","aXML","iXML","MD5Stored","MD5Generated","Errors","Information"
+"FT-20511/513",1,"20511_FT513_1_PM","Otari MTR-12","/Volumes/Untitled/Current Files/20511_FT513_1_PM.wav",1532362782,"Wave",1,2,96000,4608000,24,"00:44:20.350",,"Version 1","No","No","No","No",,,,
+"FT-20511/513",2,"20511_FT513_2_PM","Otari MTR-12","/Volumes/Untitled/Current Files/20511_FT513_1_PM.wav",1532362783,"Wave",1,2,96000,4608000,24,"00:44:20.350",,,,,,,,,,

@@ -1,0 +1,115 @@
+"Type","Title","Collection","ContainerNote","AccessionNumber","LegacyID","FormatID","RecLocation","ItemYear","ItemDate","Size","Base","LengthInFeet"
+"audio","Test open reel 1",20028,"Test open reel 1 blah blah hi Andrew",103021,,31,"New York, NY",1963,,"5""","Polyester",
+"audio","Test open reel 2",20028,"Test open reel 2 blah blah hi Andrew",103021,,31,"New York, NY",1963,,"5""","Polyester",
+"audio","Test audiocassette 1",20027,"Test audiocassette 1",104000,,28,"St. Louis, MO",,"1982-11-12","Audiocassette",,
+"audio","Test audiocassette 2",20027,"Test audiocassette 2",104000,,28,"St. Louis, MO",,"1982-11-12","Audiocassette",,
+"audio","Test DAT 1",20483,"Test DAT 1 blah blah blah hi Andrew",103022,"61130-A",36,"New York, NY",,"1936-06-08","DAT",,
+"audio","Test DAT 2",20483,"Test DAT 2 blah blah blah hi Andrew",103022,"61130-A",36,"New York, NY",,"1936-06-08","DAT",,
+"film","Test film 1 16mm",20511,"Test film 1 16mm blah blah blah hi Andrew",105666,51,2,"Chicago, IL",1968,,,"Acetate",150
+"film","Test film 2 16mm",20511,"Test film 2 16mm blah blah blah hi Andrew",105666,52,2,"Chicago, IL",1968,,,"Acetate",200
+"film","Test film 3 16mm",20511,"Test film 3 16mm blah blah blah hi Andrew",105666,53,2,"Chicago, IL",1968,,,"Acetate",300
+"film","Test film 4 35mm",20511,"Test film 4 35mm blah blah blah hi Andrew",105666,54,1,"Chicago, IL",1934,,,"Acetate",500
+"film","Test film 5 35mm",20511,"Test film 5 35mm blah blah blah hi Andrew",105666,55,1,"Chicago, IL",1934,,,"Acetate",150
+"film","Test film 6 8mm",20511,"Test film 6 8mm blah blah blah hi Andrew",105666,56,4,"Chicago, IL",1978,,,"Polyester",200
+"film","Test film 7 8mm",20511,"Test film 7 8mm blah blah blah hi Andrew",105666,57,4,"Chicago, IL",1978,,,"Polyester",300
+"video","Test video 1 ",20028,"Test video 1 Betacam blah blah blah hi Andrew",106500,,7,"Chapel Hill, NC",,"1995-04-11",,,
+"video","Test video 2 ",20028,"Test video 2 Betacam blah blah blah hi Andrew",106500,,7,"Chapel Hill, NC",,"1995-04-11",,,
+"video","Test video 3 ",20427,"Test video 3 Hi8 blah blah blah hi Andrew",107500,,17,"Durham, NC",,"1996-07-03",,,
+"video","Test video 4 ",20427,"Test video 4 U-Matic blah blah blah hi Andrew",107500,,10,"Durham, NC",,"1996-07-03",,,
+"audio","Test open reel 3",20315,"Test open reel 3 blah blah hi Andrew",103000,,33,"Nashville, TN",,"1955-03-07","10.5""","Polyester",
+"audio","Test open reel 4",20315,"Test open reel 4 blah blah hi Andrew",103000,,33,"Nashville, TN",,"1955-03-06","10.5""","Polyester",
+"audio","Test open reel 5",20315,"Test open reel 5 blah blah hi Andrew",103000,,33,"Nashville, TN",,"1955-03-05","10.5""","Polyester",
+"audio","Test open reel 6",20315,"Test open reel 6 blah blah hi Andrew",103000,,34,"Nashville, TN",,"1955-03-04","7""","Polyester",
+"audio","Test open reel 7",20315,"Test open reel 7 blah blah hi Andrew",103000,,34,"Nashville, TN",,"1955-03-03","7""","Polyester",
+"audio","Test open reel 8",20315,"Test open reel 8 blah blah hi Andrew",103000,,32,"Nashville, TN",,"1955-03-02","7""","Polyester",
+"audio","Test open reel 9",20315,"Test open reel 9 blah blah hi Andrew",103000,,32,"Nashville, TN",,"1955-03-01","5""","Polyester",
+"audio","Test open reel 10",20315,"Test open reel 10 blah blah hi Andrew",103000,,32,"Nashville, TN",,"1955-03-08","5""","Polyester",
+"audio","Test ADAT 1",20009,"Test ADAT 1 blah blah hi Andrew",104000,,35,"Chapel Hill, NC",1983,,"ADAT",,
+"audio","Test ADAT 2",20009,"Test ADAT 2 blah blah hi Andrew",104000,,35,"Chapel Hill, NC",1984,,"ADAT",,
+"audio","Test ADAT 3",20009,"Test ADAT 3 blah blah hi Andrew",104000,,35,"Chapel Hill, NC",1985,,"ADAT",,
+"audio","Test MiniDisc 1",20473,"Test MiniDisc 1 blah blah hi Andrew",105000,,51,"Durham, NC",,"1993-04-12","MiniDisc",,
+"audio","Test MiniDisc 2",20473,"Test MiniDisc 2 blah blah hi Andrew",105000,,51,"Durham, NC",,"1993-04-12","MiniDisc",,
+"audio","Test MiniDisc 3",20473,"Test MiniDisc 3 blah blah hi Andrew",105000,,51,"Durham, NC",,"1993-04-12","MiniDisc",,
+"audio","Test MiniDisc 4",20473,"Test MiniDisc 4 blah blah hi Andrew",105000,,51,"Durham, NC",,"1993-04-12","MiniDisc",,
+"audio","Test MiniDisc 5",20473,"Test MiniDisc 5 blah blah hi Andrew",105000,,51,"Durham, NC",,"1993-04-12","MiniDisc",,
+"audio","Test Transcription Disc 1",20400,"Test TD 1 blah blah hi Andrew",106000,,46,"Nashville, TN",1940,,"16""",,
+"audio","Test Transcription Disc 2",20400,"Test TD 2 blah blah hi Andrew",106000,,46,"Nashville, TN",1941,,"16""",,
+"audio","Test Transcription Disc 3",20400,"Test TD 3 blah blah hi Andrew",106000,,46,"Nashville, TN",1942,,"16""",,
+"audio","Test Transcription Disc 4",20400,"Test TD 4 blah blah hi Andrew",106000,,46,"Nashville, TN",1943,,"16""",,
+"audio","Test Transcription Disc 5",20400,"Test TD 5 blah blah hi Andrew",106000,,46,"Nashville, TN",1944,,"16""",,
+"audio","Test Transcription Disc 6",20400,"Test TD 6 blah blah hi Andrew",106000,,46,"Nashville, TN",1945,,"16""",,
+"audio","Test Transcription Disc 7",20400,"Test TD 7 blah blah hi Andrew",106000,,46,"Nashville, TN",1946,,"16""",,
+"audio","Test Transcription Disc 8",20400,"Test TD 8 blah blah hi Andrew",106000,,46,"Nashville, TN",1947,,"16""",,
+"audio","Test Transcription Disc 9",20400,"Test TD 9 blah blah hi Andrew",106000,,46,"Nashville, TN",1948,,"16""",,
+"audio","Test Transcription Disc 10",20400,"Test TD 10 blah blah hi Andrew",106000,,46,"Nashville, TN",1949,,"16""",,
+"audio","Test U-Matic (Audio Tape) 1",20006,"Test U-Matic (Audio Tape) 1 blah blah hi Andrew",107000,,39,"Asheville, NC",,"1977-05-29","U-Matic",,
+"audio","Test U-Matic (Audio Tape) 2",20006,"Test U-Matic (Audio Tape) 2 blah blah hi Andrew",107000,,39,"Asheville, NC",,"1977-05-28","U-Matic",,
+"audio","Test U-Matic (Audio Tape) 3",20006,"Test U-Matic (Audio Tape) 3 blah blah hi Andrew",107000,,39,"Asheville, NC",,"1977-05-27","U-Matic",,
+"audio","Test U-Matic (Audio Tape) 4",20006,"Test U-Matic (Audio Tape) 4 blah blah hi Andrew",107000,,39,"Asheville, NC",,"1977-05-26","U-Matic",,
+"audio","Test U-Matic (Audio Tape) 5",20006,"Test U-Matic (Audio Tape) 5 blah blah hi Andrew",107000,,39,"Asheville, NC",,"1977-05-25","U-Matic",,
+"audio","Test U-Matic (Audio Tape) 6",20006,"Test U-Matic (Audio Tape) 6 blah blah hi Andrew",107000,,39,"Asheville, NC",,"1977-05-24","U-Matic",,
+"audio","Test U-Matic (Audio Tape) 7",20006,"Test U-Matic (Audio Tape) 7 blah blah hi Andrew",107000,,39,"Asheville, NC",,"1977-05-23","U-Matic",,
+"audio","Test U-Matic (Audio Tape) 8",20006,"Test U-Matic (Audio Tape) 8 blah blah hi Andrew",107000,,39,"Asheville, NC",,"1977-05-22","U-Matic",,
+"audio","Test U-Matic (Audio Tape) 9",20006,"Test U-Matic (Audio Tape) 9 blah blah hi Andrew",107000,,39,"Asheville, NC",,"1977-05-21","U-Matic",,
+"audio","Test U-Matic (Audio Tape) 10",20006,"Test U-Matic (Audio Tape) 10 blah blah hi Andrew",107000,,39,"Asheville, NC",,"1977-05-20","U-Matic",,
+"audio","Test VHS (PCM-F1) 1",20009,"Test VHS (PCM-F1) 1 blah blah hi Andrew",107500,,41,"Raleigh, NC",,"1990-06-15","VHS (PCM-F1)",,
+"audio","Test VHS (PCM-F1) 2",20009,"Test VHS (PCM-F1) 2 blah blah hi Andrew",107500,,41,"Raleigh, NC",,"1990-06-14","VHS (PCM-F1)",,
+"audio","Test VHS (PCM-F1) 3",20009,"Test VHS (PCM-F1) 3 blah blah hi Andrew",107500,,41,"Raleigh, NC",,"1990-06-13","VHS (PCM-F1)",,
+"audio","Test VHS (PCM-F1) 4",20009,"Test VHS (PCM-F1) 4 blah blah hi Andrew",107500,,41,"Raleigh, NC",,"1990-06-12","VHS (PCM-F1)",,
+"audio","Test VHS (PCM-F1) 5",20009,"Test VHS (PCM-F1) 5 blah blah hi Andrew",107500,,41,"Raleigh, NC",,"1990-06-11","VHS (PCM-F1)",,
+"audio","Test VHS (PCM-F1) 6",20009,"Test VHS (PCM-F1) 6 blah blah hi Andrew",107500,,41,"Raleigh, NC",,"1990-06-10","VHS (PCM-F1)",,
+"audio","Test VHS (PCM-F1) 7",20509,"Test VHS (PCM-F1) 7 blah blah hi Andrew",108000,,41,"Raleigh, NC",,"1990-06-09","VHS (PCM-F1)",,
+"audio","Test VHS (PCM-F1) 8",20509,"Test VHS (PCM-F1) 8 blah blah hi Andrew",108000,,41,"Raleigh, NC",,"1990-06-08","VHS (PCM-F1)",,
+"audio","Test VHS (PCM-F1) 9",20509,"Test VHS (PCM-F1) 9 blah blah hi Andrew",108000,,41,"Raleigh, NC",,"1990-06-07","VHS (PCM-F1)",,
+"audio","Test VHS (PCM-F1) 10",20509,"Test VHS (PCM-F1) 10 blah blah hi Andrew",108000,,41,"Raleigh, NC",,"1990-06-06","VHS (PCM-F1)",,
+"video","Test video 5",20509,"Test video 5 HDCAM blah blah hi Andrew",109000,,13,"Carrboro, NC",1995,,,,
+"video","Test video 6",20509,"Test video 6 HDCAM blah blah hi Andrew",109000,,13,"Carrboro, NC",1996,,,,
+"video","Test video 7",20509,"Test video 7 HDCAM blah blah hi Andrew",109000,,13,"Carrboro, NC",1997,,,,
+"video","Test video 8",20509,"Test video 8 HDCAM blah blah hi Andrew",109000,,13,"Carrboro, NC",1998,,,,
+"video","Test video 9",20509,"Test video 9 HDCAM blah blah hi Andrew",109000,,13,"Carrboro, NC",1999,,,,
+"video","Test video 10",20509,"Test video 10 HDCAM blah blah hi Andrew",109000,,13,"Carrboro, NC",2000,,,,
+"video","Test video 11",20509,"Test video 11 HDCAM blah blah hi Andrew",109000,,13,"Carrboro, NC",2001,,,,
+"video","Test video 12",20509,"Test video 12 Betamax blah blah hi Andrew",109000,,9,"St. Louis, MO",,"1995-08-14",,,
+"video","Test video 13",20509,"Test video 13 Betamax blah blah hi Andrew",109000,,9,"St. Louis, MO",,"1995-08-13",,,
+"video","Test video 14",20509,"Test video 14 Betamax blah blah hi Andrew",109000,,9,"St. Louis, MO",,"1995-08-12",,,
+"video","Test video 15",20509,"Test video 15 Betamax blah blah hi Andrew",109000,,9,"St. Louis, MO",,"1995-08-11",,,
+"video","Test video 16",20006,"Test video 16 Betamax blah blah hi Andrew",109500,,9,"St. Louis, MO",,"1995-08-10",,,
+"video","Test video 17",20006,"Test video 17 Betamax blah blah hi Andrew",109500,,9,"St. Louis, MO",,"1995-08-09",,,
+"video","Test video 18",20006,"Test video 18 VHS blah blah hi Andrew",109500,,12,"Boston, MA",,"1993-04-12",,,
+"video","Test video 19",20006,"Test video 19 VHS blah blah hi Andrew",109500,,12,"Boston, MA",,"1993-04-11",,,
+"video","Test video 20",20006,"Test video 20 VHS blah blah hi Andrew",109500,,12,"Boston, MA",,"1993-04-10",,,
+"video","Test video 21",20006,"Test video 21 VHS blah blah hi Andrew",109500,,12,"Boston, MA",,"1993-04-09",,,
+"video","Test video 22",20006,"Test video 22 VHS blah blah hi Andrew",109500,,12,"Boston, MA",,"1993-04-08",,,
+"video","Test video 23",20006,"Test video 23 VHS blah blah hi Andrew",109500,,12,"Boston, MA",,"1993-04-07",,,
+"video","Test video 24",20509,"Test video 24 MiniDV blah blah hi Andrew",109600,,15,"Carrboro, NC",,"2001-11-15",,,
+"video","Test video 25",20509,"Test video 25 MiniDV blah blah hi Andrew",109600,,15,"Carrboro, NC",,"2001-11-14",,,
+"video","Test video 26",20509,"Test video 26 MiniDV blah blah hi Andrew",109600,,15,"Carrboro, NC",,"2001-11-13",,,
+"video","Test video 27",20509,"Test video 27 MiniDV blah blah hi Andrew",109600,,15,"Raleigh, NC",,"2001-11-12",,,
+"video","Test video 28",20509,"Test video 28 MiniDV blah blah hi Andrew",109600,,15,"Raleigh, NC",,"2001-11-11",,,
+"video","Test video 29",20509,"Test video 29 MiniDV blah blah hi Andrew",109600,,15,"Chapel Hill, NC",,"2001-11-10",,,
+"video","Test video 30",20509,"Test video 30 MiniDV blah blah hi Andrew",109600,,15,"Chapel Hill, NC",,"2001-11-09",,,
+"film","Test film 8",20025,"Test film 8 16mm blah blah blah hi Andrew",106666,,2,"Richmond, VA",1973,,,"Acetate",400
+"film","Test film 9",20025,"Test film 9 16mm blah blah blah hi Andrew",106666,,2,"Chapel Hill, NC",1974,,,"Acetate",400
+"film","Test film 10",20025,"Test film 10 16mm blah blah blah hi Andrew",106666,,2,"New York, NY",1975,,,"Acetate",400
+"film","Test film 11",20025,"Test film 11 16mm blah blah blah hi Andrew",106666,,2,"Richmond, VA",1976,,,"Acetate",400
+"film","Test film 12",20025,"Test film 12 16mm blah blah blah hi Andrew",106666,,2,"Chapel Hill, NC",1977,,,"Acetate",400
+"film","Test film 13",20025,"Test film 13 16mm blah blah blah hi Andrew",106666,,2,"Richmond, VA",1978,,,"Polyester",800
+"film","Test film 14",20025,"Test film 14 16mm blah blah blah hi Andrew",106666,,2,"Chapel Hill, NC",1979,,,"Polyester",800
+"film","Test film 15",20025,"Test film 15 16mm blah blah blah hi Andrew",106666,,2,"New York, NY",1980,,,"Polyester",800
+"film","Test film 16",20025,"Test film 16 16mm blah blah blah hi Andrew",106666,,2,"Richmond, VA",1981,,,"Polyester",800
+"film","Test film 17",20410,"Test film 17 Super 8mm blah blah blah hi Andrew",106667,,3,"Raleigh, NC",,"1975-03-30",,"Polyester",200
+"film","Test film 18",20410,"Test film 18 Super 8mm blah blah blah hi Andrew",106667,,3,"Raleigh, NC",,"1975-03-29",,"Polyester",200
+"film","Test film 19",20410,"Test film 19 Super 8mm blah blah blah hi Andrew",106667,,3,"Chapel Hill, NC",,"1975-03-28",,"Polyester",50
+"film","Test film 20",20410,"Test film 20 Super 8mm blah blah blah hi Andrew",106667,,3,"Chapel Hill, NC",,"1975-03-27",,"Polyester",50
+"film","Test film 21",20410,"Test film 21 Super 8mm blah blah blah hi Andrew",106667,,3,"Richmond, VA",,"1975-03-26",,"Polyester",50
+"film","Test film 22",20410,"Test film 22 Super 8mm blah blah blah hi Andrew",106667,,3,"Chapel Hill, NC",,"1975-03-25",,"Polyester",50
+"film","Test film 23",20410,"Test film 23 Super 8mm blah blah blah hi Andrew",106667,,3,"New York, NY",,"1975-03-24",,"Polyester",100
+"film","Test film 24",20410,"Test film 24 Super 8mm blah blah blah hi Andrew",106667,,3,"Richmond, VA",,"1975-03-23",,"Polyester",100
+"film","Test film 25",20410,"Test film 25 Super 8mm blah blah blah hi Andrew",106667,,3,"Chapel Hill, NC",,"1975-03-22",,"Polyester",100
+"film","Test film 26",20511,"Test film 26 35mm blah blah blah hi Andrew",106668,,1,"Los Angeles, CA",,"1975-04-30",,"Polyester",100
+"film","Test film 27",20511,"Test film 27 35mm blah blah blah hi Andrew",106668,,1,"Los Angeles, CA",,"1975-04-29",,"Polyester",100
+"film","Test film 28",20511,"Test film 28 35mm blah blah blah hi Andrew",106668,,1,"Los Angeles, CA",,"1975-04-28",,"Polyester",100
+"film","Test film 29",20511,"Test film 29 35mm blah blah blah hi Andrew",106668,,1,"Los Angeles, CA",,"1975-04-27",,"Polyester",100
+"film","Test film 30",20511,"Test film 30 35mm blah blah blah hi Andrew",106668,,1,"Los Angeles, CA",,"1975-04-26",,"Polyester",100
+"film","Test film 31",20511,"Test film 31 35mm blah blah blah hi Andrew",106668,,1,"Los Angeles, CA",,"1975-04-25",,"Polyester",100
+"film","Test film 32",20511,"Test film 32 35mm blah blah blah hi Andrew",106668,,1,"Los Angeles, CA",,"1975-04-24",,"Polyester",100
