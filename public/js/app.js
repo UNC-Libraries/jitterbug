@@ -812,7 +812,12 @@ jitterbug = {
       jitterbug.tableSelection.clear();
       jitterbug.tableParams.setPage(1);
       var submitButtons = $(this).find('button[type="submit"]');
+      var deleteCommand = $(this).find('button[type="submit"][clicked="true"]').val();
+      $(this).find('input[name="deleteCommand"]').val(deleteCommand);
       submitButtons.attr('disabled', true);
+    });
+    $('#batch-delete-form button[type="submit"]').click(function() {
+        $(this).attr('clicked', 'true');
     });
   },
 

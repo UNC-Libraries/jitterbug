@@ -45,6 +45,7 @@
             </div>
             <div class="modal-footer">
               {!! Form::hidden('ids') !!}
+              {!! Form::hidden('deleteCommand') !!}
               <button name="deleteCommand" value="all" type="submit" class="btn btn-sm btn-danger" style="outline: none;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Delete Transfers</button>
             </div>
 
