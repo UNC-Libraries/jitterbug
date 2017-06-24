@@ -149,7 +149,7 @@ The Recenty Activity module in the Dashboard uses transactional information in t
 
 The scheduled job in turn calls ```Junebug\Presenters\ActivityStream->generate()``` which generates the stream if new transactions have occurred. The ActivityStream class instantiates ```Junebug\Presenters\TransactionDigest``` classes to summarize the revisions in the transaction and create individual ```Junebug\Models\Activity``` instances for display in the Dashboard.
 
-Although Jitterbug relies almost exclusively on revision records to determine what action took place during a transaction, Jitterbug does look at another table, import_transactions, to determine what kind of import the transaction relates to. The records in this table are created when an import transaction begins. Some import types proved impossible to distinguish from batch creates, so an import_transactions table was added to record at the time of import what kind of import it was and the related transaction id.
+Although Jitterbug relies almost exclusively on revision records to determine what action took place during a transaction, Jitterbug does look at another table, import_transactions, to determine what kind of import the transaction relates to, if it is an import. The records in this table are created when an import transaction begins. Some import types proved impossible to distinguish from batch creates, so an import_transactions table was added to record at the time of import what kind of import it was and the related transaction id.
 
 ## Adding an Items, Masters, or Transfers Field
 1. Determine what object type the field is related to (audio visual items, preservation masters, or transfers).

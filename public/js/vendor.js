@@ -333,8 +333,14 @@ DATA_TOGGLE:'[data-toggle="tab"], [data-toggle="pill"]',DROPDOWN_TOGGLE:".dropdo
 	 * Function that places each grip in the correct position according to the current table layout	 
 	 * @param {jQuery ref} t - table object
 	 */
-	var syncGrips = function (t){	
-		//t.gc.width(t.w);			//the grip's container width is updated				
+	var syncGrips = function (t){
+	    // THE FOLLOWING LINE WAS COMMENTED OUT BY ANDREW SHIRK for use in Jitterbug because it was causing
+	    // rendering problems when the parent div of the table was styled as 'table-cell' and the parent
+	    // div could have a variable/changing width. Setting an explicit fixed width for the JCLRgrips div,
+	    // which is what the next line does, was preventing the parent div from shrinking when the window
+	    // was dragged to a smaller size by the user. In this context at least, the next line is not needed.
+
+		// t.gc.width(t.w);			//the grip's container width is updated				
 		for(var i=0; i<t.ln; i++){	//for each column
 			var c = t.c[i]; 			
 			t.g[i].css({			//height and position of the grip is updated according to the table layout

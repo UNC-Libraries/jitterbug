@@ -516,12 +516,27 @@ Data Panel
 
 #data-panel .search-container .form-control {
   border: 1px solid $gray-light;
+  border-right: none;
 }
 
-#data-panel .search-container .input-group-addon {
+#data-panel .search-container .search-addon {
   background-color: #fff;
   border: 1px solid $gray-light;
   border-right: 0;
+}
+
+#data-panel .search-container .clear-addon {
+  background-color: #fff;
+  border: 1px solid $gray-light;
+  border-left: none;
+}
+
+#data-panel .search-container a:link, #data-panel .search-container a:visited, #data-panel .search-container a:active {
+  color: #b3b3b3;
+}
+
+#data-panel .search-container a:hover {
+  color: #8c8c8c;
 }
 
 #data-panel .data-footer .record-count {

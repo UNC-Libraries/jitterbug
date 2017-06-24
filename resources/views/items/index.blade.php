@@ -58,8 +58,9 @@
 
       <div class="search-container">
         <div class="input-group">
-          <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
+          <span class="input-group-addon search-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
           <input id="search" class="form-control form-control-sm" type="text" placeholder="Search" autocomplete="off">
+          <span class="input-group-addon clear-addon"><a href="#" class="clear-search"><i class="fa fa-times-circle" aria-hidden="true" style="display: none;"></i></a></span>
         </div>
       </div>
     </div>

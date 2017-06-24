@@ -808,6 +808,9 @@ jitterbug = {
   },
 
   initBatchDeleteForm: function() {
+    $('#batch-delete-form button[type="submit"]').click(function() {
+        $(this).attr('clicked', 'true');
+    });
     $('#batch-delete-form').submit( function(event) {
       jitterbug.tableSelection.clear();
       jitterbug.tableParams.setPage(1);
@@ -815,9 +818,6 @@ jitterbug = {
       var deleteCommand = $(this).find('button[type="submit"][clicked="true"]').val();
       $(this).find('input[name="deleteCommand"]').val(deleteCommand);
       submitButtons.attr('disabled', true);
-    });
-    $('#batch-delete-form button[type="submit"]').click(function() {
-        $(this).attr('clicked', 'true');
     });
   },
 
@@ -1574,6 +1574,22 @@ jitterbug = {
 
     init = function() {
       $(selector).val(value);
+      // Display the clear search link if the field has contents
+      if (value != '') {
+        $(selector).next().find('i').show();
+      }
+
+      // Hook up the clear search link
+      var clearLink = $(selector).next().find('a');
+      clearLink.click(function(event) {
+        event.preventDefault();
+        $(selector).next().find('i').hide();
+        $(selector).val('');
+        $(selector).focus();
+        store();
+
+        $.publish('searchSubmitted');
+      });
 
       // Handle "enter" keypress on search input
       $(selector).keypress(function(event) {
@@ -1585,15 +1601,24 @@ jitterbug = {
           $.publish('searchSubmitted');
         }
       });
-      // Handle "delete" key on search input
+
       $(selector).keyup(function(event){
+        // Handle "delete" key on search input
         if (deleteKey(event)) {
           if (searchTermsRemoved()) {
             store();
-
             $.publish('searchSubmitted');
           }
           lastValue = elementValue();
+
+          if (elementValue() == '') {
+            $(selector).next().find('i').hide();
+          }
+        // Handle typing in regular characters
+        } else {
+          if (elementValue() != '') {
+            $(selector).next().find('i').show();
+          }
         }
       }); 
     },
