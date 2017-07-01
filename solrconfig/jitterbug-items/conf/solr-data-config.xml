@@ -11,17 +11,26 @@
                 items.title AS title,
                 items.container_note AS container_note,
                 items.recording_location AS recording_location,
+                items.accession_number as accession_number,
                 items.item_date AS item_date,
                 items.collection_id AS collection_id,
                 items.format_id AS format_id,
                 items.created_at AS created_at,
                 items.updated_at AS updated_at,
+                film_items.element AS film_element,
+                video_items.element AS video_element,
                 types.id AS type_id,
                 collections.name AS collection_name,
                 formats.name AS format_name,
                 TRIM(TRAILING 'Item' FROM items.subclass_type) AS type_name
             FROM
                 audio_visual_items AS items
+            LEFT JOIN film_items ON
+                items.subclass_id = film_items.id AND
+                items.subclass_type = 'FilmItem'
+            LEFT JOIN video_items ON
+                items.subclass_id = video_items.id AND
+                items.subclass_type = 'VideoItem'
             LEFT JOIN collections ON
                 items.collection_id = collections.id
             LEFT JOIN formats ON
@@ -38,6 +47,7 @@
             <field column="title" name="title" />
             <field column="container_note" name="containerNote" />
             <field column="recording_location" name="recordingLocation" />
+            <field column="accession_number" name="accessionNumber" />            
             <field column="date" name="itemDate" />
             <field column="collection_id" name="collectionId" />
             <field column="collection_name" name="collectionName" />
@@ -45,6 +55,8 @@
             <field column="format_name" name="formatName" />
             <field column="type_id" name="typeId" />
             <field column="type_name" name="typeName" />
+            <field column="film_element" name="filmElement" />
+            <field column="video_element" name="videoElement" />
             <field column="created_at" name="createdAt" />
             <field column="updated_at" name="updatedAt" />
 

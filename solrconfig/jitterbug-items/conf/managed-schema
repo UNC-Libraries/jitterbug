@@ -118,12 +118,15 @@
    <field name="containerNote" type="text_general" indexed="true" stored="true" required="false" />
    <field name="recordingLocation" type="text_general" indexed="true" stored="true" required="false" />
    <field name="itemDate" type="date" indexed="true" stored="true" required="false" />
+   <field name="accessionNumber" type="string" indexed="true" stored="true" required="false" />
    <field name="collectionId" type="string" indexed="true" stored="true" required="false" />
    <field name="collectionName" type="text_general" indexed="true" stored="true" required="false" />
    <field name="formatId" type="string" indexed="true" stored="true" required="false" />
    <field name="formatName" type="text_general" indexed="true" stored="true" required="false" />
    <field name="typeId" type="string" indexed="true" stored="true" required="false" />
    <field name="typeName" type="text_general" indexed="true" stored="true" required="false" />
+   <field name="filmElement" type="text_general" indexed="true" stored="true" required="false" />
+   <field name="videoElement" type="text_general" indexed="true" stored="true" required="false" />
    <field name="createdAt" type="date" indexed="false" stored="true" required="false" />
    <field name="updatedAt" type="date" indexed="false" stored="true" required="false" />
    <field name="cutIds" type="string" indexed="false" stored="true" required="false" multiValued="true" />

@@ -53,7 +53,7 @@ class SolariumProxy {
       // Query fields with boost values
       $dismax->setQueryFields('callNumber^5 title^4 collectionName^3 ' .
       'collectionId containerNote^2 cutTitles cutPerformerComposers ' .
-      'formatName');
+      'formatName accessionNumber filmElement videoElement');
 
     } else if ($this->core==='jitterbug-masters') {
       $dismax->setQueryFields('id callNumber^5 fileName^4 collectionName^3 ' .
@@ -137,10 +137,17 @@ class SolariumProxy {
       $item->format ? $item->format->id : null, null, 'set');
     $doc->setField('formatName',
       $item->format ? $item->format->name : null, null, 'set');
+    $doc->setField('accessionNumber', $item->accessionNumber, null, 'set');
     $doc->setField('typeName', $item->type, null, 'set');
     $doc->setField('typeId', $item->typeId, null, 'set');
     $doc->setField('createdAt', $item->createdAt, null, 'set');
     $doc->setField('updatedAt', $item->updatedAt, null, 'set');
+
+    if ($item->subclassType === 'FilmItem') {
+      $doc->setField('filmElement', $item->subclass->element, null, 'set');
+    } else if ($item->subclassType === 'VideoItem') {
+      $doc->setField('videoElement', $item->subclass->element, null, 'set');
+    }
 
     $this->appendCutsForItem($item->callNumber, $doc);
 
