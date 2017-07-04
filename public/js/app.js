@@ -28,10 +28,10 @@ jitterbug = {
   },
 
   initSessionTimeout: function() {
-    var oneHour = 3600000;
+    var threeHours = 10800000;
     window.setTimeout(function() {
       window.location.href='/logout'
-    }, oneHour);
+    }, threeHours);
   },
 
   initGreeting: function() {
