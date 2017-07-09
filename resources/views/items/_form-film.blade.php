@@ -46,10 +46,10 @@
           <div class="col-xs-7 detail-value">
             @if (!$item->batch() || $item->subclass->soundType !== '<mixed>')
               {!! Form::select('subclass[soundType]',
-                array('' => 'Select a type', 'Magnetic' => 'Magnetic', 'Optical' => 'Optical', 'Silent' => 'Silent'), $item->subclass == null ? null : $item->subclass->soundType, array('class' => 'form-control form-control-sm')) !!}
+                array('' => 'Select a type', 'Magnetic' => 'Magnetic', 'Optical' => 'Optical', 'Magnetic; Optical' => 'Magnetic; Optical', 'Silent' => 'Silent'), $item->subclass == null ? null : $item->subclass->soundType, array('class' => 'form-control form-control-sm')) !!}
             @else
               {!! Form::select('subclass[soundType]',
-                array('' => 'Select a type', '<mixed>' => '<mixed>', 'Magnetic' => 'Magnetic', 'Optical' => 'Optical', 'Silent' => 'Silent'), $item->subclass == null ? null : $item->subclass->soundType, array('class' => 'form-control form-control-sm')) !!}
+                array('' => 'Select a type', '<mixed>' => '<mixed>', 'Magnetic' => 'Magnetic','Optical' => 'Optical', 'Magnetic; Optical' => 'Magnetic; Optical', 'Silent' => 'Silent'), $item->subclass == null ? null : $item->subclass->soundType, array('class' => 'form-control form-control-sm')) !!}
             @endif
           </div>
         </div>
