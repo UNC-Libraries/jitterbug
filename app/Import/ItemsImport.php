@@ -34,7 +34,8 @@ class ItemsImport extends Import {
       'AccessionNumber', 'FormatID');
     $this->itemsImportKeys = array_merge($this->requiredItemsImportKeys, 
       array('ContainerNote', 'LegacyID', 'RecLocation', 'ItemYear', 
-        'ItemDate', 'Size', 'Base', 'LengthInFeet'));
+        'ItemDate', 'Size', 'Element', 'Base', 'Color', 'SoundType', 
+        'LengthInFeet', 'ContentDescription'));
 
     $this->solrItems = new SolariumProxy('jitterbug-items');
 
@@ -93,12 +94,41 @@ class ItemsImport extends Import {
           $bag->add($key, $key . ' is not a valid field for the specified ' 
             . 'item type.');
         }
+        // Validate record type is film or video since this field is set
+        if ($key==='Element' 
+          && !empty($row[$key]) && !empty($row['Type']) 
+          && $this->isValidType($row['Type']) && $row['Type'] === 'audio') {
+          $bag->add($key, $key . ' is not a valid field for the specified ' 
+            . 'item type.');
+        }
         // Validate record type is audio or film since this field is set
         if ($key==='Base' 
           && !empty($row[$key]) && !empty($row['Type']) 
-          && $this->isValidType($row['Type']) && ($row['Type'] === 'video')) {
+          && $this->isValidType($row['Type']) && $row['Type'] === 'video') {
           $bag->add($key, $key . ' is not a valid field for the specified ' 
             . 'item type.');
+        }
+        // Validate record type is film or video since this field is set
+        if ($key==='Color' 
+          && !empty($row[$key]) && !empty($row['Type']) 
+          && $this->isValidType($row['Type']) && $row['Type'] === 'audio') {
+          $bag->add($key, $key . ' is not a valid field for the specified ' 
+            . 'item type.');
+        }
+        // Validate record type is film since this field is set
+        if ($key==='SoundType' 
+          && !empty($row[$key]) && !empty($row['Type']) 
+          && $this->isValidType($row['Type']) && ($row['Type'] === 'audio' || 
+                                                  $row['Type'] === 'video')) {
+          $bag->add($key, $key . ' is not a valid field for the specified ' 
+            . 'item type.');
+        }
+        // Validate sound type is "Magnetic", "Optical", "Magnetic; Optical", or "Silent"
+        if ($key==='SoundType' 
+          && !empty($row[$key]) && !empty($row['Type']) 
+          && $this->isValidType($row['Type']) && $row['Type'] === 'film' 
+          && !$this->validSoundType($row[$key])) {
+          $bag->add($key, $key . ' must be "Magnetic", "Optical", "Magnetic; Optical", or "Silent".');
         }
         // Validate record type is film since this field is set
         if ($key==='LengthInFeet' 
@@ -138,16 +168,25 @@ class ItemsImport extends Import {
         $subclass->callNumber = $sequence->callNumber();
         // Optional subclass fields
         $size = isset($row['Size']) ? $row['Size'] : null;
+        $element = isset($row['Element']) ? $row['Element'] : null;
         $base = isset($row['Base']) ? $row['Base'] : null;
+        $color = isset($row['Color']) ? $row['Color'] : null;
+        $soundType = isset($row['SoundType']) ? $row['SoundType'] : null;
         $length = isset($row['LengthInFeet']) ? $row['LengthInFeet'] : null;
+        $subclass->contentDescription = 
+          isset($row['ContentDescription']) ? $row['ContentDescription'] : null;
         if ($subclassType === 'AudioItem') {
           $subclass->base = $base;
           $subclass->size = $size;
         } else if ($subclassType === 'FilmItem') {
+          $subclass->element = $element;
           $subclass->base = $base;
+          $subclass->color = $color;
+          $subclass->soundType = $soundType;
           $subclass->lengthInFeet = $length;
         } else if ($subclassType === 'VideoItem') {
-          // No fields to set here yet
+          $subclass->element = $element;
+          $subclass->color = $color;
         }
         $subclass->save();
 
@@ -205,6 +244,12 @@ class ItemsImport extends Import {
       return true;
     }
     return false;
+  }
+
+  private function validSoundType($soundType)
+  {
+    return $soundType === 'Optical' || $soundType === 'Silent' || 
+          $soundType === 'Magnetic' || $soundType === 'Magnetic; Optical';
   }
 
   private function isValidType($type)

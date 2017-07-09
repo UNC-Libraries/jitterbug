@@ -23,8 +23,12 @@
         <td>{{isset($row['ItemYear']) ? $row['ItemYear'] : ''}}</td>
         <td>{{isset($row['ItemDate']) ? $row['ItemDate'] : ''}}</td>
         <td>{{isset($row['Size']) ? $row['Size'] : ''}}</td>
+        <td>{{isset($row['Element']) ? $row['Element'] : ''}}</td>
         <td>{{isset($row['Base']) ? $row['Base'] : ''}}</td>
+        <td>{{isset($row['Color']) ? $row['Color'] : ''}}</td>
+        <td>{{isset($row['SoundType']) ? $row['SoundType'] : ''}}</td>
         <td>{{isset($row['LengthInFeet']) ? $row['LengthInFeet'] : ''}}</td>
+        <td>{{isset($row['ContentDescription']) ? $row['ContentDescription'] : ''}}</td>
       </tr>
       <?php $index++; ?>
       @endforeach 
