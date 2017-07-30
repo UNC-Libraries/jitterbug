@@ -219,7 +219,7 @@ return [
                 */
 
                 'use_ssl' => false,
-                'use_tls' => false,
+                'use_tls' => true,
 
             ],
 
