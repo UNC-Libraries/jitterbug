@@ -120,6 +120,19 @@
         </div>
       </div>
       <div class="row">
+        <div class="form-group @if ($errors->has('subclass.condition')) has-danger @endif">
+          <div class="col-xs-4 detail-label">
+            {!! Form::label('subclass[condition]', 'Condition', array('class' => 'form-control-label')) !!}
+          </div>
+          <div class="col-xs-7 detail-value">
+            {!! Form::text('subclass[condition]', null, array('class' => 'form-control form-control-sm')) !!}
+            @if ($errors->has('subclass.condition'))
+              <div class="form-control-label"><small>{!! $errors->first('subclass.condition') !!}</small></div>
+            @endif
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <div class="form-group @if ($errors->has('subclass.filmContentDescription')) has-danger @endif">
           <div class="col-xs-4 detail-label">
             {!! Form::label('subclass[filmContentDescription]', 'Content Description', array('class' => 'form-control-label')) !!}

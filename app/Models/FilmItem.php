@@ -25,6 +25,7 @@ class FilmItem extends Model {
     'edge_code' => 'isEmpty:nothing|%s',
     'shrinkage_percent' => 'isEmpty:nothing|%s',
     'can_number' => 'isEmpty:nothing|%s',
+    'condition' => 'isEmpty:nothing|%s',
     'content_description' => 'isEmpty:nothing|%s',
   );
 
@@ -41,7 +42,7 @@ class FilmItem extends Model {
 
   protected $fillable = array('callNumber','filmElement','filmBase', 
     'filmColor', 'soundType','lengthInFeet','filmStock','edgeCode',
-        'shrinkagePercent','canNumber','filmContentDescription');
+        'shrinkagePercent','canNumber', 'condition', 'filmContentDescription');
 
   public function superclass()
   {

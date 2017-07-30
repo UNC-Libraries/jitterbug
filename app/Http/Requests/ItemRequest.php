@@ -62,6 +62,7 @@ class ItemRequest extends Request {
       $this->addRuleIfNotMixed($rules, 'subclass.edgeCode', 'max:255');
       $this->addRuleIfNotMixed($rules, 'subclass.shrinkagePercent', 'numeric|digits_between:0,6');
       $this->addRuleIfNotMixed($rules, 'subclass.canNumber','integer|digits_between:0,6');
+      $this->addRuleIfNotMixed($rules, 'subclass.condition', 'max:255');
       $this->addRuleIfNotMixed($rules, 'subclass.filmContentDescription','max:1000');
     // Add rules for video items
     } else if ($subclassType === 'VideoItem') {
@@ -113,6 +114,7 @@ class ItemRequest extends Request {
       'subclass.shrinkagePercent.digits_between' => 'The shrinkage percent field must be less than :max digits.',
       'subclass.canNumber.integer' => 'The can number field must be an integer.',
       'subclass.canNumber.digits_between' => 'The can number field must less than :max digits.',
+      'subclass.condition.max' => 'The condition field must be less than :max characters.',
       'subclass.filmContentDescription.max' => 'The content description must be less then :max characters.',
 
       // Messages for video item fields

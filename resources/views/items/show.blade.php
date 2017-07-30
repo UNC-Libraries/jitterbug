@@ -301,6 +301,16 @@
         </div>
       </div>
       @endif
+      @if ($item->subclass->condition)
+      <div class="row">
+        <div class="col-xs-4 detail-label">
+          Condition
+        </div>
+        <div class="col-xs-8 detail-value">
+          {{$item->subclass->condition}}
+        </div>
+      </div>
+      @endif
       @if ($item->subclass->contentDescription)
       <div class="row">
         <div class="col-xs-4 detail-label">

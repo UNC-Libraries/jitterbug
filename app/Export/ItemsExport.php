@@ -49,6 +49,7 @@ class ItemsExport extends Export {
     'Edge Code' => 'edge_code',
     'Shrinkage Percent' => 'shrinkage_percent',
     'Can Number' => 'can_number',
+    'Condition' => 'condition',
     'Content Description' => 'content_description',
   );
 
