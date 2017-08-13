@@ -164,6 +164,6 @@ Route::resource('transfers', 'TransfersController');
 |--------------------------------------------------------------------------
 */
 
-Route::get('login', 'Auth\AuthController@showLoginForm')->name('loginForm');
-Route::post('login', 'Auth\AuthController@login')->name('login');
-Route::get('logout', 'Auth\AuthController@logout')->name('logout');
+Route::get('login', 'Auth\LoginController@showLoginForm')->name('loginForm');
+Route::post('login', 'Auth\LoginController@login')->name('login');
+Route::get('logout', 'Auth\LoginController@logout')->name('logout');

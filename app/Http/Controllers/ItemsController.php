@@ -265,7 +265,6 @@ class ItemsController extends Controller
         'your selection.'));
       return redirect()->route('items.index');
     }
-    
     $first = AudioVisualItem::find($itemIds[0]);
     $subclassType = $first->subclassType;
 

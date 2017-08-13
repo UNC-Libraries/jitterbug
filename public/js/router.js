@@ -9,7 +9,7 @@ JITTERBUG = {
     }
   },
 
-  auth: {
+  login: {
     showLoginForm: function() {
       jitterbug.initGreeting();
     }

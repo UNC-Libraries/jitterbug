@@ -63,9 +63,9 @@ class MastersExport extends Export {
     // We only want to return fields that are relevant to the specific
     // record types. For example, if all the records are AudioItems, we
     // don't want to return fields that are specific to film.
-    $types = collect(DB::table('preservation_masters')
+    $types = DB::table('preservation_masters')
       ->select(DB::raw('TRIM(TRAILING "Master" FROM subclass_type) AS type'))
-      ->whereIn('id', $this->ids)->distinct()->get())->pluck('type');
+      ->whereIn('id', $this->ids)->distinct()->get()->pluck('type');
     $fields = array();
     // Fields at index 0 are intended to be rendered on the left in the
     // export dialog, and those at index 1 on the right.

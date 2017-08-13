@@ -42,7 +42,7 @@ class DashboardController extends Controller
     $marksUsers = User::has('marks')->get();
     $currentUser = Auth::user();
     $hasCurrentUser = 
-      $marksUsers->contains(function ($key, $user) use ($currentUser) {
+      $marksUsers->contains(function ($user, $key) use ($currentUser) {
       return $user->id === $currentUser->id;
     });
     if (!$hasCurrentUser) $marksUsers->prepend($currentUser);

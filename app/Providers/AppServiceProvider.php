@@ -1,6 +1,7 @@
 <?php namespace Jitterbug\Providers;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 use Jitterbug\Models\AudioVisualItem;
@@ -26,6 +27,9 @@ class AppServiceProvider extends ServiceProvider {
   */
   public function boot()
   {
+    // For legacy support of Jitterbug, keep resource parameters plural
+    Route::singularResourceParameters(false);
+
     // Make the controller and action names available to views
     app('view')->composer('*', function ($view) {
       $route = app('request')->route();

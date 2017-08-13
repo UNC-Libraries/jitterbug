@@ -87,7 +87,7 @@ class ActivityStream
     $results = DB::table('activities')->select('transaction_id')
                                       ->orderBy('id')
                                       ->limit(1)
-                                      ->get();
+                                      ->get()->all();
     if (count($results)===0) return true;
 
     $lastActivityTransactionId = $results[0]->transaction_id;
