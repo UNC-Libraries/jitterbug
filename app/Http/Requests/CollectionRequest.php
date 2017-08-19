@@ -32,9 +32,9 @@ class CollectionRequest extends Request {
     }
     return [
       'id' => $required . 'integer|unique:collections,id,' . 
-         $this->route()->getParameter('collections'),
+         $this->route()->parameter('collections'),
       'name' => $required . 'min:3|max:255|unique:collections,name,' .
-         $this->route()->getParameter('collections'),
+         $this->route()->parameter('collections'),
     ];
   }
 

@@ -27,7 +27,7 @@ class ReproductionMachineRequest extends Request {
   {
     return [
       'name' => 'required|min:2|max:255|unique:reproduction_machines,name,' .
-         $this->route()->getParameter('reproduction-machines'),
+         $this->route()->parameter('reproduction-machines'),
     ];
   }
 

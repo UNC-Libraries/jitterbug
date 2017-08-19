@@ -27,7 +27,7 @@ class ProjectRequest extends Request {
   {
     return [
       'name' => 'required|min:2|max:255|unique:projects,name,' .
-         $this->route()->getParameter('projects'),
+         $this->route()->parameter('projects'),
     ];
   }
 

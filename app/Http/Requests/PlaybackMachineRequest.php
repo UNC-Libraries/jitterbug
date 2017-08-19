@@ -27,7 +27,7 @@ class PlaybackMachineRequest extends Request {
   {
     return [
       'name' => 'required|min:2|max:255|unique:playback_machines,name,' .
-         $this->route()->getParameter('playback-machines'),
+         $this->route()->parameter('playback-machines'),
     ];
   }
 

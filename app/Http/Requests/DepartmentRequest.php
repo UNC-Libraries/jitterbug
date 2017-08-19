@@ -27,7 +27,7 @@ class DepartmentRequest extends Request {
   {
     return [
       'name' => 'required|min:2|max:255|unique:departments,name,' .
-         $this->route()->getParameter('departments'),
+         $this->route()->parameter('departments'),
     ];
   }
 

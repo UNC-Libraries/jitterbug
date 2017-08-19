@@ -27,7 +27,7 @@ class PmSpeedRequest extends Request {
   {
     return [
       'name' => 'required|min:2|max:255|unique:pm_speeds,name,' .
-         $this->route()->getParameter('pm-speeds'),
+         $this->route()->parameter('pm-speeds'),
     ];
   }
 

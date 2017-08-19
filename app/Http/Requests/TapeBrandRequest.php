@@ -27,7 +27,7 @@ class TapeBrandRequest extends Request {
   {
     return [
       'name' => 'required|min:2|max:255|unique:tape_brands,name,' .
-         $this->route()->getParameter('tape-brands'),
+         $this->route()->parameter('tape-brands'),
     ];
   }
 

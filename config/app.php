@@ -151,6 +151,7 @@ return [
     'Illuminate\View\ViewServiceProvider',
     
     'Collective\Html\HtmlServiceProvider',
+    'Laravel\Tinker\TinkerServiceProvider',
 
     /*
      * Application Service Providers...

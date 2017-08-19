@@ -27,7 +27,7 @@ class VendorRequest extends Request {
   {
     return [
       'name' => 'required|min:2|max:255|unique:vendors,name,' .
-         $this->route()->getParameter('vendors'),
+         $this->route()->parameter('vendors'),
     ];
   }
 

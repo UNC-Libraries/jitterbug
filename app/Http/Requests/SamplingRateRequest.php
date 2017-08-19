@@ -27,7 +27,7 @@ class SamplingRateRequest extends Request {
   {
     return [
       'name' => 'required|min:2|max:255|unique:sampling_rates,name,' .
-         $this->route()->getParameter('sampling-rates'),
+         $this->route()->parameter('sampling-rates'),
     ];
   }
 
