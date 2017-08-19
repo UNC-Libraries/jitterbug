@@ -268,14 +268,16 @@ class SolariumProxy {
   private function appendCollectionAndFormat($callNumber, &$doc)
   {
     $item = AudioVisualItem::where('call_number', $callNumber)->first();
-    $doc->setField('collectionId', 
-      $item->collection ? $item->collection->id : null, null, 'set');
-    $doc->setField('collectionName', 
-      $item->collection ? $item->collection->name : null, null, 'set');
-    $doc->setField('formatId', 
-      $item->format ? $item->format->id : null, null, 'set');
-    $doc->setField('formatName',
-      $item->format ? $item->format->name : null, null, 'set');
+    if ($item !== null) {
+      $doc->setField('collectionId', 
+        $item->collection ? $item->collection->id : null, null, 'set');
+      $doc->setField('collectionName', 
+        $item->collection ? $item->collection->name : null, null, 'set');
+      $doc->setField('formatId', 
+        $item->format ? $item->format->id : null, null, 'set');
+      $doc->setField('formatName',
+        $item->format ? $item->format->name : null, null, 'set');
+    }
   }
 
   private function appendCutsForItem($callNumber, &$doc)
