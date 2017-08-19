@@ -169,7 +169,9 @@ jitterbug = {
                       data[field] == '' ? '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : data[field]);
 
                     // Hookup the new field popovers
-                    jitterbug.createAdminEditableFieldPopover(resource, this);
+                    if ($(this).hasClass('editable')) {
+                      jitterbug.createAdminEditableFieldPopover(resource, this);
+                    }
                   });
                   var deleteAnchor = templateRow.find('.delete');
                   jitterbug.bindAdminRecordDelete(resource, deleteAnchor);
