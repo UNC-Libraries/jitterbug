@@ -326,7 +326,8 @@ jitterbug = {
           type: 'put',
           data: data,
           success: function (data) {
-            $(fieldSpan).text(formInputVal);
+            $(fieldSpan).html(formInputVal == '' ? 
+              '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : formInputVal);
 
             // If the user just edited an id field (allowed only
             // on the collections table) we need to update the DOM

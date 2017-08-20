@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Collection extends Model {
   use CamelCasing;
+  use NullFieldPreserver;
   use SoftDeletes;
 
   protected $dates = array('deleted_at');

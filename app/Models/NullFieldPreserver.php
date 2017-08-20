@@ -13,14 +13,11 @@ trait NullFieldPreserver {
   {
     static::saving(function($model) {
       $attributes = $model->attributes;
-      $original = $model->original;
-
       foreach ($attributes as $key => $value) {
         if($value==='') {
        	  $model->attributes[$key]=null;
         }
       }
   	});
-
   }
 }
