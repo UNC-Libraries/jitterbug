@@ -38,6 +38,7 @@ class ItemRequest extends Request {
     $this->addRuleIfNotMixed($rules, 'legacy', 'max:255');
     $this->addRuleIfNotMixed($rules, 'formatId', 'required');
     $this->addRuleIfNotMixed($rules, 'recordingLocation', 'max:255');
+    $this->addRuleIfNotMixed($rules, 'accessRestrictions', 'max:255');
     $this->addRuleIfNotMixed($rules, 'oclc', 'integer|digits_between:0,15');
     $this->addRuleIfNotMixed($rules, 'itemYear', 'max:255');
     $this->addRuleIfNotMixed($rules, 'itemDate', 'date_format:Y-m-d');
@@ -88,6 +89,7 @@ class ItemRequest extends Request {
       'accessionNumber.digits_between' => 'The accession number must be less than :max digits.',
       'legacy.max' => 'The legacy id field must be less than :max characters.',
       'collectionId.required' => 'The collection field is required.',
+      'accessRestrictions.max' => ' The access restrictions field must be less than :max characters.',
       'oclc.integer' => 'The OCLC id must be an integer.',
       'oclc.digits_between' => 'The OCLC id must be less than :max digits.',
       'itemDate.date_format' => 'The item date does not match the format YYYY-MM-DD.',

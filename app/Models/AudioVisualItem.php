@@ -27,6 +27,7 @@ class AudioVisualItem extends Model {
     'legacy' => 'isEmpty:nothing|%s',
     'format_id' => 'isEmpty:nothing|%s',
     'recording_location' => 'isEmpty:nothing|%s',
+    'access_restrictions' => 'isEmpty:nothing|%s',
     'oclc' => 'isEmpty:nothing|%s',
     'item_year' => 'isEmpty:nothing|%s',
     'item_date' => 'isEmpty:nothing|%s',
@@ -38,6 +39,7 @@ class AudioVisualItem extends Model {
     'container_note' => 'container note',
     'call_number' => 'call number',
     'recording_location' => 'recording location',
+    'access_restrictions' => 'access restrictions',
     'accession_number' => 'accession number',
     'legacy' => 'legacy id',
     'item_year' => 'item year',
@@ -47,7 +49,7 @@ class AudioVisualItem extends Model {
   );
 
   protected $fillable = array('callNumber', 'title',
-    'recordingLocation', 'itemYear', 'itemDate', 
+    'recordingLocation', 'accessRestrictions', 'itemYear', 'itemDate', 
     'collectionId', 'accessionNumber', 'legacy', 'formatId',
     'containerNote', 'conditionNote', 'oclc',
     'entryDate', 'speed');

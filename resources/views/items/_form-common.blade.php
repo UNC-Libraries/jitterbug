@@ -112,6 +112,19 @@
         </div>
       </div>
       <div class="row">
+        <div class="form-group @if ($errors->has('accessRestrictions')) has-danger @endif">
+          <div class="col-xs-4 col-xs-offset-1 detail-label">
+            {!! Form::label('accessRestrictions', 'Access Restrictions', array('class' => 'form-control-label')) !!}
+          </div>
+          <div class="col-xs-7 detail-value">
+            {!! Form::text('accessRestrictions', null, array('id' => 'access-restrictions', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. Campus')) !!}
+            @if ($errors->has('accessRestrictions'))
+              <div class="form-control-label"><small>{!! $errors->first('accessRestrictions') !!}</small></div>
+            @endif
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <div class="form-group @if ($errors->has('oclc')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
             {!! Form::label('oclc', 'OCLC Id', array('class' => 'form-control-label')) !!}

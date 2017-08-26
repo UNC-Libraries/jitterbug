@@ -23,6 +23,7 @@ class ItemsExport extends Export {
     'Legacy Id' => 'legacy',
     'Format' => 'format_id',
     'Recording Location' => 'recording_location',
+    'Access Restrictions' => 'access_restrictions',
     'OCLC Id' => 'oclc',
     'Item Year' => 'item_year',
     'Item Date' => 'item_date',

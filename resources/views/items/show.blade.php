@@ -96,6 +96,16 @@
         </div>
       </div>
       @endif
+      @if ($item->accessRestrictions)
+      <div class="row">
+        <div class="col-xs-4 col-xs-offset-1 detail-label">
+          Access Restrictions
+        </div>
+        <div class="col-xs-7 detail-value">
+          {{$item->accessRestrictions}}
+        </div>
+      </div>
+      @endif
       @if ($item->oclc)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">

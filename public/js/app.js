@@ -280,7 +280,7 @@ jitterbug = {
       placement: 'bottom',
       html: true,
       content: $(formSelector).html()
-    }).click(function(event) {              
+    }).click(function(event) {
       event.preventDefault();
       var fieldSpan = this;
 
