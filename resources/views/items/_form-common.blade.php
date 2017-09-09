@@ -101,12 +101,25 @@
       <div class="row">
         <div class="form-group @if ($errors->has('recordingLocation')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('recordingLocation', 'Rec Location', array('class' => 'form-control-label')) !!}
+            {!! Form::label('recordingLocation', 'Recording Location', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             {!! Form::text('recordingLocation', null, array('id' => 'recording-location', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. New Orleans, LA')) !!}
             @if ($errors->has('recordingLocation'))
               <div class="form-control-label"><small>{!! $errors->first('recordingLocation') !!}</small></div>
+            @endif
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group @if ($errors->has('physicalLocation')) has-danger @endif">
+          <div class="col-xs-4 col-xs-offset-1 detail-label">
+            {!! Form::label('physicalLocation', 'Physical Location', array('class' => 'form-control-label')) !!}
+          </div>
+          <div class="col-xs-7 detail-value">
+            {!! Form::text('physicalLocation', null, array('id' => 'physical-location', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. 26K.b31')) !!}
+            @if ($errors->has('physicalLocation'))
+              <div class="form-control-label"><small>{!! $errors->first('physicalLocation') !!}</small></div>
             @endif
           </div>
         </div>

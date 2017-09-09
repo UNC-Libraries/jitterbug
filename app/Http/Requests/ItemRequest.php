@@ -38,6 +38,7 @@ class ItemRequest extends Request {
     $this->addRuleIfNotMixed($rules, 'legacy', 'max:255');
     $this->addRuleIfNotMixed($rules, 'formatId', 'required');
     $this->addRuleIfNotMixed($rules, 'recordingLocation', 'max:255');
+    $this->addRuleIfNotMixed($rules, 'physicalLocation', 'max:255');
     $this->addRuleIfNotMixed($rules, 'accessRestrictions', 'max:255');
     $this->addRuleIfNotMixed($rules, 'oclc', 'integer|digits_between:0,15');
     $this->addRuleIfNotMixed($rules, 'itemYear', 'max:255');
@@ -89,6 +90,7 @@ class ItemRequest extends Request {
       'accessionNumber.digits_between' => 'The accession number must be less than :max digits.',
       'legacy.max' => 'The legacy id field must be less than :max characters.',
       'collectionId.required' => 'The collection field is required.',
+      'physicalLocation.max' => ' The physical location field must be less than :max characters.',
       'accessRestrictions.max' => ' The access restrictions field must be less than :max characters.',
       'oclc.integer' => 'The OCLC id must be an integer.',
       'oclc.digits_between' => 'The OCLC id must be less than :max digits.',

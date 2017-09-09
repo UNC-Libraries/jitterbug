@@ -89,10 +89,20 @@
       @if ($item->recordingLocation)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
-          Rec Location
+          Recording Location
         </div>
         <div class="col-xs-7 detail-value">
           {{$item->recordingLocation}}
+        </div>
+      </div>
+      @endif
+      @if ($item->physicalLocation)
+      <div class="row">
+        <div class="col-xs-4 col-xs-offset-1 detail-label">
+          Physical Location
+        </div>
+        <div class="col-xs-7 detail-value">
+          {{$item->physicalLocation}}
         </div>
       </div>
       @endif
