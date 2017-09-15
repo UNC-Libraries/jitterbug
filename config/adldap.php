@@ -118,7 +118,7 @@ return [
                 |
                 */
 
-                'domain_controllers' => ['ldap2.example.com', 'ldap.example.com'],
+                'domain_controllers' => explode(' ', env('ADLDAP_CONTROLLERS', 'ldap2.example.com ldap.example.com')),
 
                 /*
                 |--------------------------------------------------------------------------
