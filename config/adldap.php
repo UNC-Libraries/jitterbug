@@ -219,7 +219,7 @@ return [
                 */
 
                 'use_ssl' => env('ADLDAP_SSL', false),
-                'use_tls' => env('ADLDAP_TSL', true),
+                'use_tls' => env('ADLDAP_TLS', true),
 
             ],
 
