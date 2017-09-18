@@ -38,7 +38,7 @@ class AudioImport extends Import {
       'OriginatorReference', 'Side', 'PlaybackMachine', 'FileSize', 
       'Duration', 'OriginationDate', 'IART');
     $this->audioImportKeys = array_merge($this->requiredAudioImportKeys, 
-      array('OriginalPm'));
+      array('TransferNote', 'OriginalPm'));
 
     $this->solrMasters = new SolariumProxy('jitterbug-masters');
     $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
@@ -226,6 +226,8 @@ class AudioImport extends Import {
               // engineer, but that might change in the future.
               $transfer->engineerId = Auth::user()->id;
               $transfer->transferDate = $row['OriginationDate'];
+              $transfer->transferNote = 
+                isset($row['TransferNote']) ? $row['TransferNote'] : null;
               $transfer->save();
               array_push($transfers, $transfer);
               $updated++;
@@ -284,6 +286,8 @@ class AudioImport extends Import {
           // engineer, but that might change in the future.
           $transfer->engineerId = Auth::user()->id;
           $transfer->transferDate = $row['OriginationDate'];
+          $transfer->transferNote = 
+            isset($row['TransferNote']) ? $row['TransferNote'] : null;
           $transfer->subclassType = 'AudioTransfer';
           $transfer->subclassId = $audioTransfer->id;
           $transfer->save();

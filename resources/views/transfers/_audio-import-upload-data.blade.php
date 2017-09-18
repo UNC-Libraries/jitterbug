@@ -19,6 +19,7 @@
         <td>{{isset($row['FileSize']) ? $row['FileSize'] : ''}}</td>
         <td>{{isset($row['Duration']) ? $row['Duration'] : ''}}</td>
         <td>{{isset($row['OriginationDate']) ? $row['OriginationDate'] : ''}}</td>
+        <td>{{isset($row['TransferNote']) ? $row['TransferNote'] : ''}}</td>
         <td>{{isset($row['IART']) ? $row['IART'] : ''}}</td>
         <td>{{isset($row['OriginalPm']) ? $row['OriginalPm'] : ''}}</td>
       </tr>
