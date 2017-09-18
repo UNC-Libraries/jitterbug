@@ -118,7 +118,7 @@ return [
                 |
                 */
 
-                'domain_controllers' => ['ldap2.example.com', 'ldap.example.com'],
+                'domain_controllers' => explode(' ', env('ADLDAP_CONTROLLERS', 'ldap2.example.com ldap.example.com')),
 
                 /*
                 |--------------------------------------------------------------------------
@@ -129,7 +129,7 @@ return [
                 |
                 */
 
-                'port' => 389,
+                'port' => env('ADLDAP_PORT', 389),
 
                 /*
                 |--------------------------------------------------------------------------
@@ -218,8 +218,8 @@ return [
                 |
                 */
 
-                'use_ssl' => false,
-                'use_tls' => true,
+                'use_ssl' => env('ADLDAP_SSL', false),
+                'use_tls' => env('ADLDAP_TSL', true),
 
             ],
 
