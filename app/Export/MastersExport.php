@@ -15,6 +15,7 @@ class MastersExport extends Export {
   protected $exportClass = 'PreservationMaster';
 
   protected $commonExportFields = array(
+    'PM Number' => 'id',
     'Call Number' => 'call_number',
     'File Name' => 'file_name',
     'File Location' => 'file_location',
