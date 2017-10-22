@@ -86,6 +86,16 @@
         </div>
       </div>
       @endif
+      @if ($item->reelTapeNumber)
+      <div class="row">
+        <div class="col-xs-4 col-xs-offset-1 detail-label">
+          Reel/Tape Number
+        </div>
+        <div class="col-xs-7 detail-value">
+          {{$item->reelTapeNumber}}
+        </div>
+      </div>
+      @endif
       @if ($item->recordingLocation)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">

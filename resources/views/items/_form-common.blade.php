@@ -99,6 +99,19 @@
         </div>
       </div>
       <div class="row">
+        <div class="form-group @if ($errors->has('reelTapeNumber')) has-danger @endif">
+          <div class="col-xs-4 col-xs-offset-1 detail-label">
+            {!! Form::label('reelTapeNumber', 'Reel/Tape Number', array('class' => 'form-control-label')) !!}
+          </div>
+          <div class="col-xs-7 detail-value">
+            {!! Form::text('reelTapeNumber', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. 1/2')) !!}
+            @if ($errors->has('reelTapeNumber'))
+              <div class="form-control-label"><small>{!! $errors->first('reelTapeNumber') !!}</small></div>
+            @endif
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <div class="form-group @if ($errors->has('recordingLocation')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
             {!! Form::label('recordingLocation', 'Recording Location', array('class' => 'form-control-label')) !!}

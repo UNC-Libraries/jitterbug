@@ -26,6 +26,7 @@ class AudioVisualItem extends Model {
     'accession_number' => 'isEmpty:nothing|%s',
     'legacy' => 'isEmpty:nothing|%s',
     'format_id' => 'isEmpty:nothing|%s',
+    'reel_tape_number' => 'isEmpty:nothing|%s',
     'recording_location' => 'isEmpty:nothing|%s',
     'physical_location' => 'isEmpty:nothing|%s',
     'access_restrictions' => 'isEmpty:nothing|%s',
@@ -39,6 +40,7 @@ class AudioVisualItem extends Model {
   protected $revisionFormattedFieldNames = array(
     'container_note' => 'container note',
     'call_number' => 'call number',
+    'reel_tape_number' => 'reel/tape number',
     'recording_location' => 'recording location',
     'physical_location' => 'physical location',
     'access_restrictions' => 'access restrictions',
@@ -53,8 +55,8 @@ class AudioVisualItem extends Model {
   protected $fillable = array('callNumber', 'title',
     'recordingLocation', 'physicalLocation', 'accessRestrictions',
     'itemYear', 'itemDate', 'collectionId', 'accessionNumber', 
-    'legacy', 'formatId', 'containerNote', 'conditionNote', 'oclc',
-    'entryDate', 'speed');
+    'legacy', 'formatId', 'reelTapeNumber', 'containerNote',
+    'conditionNote', 'oclc', 'entryDate', 'speed');
 
   public function __construct()
   {

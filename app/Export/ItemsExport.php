@@ -22,6 +22,7 @@ class ItemsExport extends Export {
     'Accession Number' => 'accession_number',
     'Legacy Id' => 'legacy',
     'Format' => 'format_id',
+    'Reel/Tape Number' => 'reel_tape_number',
     'Recording Location' => 'recording_location',
     'Physical Location' => 'physical_location',
     'Access Restrictions' => 'access_restrictions',
