@@ -1,5 +1,5 @@
 # Jitterbug
-A Laravel / MySQL database management application for the Southern Folklife Collection in the Wilson Special Collections Library of UNC-Chapel Hill. Funded by an Andrew W. Mellon Foundation grant, "Extending the Reach of Southern Audiovisual Sources."
+A Laravel / MySQL database management application to support large-scale description, digitization, preservation and access of archival audiovisual recordings in the Wilson Special Collections Library of UNC-Chapel Hill. Funded by an Andrew W. Mellon Foundation grant, "Extending the Reach of Southern Audiovisual Sources."
 
 ## Requirements
 * [MySQL](https://dev.mysql.com/downloads/mysql/) >= 5.1 (developed using the [Homebrew](http://brew.sh/) version, 5.7.10)
