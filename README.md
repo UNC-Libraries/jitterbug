@@ -10,8 +10,6 @@ A Laravel / MySQL database management application to support large-scale descrip
 * [npm](https://www.npmjs.com/) (developed using 2.15.1)
 * [Solr 6.0](http://archive.apache.org/dist/lucene/solr/6.0.0/) (developed using 6.0)
 * [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (for Solr)
-* [Capistrano](http://capistranorb.com/) (developed using 3.6)
-* [Ruby](https://www.ruby-lang.org/en/) (for Capistrano)
 
 ## Installation
 1. If you are not a member of the Jitterbug LDAP group, submit a ticket and request access. You must be a member of the group in order to log into Jitterbug.

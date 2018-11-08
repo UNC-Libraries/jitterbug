@@ -102,7 +102,7 @@ return [
                 |
                 */
 
-                'account_suffix' => '@example.com',
+                'account_suffix' => env('ADLDAP_ADMIN_ACCOUNT_SUFFIX', '@example.com'),
 
                 /*
                 |--------------------------------------------------------------------------
@@ -118,7 +118,7 @@ return [
                 |
                 */
 
-                'domain_controllers' => explode(' ', env('ADLDAP_CONTROLLERS', 'ldap2.example.com ldap.example.com')),
+                'domain_controllers' => explode(' ', env('ADLDAP_CONTROLLERS', '')),
 
                 /*
                 |--------------------------------------------------------------------------
@@ -172,7 +172,7 @@ return [
                 |
                 */
 
-                'admin_account_suffix' => '@example.com',
+                'admin_account_suffix' => env('ADLDAP_ADMIN_ACCOUNT_SUFFIX', '@example.com'),
 
                 /*
                 |--------------------------------------------------------------------------
