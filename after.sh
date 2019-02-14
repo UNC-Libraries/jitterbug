@@ -21,7 +21,7 @@ sudo ./install_solr_service.sh solr-7.2.1.tgz
 
 # Move the MySQL connector file to the right place
 cd /
-sudo mv /vagrant/mysql-connector-java-8.0.15.jar /opt/solr/contrib/dataimporthandler-extras/lib/.
+sudo cp /vagrant/mysql-connector-java-8.0.15.jar /opt/solr/contrib/dataimporthandler-extras/lib/.
 
 # Change users/groups/permissions of Solr home directory files
 cd /opt/solr
@@ -67,4 +67,5 @@ cd /vagrant
 # install jitterbug dependencies
 composer update -y
 npm install
+php artisan key:generate
 gulp
