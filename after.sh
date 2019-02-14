@@ -2,9 +2,7 @@
 
 # Create and populate the jitterbug DB
 cd /vagrant
-mysql -u homestead -p secret
-CREATE DATABASE IF NOT EXISTS jitterbug;
-exit;
+mysql -u homestead -psecret -e "CREATE DATABASE IF NOT EXISTS jitterbug;"
 
 # Download java
 cd /
