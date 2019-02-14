@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 # Create and populate the jitterbug DB
+vagrant ssh
 cd /vagrant
 mysql -u homestead -psecret -e "CREATE DATABASE IF NOT EXISTS jitterbug;"
 
-# Download java
+# Download java 8
 cd /
-sudo add-apt-repository ppa:webupd8team/java
 sudo apt-get update
-sudo apt-get install oracle-java8-installer -y
+sudo apt install openjdk-8-jdk -y
 
 # Download Solr
 cd ~
