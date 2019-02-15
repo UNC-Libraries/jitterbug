@@ -1,7 +1,73 @@
 # Jitterbug
 A Laravel / MySQL database management application to support large-scale description, digitization, preservation and access of archival audiovisual recordings in the Wilson Special Collections Library of UNC-Chapel Hill. Funded by an Andrew W. Mellon Foundation grant, "Extending the Reach of Southern Audiovisual Sources."
 
-## Requirements
+
+## Initial setup
+1. If you are not a member of the Jitterbug LDAP group, submit a ticket and request access. You must be a member of the group in order to log into Jitterbug.
+2. Get a fresh Jitterbug MySQL production database dump (`$jitterbug-db-dump` refers to the name of this file) from a UNC library sysadmin.
+3. Because the dump will contain views, you will need to remove the SQL security definers in the dump file. Using sed (on Mac OS X):
+```bash
+$ sed -i '' 's/DEFINER=[^*]*\*/\*/g' $jitterbug-db-dump
+```
+---
+## Vagrant Installation
+If you would like to use a pre-configured Vagrant box, Laravel Homstead is available for use.
+
+### Installation steps
+1. Clone the jitterbug repository.
+```bash
+$ git clone https://github.com/UNC-Libraries/jitterbug.git
+```
+2. `$jitterbug-home` is the directory where you've cloned the jitterbug project. Navigate to it.
+```bash
+$ cd $jitterbug-home
+```
+3. Install composer by following directions at https://getcomposer.org/download/
+
+4. Set up the MySQL Connector.
+    1. Get the MySQL connector [file](http://www.mirrorservice.org/sites/ftp.mysql.com/Downloads/Connector-J/mysql-connector-java-8.0.15.zip) and unzip it.
+    2. Copy the .jar file into the jitterbug home directory. For example, if your unzipped file is in your Downloads folder:
+    ```bash
+    $ mv ~/Downloads/mysql-connector-java-8.0.15/mysql-connector-java-8.0.15.jar .
+    ```
+5. Create a .env file and copy the contents of .env.example into it.
+    1. For the ADLDAP section, you will need find your LDAP login info (admin credentials for your server) and add it to the .env that you copied from .env.example
+```bash
+$ cp .env.example .env
+```
+6. Use Composer to update packages and install Homestead.
+```bash
+$ php composer.phar install
+$ php vendor/bin/homestead make
+```
+7. Install Vagrant Host Updater plugin.
+```bash
+$ vagrant plugin install vagrant-hostsupdater
+```
+8. Start the Vagrant box.
+```bash
+$ vagrant up
+```
+9. When that finishes, go to http://homestead.test and see if the jitterbug login page loads.
+
+### Populating the DB and Solr cores
+1. Import the MySQL dump into your jitterbug DB.
+```bash
+$ vagrant ssh
+$ mysql -u homestead jitterbug < $jitterbug-db-dump -psecret
+```
+2. Use the Solr web app to import data from MySQL to index each Jitterbug core. This will take about 25 minutes for all cores.
+	1. Point your favorite web browser to http://homestead.test:8983/solr
+	2. Use the Solr "Core Selector" menu to select the jitterbug-items core.
+	3. Click the Dataimport button under the Core Selector menu.
+	4. Underneath the Execute button, check the Auto-Refresh Status checkbox.
+	5. Click Execute.
+	6. When jitterbug-items is finished indexing, repeat these steps for each core.
+
+---
+## Local Installation
+
+### Requirements For Local Installation
 * [MySQL](https://dev.mysql.com/downloads/mysql/) >= 5.1 (developed using the [Homebrew](http://brew.sh/) version, 5.7.10)
 * [MySQL Connector/J](https://dev.mysql.com/downloads/connector/j/) (JDBC driver for MySQL, needed for initial Solr indexing)
 * PHP 5.6 (developed using the Homebrew version, 5.6.20)
@@ -11,54 +77,7 @@ A Laravel / MySQL database management application to support large-scale descrip
 * [Solr 6.0](http://archive.apache.org/dist/lucene/solr/6.0.0/) (developed using 6.0)
 * [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (for Solr)
 
-## Initial setup
-1. If you are not a member of the Jitterbug LDAP group, submit a ticket and request access. You must be a member of the group in order to log into Jitterbug.
-2. Get a fresh Jitterbug MySQL production database dump from a UNC library sysadmin.
-3. Because the dump will contain views, you will need to remove the SQL security definers in the dump file. Using sed (on Mac OS X):
-```bash
-$ sed -i '' 's/DEFINER=[^*]*\*/\*/g' jitterbug-20170206.sql
-```
-
-## Vagrant Installation
-If you would like to use a pre-configured Vagrant box, Laravel Homstead is available for use.
-
-1. Clone the jitterbug repository.
-```bash
-git clone https://github.com/UNC-Libraries/jitterbug.git
-```
-2. `$jitterbug-home` is the directory where you've cloned the jitterbug project. Navigate to it.
-```bash
-cd $jitterbug-home
-```
-3. Install composer by following directions at https://getcomposer.org/download/
-
-4. Set up the MySQL Connector.
-    1. Get the MySQL connector [file](http://www.mirrorservice.org/sites/ftp.mysql.com/Downloads/Connector-J/mysql-connector-java-8.0.15.zip) and unzip it.
-    2. Copy the .jar file into the jitterbug home directory. For example, if your unzipped file is in your Downloads folder:
-    ```bash
-    mv ~/Downloads/mysql-connector-java-8.0.15/mysql-connector-java-8.0.15.jar .
-    ```
-5. Create a .env file and copy the contents of .env.example into it.
-    1. For the ADLDAP section, you will need find your LDAP login info (admin credentials for your server) and add it to the .env that you copied from .env.example
-```bash
-cp .env.example .env
-```
-6. Run composer install to update packages and install Homestead.
-```bash
-php composer.phar install
-php vendor/bin/homestead make
-```
-7. Install Vagrant Host Updater plugin.
-```bash
-vagrant plugin install vagrant-hostsupdater
-```
-8. Start the Vagrant box.
-```bash
-vagrant up
-```
-9. When that finishes, go to http://homestead.test and see if the jitterbug login page loads.
-
-## Local Installation (no Vagrant box)
+### Local Installation Steps
 1. Create an empty MySQL database locally.
 ```bash
 $ mysql -u username -p
@@ -67,7 +86,7 @@ mysql> create database jitterbug
 
 2. Import the MySQL dump.
 ```bash
-$ mysql -u username jitterbug < jitterbug-20170206.sql -p
+$ mysql -u username jitterbug < $jitterbug-db-dump -p
 ```
 
 3. Clone the repo to your local machine ($JITTERBUG_HOME).
@@ -151,11 +170,11 @@ $ npm install
 $ php artisan key:generate
 ```
 
-## Configuration
+### Configuration
 1. Copy ```$JITTERBUG_HOME/.env.example``` to ```$JITTERBUG_HOME/.env```.
 2. Edit the DB_\* and ADLDAP_\* properties in ```$JITTERBUG_HOME/.env```. The DB_\* properties will be determined by you, the developer, based on your database configuration. The ADLDAP_\* properites you should get from a UNC sysadmin or another Jitterbug developer. Specifically, you will need the credentials for the LDAP admin user, and the LDAP group search string to put in the limitation filter after the = sign. The SOLR_\* properties will likely be the same as what is in the .env.example file.
 
-## Asset Compilation
+### Asset Compilation
 1. Run Gulp
 
 ```bash
@@ -164,7 +183,7 @@ $ gulp
 $ gulp watch
 ```
 
-## Running
+### Running
 1. Start the local PHP web server.
 
 ```bash
