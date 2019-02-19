@@ -11,6 +11,7 @@ class LoginController extends Controller
 {
   use AuthenticatesUsers {
     logout as doLogout;
+    login as traitLogin;
   }
 
   /**
@@ -42,6 +43,18 @@ class LoginController extends Controller
    * @param \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
+  public function login(Request $request)
+  {
+    Log::debug('in the new method!');
+    try {
+      return $this->traitLogin($request);
+    } catch (\Adldap\Exceptions\Auth\BindException $e) {
+      //
+    }
+
+    return $this->sendFailedLoginResponse($request);
+  }
+
   protected function sendFailedLoginResponse(Request $request)
   {
     return redirect()->back()
