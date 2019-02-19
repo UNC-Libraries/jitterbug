@@ -45,7 +45,6 @@ class LoginController extends Controller
    */
   public function login(Request $request)
   {
-    Log::debug('in the new method!');
     try {
       return $this->traitLogin($request);
     } catch (\Adldap\Exceptions\Auth\BindException $e) {
