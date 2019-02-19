@@ -3,15 +3,14 @@ A Laravel / MySQL database management application to support large-scale descrip
 
 
 ## Initial setup
-1. If you are not a member of the Jitterbug LDAP group, submit a ticket and request access. You must be a member of the group in order to log into Jitterbug.
-2. Get a fresh Jitterbug MySQL production database dump (`$jitterbug-db-dump` refers to the name of this file) from a UNC library sysadmin.
-3. Because the dump will contain views, you will need to remove the SQL security definers in the dump file. Using sed (on Mac OS X):
+1. Get a fresh Jitterbug MySQL production database dump (`$jitterbug-db-dump` refers to the name of this file) from a UNC library sysadmin.
+2. Because the dump will contain views, you will need to remove the SQL security definers in the dump file. Using sed (on Mac OS X):
 ```bash
 $ sed -i '' 's/DEFINER=[^*]*\*/\*/g' $jitterbug-db-dump
 ```
 ---
 ## Vagrant Installation
-If you would like to use a pre-configured Vagrant box, Laravel Homstead is available for use.
+If you would like to use a pre-configured Vagrant box, Laravel Homestead is available for use.
 
 ### Installation steps
 1. Clone the jitterbug repository.
@@ -31,10 +30,13 @@ $ cd $jitterbug-home
     $ mv ~/Downloads/mysql-connector-java-8.0.15/mysql-connector-java-8.0.15.jar .
     ```
 5. Create a .env file and copy the contents of .env.example into it.
-    1. For the ADLDAP section, you will need find your LDAP login info (admin credentials for your server) and add it to the .env that you copied from .env.example
 ```bash
 $ cp .env.example .env
 ```
+
+   * For the ADLDAP section in your `.env` file, you will need find your LDAP login info (admin credentials for your server).
+   * Set the `ADMIN_USER_PASSWORD` in your `.env` file to the password you'd like to use for your dev admin user
+
 6. Use Composer to update packages and install Homestead.
 ```bash
 $ php composer.phar install
@@ -64,7 +66,15 @@ $ mysql -u homestead jitterbug < $jitterbug-db-dump -psecret
 	5. Click Execute.
 	6. When jitterbug-items is finished indexing, repeat these steps for each core.
 
----
+### Seeding the DB with the non-LDAP admin user
+1. To log in with the non-LDAP admin dev user, you'll need to seed the DB. Inside the vagrant machine:
+```bash
+$ cd /vagrant
+$ php artisan db:seed --class=UsersTableSeeder
+```
+2. Try to log into Jitterbug with the username `dev-admin`
+ and the admin user password you set in your `.env` file.
+ ---
 ## Local Installation
 
 ### Requirements For Local Installation
@@ -76,6 +86,8 @@ $ mysql -u homestead jitterbug < $jitterbug-db-dump -psecret
 * [npm](https://www.npmjs.com/) (developed using 2.15.1)
 * [Solr 6.0](http://archive.apache.org/dist/lucene/solr/6.0.0/) (developed using 6.0)
 * [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html) (for Solr)
+
+If you are not a member of the Jitterbug LDAP group, submit a ticket and request access. You must be a member of the group in order to log into Jitterbug.
 
 ### Local Installation Steps
 1. Create an empty MySQL database locally.
