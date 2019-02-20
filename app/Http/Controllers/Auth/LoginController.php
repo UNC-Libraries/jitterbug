@@ -11,6 +11,7 @@ class LoginController extends Controller
 {
   use AuthenticatesUsers {
     logout as doLogout;
+    login as traitLogin;
   }
 
   /**
@@ -34,6 +35,16 @@ class LoginController extends Controller
   {
     $this->doLogout($request);
     return redirect('/login?logout=true');
+  }
+
+  public function login(Request $request)
+  {
+    try {
+      return $this->traitLogin($request);
+    } catch (\Adldap\Exceptions\Auth\BindException $e) {
+      //
+    }
+    return $this->sendFailedLoginResponse($request);
   }
 
   /**
