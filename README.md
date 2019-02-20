@@ -24,31 +24,25 @@ $ cd $jitterbug-home
 ```
 3. Install composer by following directions at https://getcomposer.org/download/
 
-4. Set up the MySQL Connector.
-    1. Get the MySQL connector [file](http://www.mirrorservice.org/sites/ftp.mysql.com/Downloads/Connector-J/mysql-connector-java-8.0.15.zip) and unzip it.
-    2. Copy the .jar file into the jitterbug home directory. For example, if your unzipped file is in your Downloads folder:
-    ```bash
-    $ mv ~/Downloads/mysql-connector-java-8.0.15/mysql-connector-java-8.0.15.jar .
-    ```
-5. Create a .env file and copy the contents of .env.example into it.
+4. Create a .env file and copy the contents of .env.example into it.
     1. For the ADLDAP section, you will need find your LDAP login info (admin credentials for your server) and add it to the .env that you copied from .env.example
 ```bash
 $ cp .env.example .env
 ```
-6. Use Composer to update packages and install Homestead.
+5. Use Composer to update packages and install Homestead.
 ```bash
 $ php composer.phar install
 $ php vendor/bin/homestead make
 ```
-7. Install Vagrant Host Updater plugin.
+6. Install Vagrant Host Updater plugin.
 ```bash
 $ vagrant plugin install vagrant-hostsupdater
 ```
-8. Start the Vagrant box.
+7. Start the Vagrant box.
 ```bash
 $ vagrant up
 ```
-9. When that finishes, go to http://homestead.test and see if the jitterbug login page loads.
+8. When that finishes, go to http://homestead.test and see if the jitterbug login page loads.
 
 ### Populating the DB and Solr cores
 1. Import the MySQL dump into your jitterbug DB.
