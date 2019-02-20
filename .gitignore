@@ -8,3 +8,5 @@ Capfile
 README.html
 /log
 .idea/
+.vagrant/
+Homestead.yaml
