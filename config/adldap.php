@@ -30,7 +30,7 @@ return [
             |
             */
 
-            'auto_connect' => true,
+            'auto_connect' => env('AUTO_CONNECT_DEV', true),
 
             /*
             |--------------------------------------------------------------------------
