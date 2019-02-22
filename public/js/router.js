@@ -54,6 +54,7 @@ JITTERBUG = {
       jitterbug.initItemsNewButton();
       jitterbug.initItemsBatchMenu();
       jitterbug.initBatchDeleteForm();
+      jitterbug.initSelectAll();
     },
 
     show: function() {
@@ -100,6 +101,7 @@ JITTERBUG = {
       jitterbug.initMastersNewButton();
       jitterbug.initMastersBatchMenu();
       jitterbug.initBatchDeleteForm();
+      jitterbug.initSelectAll();
     },
 
     show: function() {
@@ -159,6 +161,7 @@ JITTERBUG = {
       jitterbug.initTransfersNewButton();
       jitterbug.initTransfersBatchMenu();
       jitterbug.initBatchDeleteForm();
+      jitterbug.initSelectAll();
     },
 
     show: function() {
