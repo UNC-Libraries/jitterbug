@@ -8,7 +8,7 @@
                         @foreach ($fields[0] as $label => $field)
                         <div>
                           <label>
-                            <input type="checkbox" name="fields[]" value="{{$field}}">
+                            <input type="checkbox" name="fields[]" value="{{$field}}" class="checkSingle">
                             {{$label}}
                           </label>
                         </div>
@@ -18,11 +18,17 @@
                         @foreach ($fields[1] as $label => $field)
                         <div>
                           <label>
-                            <input type="checkbox" name="fields[]" value="{{$field}}">
+                            <input type="checkbox" name="fields[]" value="{{$field}}" class="checkSingle">
                             {{$label}}
                           </label>
                         </div>
                         @endforeach
+                        <div>
+                          <label>
+                            <input type="checkbox" name="checkAll" id="checkedAll" value="selectAll">
+                            Select All
+                          </label>
+                        </div>
                       </div>
                     </div>
                   </div>
