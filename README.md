@@ -58,15 +58,9 @@ $ mysql -u homestead jitterbug < $jitterbug-db-dump -psecret
 	4. Underneath the Execute button, check the Auto-Refresh Status checkbox.
 	5. Click Execute.
 	6. When jitterbug-items is finished indexing, repeat these steps for each core.
+
 	
-* If you have restarted Vagrant or re-provisioned, you may need to restart Solr to populate the view tables:
-```bash
-$ cd /opt/solr
-$ bin/solr stop -p 8983
-$ bin/solr start
-```
-	
-If that still doesn't populate the view tables, you may need to import the data to Solr again, as above.
+You may need to import the data to Solr again after restarting the VM, as above.
 
 ### Seeding the DB with the non-LDAP admin user
 1. To log in with the non-LDAP admin dev user, you'll need to seed the DB. Inside the vagrant machine:

@@ -12,6 +12,7 @@ homesteadJsonPath = File.expand_path("Homestead.json", File.dirname(__FILE__))
 afterScriptPath = "after.sh"
 customizationScriptPath = "user-customizations.sh"
 aliasesPath = "aliases"
+solrRestartScriptPath = "solr-restart.sh"
 
 require File.expand_path(confDir + '/scripts/homestead.rb')
 
@@ -41,6 +42,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     if File.exist? customizationScriptPath then
         config.vm.provision "shell", path: customizationScriptPath, privileged: false, keep_color: true
+    end
+
+    if File.exist? solrRestartScriptPath then
+        config.vm.provision "shell", path: solrRestartPath, run: always, privileged: false, keep_color: true
     end
 
     if defined? VagrantPlugins::HostsUpdater
