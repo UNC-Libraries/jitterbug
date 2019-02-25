@@ -45,7 +45,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
 
     if File.exist? solrRestartScriptPath then
-        config.vm.provision "shell", path: solrRestartPath, run: always, privileged: false, keep_color: true
+        config.vm.provision "shell", path: solrRestartScriptPath, run: 'always', privileged: false, keep_color: true
     end
 
     if defined? VagrantPlugins::HostsUpdater
