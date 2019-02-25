@@ -59,9 +59,6 @@ $ mysql -u homestead jitterbug < $jitterbug-db-dump -psecret
 	5. Click Execute.
 	6. When jitterbug-items is finished indexing, repeat these steps for each core.
 
-	
-You may need to import the data to Solr again after restarting the VM, as above.
-
 ### Seeding the DB with the non-LDAP admin user
 1. To log in with the non-LDAP admin dev user, you'll need to seed the DB. Inside the vagrant machine:
 ```bash
