@@ -11,7 +11,7 @@ sudo apt-get update -y
 sudo apt-get install openjdk-8-jdk -y
 
 # Install PHP 5.6
-sudo apt-get install php5.6 php5.6-ldap php5.6-fpm php5.6-mbstring php5.6-dom -y
+sudo apt-get install php5.6 php5.6-ldap php5.6-fpm php5.6-mbstring php5.6-dom php5.6-mysql -y
 
 # set the php symlink to point to the 5.6 version (for cli)
 sudo update-alternatives --set php /usr/bin/php5.6
