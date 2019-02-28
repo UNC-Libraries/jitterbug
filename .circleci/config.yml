@@ -15,8 +15,8 @@ jobs:
       - run: sudo docker-php-ext-install zip
       - run: sudo apt-get install libldap2-dev -y
       - run: sudo rm -rf /var/lib/apt/lists/*
-      - run: docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/
-      - run: docker-php-ext-install ldap
+      - run: sudo docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/
+      - run: sudo docker-php-ext-install ldap
 
       # Download and cache dependencies
 
