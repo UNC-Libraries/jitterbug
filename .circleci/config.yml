@@ -13,7 +13,7 @@ jobs:
 
       - run: sudo apt update && sudo apt install zlib1g-dev libsqlite3-dev
       - run: sudo docker-php-ext-install zip
-      - run: sudo apt-get install php-ldap
+      - run: sudo apt-get install php7.0-ldap
 
       # Download and cache dependencies
 
