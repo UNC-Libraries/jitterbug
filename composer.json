@@ -7,7 +7,7 @@
 	"repositories" : [
 		{
 			"type": "vcs",
-			"url": "git@github.com:UNC-Libraries/revisionable.git"
+			"url": "https://github.com/UNC-Libraries/revisionable.git"
 		}
 	],
 	"require": {
