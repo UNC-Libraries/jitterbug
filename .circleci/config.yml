@@ -13,6 +13,7 @@ jobs:
 
       - run: sudo apt update && sudo apt install zlib1g-dev libsqlite3-dev
       - run: sudo docker-php-ext-install zip
+      - run: sudo docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/
       - run: sudo docker-php-ext-install ldap
 
       # Download and cache dependencies
