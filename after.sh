@@ -7,13 +7,19 @@ mysql -u homestead -psecret -e "CREATE DATABASE IF NOT EXISTS jitterbug;"
 
 # Download java 8
 cd /
-sudo apt-get update
-sudo apt install openjdk-8-jdk -y
+sudo apt-get update -y
+sudo apt-get install openjdk-8-jdk -y
+
+# Install PHP 5.6
+sudo apt-get install php5.6 php5.6-ldap php5.6-fpm php5.6-mbstring php5.6-dom php5.6-mysql -y
+
+# set the php symlink to point to the 5.6 version (for cli)
+sudo update-alternatives --set php /usr/bin/php5.6
 
 # Download Solr
 cd ~
 # get the latest 7.x release via https://lucene.apache.org/solr/mirrors-solr-latest-redir.html
-sudo wget http://archive.apache.org/dist/lucene/solr/7.2.1/solr-7.2.1.tgz
+sudo wget --no-verbose http://archive.apache.org/dist/lucene/solr/7.2.1/solr-7.2.1.tgz
 # extract the service installation file
 sudo tar xzf solr-7.2.1.tgz solr-7.2.1/bin/install_solr_service.sh --strip-components=2
 # install Solr as a service
@@ -21,7 +27,7 @@ sudo ./install_solr_service.sh solr-7.2.1.tgz
 
 # Get the MySQL connector file and unzip it if needed
 cd /vagrant
-sudo wget -nc http://www.mirrorservice.org/sites/ftp.mysql.com/Downloads/Connector-J/mysql-connector-java-8.0.15.zip
+sudo wget --no-verbose -nc http://www.mirrorservice.org/sites/ftp.mysql.com/Downloads/Connector-J/mysql-connector-java-8.0.15.zip
 sudo unzip -n mysql-connector-java-8.0.15.zip
 
 # Copy the MySQL connector file to the right place
@@ -70,7 +76,8 @@ cd /vagrant
 (crontab -l ; echo "* * * * * php /vagrant/artisan schedule:run >> /dev/null 2>&1") | crontab -
 
 # install jitterbug dependencies
-composer update -y
+php /usr/local/bin/composer update
+rm -rf node_modules/*
 npm install
 php artisan key:generate
 gulp
