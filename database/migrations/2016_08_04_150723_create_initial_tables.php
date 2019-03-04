@@ -25,7 +25,7 @@ class CreateInitialTables extends Migration
         $table->integer('user_id')->nullable();
         $table->timestamp('updated_at');
         $table->timestamp('created_at')->nullable();
-        $table->index(array('revisionable_id', 'revisionable_type'. 'transaction_id'));
+        $table->index(array('revisionable_id', 'revisionable_type', 'transaction_id'));
       });
 
       Schema::create('audio_visual_items', function (Blueprint $table) {
@@ -47,7 +47,7 @@ class CreateInitialTables extends Migration
         $table->timestamp('updated_at');
         $table->timestamp('created_at')->nullable();
         $table->timestamp('deleted_at')->nullable();
-        $table->index(array('collection_id', 'format_id'. 'subclass_type'));
+        $table->index(array('collection_id', 'format_id', 'subclass_type'));
       });
 
       Schema::create('audio_items', function (Blueprint $table) {
@@ -67,7 +67,7 @@ class CreateInitialTables extends Migration
       Schema::create('video_items', function (Blueprint $table) {
         $table->increments('id')->primary();
         $table->string('call_number', 255)->unique();
-        $table->char('mono_stereo'. 1)->nullable();
+        $table->char('mono_stereo', 1)->nullable();
         $table->string('element', 255)->nullable();
         $table->string('color', 255)->nullable();
         $table->string('recording_standard', 255)->nullable();
