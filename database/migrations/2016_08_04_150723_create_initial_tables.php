@@ -119,6 +119,12 @@ class CreateInitialTables extends Migration
      */
     public function down()
     {
-        //
+      Schema::drop('revisions');
+      Schema::drop('audio_visual_items');
+      Schema::drop('audio_items');
+      Schema::drop('video_items');
+      Schema::drop('film_items');
+      Schema::drop('formats');
+      Schema::drop('collections');
     }
 }
