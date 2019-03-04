@@ -14,7 +14,7 @@ class CreateInitialViews extends Migration
     public function up()
     {
       DB::statement("
-        CREATE VIEW audio_visual_item_collections AS
+        CREATE OR REPLACE VIEW audio_visual_item_collections AS
           SELECT 
             collections.id AS id,
             collections.name AS name,
@@ -29,7 +29,7 @@ class CreateInitialViews extends Migration
           GROUP BY audio_visual_items.collection_id
           ORDER BY name;
 
-        CREATE VIEW audio_visual_item_formats AS
+        CREATE OR REPLACE VIEW audio_visual_item_formats AS
           SELECT 
             formats.id AS id,
             formats.name AS name,
@@ -44,7 +44,7 @@ class CreateInitialViews extends Migration
           GROUP BY audio_visual_items.format_id
           ORDER BY name;
         
-        CREATE VIEW audio_visual_item_types AS
+        CREATE OR REPLACE VIEW audio_visual_item_types AS
           SELECT
             media_types.id,
             TRIM(TRAILING 'Item' FROM audio_visual_items.subclass_type) AS name,
@@ -57,7 +57,7 @@ class CreateInitialViews extends Migration
             audio_visual_items.deleted_at is null
           GROUP BY media_types.name;
 
-        CREATE VIEW transfer_types AS
+        CREATE OR REPLACE VIEW transfer_types AS
           SELECT
             media_types.id,
             TRIM(TRAILING 'Transfer' FROM transfers.subclass_type) AS name,
@@ -70,7 +70,7 @@ class CreateInitialViews extends Migration
             transfers.deleted_at is null
           GROUP BY media_types.name;
           
-        CREATE VIEW transfer_collections AS
+        CREATE OR REPLACE VIEW transfer_collections AS
           SELECT 
             collections.id AS id,
             collections.name AS name,
@@ -88,7 +88,7 @@ class CreateInitialViews extends Migration
           GROUP BY audio_visual_items.collection_id
           ORDER BY name;
 
-        CREATE VIEW transfer_formats AS
+        CREATE OR REPLACE VIEW transfer_formats AS
           SELECT 
             formats.id AS id,
             formats.name AS name,
@@ -106,7 +106,7 @@ class CreateInitialViews extends Migration
           GROUP BY audio_visual_items.format_id
           ORDER BY name;
 
-        CREATE VIEW preservation_master_types AS
+        CREATE OR REPLACE VIEW preservation_master_types AS
           SELECT
             media_types.id,
             TRIM(TRAILING 'Master' FROM preservation_masters.subclass_type) AS name,
@@ -119,7 +119,7 @@ class CreateInitialViews extends Migration
             preservation_masters.deleted_at is null
           GROUP BY media_types.name;
 
-        CREATE VIEW preservation_master_collections AS
+        CREATE OR REPLACE VIEW preservation_master_collections AS
           SELECT 
             collections.id AS id,
             collections.name AS name,
@@ -137,7 +137,7 @@ class CreateInitialViews extends Migration
           GROUP BY audio_visual_items.collection_id
           ORDER BY name;
 
-        CREATE VIEW preservation_master_formats AS
+        CREATE OR REPLACE VIEW preservation_master_formats AS
           SELECT 
             formats.id AS id,
             formats.name AS name,
@@ -155,7 +155,7 @@ class CreateInitialViews extends Migration
           GROUP BY audio_visual_items.format_id
           ORDER BY name;
 
-        CREATE VIEW preservation_master_departments AS
+        CREATE OR REPLACE VIEW preservation_master_departments AS
           SELECT 
             departments.id AS id,
             departments.name AS name,
