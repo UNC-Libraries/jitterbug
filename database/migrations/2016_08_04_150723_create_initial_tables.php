@@ -14,7 +14,7 @@ class CreateInitialTables extends Migration
     public function up()
     {
       Schema::create('revisions', function (Blueprint $table) {
-        $table->bigIncrements('id')->primary();
+        $table->bigIncrements('id');
         $table->string('revisionable_type', 255)->nullable();
         $table->integer('revisionable_id')->nullable();
         $table->string('ip_address')->nullable();
@@ -29,7 +29,7 @@ class CreateInitialTables extends Migration
       });
 
       Schema::create('audio_visual_items', function (Blueprint $table) {
-        $table->increments('id')->primary();
+        $table->increments('id');
         $table->string('call_number', 255)->unique();
         $table->text('title')->nullable();
         $table->string('recording_location', 255)->nullable();
@@ -51,7 +51,7 @@ class CreateInitialTables extends Migration
       });
 
       Schema::create('audio_items', function (Blueprint $table) {
-        $table->increments('id')->primary();
+        $table->increments('id');
         $table->string('call_number', 255)->unique();
         $table->tinyInteger('listening_copy')->default(0)->nullable();
         $table->string('size', 255)->nullable();
@@ -65,7 +65,7 @@ class CreateInitialTables extends Migration
       });
 
       Schema::create('video_items', function (Blueprint $table) {
-        $table->increments('id')->primary();
+        $table->increments('id');
         $table->string('call_number', 255)->unique();
         $table->char('mono_stereo', 1)->nullable();
         $table->string('element', 255)->nullable();
@@ -78,7 +78,7 @@ class CreateInitialTables extends Migration
       });
 
       Schema::create('film_items', function (Blueprint $table) {
-        $table->increments('id')->primary();
+        $table->increments('id');
         $table->string('call_number', 255)->unique();
         $table->integer('can_number')->nullable();
         $table->integer('length_in_feet')->nullable();
@@ -96,7 +96,7 @@ class CreateInitialTables extends Migration
       });
 
       Schema::create('formats', function (Blueprint $table) {
-        $table->smallIncrements('id')->primary();
+        $table->smallIncrements('id');
         $table->string('name', 255)->unique();
         $table->string('prefix', 255);
         $table->string('legacy_prefix', 255)->nullable();
@@ -110,6 +110,15 @@ class CreateInitialTables extends Migration
         $table->timestamp('updated_at');
         $table->timestamp('created_at')->nullable();
       });
+
+      Schema::create('media_types', function (Blueprint $table) {
+        $table->tinyInteger('id')->autoIncrement();
+        $table->string('name', 255)->unique();
+      });
+
+      DB::table('media_types')->insert(array('name' => 'Audio'));
+      DB::table('media_types')->insert(array('name' => 'Film'));
+      DB::table('media_types')->insert(array('name' => 'Video'));
     }
 
     /**

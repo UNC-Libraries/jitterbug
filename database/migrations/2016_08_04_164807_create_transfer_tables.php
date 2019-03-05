@@ -14,14 +14,14 @@ class CreateTransferTables extends Migration
     public function up()
     {
       Schema::create('playback_machines', function (Blueprint $table) {
-        $table->smallIncrements('id')->primary();
+        $table->smallIncrements('id');
         $table->string('name', 255);
         $table->timestamp('updated_at');
         $table->timestamp('created_at')->nullable();
       });
 
       Schema::create('cuts', function (Blueprint $table) {
-        $table->increments('id')->primary();
+        $table->increments('id');
         $table->string('call_number', 255);
         $table->smallInteger('cut_number')->nullable();
         $table->integer('transfer_id');
@@ -36,7 +36,7 @@ class CreateTransferTables extends Migration
       });
 
       Schema::create('transfers', function (Blueprint $table) {
-        $table->increments('id')->primary();
+        $table->increments('id');
         $table->integer('preservation_master_id');
         $table->string('call_number', 255);
         $table->date('transfer_date')->nullable();
@@ -54,14 +54,13 @@ class CreateTransferTables extends Migration
       });
 
       Schema::create('audio_transfers', function (Blueprint $table) {
-        $table->increments('id')->primary();
+        $table->increments('id');
         $table->string('stylus', 255)->nullable();
         $table->string('cartridge', 255)->nullable();
         $table->text('first_sound')->nullable();
         $table->timestamp('updated_at');
         $table->timestamp('created_at')->nullable();
         $table->timestamp('deleted_at')->nullable();
-        $table->index('call_number');
       });
     }
 

@@ -62,7 +62,7 @@ class CreateUserAndMastersTables extends Migration
         $table->string('email', 255)->nullable();
         $table->string('username', 255)->nullable();
         $table->string('password', 255)->nullable();
-        $table->tinyInteger('admin')->default(0)->nullable();
+        $table->boolean('admin')->default(0)->nullable();
         $table->string('remember_token', 255)->nullable();
         $table->string('legacy_initials', 255)->nullable();
         $table->timestamp('updated_at');
@@ -70,35 +70,35 @@ class CreateUserAndMastersTables extends Migration
       });
 
       Schema::create('reproduction_machines', function (Blueprint $table) {
-        $table->smallIncrements('id')->primary();
+        $table->smallIncrements('id');
         $table->string('name', 255);
         $table->timestamp('updated_at');
         $table->timestamp('created_at')->nullable();
       });
 
       Schema::create('tape_brands', function (Blueprint $table) {
-        $table->smallIncrements('id')->primary();
+        $table->smallIncrements('id');
         $table->string('name', 255);
         $table->timestamp('updated_at');
         $table->timestamp('created_at')->nullable();
       });
 
       Schema::create('pm_speeds', function (Blueprint $table) {
-        $table->smallIncrements('id')->primary();
+        $table->smallIncrements('id');
         $table->string('name', 255);
         $table->timestamp('updated_at');
         $table->timestamp('created_at')->nullable();
       });
 
       Schema::create('departments', function (Blueprint $table) {
-        $table->smallIncrements('id')->primary();
+        $table->smallIncrements('id');
         $table->string('name', 255);
         $table->timestamp('updated_at');
         $table->timestamp('created_at')->nullable();
       });
 
       Schema::create('sampling_rates', function (Blueprint $table) {
-        $table->smallIncrements('id')->primary();
+        $table->smallIncrements('id');
         $table->string('name', 255);
         $table->timestamp('updated_at');
         $table->timestamp('created_at')->nullable();
