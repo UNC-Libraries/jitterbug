@@ -14,21 +14,23 @@ class CreateInitialViews extends Migration
     public function up()
     {
       DB::statement("
-        CREATE OR REPLACE VIEW audio_visual_item_collections AS
+        CREATE OR REPLACE VIEW audio_visual_item_collections AS 
           SELECT 
-            collections.id AS id,
-            collections.name AS name,
-          COUNT(audio_visual_items.collection_id) AS count
-          FROM
+            collections.id AS id, 
+            collections.name AS name, 
+          COUNT(audio_visual_items.collection_id) AS count 
+          FROM 
             audio_visual_items,
-            collections
-          WHERE
-            audio_visual_items.collection_id = collections.id
-          AND
-            audio_visual_items.deleted_at is null
+            collections 
+          WHERE 
+            audio_visual_items.collection_id = collections.id 
+          AND 
+            audio_visual_items.deleted_at is null 
           GROUP BY audio_visual_items.collection_id
           ORDER BY name;
+      ");
 
+      DB::statement("
         CREATE OR REPLACE VIEW audio_visual_item_formats AS
           SELECT 
             formats.id AS id,
@@ -43,7 +45,9 @@ class CreateInitialViews extends Migration
             audio_visual_items.deleted_at is null
           GROUP BY audio_visual_items.format_id
           ORDER BY name;
-        
+      ");
+
+      DB::statement("
         CREATE OR REPLACE VIEW audio_visual_item_types AS
           SELECT
             media_types.id,
@@ -56,7 +60,9 @@ class CreateInitialViews extends Migration
           AND
             audio_visual_items.deleted_at is null
           GROUP BY media_types.name;
+      ");
 
+      DB::statement("
         CREATE OR REPLACE VIEW transfer_types AS
           SELECT
             media_types.id,
@@ -69,7 +75,9 @@ class CreateInitialViews extends Migration
           AND
             transfers.deleted_at is null
           GROUP BY media_types.name;
-          
+      ");
+
+      DB::statement("
         CREATE OR REPLACE VIEW transfer_collections AS
           SELECT 
             collections.id AS id,
@@ -87,7 +95,9 @@ class CreateInitialViews extends Migration
             transfers.deleted_at is null
           GROUP BY audio_visual_items.collection_id
           ORDER BY name;
+      ");
 
+      DB::statement("
         CREATE OR REPLACE VIEW transfer_formats AS
           SELECT 
             formats.id AS id,
@@ -105,7 +115,9 @@ class CreateInitialViews extends Migration
             transfers.deleted_at is null
           GROUP BY audio_visual_items.format_id
           ORDER BY name;
+      ");
 
+      DB::statement("
         CREATE OR REPLACE VIEW preservation_master_types AS
           SELECT
             media_types.id,
@@ -118,7 +130,9 @@ class CreateInitialViews extends Migration
           AND
             preservation_masters.deleted_at is null
           GROUP BY media_types.name;
+      ");
 
+      DB::statement("
         CREATE OR REPLACE VIEW preservation_master_collections AS
           SELECT 
             collections.id AS id,
@@ -136,7 +150,9 @@ class CreateInitialViews extends Migration
             preservation_masters.deleted_at is null
           GROUP BY audio_visual_items.collection_id
           ORDER BY name;
+      ");
 
+      DB::statement("
         CREATE OR REPLACE VIEW preservation_master_formats AS
           SELECT 
             formats.id AS id,
@@ -154,7 +170,9 @@ class CreateInitialViews extends Migration
             preservation_masters.deleted_at is null
           GROUP BY audio_visual_items.format_id
           ORDER BY name;
+      ");
 
+      DB::statement("
         CREATE OR REPLACE VIEW preservation_master_departments AS
           SELECT 
             departments.id AS id,
@@ -169,7 +187,7 @@ class CreateInitialViews extends Migration
             preservation_masters.deleted_at is null
           GROUP BY preservation_masters.department_id
           ORDER BY name;
-     ");
+      ");
     }
 
     /**

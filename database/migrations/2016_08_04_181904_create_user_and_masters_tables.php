@@ -51,7 +51,6 @@ class CreateUserAndMastersTables extends Migration
         $table->string('name', 255);
         $table->timestamp('updated_at');
         $table->timestamp('created_at')->nullable();
-        $table->timestamp('deleted_at')->nullable();
       });
 
       Schema::create('users', function (Blueprint $table) {
