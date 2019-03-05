@@ -56,7 +56,7 @@ class CreateInitialTables extends Migration
         $table->tinyInteger('listening_copy')->default(0)->nullable();
         $table->string('size', 255)->nullable();
         $table->string('track_configuration', 255)->nullable();
-        $table->char('mono_stereo'. 1)->nullable();
+        $table->char('mono_stereo', 1)->nullable();
         $table->string('base', 255)->nullable();
         $table->text('content_description')->nullable();
         $table->timestamp('updated_at');
@@ -98,8 +98,8 @@ class CreateInitialTables extends Migration
       Schema::create('formats', function (Blueprint $table) {
         $table->smallIncrements('id')->primary();
         $table->string('name', 255)->unique();
-        $table->string('prefix');
-        $table->string('legacy_prefix')->nullable();
+        $table->string('prefix', 255);
+        $table->string('legacy_prefix', 255)->nullable();
         $table->timestamp('updated_at');
         $table->timestamp('created_at')->nullable();
       });
