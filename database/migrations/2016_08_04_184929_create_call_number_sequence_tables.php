@@ -15,16 +15,15 @@ class CreateCallNumberSequenceTables extends Migration
     {
       Schema::create('new_call_number_sequences', function (Blueprint $table) {
         $table->increments('id');
-        $table->string('prefix', 255)->nullable();
-        $table->integer('collection_id')->nullable();
+        $table->string('prefix', 255)->nullable()->index();
+        $table->integer('collection_id')->nullable()->index();
         $table->integer('next')->nullable();
         $table->string('reserved', 255)->nullable();
         $table->timestamp('updated_at');
         $table->timestamp('created_at')->nullable();
-        $table->index(array('prefix', 'collection_id'));
       });
 
-      Schema::create('legacy_number_sequences', function (Blueprint $table) {
+      Schema::create('legacy_call_number_sequences', function (Blueprint $table) {
         $table->increments('id');
         $table->string('prefix', 255)->nullable();
         $table->integer('next')->nullable();

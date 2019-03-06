@@ -14,14 +14,14 @@ class CreateUserAndMastersTables extends Migration
     public function up()
     {
       Schema::create('preservation_masters', function (Blueprint $table) {
-        $table->integer('id')->primary();
-        $table->string('call_number', 255)->nullable();
+        $table->increments('id');
+        $table->string('call_number', 255)->nullable()->index();
         $table->string('checksum', 255)->nullable();
         $table->integer('project_id')->nullable();
         $table->smallInteger('reproduction_machine_id')->nullable();
         $table->smallInteger('department_id')->nullable();
         $table->integer('duration_in_seconds')->nullable();
-        $table->string('file_name', 255)->nullable();
+        $table->string('file_name', 255)->nullable()->index();
         $table->string('file_location', 255)->nullable();
         $table->bigInteger('file_size_in_bytes')->nullable();
         $table->string('file_format', 255)->nullable();
@@ -32,11 +32,10 @@ class CreateUserAndMastersTables extends Migration
         $table->timestamp('updated_at');
         $table->timestamp('created_at')->nullable();
         $table->timestamp('deleted_at')->nullable();
-        $table->index(array('call_number', 'file_name'));
       });
 
       Schema::create('audio_masters', function (Blueprint $table) {
-        $table->integer('id')->primary();
+        $table->increments('id');
         $table->smallInteger('tape_brand_id')->nullable();
         $table->smallInteger('pm_speed_id')->nullable();
         $table->smallInteger('sampling_rate_id')->nullable();
@@ -47,14 +46,14 @@ class CreateUserAndMastersTables extends Migration
       });
 
       Schema::create('projects', function (Blueprint $table) {
-        $table->integer('id')->primary();
+        $table->increments('id');
         $table->string('name', 255);
         $table->timestamp('updated_at');
         $table->timestamp('created_at')->nullable();
       });
 
       Schema::create('users', function (Blueprint $table) {
-        $table->integer('id')->primary();
+        $table->increments('id');
         $table->string('first_name', 255)->nullable();
         $table->string('middle_name', 255)->nullable();
         $table->string('last_name', 255)->nullable();

@@ -22,17 +22,17 @@ class CreateTransferTables extends Migration
 
       Schema::create('cuts', function (Blueprint $table) {
         $table->increments('id');
-        $table->string('call_number', 255);
+        $table->string('call_number', 255)->index();
         $table->smallInteger('cut_number')->nullable();
-        $table->integer('transfer_id');
+        $table->integer('preservation_master_id');
+        $table->integer('transfer_id')->index();
         $table->string('side', 255)->nullable();
         $table->string('performer_composer', 510)->nullable();
-        $table->string('title', 255)->nullable();
+        $table->string('title', 510)->nullable();
         $table->string('pm_start_time', 255)->nullable();
         $table->timestamp('updated_at');
         $table->timestamp('created_at')->nullable();
         $table->timestamp('deleted_at')->nullable();
-        $table->index(array('call_number', 'transfer_id'));
       });
 
       Schema::create('transfers', function (Blueprint $table) {
