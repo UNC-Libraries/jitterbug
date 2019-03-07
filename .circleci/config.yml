@@ -43,9 +43,9 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.json" }}
 
       - run:
-          name: Setup Laravel stuffs
+          name: Migrate DB
           command: |
-            php artisan migrate --force
+            php artisan migrate --env=testing --database=jitterbug_testing --force
 
       - run: ./vendor/bin/phpunit
 
