@@ -1,29 +1,36 @@
-# PHP CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-php/ for more details
-#
 version: 2
 jobs:
   build:
     docker:
+      # Specify the version you desire here
       - image: circleci/php:5.6-node
+      - image: circleci/mysql:5.7
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_USER: root
+          MYSQL_ROOT_PASSWORD: ''
+          MYSQL_DATABASE: laravel
+
+    working_directory: ~/jitterbug
 
     steps:
       - checkout
+      - run:
+          name: Install PHP exts
+          command: |
+            sudo docker-php-ext-install zip
+            sudo docker-php-ext-install pdo_mysql
+            sudo apt install -y mysql-client
+            sudo apt-get install libldap2-dev -y
+            sudo rm -rf /var/lib/apt/lists/*
+            sudo docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/
+            sudo docker-php-ext-install ldap
 
-      - run: sudo apt update && sudo apt install zlib1g-dev libsqlite3-dev
-      - run: sudo docker-php-ext-install zip
-      - run: sudo apt-get install libldap2-dev -y
-      - run: sudo rm -rf /var/lib/apt/lists/*
-      - run: sudo docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/
-      - run: sudo docker-php-ext-install ldap
+      - run: sudo composer self-update
 
       # Download and cache dependencies
-
-      # composer cache
       - restore_cache:
           keys:
-            # "composer.lock" can be used if it is committed to the repo
             - v1-dependencies-{{ checksum "composer.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
@@ -31,33 +38,19 @@ jobs:
       - run: composer install -n --prefer-dist
 
       - save_cache:
-          key: composer-v1-{{ checksum "composer.lock" }}
           paths:
-            - vendor
+            - ./vendor
+          key: v1-dependencies-{{ checksum "composer.json" }}
 
-      # node cache
+      - run:
+          name: Setup Laravel stuffs
+          command: |
+            php artisan migrate --force
 
-      - restore_cache:
-          keys:
-            - node-v3-{{ checksum "package.json" }}
-            - node-v3-
-      - run: yarn install
-      - save_cache:
-          key: node-v3-{{ checksum "package.json" }}
-          paths:
-            - node_modules
-            - ~/.yarn
+      - run: ./vendor/bin/phpunit
 
-      # prepare the database
-      - run: touch storage/testing.sqlite
-      - run: php artisan key:generate --env-testing
-      - run: php artisan migrate --env=testing --database=sqlite_testing --force
-
-      # run tests with phpunit or codecept
-      #- run: ./vendor/bin/phpunit
-      - run: ./vendor/bin/codecept build
-      - run: ./vendor/bin/codecept run --xml result.xml
-      - store_test_results:
-          path: tests/_output
-      - store_artifacts:
-          path: tests/_output
+workflows:
+  version: 2
+  notify_deploy:
+    jobs:
+      - build
