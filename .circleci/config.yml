@@ -9,7 +9,6 @@ jobs:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_USER: root
           MYSQL_ROOT_PASSWORD: ''
-          MYSQL_DATABASE: circleci
 
     working_directory: ~/jitterbug
 
@@ -43,10 +42,14 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.json" }}
 
       - run:
+          name: Create MySQL DB
+          command: mysql -h 127.0.0.1 -u root -e "create database jitterbug_testing;"
+
+      - run:
           name: Migrate DB
           command: |
             php artisan config:cache --env=testing
-            php artisan migrate --env=testing --database=circleci --force
+            php artisan migrate --env=testing --database=jitterbug_testing --force
 
       - run: ./vendor/bin/phpunit
 
