@@ -1,14 +1,6 @@
 # Jitterbug
 A Laravel / MySQL database management application to support large-scale description, digitization, preservation and access of archival audiovisual recordings in the Wilson Special Collections Library of UNC-Chapel Hill. Funded by an Andrew W. Mellon Foundation grant, "Extending the Reach of Southern Audiovisual Sources."
 
-
-## Initial setup
-1. Get a fresh Jitterbug MySQL production database dump (`$jitterbug-db-dump` refers to the name of this file) from a UNC library sysadmin.
-2. Because the dump will contain views, you will need to remove the SQL security definers in the dump file. Using sed (on Mac OS X):
-```bash
-$ sed -i '' 's/DEFINER=[^*]*\*/\*/g' $jitterbug-db-dump
-```
----
 ## Vagrant Installation
 If you would like to use a pre-configured Vagrant box, Laravel Homestead is available for use.
 
@@ -45,27 +37,8 @@ $ vagrant up
 ```
 8. When that finishes, go to http://homestead.test and see if the jitterbug login page loads.
 
-### Populating the DB and Solr cores
-1. Import the MySQL dump into your jitterbug DB.
-```bash
-$ vagrant ssh
-$ mysql -u homestead jitterbug < $jitterbug-db-dump -psecret
-```
-2. Use the Solr web app to import data from MySQL to index each Jitterbug core. This will take about 25 minutes for all cores.
-	1. Point your favorite web browser to http://homestead.test:8983/solr
-	2. Use the Solr "Core Selector" menu to select the jitterbug-items core.
-	3. Click the Dataimport button under the Core Selector menu.
-	4. Underneath the Execute button, check the Auto-Refresh Status checkbox.
-	5. Click Execute.
-	6. When jitterbug-items is finished indexing, repeat these steps for each core.
-
-### Seeding the DB with the non-LDAP admin user
-1. To log in with the non-LDAP admin dev user, you'll need to seed the DB. Inside the vagrant machine:
-```bash
-$ cd /vagrant
-$ php artisan db:seed --class=UsersTableSeeder
-```
-2. Try to log into Jitterbug with the username `dev-admin`
+### Log in with the non-LDAP admin user
+ Try to log into Jitterbug with the username `dev-admin` 
  and the admin user password you set in your `.env` file.
  ---
 ## Local Installation
@@ -89,19 +62,14 @@ $ mysql -u username -p
 mysql> create database jitterbug
 ```
 
-2. Import the MySQL dump.
-```bash
-$ mysql -u username jitterbug < $jitterbug-db-dump -p
-```
-
-3. Clone the repo to your local machine ($JITTERBUG_HOME).
+2. Clone the repo to your local machine ($JITTERBUG_HOME).
 ```bash
 $ git clone git@github.com:UNC-Libraries/jitterbug.git jitterbug
 ```
 
-4. If you have not already, unzip the MySQL Connector/J archive, then copy the jar file (mysql-connector-java-5.1.38-bin.jar) into $SOLR_HOME/contrib/dataimporthandler-extras/lib
+3. If you have not already, unzip the MySQL Connector/J archive, then copy the jar file (mysql-connector-java-5.1.38-bin.jar) into $SOLR_HOME/contrib/dataimporthandler-extras/lib
 
-5. Create the Solr core directories.
+4. Create the Solr core directories.
 ```bash
 $ cd $SOLR_HOME/server/solr
 $ mkdir jitterbug-items
@@ -109,14 +77,14 @@ $ mkdir jitterbug-masters
 $ mkdir jitterbug-transfers
 ```
 
-6. Symlink core conf directories to those in the git repo.
+5. Symlink core conf directories to those in the git repo.
 ```bash
 $ ln -s $JITTERBUG_HOME/solrconfig/jitterbug-items/conf jitterbug-items/conf
 $ ln -s $JITTERBUG_HOME/solrconfig/jitterbug-masters/conf jitterbug-masters/conf
 $ ln -s $JITTERBUG_HOME/solrconfig/jitterbug-transfers/conf jitterbug-transfers/conf
 ```
 
-7. Create a core.properties file in each core directory.
+6. Create a core.properties file in each core directory.
 ```bash
 $ cd jitterbug-items
 $ nano core.properties
@@ -134,19 +102,19 @@ $ nano core.properties
    importDataSourcePassword=password  
 ```
 
-8. Start Solr. It might be helpful to run it in the foreground when developing, hence the -f flag.
+7. Start Solr. It might be helpful to run it in the foreground when developing, hence the -f flag.
 ```bash
 $ $SOLR_HOME/bin/solr start -f
 ```
 
-9. Create the new cores in Solr.
+8. Create the new cores in Solr.
 ```bash
 $ $SOLR_HOME/bin/solr create -c jitterbug-items
 $ $SOLR_HOME/bin/solr create -c jitterbug-masters
 $ $SOLR_HOME/bin/solr create -c jitterbug-transfers
 ```
 
-10. Use the Solr web app to import data from MySQL to index each Jitterbug core. This will take about 25 minutes for all cores. The import configuration (including the SQL Solr will use for querying MySQL) for each core can be found in the respective conf directory, in the solr-data-config.xml file.
+9. Use the Solr web app to import data from MySQL to index each Jitterbug core. This will take about 25 minutes for all cores. The import configuration (including the SQL Solr will use for querying MySQL) for each core can be found in the respective conf directory, in the solr-data-config.xml file.
 	1. Point your favorite web browser to http://localhost:8983/solr.
 	2. Use the Solr "Core Selector" menu to select the jitterbug-items core.
 	3. Click the Dataimport button under the Core Selector menu.
@@ -154,7 +122,7 @@ $ $SOLR_HOME/bin/solr create -c jitterbug-transfers
 	5. Click Execute.
 	6. When jitterbug-items is finished indexing, repeat these steps for each core.
 
-11. Add a crontab entry for the Jitterbug (Laravel) [scheduler](https://laravel.com/docs/5.2/scheduling). This job will run every minute and will create the activity stream when there have been new transactions.
+10. Add a crontab entry for the Jitterbug (Laravel) [scheduler](https://laravel.com/docs/5.2/scheduling). This job will run every minute and will create the activity stream when there have been new transactions.
 ```bash
 $ crontab -e
 ```
@@ -163,14 +131,14 @@ $ crontab -e
    * * * * * php $JITTERBUG_HOME/artisan schedule:run >> /dev/null 2>&1  
 ```
 
-12. Install Jitterbug dependencies.
+11. Install Jitterbug dependencies.
 ```bash
 $ cd $JITTERBUG_HOME
 $ composer update #PHP dependencies
 $ npm install
 ```
 
-13. Create a new application key.
+12. Create a new application key.
 ```bash
 $ php artisan key:generate
 ```
@@ -188,6 +156,12 @@ $ gulp
 $ gulp watch
 ```
 
+### Migrate the DB
+```bash
+$ cd $JITTERBUG_HOME
+$ php artisan migrate
+```
+
 ### Running
 1. Start the local PHP web server.
 
@@ -198,7 +172,31 @@ $ php artisan serve
    In your favorite web browser, go to http://localhost:8000/
 
 ---
+## Populating the DB and Solr cores (optional)
+If you have data that you'd like to populate the DB with, export it as a SQL dump without views or create/drop statements.
+1. Import the MySQL dump into your jitterbug DB. `$jitterbug-db-dump` is the path and filename of your dump file
 
+In Vagrant VM:
+```bash
+$ vagrant ssh
+$ mysql -u homestead jitterbug < $jitterbug-db-dump -psecret
+```
+
+In local setup:
+```bash
+$ mysql -u username jitterbug < $jitterbug-db-dump -p
+```
+
+2. Use the Solr web app to import data from MySQL to index each Jitterbug core. 
+This will take about 25 minutes for all cores.
+	1. Point your favorite web browser to http://homestead.test:8983/solr (vagrant) or http://localhost:8983/solr (local)
+	2. Use the Solr "Core Selector" menu to select the jitterbug-items core.
+	3. Click the Dataimport button under the Core Selector menu.
+	4. Underneath the Execute button, check the Auto-Refresh Status checkbox.
+	5. Click Execute.
+	6. When jitterbug-items is finished indexing, repeat these steps for each core.
+
+---
 ## Revisionable
 A key feature of Jitterbug is how it maintains a detailed paper trail of all changes to the four object types (items, masters, cuts, and transfers). Jitterbug leverages [a fork](https://github.com/UNC-Libraries/revisionable) of a 3rd party package for Laravel, called Revisionable, that hooks into the lifecycle of Eloquent models to maintain revision histories. Revisionable preserves the fields that are modified, what their old value was, and what their new value is. Revisionable writes to a single table, “revisions” which implements [Laravel poloymorphic relations](https://laravel.com/docs/5.2/eloquent-relationships#polymorphic-relations). By merely adding a single trait (RevisionableTrait) to your model class, revision histories can be tracked and will be saved to the revisions table.
 
