@@ -9,11 +9,20 @@ jobs:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_USER: root
           MYSQL_ROOT_PASSWORD: ''
+          MYSQL_DATABASE: jitterbug_testing
 
     working_directory: ~/jitterbug
 
     steps:
       - checkout
+      - run:
+          name: install dockerize
+          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          environment:
+            DOCKERIZE_VERSION: v0.3.0
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
       - run:
           name: Install PHP exts
           command: |
@@ -49,9 +58,13 @@ jobs:
           name: Migrate DB
           command: |
             php artisan config:cache --env=testing
-            php artisan migrate --env=testing --database=jitterbug_testing --force
+            php artisan migrate --env=testing --database=circleci --force
 
       - run: ./vendor/bin/phpunit
+      - store_test_results:
+          path: tests/_output
+      - store_artifacts:
+          path: tests/_output
 
 workflows:
   version: 2
