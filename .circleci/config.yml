@@ -54,7 +54,7 @@ jobs:
           name: Migrate DB
           command: |
             php artisan config:cache --env=testing
-            php artisan migrate --env=testing --database=circleci --force
+            php artisan migrate --env=testing --database=jitterbug_testing --force
 
       - run: ./vendor/bin/phpunit
       - store_test_results:
