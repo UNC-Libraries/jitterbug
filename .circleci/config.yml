@@ -5,6 +5,11 @@ jobs:
       # Specify the version you desire here
       - image: circleci/php:5.6-node
       - image: circleci/mysql:5.7
+          environment:
+            MYSQL_ALLOW_EMPTY_PASSWORD: yes
+            MYSQL_USER: root
+            MYSQL_ROOT_PASSWORD: ''
+            MYSQL_DATABASE: jitterbug_testing
 
     working_directory: ~/jitterbug
 
@@ -51,17 +56,10 @@ jobs:
             php artisan config:cache --env=testing
             php artisan migrate --env=testing --force
 
-      - run: ./vendor/bin/phpunit
-
       - run:
-          command: |
-            mkdir -p ~/phpunit
-            phpunit --log-junit ~/phpunit/junit.xml tests
-          when: always
-      - store_test_results:
-          path: ~/phpunit
-      - store_artifacts:
-          path: ~/phpunit
+          name: Run Tests
+          command: ./vendor/bin/phpunit
+
 
 workflows:
   version: 2
