@@ -1,7 +1,5 @@
 # Jitterbug
-A Laravel / MySQL database management application to support large-scale description, digitization, preservation and 
-access of archival audiovisual recordings in the Wilson Special Collections Library of UNC-Chapel Hill. Funded by an 
-Andrew W. Mellon Foundation grant, "Extending the Reach of Southern Audiovisual Sources."
+A Laravel / MySQL database management application to support large-scale description, digitization, preservation and access of archival audiovisual recordings in the Wilson Special Collections Library of UNC-Chapel Hill. Funded by an Andrew W. Mellon Foundation grant, "Extending the Reach of Southern Audiovisual Sources."
 
 ## Vagrant Installation
 If you would like to use a pre-configured Vagrant box, Laravel Homestead is available for use.
@@ -33,8 +31,7 @@ $ php vendor/bin/homestead make
 ```bash
 $ vagrant plugin install vagrant-hostsupdater
 ```
-If you would prefer not to install the vagrant-hostupdater plugin, you can edit your etc hosts file 
-yourself:
+If you would prefer not to install the vagrant-hostupdater plugin, you can edit your etc hosts file yourself:
 ```bash
 192.168.10.10   homestead.test
 ```
@@ -94,8 +91,7 @@ $ ln -s $JITTERBUG_HOME/solrconfig/jitterbug-transfers/conf jitterbug-transfers/
 $ cd jitterbug-items
 $ nano core.properties
 ```
-   Paste the following into the editor (where the name property is the name of the core, and the username and password 
-   correspond to your local MySQL instance) and save. Repeat for each core:
+   Paste the following into the editor (where the name property is the name of the core, and the username and password correspond to your local MySQL instance) and save. Repeat for each core:
 ```  
    #Written by CorePropertiesLocator  
    #Tue Feb 7 14:29:29 UTC 2017  
@@ -121,8 +117,7 @@ $ $SOLR_HOME/bin/solr create -c jitterbug-transfers
 ```
 
 9. Add a crontab entry for the Jitterbug (Laravel) [scheduler](https://laravel.com/docs/5.2/scheduling). 
-This job will run every minute and will create the activity stream when there have been new 
-transactions.
+This job will run every minute and will create the activity stream when there have been new transactions.
 ```bash
 $ crontab -e
 ```
@@ -146,9 +141,7 @@ $ php artisan key:generate
 
 #### Configuration
 1. Copy `$JITTERBUG_HOME/.env.example` to `$JITTERBUG_HOME/.env`.
-2. Edit the DB_\* in `$JITTERBUG_HOME/.env`. The DB_\* properties will be determined by you, 
-the developer, based on your database configuration. The SOLR_\* properties will likely be the same 
-as what is in the .env.example file.
+2. Edit the DB_\* in `$JITTERBUG_HOME/.env`. The DB_\* properties will be determined by you, the developer, based on your database configuration. The SOLR_\* properties will likely be the same as what is in the .env.example file.
 3. Choose a password for the `ADMIN_USER_PASSWORD` for the dev admin user.
 
 #### Asset Compilation
@@ -266,10 +259,7 @@ related transaction id.
 6. Add the field to the show page corresponding to the object type (items, masters, or transfers). Ask the project director in what order it should be placed (before or after a certain field).
 7. Add the field to the form partial corresponding to the object and media type (e.g. _form-audio.blade.php).
 8. Add validation rules and messages to the form request class corresponding to the object type.
-9. In the model that corresponds to the object and media type (e.g. AudioTransfer, or just Transfer if 
-the field is common to all transfer types) add an appropriate element to the $revisionFormattedFields 
-array. This array is used by the ‘revisionable’ package to determine how to format field values in 
-revision histories. For more information on the syntax, see 
+9. In the model that corresponds to the object and media type (e.g. AudioTransfer, or just Transfer if the field is common to all transfer types) add an appropriate element to the $revisionFormattedFields array. This array is used by the ‘revisionable’ package to determine how to format field values in revision histories. For more information on the syntax, see 
 [https://github.com/VentureCraft/revisionable](https://github.com/VentureCraft/revisionable).
 10. If the field name contains multiple words, in the model that corresponds to the object and media type (e.g. AudioTransfer, or just Transfer if the field is common to all transfer types) add an appropriate element to the $revisionFormattedFieldNames array. This array is used by the ‘revisionable’ package to determine how to render the field name in revision histories.
 11. In the model that corresponds to the object and media type (e.g. AudioTransfer, or just Transfer if the field is common to all transfer types) add an element to the $fillable array so that Laravel can mass assign field values to the field.
