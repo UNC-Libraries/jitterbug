@@ -81,3 +81,9 @@ rm -rf node_modules/*
 npm install
 php artisan key:generate
 gulp
+
+# run migrations on the DB
+php artisan migrate
+
+# seed the Db with the non LDAP admin user
+php artisan db:seed --class=UsersTableSeeder
