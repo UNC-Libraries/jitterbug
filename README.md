@@ -31,7 +31,7 @@ $ php vendor/bin/homestead make
 ```bash
 $ vagrant plugin install vagrant-hostsupdater
 ```
-If you would prefer not to install the vagrant-hostupdater plugin, you can edit your etc hosts file yourself:
+If you would prefer not to install the vagrant-hostupdater plugin, you can edit your `/etc/hosts` file yourself:
 ```bash
 192.168.10.10   homestead.test
 ```
@@ -222,7 +222,7 @@ to the revisions table, and code was added to persist the transaction id when cr
 models. The transaction id itself is a UUID4 generated key that is passed down from application code to 
 Revisionable via a database connection variable. Look in any of the controller classes and you will see 
 this code just after the beginning of a transaction block: 
-`DB::statement("set @transaction_id = '$transactionId';");`. That code is Jitterbug setting the connection 
+```DB::statement("set @transaction_id = '$transactionId';");```. That code is Jitterbug setting the connection 
 variable which is picked up by Revisionable when revisions are saved.
 
 In addition to the transaction_id mechanics, several other small features were added to Revisionable. 
@@ -234,7 +234,7 @@ to storing only the base class name.
 The Recenty Activity module in the Dashboard uses transactional information in the revisions table to 
 generate a representation of recent activity in the system. A simple cron job, which runs every minute, 
 is used to generate the activity stream when new revisionable transactions have occurred. You can run 
-this job yourself on demand by navigating to the root of your Jitterbug repository and running php artisan schedule:run`, 
+this job yourself on demand by navigating to the root of your Jitterbug repository and running `php artisan schedule:run`, 
 which is precisely what the cron job does every minute. This command instructs Laravel to run any pending 
 jobs defined in the ```schedule()``` method of [```Jitterbug\Console\Kernel```](https://github.com/UNC-Libraries/jitterbug/blob/master/app/Console/Kernel.php). 
 More information about Laravel task scheduling can be found in the [documentation](https://laravel.com/docs/5.2/scheduling).
