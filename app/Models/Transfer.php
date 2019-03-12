@@ -42,11 +42,11 @@ class Transfer extends Model {
     'playbackMachineId', 'engineerId', 'vendorId',
     'conditionNote', 'transferNote');
 
-  public function __construct()
+  public function __construct($attributes = [])
   {
     $this->subclassType = 'AudioTransfer';
     $this->transferDate = (new \DateTime())->format('Y-m-d');
-    parent::__construct();
+    parent::__construct($attributes);
   }
 
   public function item()

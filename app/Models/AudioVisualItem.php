@@ -58,11 +58,11 @@ class AudioVisualItem extends Model {
     'legacy', 'formatId', 'reelTapeNumber', 'containerNote',
     'conditionNote', 'oclc', 'entryDate', 'speed');
 
-  public function __construct()
+  public function __construct($attributes = [])
   {
     $this->subclassType = 'AudioItem';
     $this->entryDate = (new \DateTime())->format('Y-m-d');
-    parent::__construct();
+    parent::__construct($attributes);
   }
 
   public function batch()

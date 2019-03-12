@@ -34,9 +34,9 @@ $factory->define(Jitterbug\Models\AudioItem::class, function (Faker\Generator $f
   return [
     'call_number' => $faker->word,
     'listening_copy' => $faker->boolean,
-    'size' => $faker->word,
-    'track_configuration' => $faker->word,
-    'mono_stereo' => $faker->word,
+    'size' => null,
+    'track_configuration' => null,
+    'mono_stereo' => 'M',
     'base' => $faker->word,
     'content_description' => $faker->text,
   ];
@@ -67,29 +67,33 @@ $factory->define(Jitterbug\Models\AudioTransfer::class, function (Faker\Generato
 
 $factory->define(Jitterbug\Models\AudioVisualItem::class, function (Faker\Generator $faker) {
   return [
-    'call_number' => $faker->word,
+    'call_number' => 'FS-'.strval($faker->randomNumber(4)),
     'title' => $faker->text,
-    'recording_location' => $faker->word,
-    'physical_location' => $faker->word,
-    'access_restrictions' => $faker->word,
-    'item_year' => $faker->word,
+    'recording_location' => 'Durham, NC',
+    'physical_location' => null,
+    'access_restrictions' => null,
+    'item_year' => strval($faker->numberBetween(1920, 2015)),
     'item_date' => $faker->date(),
     'collection_id' => function () {
       return factory(Jitterbug\Models\Collection::class)->create()->id;
     },
     'accession_number' => $faker->randomNumber(),
-    'legacy' => $faker->word,
+    'legacy' => null,
     'container_note' => $faker->text,
     'condition_note' => $faker->text,
-    'oclc' => $faker->randomNumber(),
+    'oclc' => null,
     'format_id' => function () {
       return factory(Jitterbug\Models\Format::class)->create()->id;
     },
     'reel_tape_number' => $faker->word,
     'entry_date' => $faker->date(),
     'speed' => $faker->word,
-    'subclass_type' => $faker->word,
-    'subclass_id' => $faker->randomNumber(),
+    'subclass_type' => 'AudioItem',
+    'subclass_id' => function (array $audio_visual_item) {
+      return factory(Jitterbug\Models\AudioItem::class)->create([
+        'call_number' => $audio_visual_item['call_number'],
+      ])->id;
+    },
   ];
 });
 
@@ -172,8 +176,8 @@ $factory->define(Jitterbug\Models\FilmMaster::class, function (Faker\Generator $
 
 $factory->define(Jitterbug\Models\Format::class, function (Faker\Generator $faker) {
   return [
-    'name' => $faker->name,
-    'prefix' => $faker->word,
+    'name' => $faker->word,
+    'prefix' => 'FS',
     'legacy_prefix' => $faker->word,
   ];
 });
@@ -393,8 +397,3 @@ $factory->define(Jitterbug\Models\VideoTransfer::class, function (Faker\Generato
         'ad_converter' => $faker->word,
     ];
 });
-
-
-
-
-
