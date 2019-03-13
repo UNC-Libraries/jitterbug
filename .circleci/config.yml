@@ -7,8 +7,8 @@ jobs:
       - image: circleci/mysql:5.7
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_USER: homestead
-          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_USER: root
+          MYSQL_ROOT_PASSWORD: ''
           MYSQL_DATABASE: jitterbug_testing
 
     working_directory: ~/jitterbug
@@ -32,6 +32,9 @@ jobs:
             sudo docker-php-ext-install ldap
 
       - run: sudo composer self-update
+      - run:
+          name: Copy Circle CI version of .env.testing
+          command: cp .env.testing.circleci .env.testing
 
       # Download and cache dependencies
       - restore_cache:
