@@ -53,10 +53,10 @@ class PreservationMaster extends Model {
     'filmFileFormat', 'filmFileCodec', 'videoFileFormat',
     'videoFileCodec', 'accessFileLocation');
 
-  public function __construct()
+  public function __construct($attributes = [])
   {
     $this->subclassType = 'AudioMaster';
-    parent::__construct();
+    parent::__construct($attributes);
   }
 
   public function batch()
