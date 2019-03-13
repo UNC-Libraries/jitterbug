@@ -6,6 +6,7 @@ jobs:
       - image: circleci/php:5.6-node
       - image: circleci/mysql:5.7
         environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_USER: homestead
           MYSQL_ROOT_PASSWORD: secret
           MYSQL_DATABASE: jitterbug_testing
