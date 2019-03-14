@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-# Create and populate the jitterbug DB
+# Create the jitterbug DB & jitterbug test DB
 vagrant ssh
 cd /vagrant
-mysql -u homestead -psecret -e "CREATE DATABASE IF NOT EXISTS jitterbug;"
+mysql -u homestead -psecret -e "CREATE DATABASE IF NOT EXISTS jitterbug; CREATE DATABASE IF NOT EXISTS jitterbug_testing;"
 
 # Download java 8
 cd /
@@ -82,8 +82,9 @@ npm install
 php artisan key:generate
 gulp
 
-# run migrations on the DB
+# run migrations on the DB and the testing DB
 php artisan migrate
+php artisan migrate --env=testing
 
 # seed the Db with the non LDAP admin user
 php artisan db:seed --class=UsersTableSeeder

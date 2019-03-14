@@ -1,7 +1,9 @@
 <?php
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AudioVisualItemTest extends TestCase
 {
+    use DatabaseTransactions;
     /**
      * A basic test example.
      *
