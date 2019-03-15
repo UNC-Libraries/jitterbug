@@ -35,7 +35,7 @@ class ItemsImport extends Import {
     $this->itemsImportKeys = array_merge($this->requiredItemsImportKeys, 
       array('ContainerNote', 'LegacyID', 'RecLocation', 'ItemYear', 
         'ItemDate', 'Size', 'Element', 'Base', 'Color', 'SoundType', 
-        'LengthInFeet', 'ContentDescription'));
+        'LengthInFeet', 'ContentDescription', 'ReelTapeNumber'));
 
     $this->solrItems = new SolariumProxy('jitterbug-items');
 
@@ -211,6 +211,8 @@ class ItemsImport extends Import {
           isset($row['ItemYear']) ? $row['ItemYear'] : null;
         $item->itemDate = 
           isset($row['ItemDate']) ? $row['ItemDate'] : null;
+        $item->reelTapeNumber =
+          isset($row['ReelTapeNumber']) ? $row['ReelTapeNumber'] : null;
         $item->save();
         $created++;
 

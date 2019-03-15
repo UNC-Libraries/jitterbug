@@ -29,6 +29,7 @@
         <td>{{isset($row['SoundType']) ? $row['SoundType'] : ''}}</td>
         <td>{{isset($row['LengthInFeet']) ? $row['LengthInFeet'] : ''}}</td>
         <td>{{isset($row['ContentDescription']) ? $row['ContentDescription'] : ''}}</td>
+        <td>{{isset($row['ReelTapeNumber']) ? $row['ReelTapeNumber'] : ''}}</td>
       </tr>
       <?php $index++; ?>
       @endforeach 

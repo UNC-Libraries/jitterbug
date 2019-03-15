@@ -18,5 +18,6 @@
         <th width="5%">SoundType</th>
         <th width="6%">LengthInFeet</th>
         <th width="11%">ContentDescription</th>
+        <th width="5%">ReelTapeNumber</th>
       </tr>
     </thead>
