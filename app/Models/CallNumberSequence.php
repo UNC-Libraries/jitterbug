@@ -10,7 +10,6 @@ class CallNumberSequence extends Model {
 
   public static function next($collectionId, $formatId)
   {
-    $collection = Collection::findOrFail($collectionId);
     $prefix = Format::findOrFail($formatId)->prefix;
 
     $sequence = NewCallNumberSequence::where('prefix', '=', $prefix)->
