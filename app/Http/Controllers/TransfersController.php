@@ -91,8 +91,9 @@ class TransfersController extends Controller {
     $types = TransferType::all();
     $collections = TransferCollection::all();
     $formats = TransferFormat::all();
+    $max_edit_limit = Transfer::BATCH_EDIT_MAX_LIMIT;
 
-    return view('transfers.index', compact('types', 'collections', 'formats'));
+    return view('transfers.index', compact('types', 'collections', 'formats', 'max_edit_limit'));
   }
 
   /**
@@ -210,7 +211,7 @@ class TransfersController extends Controller {
    */
   public function batchEdit(Request $request)
   {
-    $max = 500;
+    $max = Transfer::BATCH_EDIT_MAX_LIMIT;
 
     $transferIds = explode(',', $request->input('ids'));
     // See similar in ItemsController.php for comments on the below
@@ -629,7 +630,7 @@ class TransfersController extends Controller {
 
   public function batchDestroy(Request $request)
   {
-    $max = 100;
+    $max = Transfer::BATCH_EDIT_MAX_LIMIT;
 
     $transferIds = explode(',', $request->ids);
     $transfers = Transfer::whereIn('id', $transferIds)->get();

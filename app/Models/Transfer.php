@@ -13,6 +13,8 @@ class Transfer extends Model {
   use SoftDeletes;
   use Markable;
 
+  const BATCH_EDIT_MAX_LIMIT = 1000;
+
   protected $dates = ['deleted_at'];
 
   protected $revisionCreationsEnabled = true;
