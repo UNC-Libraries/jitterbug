@@ -90,10 +90,10 @@ class MastersController extends Controller {
     $collections = PreservationMasterCollection::all();
     $formats = PreservationMasterFormat::all();
     $departments = PreservationMasterDepartment::all();
-    $max_edit_limit = PreservationMaster::BATCH_EDIT_MAX_LIMIT;
+    $maxEditLimit = PreservationMaster::BATCH_EDIT_MAX_LIMIT;
 
     return view('masters.index', 
-        compact('types', 'collections', 'formats', 'departments', 'max_edit_limit'));
+        compact('types', 'collections', 'formats', 'departments', 'maxEditLimit'));
   }
 
   /**

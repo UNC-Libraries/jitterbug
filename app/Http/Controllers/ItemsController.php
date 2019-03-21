@@ -88,10 +88,10 @@ class ItemsController extends Controller
     $types = AudioVisualItemType::all();
     $collections = AudioVisualItemCollection::all();
     $formats = AudioVisualItemFormat::all();
-    $max_edit_limit = AudioVisualItem::BATCH_EDIT_MAX_LIMIT;
+    $maxEditLimit = AudioVisualItem::BATCH_EDIT_MAX_LIMIT;
 
     return view('items.index', 
-        compact('types', 'collections', 'formats', 'max_edit_limit'));
+        compact('types', 'collections', 'formats', 'maxEditLimit'));
   }
   
   /**
