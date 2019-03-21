@@ -688,7 +688,7 @@ jitterbug = {
   initMastersBatchMenu: function() {
     $('#masters-batch-edit').click(function(event) {
       var tableSelection = jitterbug.tableSelection;
-      var maxEditLimit =$(this).data('max-edit-limit');
+      var maxEditLimit = $(this).data('max-edit-limit');
       if (!jitterbug.validateBatchSelection(tableSelection, 'editing', maxEditLimit)) {
         return;
       }
@@ -765,7 +765,8 @@ jitterbug = {
   initTransfersBatchMenu: function() {
     $('#transfers-batch-edit').click(function(event) {
       var tableSelection = jitterbug.tableSelection;
-      if (!jitterbug.validateBatchSelection(tableSelection, 'editing', 500)) {
+      var maxEditLimit = $(this).data('max-edit-limit');
+      if (!jitterbug.validateBatchSelection(tableSelection, 'editing', maxEditLimit)) {
         return;
       }
       jitterbug.submitBatchEditForm('transfers', tableSelection);
