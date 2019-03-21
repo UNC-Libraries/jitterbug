@@ -14,7 +14,7 @@
         <div class="btn-group">
           <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cubes" data-toggle="dropdown" aria-hidden="true"></i> Batch</button>
           <div id="items-batch-dropdown" class="dropdown-menu">
-            <a id="items-batch-edit" class="dropdown-item" href="#">Edit</a>
+            <a id="items-batch-edit" class="dropdown-item" href="#" data-max-edit-limit="{{$maxEditLimit}}">Edit</a>
             <a id="items-batch-export" class="dropdown-item" href="#">Export</a>
             <a id="items-batch-mark" class="dropdown-item" href="#">Mark</a>
             <a id="items-batch-unmark" class="dropdown-item" href="#">Unmark</a>

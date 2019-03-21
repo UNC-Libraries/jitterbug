@@ -88,9 +88,10 @@ class ItemsController extends Controller
     $types = AudioVisualItemType::all();
     $collections = AudioVisualItemCollection::all();
     $formats = AudioVisualItemFormat::all();
+    $maxEditLimit = AudioVisualItem::BATCH_EDIT_MAX_LIMIT;
 
     return view('items.index', 
-        compact('types', 'collections', 'formats'));
+        compact('types', 'collections', 'formats', 'maxEditLimit'));
   }
   
   /**
@@ -219,7 +220,7 @@ class ItemsController extends Controller
    */
   public function batchEdit(Request $request)
   {
-    $max = 500;
+    $max = AudioVisualItem::BATCH_EDIT_MAX_LIMIT;
 
     $itemIds = explode(',', $request->input('ids'));
     // The first time into the batch edit form, the request
