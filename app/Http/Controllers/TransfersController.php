@@ -91,9 +91,9 @@ class TransfersController extends Controller {
     $types = TransferType::all();
     $collections = TransferCollection::all();
     $formats = TransferFormat::all();
-    $max_edit_limit = Transfer::BATCH_EDIT_MAX_LIMIT;
+    $maxEditLimit = Transfer::BATCH_EDIT_MAX_LIMIT;
 
-    return view('transfers.index', compact('types', 'collections', 'formats', 'max_edit_limit'));
+    return view('transfers.index', compact('types', 'collections', 'formats', 'maxEditLimit'));
   }
 
   /**
