@@ -764,8 +764,8 @@ jitterbug = {
   initTransfersBatchMenu: function() {
     $('#transfers-batch-edit').click(function(event) {
       var tableSelection = jitterbug.tableSelection;
-      var max_edit_limit =$(this).data('max-edit-limit');
-      if (!jitterbug.validateBatchSelection(tableSelection, 'editing', max_edit_limit)) {
+      var maxEditLimit =$(this).data('max-edit-limit');
+      if (!jitterbug.validateBatchSelection(tableSelection, 'editing', maxEditLimit)) {
         return;
       }
       jitterbug.submitBatchEditForm('transfers', tableSelection);
