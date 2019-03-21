@@ -16,6 +16,8 @@ class UsersTableSeeder extends Seeder
         {
           $password = Hash::make(env('ADMIN_USER_PASSWORD'));
           $users[] = [
+            'first_name' => 'Dev',
+            'last_name' => 'Admin',
             'email' => 'admin@jitterbug.com',
             'admin' => 1,
             'username' => 'dev-admin',
