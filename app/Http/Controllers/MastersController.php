@@ -90,9 +90,10 @@ class MastersController extends Controller {
     $collections = PreservationMasterCollection::all();
     $formats = PreservationMasterFormat::all();
     $departments = PreservationMasterDepartment::all();
+    $max_edit_limit = PreservationMaster::BATCH_EDIT_MAX_LIMIT;
 
     return view('masters.index', 
-        compact('types', 'collections', 'formats', 'departments'));
+        compact('types', 'collections', 'formats', 'departments', 'max_edit_limit'));
   }
 
   /**
@@ -236,7 +237,7 @@ class MastersController extends Controller {
    */
   public function batchEdit(Request $request)
   {
-    $max = 500;
+    $max = PreservationMaster::BATCH_EDIT_MAX_LIMIT;
 
     $masterIds = explode(',', $request->input('ids'));
     // See similar in ItemsController.php for comments on the below

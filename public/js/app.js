@@ -687,7 +687,8 @@ jitterbug = {
   initMastersBatchMenu: function() {
     $('#masters-batch-edit').click(function(event) {
       var tableSelection = jitterbug.tableSelection;
-      if (!jitterbug.validateBatchSelection(tableSelection, 'editing', 500)) {
+      var max_edit_limit =$(this).data('max-edit-limit');
+      if (!jitterbug.validateBatchSelection(tableSelection, 'editing', max_edit_limit)) {
         return;
       }
       jitterbug.submitBatchEditForm('masters', tableSelection);
