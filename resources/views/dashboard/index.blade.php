@@ -93,6 +93,11 @@
               </div>
             </div>
           </div>
+
+          <div class="select-all">
+            <input class="form-check-input" type="checkbox" value="" id="mark-checkbox-all" title="Select all marks">
+            <label class="select-all-label">Select All</label>
+          </div>
       
           <div class="marks">
             <ol>
@@ -100,6 +105,9 @@
             </ol>
           </div>
 
+          <div>
+            <button class="btn btn-secondary" title="Delete selected marks"><i class="fa fa-trash" aria-hidden="true"></i></button>
+          </div>
         </div>
       </div>
     </div>
