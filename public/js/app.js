@@ -2326,6 +2326,8 @@ jitterbug = {
       $(filtersSelector).click(function(event) {
         event.preventDefault();
         currentFilter = $(this).data('filter');
+        // when the filter changes, deselect all marks
+        deselectAllMarks();
         store();
         render();
       });
@@ -2353,6 +2355,7 @@ jitterbug = {
       }
 
       getMarks();
+      toggleAllMarks();
     },
 
     getMarks = function() {
@@ -2405,6 +2408,29 @@ jitterbug = {
         //   getMarks();
         // });
 
+      });
+
+
+    },
+
+    toggleAllMarks = function() {
+      $('#mark-checkbox-all').change(function() {
+        if (this.checked) {
+          $(marksSelector + ' .delete:visible').each(function (){
+            this.checked=true;
+          })
+        } else {
+          $(marksSelector + ' .delete:visible').each(function() {
+            this.checked=false;
+          })
+        }
+      });
+    },
+
+    deselectAllMarks = function() {
+      $('#mark-checkbox-all').prop('checked', false);
+      $(marksSelector + ' .delete').each(function() {
+        this.checked=false;
       });
     },
 
