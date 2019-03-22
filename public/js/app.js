@@ -2380,29 +2380,30 @@ jitterbug = {
 
       // Hook up delete x's if they are present
       $(marksSelector + ' .delete').click(function(event) {
-        event.preventDefault();
+        //event.preventDefault();
         event.stopImmediatePropagation();
-        // This will be the mark's li
-        var parent = $(this).parent();
-        var data = {};
-        var markableType = parent.data('object-type');
-        if (markableType == 'item') {
-          markableType = 'AudioVisualItem';
-        } else if (markableType == 'master') {
-          markableType = 'PreservationMaster';
-        } else if (markableType == 'transfer') {
-          markableType = 'Transfer';
-        }
-        data['markableType'] = markableType;
-        data['markableIds'] = [parent.data('object-id')];
-        data['_method'] = 'DELETE';
-        $.post('/marks', data, function(data) {
-          parent.remove();
-          // Reload the marks part of the DOM so if the user
-          // navigates away from the page, and then uses
-          // the back button, the current state is cached.
-          getMarks();
-        });
+        console.log('method activated!');
+        // // This will be the mark's li
+        // var parent = $(this).parent();
+        // var data = {};
+        // var markableType = parent.data('object-type');
+        // if (markableType == 'item') {
+        //   markableType = 'AudioVisualItem';
+        // } else if (markableType == 'master') {
+        //   markableType = 'PreservationMaster';
+        // } else if (markableType == 'transfer') {
+        //   markableType = 'Transfer';
+        // }
+        // data['markableType'] = markableType;
+        // data['markableIds'] = [parent.data('object-id')];
+        // data['_method'] = 'DELETE';
+        // $.post('/marks', data, function(data) {
+        //   parent.remove();
+        //   // Reload the marks part of the DOM so if the user
+        //   // navigates away from the page, and then uses
+        //   // the back button, the current state is cached.
+        //   getMarks();
+        // });
 
       });
     },

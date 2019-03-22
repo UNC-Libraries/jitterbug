@@ -4847,7 +4847,8 @@ Dashboard
 #dashboard .marks-module .delete {
   margin-right: .5rem;
   float: right;
-  color: #d6d6d6; }
+  color: #d6d6d6;
+  margin-top:0.5rem;}
 
 #dashboard .marks-module .delete:hover {
   color: #d16642; }
