@@ -78,41 +78,37 @@ jitterbug = {
   },
 
   initSelectAll: function() {
-    // listen for click inside the modal
-    $(window).on('shown.bs.modal', function (e) {
-      $('#checkedAll').change(function(event) {
-        // check all boxes if select all is clicked or vice versa
-        if (this.checked) {
-          $(".checkSingle").each(function() {
-            this.checked=true;
-          });
-        } else {
-          $(".checkSingle").each(function() {
-            this.checked=false;
-          });
+    $('#checkedAll').change(function(event) {
+      // check all boxes if select all is clicked or vice versa
+      if (this.checked) {
+        $(".checkSingle").each(function() {
+          this.checked=true;
+        });
+      } else {
+        $(".checkSingle").each(function() {
+          this.checked=false;
+        });
+      }
+    });
+
+    // if all checkboxes are individually clicked, populate select all accordingly
+    $(".checkSingle").click(function () {
+      if ($(this).is(":checked")) {
+        var isAllChecked = 0;
+
+        $(".checkSingle").each(function() {
+          if (!this.checked)
+            isAllChecked = 1;
+        });
+
+        if (isAllChecked == 0) {
+          $("#checkedAll").prop("checked", true);
         }
-      });
-
-      // if all checkboxes are individually clicked, populate select all accordingly
-      $(".checkSingle").click(function () {
-        if ($(this).is(":checked")) {
-          var isAllChecked = 0;
-
-          $(".checkSingle").each(function() {
-            if (!this.checked)
-              isAllChecked = 1;
-          });
-
-          if (isAllChecked == 0) {
-            $("#checkedAll").prop("checked", true);
-          }
-        }
-        else {
-          $("#checkedAll").prop("checked", false);
-        }
-      });
-
-    })
+      }
+      else {
+        $("#checkedAll").prop("checked", false);
+      }
+    });
   },
 
   initAdmin: function() {
@@ -1134,6 +1130,7 @@ jitterbug = {
         }, delay);
         $('#data-export-form input[name="ids"]').val(
           tableSelection.selectedIds());
+        jitterbug.initSelectAll();
       },
       error: function (jqXHR, textStatus, error) {
         console.log('Could not fetch export fields: ' + error);
