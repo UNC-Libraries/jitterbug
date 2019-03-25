@@ -105,7 +105,7 @@
             </ol>
           </div>
 
-          <div>
+          <div class="delete-marks">
             <button class="btn btn-secondary" title="Delete selected marks"><i class="fa fa-trash" aria-hidden="true"></i></button>
           </div>
         </div>

@@ -2365,6 +2365,7 @@ jitterbug = {
       $.get('/dashboard/marks-for-user', query, function(data) {
         $(marksContainer).replaceWith(data);
         link();
+        toggleSelectAllVisibility(selectedUserId);
         render();
         var selectedUserFullName = selectedUserName();
         var truncatedUser = selectedUserFullName.length > 13 ? 
@@ -2409,7 +2410,7 @@ jitterbug = {
         // });
 
       });
-
+      toggleSelectAllVisibility()
 
     },
 
@@ -2432,6 +2433,16 @@ jitterbug = {
       $(marksSelector + ' .delete').each(function() {
         this.checked=false;
       });
+    },
+
+    toggleSelectAllVisibility = function(selectedUserId) {
+      if (selectedUserId === currentUser().id) {
+        $('.select-all'). show();
+        $('.delete-marks').show();
+      } else {
+        $('.select-all').hide();
+        $('.delete-marks').hide();
+      }
     },
 
     render = function() {
