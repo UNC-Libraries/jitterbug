@@ -2371,6 +2371,50 @@ jitterbug = {
       });
     },
 
+    deleteMarks = function() {
+      var marksToDelete = {};
+
+      // gather and sort all selected markable IDs by type
+      $('input.delete-checkbox:checkbox:checked').each(function() {
+        var parent = $(this).parent();
+        var markId = parent.data('object-id');
+        var type = parent.data('object-type');
+
+        if (marksToDelete[type] === undefined) {
+          marksToDelete[type] = [markId];
+        } else {
+          marksToDelete[type].push(markId);
+        }
+      });
+
+      var keys = Object.keys(marksToDelete);
+
+      for (var index in keys) {
+        key = keys[index];
+
+        // reformat names correctly
+        if (key == 'item') {
+          var markableType = 'AudioVisualItem';
+        } else if (key == 'master') {
+          var markableType = 'PreservationMaster';
+        } else if (key == 'transfer') {
+          var markableType = 'Transfer';
+        }
+
+        var data = {};
+        data['markableType'] = markableType;
+        data['markableIds'] = marksToDelete[key];
+        data['_method'] = 'DELETE';
+
+        $.post('/marks', data, function(data) {
+          // Reload the marks part of the DOM so if the user
+          // navigates away from the page, and then uses
+          // the back button, the current state is cached.
+          getMarks();
+        });
+      }
+    },
+
     link = function() {
       // Hook up individual marks to their associated objects
       $(marksSelector).click(function(event) {
@@ -2379,34 +2423,15 @@ jitterbug = {
         window.location.href='/' + type + 's/' + id;
       });
 
-      // Hook up delete x's if they are present
+      // unlink delete checkboxes from the associated objects
       $('.delete-checkbox').click(function(event) {
         event.stopImmediatePropagation();
-        // // This will be the mark's li
-        // var parent = $(this).parent();
-        // var data = {};
-        // var markableType = parent.data('object-type');
-        // if (markableType == 'item') {
-        //   markableType = 'AudioVisualItem';
-        // } else if (markableType == 'master') {
-        //   markableType = 'PreservationMaster';
-        // } else if (markableType == 'transfer') {
-        //   markableType = 'Transfer';
-        // }
-        // data['markableType'] = markableType;
-        // data['markableIds'] = [parent.data('object-id')];
-        // data['_method'] = 'DELETE';
-        // $.post('/marks', data, function(data) {
-        //   parent.remove();
-        //   // Reload the marks part of the DOM so if the user
-        //   // navigates away from the page, and then uses
-        //   // the back button, the current state is cached.
-        //   getMarks();
-        // });
-
       });
-      toggleSelectAllVisibility()
 
+      // hook up delete marks button
+      $('.delete-marks button').click(function() {
+        deleteMarks();
+      });
     },
 
     deselectAllMarks = function() {
