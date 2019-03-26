@@ -77,36 +77,36 @@ jitterbug = {
     });
   },
 
-  initSelectAll: function() {
-    $('#checkedAll').change(function(event) {
+  initSelectAll: function(allSelector, checkboxSelector) {
+    $(allSelector).change(function(event) {
       // check all boxes if select all is clicked or vice versa
       if (this.checked) {
-        $(".checkSingle").each(function() {
+        $(checkboxSelector).each(function() {
           this.checked=true;
         });
       } else {
-        $(".checkSingle").each(function() {
+        $(checkboxSelector).each(function() {
           this.checked=false;
         });
       }
     });
 
     // if all checkboxes are individually clicked, populate select all accordingly
-    $(".checkSingle").click(function () {
+    $(checkboxSelector).change(function () {
       if ($(this).is(":checked")) {
         var isAllChecked = 0;
 
-        $(".checkSingle").each(function() {
+        $(checkboxSelector).each(function() {
           if (!this.checked)
             isAllChecked = 1;
         });
 
         if (isAllChecked == 0) {
-          $("#checkedAll").prop("checked", true);
+          $(allSelector).prop("checked", true);
         }
       }
       else {
-        $("#checkedAll").prop("checked", false);
+        $(allSelector).prop("checked", false);
       }
     });
   },
@@ -1130,7 +1130,7 @@ jitterbug = {
         }, delay);
         $('#data-export-form input[name="ids"]').val(
           tableSelection.selectedIds());
-        jitterbug.initSelectAll();
+        jitterbug.initSelectAll('#checkedAll', ".checkSingle");
       },
       error: function (jqXHR, textStatus, error) {
         console.log('Could not fetch export fields: ' + error);
@@ -2352,7 +2352,6 @@ jitterbug = {
       }
 
       getMarks();
-      toggleAllMarks();
     },
 
     getMarks = function() {
@@ -2368,6 +2367,7 @@ jitterbug = {
         var truncatedUser = selectedUserFullName.length > 13 ? 
           selectedUserFullName.substr(0, 13) + '...' : selectedUserFullName;
         $(selectedUserSelector).text(truncatedUser);
+        jitterbug.initSelectAll('#mark-checkbox-all', '.delete-checkbox:visible');
       });
     },
 
@@ -2380,10 +2380,8 @@ jitterbug = {
       });
 
       // Hook up delete x's if they are present
-      $(marksSelector + ' .delete').click(function(event) {
-        //event.preventDefault();
+      $('.delete-checkbox').click(function(event) {
         event.stopImmediatePropagation();
-        console.log('method activated!');
         // // This will be the mark's li
         // var parent = $(this).parent();
         // var data = {};
@@ -2411,23 +2409,9 @@ jitterbug = {
 
     },
 
-    toggleAllMarks = function() {
-      $('#mark-checkbox-all').change(function() {
-        if (this.checked) {
-          $(marksSelector + ' .delete:visible').each(function (){
-            this.checked=true;
-          })
-        } else {
-          $(marksSelector + ' .delete:visible').each(function() {
-            this.checked=false;
-          })
-        }
-      });
-    },
-
     deselectAllMarks = function() {
       $('#mark-checkbox-all').prop('checked', false);
-      $(marksSelector + ' .delete').each(function() {
+      $('.delete-checkbox').each(function() {
         this.checked=false;
       });
     },

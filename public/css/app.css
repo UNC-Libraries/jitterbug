@@ -4844,7 +4844,7 @@ Dashboard
 #dashboard .marks-module .timestamp {
   color: #9a9a9a; }
 
-#dashboard .marks-module .delete {
+#dashboard .marks-module .delete-checkbox {
   margin-right: .5rem;
   float: right;
   color: #d6d6d6;
