@@ -2350,6 +2350,13 @@ jitterbug = {
           }
         });
       }
+      // set up delete marks button
+      $('.delete-marks button').click(function() {
+        var size = $('input.delete-checkbox:checkbox:checked').length;
+        if (confirm('Are you sure you want to delete ' + size + ' marks?')) {
+          deleteMarks();
+        }
+      });
 
       getMarks();
     },
@@ -2426,11 +2433,6 @@ jitterbug = {
       // unlink delete checkboxes from the associated objects
       $('.delete-checkbox').click(function(event) {
         event.stopImmediatePropagation();
-      });
-
-      // hook up delete marks button
-      $('.delete-marks button').click(function() {
-        deleteMarks();
       });
     },
 
