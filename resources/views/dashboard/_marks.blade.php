@@ -6,7 +6,6 @@
                   {{$mark->object()}} - <span class="timestamp">{{$mark->timestamp()}}</span>
                   @if ($currentUser->id === $selectedMarksUserId)
                     <input class="delete-checkbox" type="checkbox" value="" title="choose mark to delete">
-                    {{--<a href="#" role="button" class="delete" title="Delete mark"><i class="fa fa-times" aria-hidden="true"></i></a>--}}
                   @endif
                 </li>
               @endforeach
