@@ -14,6 +14,7 @@ class Transfer extends Model {
   use Markable;
 
   const BATCH_EDIT_MAX_LIMIT = 1000;
+  const BATCH_IMPORT_KEY =  'OriginalPm';
 
   protected $dates = ['deleted_at'];
 

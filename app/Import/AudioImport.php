@@ -52,15 +52,21 @@ class AudioImport extends Import {
     $originalPms = array();
     $originatorReferences = array();
     $messages = array();
+    Log::debug(print_r($this, true));
     foreach($this->data as $row) {
       $bag = new MessageBag();
       array_push($messages, $bag);
       foreach($this->audioImportKeys as $key) {
-        // Validate that all required fields have values
-        if (in_array($key, $this->requiredAudioImportKeys) 
+        // if the batch import edit field is empty, this is a new record
+        $new_record = empty($row[Transfer::BATCH_IMPORT_KEY]);
+
+        // Validate that all required fields have values if this is a new record
+        if ($new_record && 
+          in_array($key, $this->requiredAudioImportKeys)
           && empty($row[$key])) {
           $bag->add($key, 'A value for ' . $key . ' is required.');
         }
+
         // Validate call number exists
         if ($key==='CallNumber' 
           && !empty($row[$key]) && !$this->callNumberExists($row[$key])) {
@@ -83,7 +89,7 @@ class AudioImport extends Import {
           $bag->add($key, $key . ' already exists in the database.');
         }
         // Validate originator reference (preservation_master.file_name) 
-        // is unqiue amongst values in the rest of the file
+        // is unique amongst values in the rest of the file
         if ($key==='OriginatorReference' 
           && !empty($row[$key]) && in_array($row[$key], $originatorReferences)) {
           $bag->add($key, $key . ' has already been used in this file.');
@@ -125,7 +131,7 @@ class AudioImport extends Import {
           && !$this->belongsToItem($row[$key], $row['CallNumber'])) {
           $bag->add($key, $key . ' does not belong to the given call number.');
         }
-        // Validate the pm is unqiue amongst pm values in the rest of the file
+        // Validate the pm is unique amongst pm values in the rest of the file
         if ($key==='OriginalPm' 
           && !empty($row[$key]) && in_array($row[$key], $originalPms)) {
           $bag->add($key, $key . ' has already been used in this file.');
