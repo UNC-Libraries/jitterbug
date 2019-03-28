@@ -77,42 +77,38 @@ jitterbug = {
     });
   },
 
-  initSelectAll: function() {
-    // listen for click inside the modal
-    $(window).on('shown.bs.modal', function (e) {
-      $('#checkedAll').change(function(event) {
-        // check all boxes if select all is clicked or vice versa
-        if (this.checked) {
-          $(".checkSingle").each(function() {
-            this.checked=true;
-          });
-        } else {
-          $(".checkSingle").each(function() {
-            this.checked=false;
-          });
+  initSelectAll: function(allSelector, checkboxSelector) {
+    $(allSelector).change(function(event) {
+      // check all boxes if select all is clicked or vice versa
+      if (this.checked) {
+        $(checkboxSelector).each(function() {
+          this.checked=true;
+        });
+      } else {
+        $(checkboxSelector).each(function() {
+          this.checked=false;
+        });
+      }
+    });
+
+    // if all checkboxes are individually clicked, populate select all accordingly
+    $(checkboxSelector).change(function () {
+      if ($(this).is(":checked")) {
+        var isAllChecked = 0;
+
+        $(checkboxSelector).each(function() {
+          if (!this.checked)
+            isAllChecked = 1;
+        });
+
+        if (isAllChecked == 0) {
+          $(allSelector).prop("checked", true);
         }
-      });
-
-      // if all checkboxes are individually clicked, populate select all accordingly
-      $(".checkSingle").click(function () {
-        if ($(this).is(":checked")) {
-          var isAllChecked = 0;
-
-          $(".checkSingle").each(function() {
-            if (!this.checked)
-              isAllChecked = 1;
-          });
-
-          if (isAllChecked == 0) {
-            $("#checkedAll").prop("checked", true);
-          }
-        }
-        else {
-          $("#checkedAll").prop("checked", false);
-        }
-      });
-
-    })
+      }
+      else {
+        $(allSelector).prop("checked", false);
+      }
+    });
   },
 
   initAdmin: function() {
@@ -1134,6 +1130,7 @@ jitterbug = {
         }, delay);
         $('#data-export-form input[name="ids"]').val(
           tableSelection.selectedIds());
+        jitterbug.initSelectAll('#checkedAll', ".checkSingle");
       },
       error: function (jqXHR, textStatus, error) {
         console.log('Could not fetch export fields: ' + error);
@@ -2326,6 +2323,8 @@ jitterbug = {
       $(filtersSelector).click(function(event) {
         event.preventDefault();
         currentFilter = $(this).data('filter');
+        // when the filter changes, deselect all marks
+        deselectAllMarks();
         store();
         render();
       });
@@ -2351,6 +2350,13 @@ jitterbug = {
           }
         });
       }
+      // set up delete marks button
+      $('.delete-marks button').click(function() {
+        var size = $('input.delete-checkbox:checkbox:checked').length;
+        if (confirm('Are you sure you want to delete ' + size + ' marks?')) {
+          deleteMarks();
+        }
+      });
 
       getMarks();
     },
@@ -2362,12 +2368,58 @@ jitterbug = {
       $.get('/dashboard/marks-for-user', query, function(data) {
         $(marksContainer).replaceWith(data);
         link();
+        toggleSelectAllVisibility(selectedUserId);
         render();
         var selectedUserFullName = selectedUserName();
         var truncatedUser = selectedUserFullName.length > 13 ? 
           selectedUserFullName.substr(0, 13) + '...' : selectedUserFullName;
         $(selectedUserSelector).text(truncatedUser);
+        jitterbug.initSelectAll('#mark-checkbox-all', '.delete-checkbox:visible');
       });
+    },
+
+    deleteMarks = function() {
+      var marksToDelete = {};
+
+      // gather and sort all selected markable IDs by type
+      $('input.delete-checkbox:checkbox:checked').each(function() {
+        var parent = $(this).parent();
+        var markId = parent.data('object-id');
+        var type = parent.data('object-type');
+
+        if (marksToDelete[type] === undefined) {
+          marksToDelete[type] = [markId];
+        } else {
+          marksToDelete[type].push(markId);
+        }
+      });
+
+      var keys = Object.keys(marksToDelete);
+
+      for (var index in keys) {
+        key = keys[index];
+
+        // reformat names correctly
+        if (key == 'item') {
+          var markableType = 'AudioVisualItem';
+        } else if (key == 'master') {
+          var markableType = 'PreservationMaster';
+        } else if (key == 'transfer') {
+          var markableType = 'Transfer';
+        }
+
+        var data = {};
+        data['markableType'] = markableType;
+        data['markableIds'] = marksToDelete[key];
+        data['_method'] = 'DELETE';
+
+        $.post('/marks', data, function(data) {
+          // Reload the marks part of the DOM so if the user
+          // navigates away from the page, and then uses
+          // the back button, the current state is cached.
+          getMarks();
+        });
+      }
     },
 
     link = function() {
@@ -2378,33 +2430,27 @@ jitterbug = {
         window.location.href='/' + type + 's/' + id;
       });
 
-      // Hook up delete x's if they are present
-      $(marksSelector + ' .delete').click(function(event) {
-        event.preventDefault();
+      // unlink delete checkboxes from the associated objects
+      $('.delete-checkbox').click(function(event) {
         event.stopImmediatePropagation();
-        // This will be the mark's li
-        var parent = $(this).parent();
-        var data = {};
-        var markableType = parent.data('object-type');
-        if (markableType == 'item') {
-          markableType = 'AudioVisualItem';
-        } else if (markableType == 'master') {
-          markableType = 'PreservationMaster';
-        } else if (markableType == 'transfer') {
-          markableType = 'Transfer';
-        }
-        data['markableType'] = markableType;
-        data['markableIds'] = [parent.data('object-id')];
-        data['_method'] = 'DELETE';
-        $.post('/marks', data, function(data) {
-          parent.remove();
-          // Reload the marks part of the DOM so if the user
-          // navigates away from the page, and then uses
-          // the back button, the current state is cached.
-          getMarks();
-        });
-
       });
+    },
+
+    deselectAllMarks = function() {
+      $('#mark-checkbox-all').prop('checked', false);
+      $('.delete-checkbox').each(function() {
+        this.checked=false;
+      });
+    },
+
+    toggleSelectAllVisibility = function(selectedUserId) {
+      if (selectedUserId === currentUser().id) {
+        $('.select-all'). show();
+        $('.delete-marks').show();
+      } else {
+        $('.select-all').hide();
+        $('.delete-marks').hide();
+      }
     },
 
     render = function() {

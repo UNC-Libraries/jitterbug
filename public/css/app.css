@@ -4844,13 +4844,27 @@ Dashboard
 #dashboard .marks-module .timestamp {
   color: #9a9a9a; }
 
-#dashboard .marks-module .delete {
+#dashboard .marks-module .delete-checkbox {
   margin-right: .5rem;
   float: right;
-  color: #d6d6d6; }
+  color: #d6d6d6;
+  margin-top:0.5rem;}
 
 #dashboard .marks-module .delete:hover {
   color: #d16642; }
+
+#dashboard .marks-module #mark-checkbox-all {
+  float:right;
+  margin-top: 0.5rem;
+  margin-right: 1.9rem;}
+
+#dashboard .marks-module .select-all-label {
+  float: right;
+  padding-right: 2%;}
+
+#dashboard .marks-module .select-all {
+  display: block;
+  width: 100%;}
 
 #dashboard .marks-module .no-marks {
   display: none; }
@@ -4863,7 +4877,9 @@ Dashboard
 
 #dashboard .marks {
   height: 331px;
-  overflow-y: scroll; }
+  overflow-y: scroll;
+  display: block;
+  width: 100%}
 
 /* -------------------------------------------
 Filter Panel
