@@ -201,60 +201,64 @@ class AudioImport extends Import {
             }
           }
         }
-        
+
         // Original PM is optional, so the column may not be present in the file
         $originalPm = isset($row['OriginalPm']) ? $row['OriginalPm'] : null;
         $duration = DurationFormat::toSeconds($row['Duration']);
         
         if (!empty($originalPm)) { 
           // Original PM not empty so this is an update
+          $masterUpdated = false;
           $master = PreservationMaster::find($originalPm);
-          $master->fileName =
-            isset($row['OriginatorReference']) ? $row['OriginatorReference'] : $master->fileName;
-          $master->fileSizeInBytes =
-            isset($row['FileSize']) ? $row['FileSize'] : $master->fileSizeInBytes;
-          $master->durationInSeconds = isset($duration) ? $duration : $master->durationInSeconds;
-          $master->departmentId = isset($departmentId)? $department->id : $master->departmentId;
-          // APPDEV-6760
-          $master->fileFormat = 'BWF';
-          $master->fileCodec = 'Uncompressed PCM';
-          $master->save();
-          $masters[] = $master;
-          $updated++;
-
-          $audioMaster = AudioMaster::find($master->subclassId);
-          // APPDEV-6760  Sampling rate id 8 = 96kHz/24bit
-          $audioMaster->samplingRateId = 8;
-          $audioMaster->save();
-          $updated++;
+          if (!empty($row['OriginatorReference'])) {
+            $master->fileName = $row['OriginatorReference'];
+            $masterUpdated = true;
+          }
+          if (!empty($row['FileSize'])) {
+            $master->fileSizeInBytes = $row['FileSize'];
+            $masterUpdated = true;
+          }
+          if (isset($duration)) {
+            $master->durationInSeconds = $duration;
+            $masterUpdated = true;
+          }
+          if (isset($department)) {
+            $master->departmentId = $department->id;
+            $masterUpdated = true;
+          }
+          if ($masterUpdated === true) {
+            $master->save();
+            $masters[] = $master;
+            $updated++;
+          }
 
           // Update related transfers if specified, which should exist
-          if (isset($row['OriginationDate']) || isset($row['TransferNote']) || isset($playbackMachine)) {
+          if (isset($playbackMachine) || !empty($row['OriginationDate']) || !empty($row['TransferNote'])) {
             $relatedTransfers = $master->transfers;
-            if ($relatedTransfers->count() > 0) {
-              foreach ($relatedTransfers as $transfer) {
-                $transfer->playbackMachineId =
-                  isset($playbackMachine) ? $playbackMachine->id : $transfer->playbackMachineId;
-                $transfer->transferDate =
-                  isset($row['OriginationDate']) ? $row['OriginationDate'] : $transfer->transferDate;
-              $transfer->transferNote =
-                isset($row['TransferNote']) ? $row['TransferNote'] : $transfer->transferNote;
+            foreach ($relatedTransfers as $transfer) {
+              if (isset($playbackMachine)) {
+                $transfer->playbackMachineId = $playbackMachine->id;
+                Log::debug('Its playback machine');
+              }
+              if (!empty($row['OriginationDate'])) {
+                $transfer->transferDate = $row['OriginationDate'];
+              }
+              if (!empty($row['TransferNote'])) {
+                $transfer->transferNote = $row['TransferNote'];
+              }
               $transfer->save();
               $transfers[] = $transfer;
               $updated++;
             }
-            }
           }
 
           // Update related cuts if specified, which should exist
-          if (isset($row['Side'])) {
+          if (!empty($row['Side'])) {
             $relatedCuts = $master->cuts;
-            if ($relatedCuts->count() > 0) {
-              foreach ($relatedCuts as $cut) {
-                $cut->side = isset($row['Side']) ? $row['Side'] : $cut->side;
-                $cut->save();
-                $updated++;
-              }
+            foreach ($relatedCuts as $cut) {
+              $cut->side = $row['Side'];
+              $cut->save();
+              $updated++;
             }
           }
 
