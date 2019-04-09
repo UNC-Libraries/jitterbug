@@ -1,6 +1,7 @@
 <?php
 use Jitterbug\Exceptions\Handler;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Http\UploadedFile;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
@@ -21,6 +22,18 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
   protected function disableExceptionHandling()
   {
     app()->instance(ExceptionHandler::class, new PassThroughHandler);
+  }
+  protected function getUploadableFile($file, $original_name, $type)
+  {
+    $dummy = file_get_contents($file);
+    file_put_contents(base_path('tests/' . basename($file)), $dummy);
+    $path = base_path('tests/' . basename($file));
+    $mime_type = 'text/csv';
+    $size = 111;
+    $error = null;
+    $test = true;
+    $file = new UploadedFile($path, $original_name, $type, $size, $error, $test);
+    return $file;
   }
 
 	protected $connectionsToTransact = [

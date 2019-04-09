@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\UploadedFile;
+
 
 class TransferAudioImportsTest extends TestCase
 {
@@ -11,20 +11,19 @@ class TransferAudioImportsTest extends TestCase
      */
     public function testAudioImportUpload()
     {
-//      $user = factory(Jitterbug\Models\User::class)->create();
-//      Storage::fake('app/uploads');
-//
-//      $file = UploadedFile::fake()->create('sample_audio_import.csv', 53);
-//
-//      $response = $this->actingAs($user)->call('GET','TransfersController@index', [
-//        //'audio-import-file' => $file,
-//      ]);
-//      print($response->getContent());
-      // Assert the file was stored...
-//      $path = Storage::disk('app/uploads')->getAdapter()->getPathPrefix();
-//      Storage::disk('app/uploads')->assertExists("{$path}sample_audio_import.csv");
+      $user = factory(Jitterbug\Models\User::class)->create();
+      $filePath = base_path('tests/import-test-files/audio-import/sample_audio_import_missing_original_pm_column.csv');
+      $file = $this->getUploadableFile($filePath, 'sample_audio_import.csv', 'text/csv');
 
-      // Assert a file does not exist...
-//      Storage::disk('app/uploads')->assertMissing('missing.jpg');
+      $this->actingAs($user)->post(
+        '/transfers/batch/audio-import-upload',
+        ['audio-import-file' => $file,],
+        array('HTTP_X-Requested-With' => 'XMLHttpRequest')
+      );
+
+      $path = storage_path('app/uploads');
+      $filename = $user->username . '-audio-import-' . fileTimestamp();
+
+      $this->assertFileExists("{$path}/{$filename}.csv");
     }
 }
