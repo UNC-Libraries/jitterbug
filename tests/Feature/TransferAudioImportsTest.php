@@ -65,6 +65,7 @@ class TransferAudioImportsTest extends TestCase
 
     public function testAudioImportUploadExecuteWithSuccess()
     {
+      $this->disableExceptionHandling();
       $user = $this->user;
       $filePath = base_path('tests/import-test-files/audio-import/small_upload_file_no_errors.csv');
 
