@@ -10,6 +10,7 @@ jobs:
           MYSQL_USER: root
           MYSQL_ROOT_PASSWORD: ''
           MYSQL_DATABASE: jitterbug_testing
+      - image: circleci/solr:7.2.1
 
     working_directory: ~/jitterbug
 
@@ -36,6 +37,17 @@ jobs:
           name: Copy Circle CI version of .env.testing
           command: cp .env.testing.circleci .env.testing
 
+      - run:
+          name: Install Solr
+          command: |
+            cd ~
+            sudo wget --no-verbose http://archive.apache.org/dist/lucene/solr/7.2.1/solr-7.2.1.tgz
+            tar xzf solr-7.2.1.tgz solr-7.2.1/bin/install_solr_service.sh --strip-components=2
+            ./install_solr_service.sh solr-7.2.1.tgz
+            cd /opt/solr
+            bin/solr start
+            cd /jitterbug
+
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -58,7 +70,9 @@ jobs:
           command: |
             php artisan config:cache --env=testing
             php artisan migrate --env=testing --force
-
+      - run:
+          name: Wait for Solr
+          command: dockerize -wait tcp://127.0.0.1:8983 -timeout 120s
       - run:
           name: Run Tests
           command: ./vendor/bin/phpunit
