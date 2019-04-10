@@ -10,6 +10,7 @@ jobs:
           MYSQL_USER: root
           MYSQL_ROOT_PASSWORD: ''
           MYSQL_DATABASE: jitterbug_testing
+      - image: solr:7.5
 
     working_directory: ~/jitterbug
 
@@ -36,16 +37,16 @@ jobs:
           name: Copy Circle CI version of .env.testing
           command: cp .env.testing.circleci .env.testing
 
-      - run:
-          name: Install Solr
-          command: |
-            cd ~
-            sudo wget --no-verbose http://archive.apache.org/dist/lucene/solr/7.2.1/solr-7.2.1.tgz
-            sudo tar xzf solr-7.2.1.tgz solr-7.2.1/bin/install_solr_service.sh --strip-components=2
-            sudo ./install_solr_service.sh solr-7.2.1.tgz
-            cd /opt/solr
-            bin/solr start
-            cd /jitterbug
+#      - run:
+#          name: Install Solr
+#          command: |
+#            cd ~
+#            sudo wget --no-verbose http://archive.apache.org/dist/lucene/solr/7.2.1/solr-7.2.1.tgz
+#            sudo tar xzf solr-7.2.1.tgz solr-7.2.1/bin/install_solr_service.sh --strip-components=2
+#            sudo ./install_solr_service.sh solr-7.2.1.tgz
+#            cd /opt/solr
+#            bin/solr start
+#            cd /jitterbug
 
       # Download and cache dependencies
       - restore_cache:
