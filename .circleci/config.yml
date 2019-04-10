@@ -10,7 +10,7 @@ jobs:
           MYSQL_USER: root
           MYSQL_ROOT_PASSWORD: ''
           MYSQL_DATABASE: jitterbug_testing
-      - image: circleci/solr:7.2.1
+      - image: solr:7.5
 
     working_directory: ~/jitterbug
 
