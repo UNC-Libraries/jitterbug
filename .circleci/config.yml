@@ -57,20 +57,20 @@ jobs:
             cd /opt/solr
             sudo chown -R solr .
             cd server/solr
-            sudo -u solr mkdir jitterbug-items
-            sudo -u solr mkdir jitterbug-masters
-            sudo -u solr mkdir jitterbug-transfers
+            mkdir jitterbug-items
+            mkdir jitterbug-masters
+            mkdir jitterbug-transfers
             cd jitterbug-items
-            sudo -u solr cat /jitterbug/dev_files/jitterbug-items.core.properties.example > core.properties
-            sudo -u solrln -s /jitterbug/solrconfig/jitterbug-items/conf conf
+            cat /jitterbug/dev_files/jitterbug-items.core.properties.example > core.properties
+            ln -s /jitterbug/solrconfig/jitterbug-items/conf conf
             cd ..
             cd jitterbug-masters
-            sudo -u solr cat /jitterbug/dev_files/jitterbug-masters.core.properties.example > core.properties
-            sudo -u solrln -s /jitterbug/solrconfig/jitterbug-masters/conf conf
+            cat /jitterbug/dev_files/jitterbug-masters.core.properties.example > core.properties
+            ln -s /jitterbug/solrconfig/jitterbug-masters/conf conf
             cd ..
             cd jitterbug-transfers
-            sudo -u solr cat /jitterbug/dev_files/jitterbug-transfers.core.properties.example > core.properties
-            sudo -u solrln -s /jitterbug/solrconfig/jitterbug-transfers/conf conf
+            cat /jitterbug/dev_files/jitterbug-transfers.core.properties.example > core.properties
+            ln -s /jitterbug/solrconfig/jitterbug-transfers/conf conf
             cd /opt/solr
             bin/solr start
             cd /jitterbug
