@@ -56,6 +56,8 @@ jobs:
           command: |
             cd /opt/solr
             sudo chown -R solr .
+            sudo chgrp -R circleci .
+            sudo chmod -R g+w .
             cd server/solr
             mkdir jitterbug-items
             mkdir jitterbug-masters
