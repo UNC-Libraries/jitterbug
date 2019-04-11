@@ -68,6 +68,9 @@ class TransferAudioImportsTest extends TestCase
       $this->disableExceptionHandling();
       $user = $this->user;
       $filePath = base_path('tests/import-test-files/audio-import/small_upload_file_no_errors.csv');
+      $this->mock(Jitterbug\Support\SolariumProxy::class, function ($mock) {
+        $mock->shouldReceive('update')->twice();
+      });
 
       $response = $this->actingAs($user)
                        ->withSession(['audio-import-file' => $filePath])
@@ -77,6 +80,7 @@ class TransferAudioImportsTest extends TestCase
       print($response->getContent());
       $responseArray = json_decode($response->getContent(), true);
       $htmlContainsSuccessMessage = strpos($responseArray['html'], 'Your import was successful!') !== false;
+
 
       $this->assertEquals('success', $responseArray['status'], "The JSON status should be 'success'.");
       $this->assertTrue($htmlContainsSuccessMessage, 'The HTML in the response does not include the correct success notification.');
