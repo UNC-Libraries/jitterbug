@@ -35,7 +35,16 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     return $file;
   }
 
-	protected $connectionsToTransact = [
+  public function mock($class)
+  {
+    $mock = Mockery::mock($class);
+
+    $this->app->instance($class, $mock);
+
+    return $mock;
+  }
+
+  protected $connectionsToTransact = [
 	  'mysql'
   ];
 }

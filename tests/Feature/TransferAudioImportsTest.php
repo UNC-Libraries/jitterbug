@@ -77,7 +77,7 @@ class TransferAudioImportsTest extends TestCase
                        ->post('/transfers/batch/audio-import-execute',
                          [],
                          array('HTTP_X-Requested-With' => 'XMLHttpRequest'));
-      print($response->getContent());
+      //print($response->getContent());
       $responseArray = json_decode($response->getContent(), true);
       $htmlContainsSuccessMessage = strpos($responseArray['html'], 'Your import was successful!') !== false;
 
@@ -92,5 +92,6 @@ class TransferAudioImportsTest extends TestCase
       $this->callNumber2->delete();
       $this->department->delete();
       $this->playbackMachine->delete();
+      Mockery::close();
     }
 }
