@@ -56,6 +56,8 @@ jobs:
           command: |
             cd /var
             sudo chown -R circleci .
+            sudo chgrp -R circleci .
+            sudo chmod -R g+w .
             cd /opt/solr
             sudo chown -R circleci .
             sudo chgrp -R circleci .
