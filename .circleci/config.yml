@@ -52,6 +52,15 @@ jobs:
             sudo ./install_solr_service.sh solr-7.2.1.tgz
 
       - run:
+          name: Get and hook up connector file
+          command: |
+            cd ~/jitterbug
+            sudo wget --no-verbose -nc http://www.mirrorservice.org/sites/ftp.mysql.com/Downloads/Connector-J/mysql-connector-java-8.0.15.zip
+            sudo unzip -n mysql-connector-java-8.0.15.zip
+            cd /
+            sudo cp ~/jitterbug/mysql-connector-java-8.0.15/mysql-connector-java-8.0.15.jar /opt/solr/contrib/dataimporthandler-extras/lib/.
+
+      - run:
           name: Configure Solr
           command: |
             cd /var
