@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Http\UploadedFile;
+use Jitterbug\Support\SolariumProxy;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
@@ -35,13 +36,18 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     return $file;
   }
 
-  public function mock($class)
+//  public function mock($class, $methodName)
+//  {
+//    $mock = Mockery::mock($class);
+//
+//    app()->instance($class, $mock);
+//    $mock->shouldReceive($methodName)->andReturn();
+//
+//    return $mock;
+//  }
+  protected function disableSolariumProxy($mock)
   {
-    $mock = Mockery::mock($class);
-
-    $this->app->instance($class, $mock);
-
-    return $mock;
+    app()->instance(SolariumProxy::class, $mock);
   }
 
   protected $connectionsToTransact = [
@@ -59,5 +65,15 @@ class PassThroughHandler extends Jitterbug\Exceptions\Handler
   public function render($request, Exception $e)
   {
     throw $e;
+  }
+}
+
+class SolariumProxyTest extends Jitterbug\Support\SolariumProxy
+{
+  public function __construct() {}
+  public function update($modelOrModels)
+  {
+    print('in the overwrite method');
+    // no-op
   }
 }

@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+//use Jitterbug\Support\SolariumProxy;
 
 class TransferAudioImportsTest extends TestCase
 {
@@ -10,6 +12,7 @@ class TransferAudioImportsTest extends TestCase
      * @return void
      */
     use DatabaseTransactions;
+    use MockeryPHPUnitIntegration;
     private $user;
     private $callNumber1;
     private $callNumber2;
@@ -66,18 +69,20 @@ class TransferAudioImportsTest extends TestCase
     public function testAudioImportUploadExecuteWithSuccess()
     {
       $this->disableExceptionHandling();
+//      $mockSolariumProxy = Mockery::mock(Jitterbug\Support\SolariumProxy::class)->makePartial();
+////      $mock->shouldReceive('update')->twice()->andReturn('hello');
+//      $this->instance(Jitterbug\Support\SolariumProxy::class, $mockSolariumProxy, function ($mock) {
+//        $mock->shouldReceive('update')->twice()->andReturn('hello');
+//      }) ;
       $user = $this->user;
       $filePath = base_path('tests/import-test-files/audio-import/small_upload_file_no_errors.csv');
-      $this->mock(Jitterbug\Support\SolariumProxy::class, function ($mock) {
-        $mock->shouldReceive('update')->twice();
-      });
 
       $response = $this->actingAs($user)
                        ->withSession(['audio-import-file' => $filePath])
                        ->post('/transfers/batch/audio-import-execute',
                          [],
                          array('HTTP_X-Requested-With' => 'XMLHttpRequest'));
-      //print($response->getContent());
+
       $responseArray = json_decode($response->getContent(), true);
       $htmlContainsSuccessMessage = strpos($responseArray['html'], 'Your import was successful!') !== false;
 
