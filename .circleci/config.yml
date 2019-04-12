@@ -64,7 +64,7 @@ jobs:
           name: Configure Solr
           command: |
             cd /var
-            sudo chown -R circleci .
+            sudo chown -R solr .
             sudo chgrp -R circleci .
             sudo chmod -R g+w .
             cd /opt/solr
