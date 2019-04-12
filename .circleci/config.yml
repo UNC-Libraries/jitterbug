@@ -10,7 +10,6 @@ jobs:
           MYSQL_USER: root
           MYSQL_ROOT_PASSWORD: ''
           MYSQL_DATABASE: jitterbug_testing
-#      - image: solr:6.6
 
     working_directory: ~/jitterbug
 
@@ -61,12 +60,12 @@ jobs:
             sudo cp ~/jitterbug/mysql-connector-java-8.0.15/mysql-connector-java-8.0.15.jar /opt/solr/contrib/dataimporthandler-extras/lib/.
 
       - run:
-          name: change solr home directory
+          name: Change solr home directory
           command: |
             sudo sed -i.bak 's|SOLR_HOME="/var/solr/data"|SOLR_HOME="/opt/solr/server/solr"|' /etc/default/solr.in.sh
 
       - run:
-          name: Configure Solr
+          name: Configure Solr cores and start Solr
           command: |
             cd /opt/solr
             sudo chown -R circleci .
