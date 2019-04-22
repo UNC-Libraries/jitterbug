@@ -15,10 +15,10 @@ class CreateFormatsPrefixesTable extends Migration
     {
       Schema::create('formats_prefixes', function (Blueprint $table) {
         $table->smallInteger('format_id')->unsigned();
-        $table->foreign('format_id')->references('id')->on('formats');
+        $table->foreign('format_id')->references('id')->on('formats')->onDelete('cascade');
 
         $table->integer('prefix_id')->unsigned();
-        $table->foreign('prefix_id')->references('id')->on('prefixes');
+        $table->foreign('prefix_id')->references('id')->on('prefixes')->onDelete('cascade');
         $table->timestamps();
       });
     }
