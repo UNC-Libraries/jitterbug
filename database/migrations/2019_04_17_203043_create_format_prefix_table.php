@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFormatsPrefixesTable extends Migration
+class CreateFormatPrefixTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateFormatsPrefixesTable extends Migration
      */
     public function up()
     {
-      Schema::create('formats_prefixes', function (Blueprint $table) {
+      Schema::create('format_prefix', function (Blueprint $table) {
         $table->smallInteger('format_id')->unsigned();
         $table->foreign('format_id')->references('id')->on('formats')->onDelete('cascade');
 
