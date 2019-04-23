@@ -17,7 +17,7 @@ class CreatePrefixesTable extends Migration
         $table->increments('id');
         $table->string('label');
         $table->boolean('legacy')->default(0);
-        $table->integer('collection_type_id')->nullable()->index();
+        $table->integer('collection_type_id')->nullable()->unsigned()->index();
         $table->timestamps();
         $table->softDeletes();
       });
