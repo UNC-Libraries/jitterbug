@@ -60,6 +60,10 @@ Route::resource('pm-speeds',
   'Admin\PmSpeedsController', ['except' => ['show', 'create', 'edit']]);
 Route::resource('tape-brands', 
   'Admin\TapeBrandsController', ['except' => ['show', 'create', 'edit']]);
+Route::resource('collection-types',
+  'Admin\CollectionTypesController', ['except' => ['show', 'create', 'edit']]);
+Route::resource('prefixes',
+  'Admin\PrefixesController', ['except' => ['show', 'create', 'edit']]);
 
 /*
 |--------------------------------------------------------------------------
