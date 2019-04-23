@@ -10,13 +10,18 @@ class Collection extends Model {
 
   protected $dates = array('deleted_at');
 
-  protected $fillable = array('id', 'name');
+  protected $fillable = array('id', 'name', 'collectionTypeId');
 
   public $incrementing = false;
 
   public function audioVisualItems()
   {
     return $this->hasMany('Jitterbug\Models\AudioVisualItem');
+  }
+
+  public function collectionType()
+  {
+    return $this->belongsTo(CollectionType::class);
   }
 
   /**
