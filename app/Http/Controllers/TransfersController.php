@@ -351,7 +351,7 @@ class TransfersController extends Controller {
         $result = $import->execute($data);
         $created = $result['created'];
         $updated = $result['updated'];
-        $html = view('transfers._audio-import-success', 
+        $html = view('transfers._audio-import-success',
                               compact('created', 'updated'))->render();
         $response = array('status'=>'success', 'html'=>$html);
       }

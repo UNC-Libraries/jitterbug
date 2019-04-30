@@ -67,12 +67,12 @@ $factory->define(Jitterbug\Models\AudioTransfer::class, function (Faker\Generato
 
 $factory->define(Jitterbug\Models\AudioVisualItem::class, function (Faker\Generator $faker) {
   return [
-    'call_number' => 'FS-'.strval($faker->randomNumber(4)),
+    'call_number' => 'FS-'.$faker->randomNumber(4),
     'title' => $faker->text,
     'recording_location' => 'Durham, NC',
     'physical_location' => null,
     'access_restrictions' => null,
-    'item_year' => strval($faker->numberBetween(1920, 2015)),
+    'item_year' => (string) $faker->numberBetween(1920, 2015),
     'item_date' => $faker->date(),
     'collection_id' => function () {
       return factory(Jitterbug\Models\Collection::class)->create()->id;

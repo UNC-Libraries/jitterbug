@@ -52,6 +52,11 @@ abstract class Import {
     return Vendor::where('name', $vendor)->first() !== null;
   }
 
+  protected function pmExists($pmId)
+  {
+    return PreservationMaster::find($pmId) !== null;
+  }
+
   protected function isValidDate($date)
   {
     $format = 'Y-m-d';
