@@ -123,6 +123,11 @@ class AudioImport extends Import {
           && !empty($row[$key]) && !ctype_digit($row[$key])) {
           $bag->add($key, $key . ' must be an integer.');
         }
+        // Validate pm number exists in the DB
+        if ($key==='OriginalPm'
+          && !empty($row[$key]) && !$this->pmExists($row[$key])) {
+          $bag->add($key, $key . ' must already exist in the database.');
+        }
         // Validate pm belongs to the audio visual item identified by
         // call number
         if ($key==='OriginalPm' 
