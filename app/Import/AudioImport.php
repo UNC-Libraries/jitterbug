@@ -56,81 +56,91 @@ class AudioImport extends Import {
       $bag = new MessageBag();
       array_push($messages, $bag);
       foreach($this->audioImportKeys as $key) {
-        // Validate that all required fields have values
-        if (in_array($key, $this->requiredAudioImportKeys) 
+        // if the batch import edit field is empty, this is a new record
+        $new_record = empty($row[Transfer::BATCH_IMPORT_KEY]);
+
+        // Validate that all required fields have values if this is a new record
+        if ($new_record &&
+          in_array($key, $this->requiredAudioImportKeys)
           && empty($row[$key])) {
           $bag->add($key, 'A value for ' . $key . ' is required.');
         }
+
         // Validate call number exists
-        if ($key==='CallNumber' 
+        if ($key === 'CallNumber'
           && !empty($row[$key]) && !$this->callNumberExists($row[$key])) {
           $bag->add($key, $key . ' must already exist in the database.');
         }
         // Validate call number is audio
-        if ($key==='CallNumber' 
+        if ($key === 'CallNumber'
           && !empty($row[$key]) && !$this->isAudio($row[$key])) {
           $bag->add($key, $key . ' is not an audio item.');
         }
         // Validate playback machine exists
-        if ($key==='PlaybackMachine' 
+        if ($key === 'PlaybackMachine'
           && !empty($row[$key]) && !$this->playbackMachineExists($row[$key])) {
           $bag->add($key, $key . ' is not a recognized playback machine.');
         }
         // Validate originator reference (preservation_master.file_name) 
         // doesn't exist
-        if ($key==='OriginatorReference' 
+        if ($key === 'OriginatorReference'
           && !empty($row[$key]) && $this->fileNameExists($row[$key])) {
           $bag->add($key, $key . ' already exists in the database.');
         }
         // Validate originator reference (preservation_master.file_name) 
-        // is unqiue amongst values in the rest of the file
-        if ($key==='OriginatorReference' 
+        // is unique amongst values in the rest of the file
+        if ($key === 'OriginatorReference'
           && !empty($row[$key]) && in_array($row[$key], $originatorReferences)) {
           $bag->add($key, $key . ' has already been used in this file.');
         } else if ($key==='OriginatorReference' && !empty($row[$key])) {
           array_push($originatorReferences, $row[$key]);
         }
         // Validate file size is an integer
-        if ($key==='FileSize' 
+        if ($key === 'FileSize'
           && !empty($row[$key]) && !ctype_digit($row[$key])) {
           $bag->add($key, $key . ' must be an integer.');
         }
         // Validate duration format
-        if ($key==='Duration' 
+        if ($key === 'Duration'
           && !empty($row[$key]) && !DurationFormat::isDuration($row[$key])) {
           $bag->add($key, 
             $key . ' must adhere to the following format: HH:MM:SS.mmm.');
         }
         // Validate transfer date is formatted correctly
-        if ($key==='OriginationDate' 
+        if ($key === 'OriginationDate'
           && !empty($row[$key]) && !$this->isValidDate($row[$key])) {
           $bag->add(
             $key, $key . ' must be adhere to the following format: ' 
             . 'YYYY-MM-DD');
         }
         // Validate department exists
-        if ($key==='IART' 
+        if ($key === 'IART'
           && !empty($row[$key]) && !$this->departmentExists($row[$key])) {
           $bag->add($key, $key . ' is not a recognized department.');
         }
         // Validate pm is an integer
-        if ($key==='OriginalPm' 
+        if ($key === 'OriginalPm'
           && !empty($row[$key]) && !ctype_digit($row[$key])) {
           $bag->add($key, $key . ' must be an integer.');
         }
+        // Validate pm number exists in the DB
+        if ($key === 'OriginalPm'
+          && !empty($row[$key]) && !$this->pmExists($row[$key])) {
+          $bag->add($key, $key . ' must already exist in the database.');
+        }
         // Validate pm belongs to the audio visual item identified by
         // call number
-        if ($key==='OriginalPm' 
+        if ($key === 'OriginalPm'
           && !empty($row[$key]) && !empty($row['CallNumber'])
           && !$this->belongsToItem($row[$key], $row['CallNumber'])) {
           $bag->add($key, $key . ' does not belong to the given call number.');
         }
-        // Validate the pm is unqiue amongst pm values in the rest of the file
-        if ($key==='OriginalPm' 
+        // Validate the pm is unique amongst pm values in the rest of the file
+        if ($key === 'OriginalPm'
           && !empty($row[$key]) && in_array($row[$key], $originalPms)) {
           $bag->add($key, $key . ' has already been used in this file.');
-        } else if ($key==='OriginalPm' && !empty($row[$key])) {
-          array_push($originalPms, $row[$key]);
+        } else if ($key === 'OriginalPm' && !empty($row[$key])) {
+          $originalPms[] = $row[$key];
         }
       }
     }
@@ -165,84 +175,98 @@ class AudioImport extends Import {
         // id. In order to avoid hitting the database, we will utilize
         // a simple cache.
         $playbackMachineName = $row['PlaybackMachine'];
-        // Check the cache first for this playback machine record
-        $playbackMachine = 
-          isset($playbackMachineCache[$playbackMachineName]) ? 
-                        $playbackMachineCache[$playbackMachineName] : null;
-        // Not in cache, so get from database and add to cache
-        if ($playbackMachine === null) {
+        if (isset($playbackMachineName)) {
+          // Check the cache first for this playback machine record
           $playbackMachine =
-            PlaybackMachine::where('name', $playbackMachineName)->first();
-          if ($playbackMachine) {
-            $playbackMachineCache[$playbackMachineName] = $playbackMachine;
+            isset($playbackMachineCache[$playbackMachineName]) ?
+              $playbackMachineCache[$playbackMachineName] : null;
+          // Not in cache, so get from database and add to cache
+          if ($playbackMachine === null) {
+            $playbackMachine =
+              PlaybackMachine::where('name', $playbackMachineName)->first();
+            if ($playbackMachine) {
+              $playbackMachineCache[$playbackMachineName] = $playbackMachine;
+            }
           }
         }
 
         // Same as playback machine, we will use a cache for the department
         $departmentName = $row['IART'];
-        // Check the cache first for this department record
-        $department = 
-          isset($departmentCache[$departmentName]) ? 
-                        $departmentCache[$departmentName] : null;
-        // Not in cache, so get from database and add to cache
-        if ($department === null) {
+        if (isset($departmentName)) {
+          // Check the cache first for this department record
           $department =
-            Department::where('name', $departmentName)->first();
-          if ($department) {
-            $departmentCache[$departmentName] = $department;
+            isset($departmentCache[$departmentName]) ?
+              $departmentCache[$departmentName] : null;
+          // Not in cache, so get from database and add to cache
+          if ($department === null) {
+            $department =
+              Department::where('name', $departmentName)->first();
+            if ($department) {
+              $departmentCache[$departmentName] = $department;
+            }
           }
         }
-        
+
         // Original PM is optional, so the column may not be present in the file
         $originalPm = isset($row['OriginalPm']) ? $row['OriginalPm'] : null;
+        $duration = DurationFormat::toSeconds($row['Duration']);
         
         if (!empty($originalPm)) { 
           // Original PM not empty so this is an update
+          $masterUpdated = false;
           $master = PreservationMaster::find($originalPm);
-          $master->fileName = $row['OriginatorReference'];
-          $master->fileSizeInBytes = $row['FileSize'];
-          $master->durationInSeconds = 
-            DurationFormat::toSeconds($row['Duration']);
-          $master->departmentId = $department->id;
-          // APPDEV-6760
-          $master->fileFormat = 'BWF';
-          $master->fileCodec = 'Uncompressed PCM';
-          $master->save();
-          array_push($masters, $master);
-          $updated++;
+          if (!empty($row['OriginatorReference'])) {
+            $master->fileName = $row['OriginatorReference'];
+            $masterUpdated = true;
+          }
+          if (!empty($row['FileSize'])) {
+            $master->fileSizeInBytes = $row['FileSize'];
+            $masterUpdated = true;
+          }
+          if (isset($duration)) {
+            $master->durationInSeconds = $duration;
+            $masterUpdated = true;
+          }
+          if (isset($department)) {
+            $master->departmentId = $department->id;
+            $masterUpdated = true;
+          }
+          if ($masterUpdated === true) {
+            $master->save();
+            $masters[] = $master;
+            $updated++;
+          }
 
-          $audioMaster = AudioMaster::find($master->subclassId);
-          // APPDEV-6760  Sampling rate id 8 = 96kHz/24bit
-          $audioMaster->samplingRateId = 8;
-          $audioMaster->save();
-          $updated++;
-
-          // Update related transfers, which should exist
-          $relatedTransfers = $master->transfers;
-          if ($relatedTransfers->count() > 0) {
+          // Update related transfers if specified, which should exist
+          if (isset($playbackMachine) || !empty($row['OriginationDate']) || !empty($row['TransferNote'])) {
+            $relatedTransfers = $master->transfers;
             foreach ($relatedTransfers as $transfer) {
-              $transfer->playbackMachineId = $playbackMachine->id;
-              // Right now we will assume the person importing is the
-              // engineer, but that might change in the future.
-              $transfer->engineerId = Auth::user()->id;
-              $transfer->transferDate = $row['OriginationDate'];
-              $transfer->transferNote = 
-                isset($row['TransferNote']) ? $row['TransferNote'] : null;
+              if (isset($playbackMachine)) {
+                $transfer->playbackMachineId = $playbackMachine->id;
+                Log::debug('Its playback machine');
+              }
+              if (!empty($row['OriginationDate'])) {
+                $transfer->transferDate = $row['OriginationDate'];
+              }
+              if (!empty($row['TransferNote'])) {
+                $transfer->transferNote = $row['TransferNote'];
+              }
               $transfer->save();
-              array_push($transfers, $transfer);
+              $transfers[] = $transfer;
               $updated++;
             }
           }
 
-          // Update related cuts, which should exist
-          $relatedCuts = $master->cuts;
-          if ($relatedCuts->count() > 0) {
+          // Update related cuts if specified, which should exist
+          if (!empty($row['Side'])) {
+            $relatedCuts = $master->cuts;
             foreach ($relatedCuts as $cut) {
               $cut->side = $row['Side'];
               $cut->save();
               $updated++;
             }
           }
+
         } else {
           // Original PM is empty, so all new records will be created.
           // For the audio PM, there is nothing to save, we just need the
@@ -258,8 +282,7 @@ class AudioImport extends Import {
           $master->callNumber = $callNumber;
           $master->fileName = $row['OriginatorReference'];
           $master->fileSizeInBytes = $row['FileSize'];
-          $master->durationInSeconds = 
-              DurationFormat::toSeconds($row['Duration']);
+          $master->durationInSeconds = $duration;
           $master->departmentId = $department->id;
           // APPDEV-6760
           $master->fileFormat = 'BWF';
@@ -268,7 +291,7 @@ class AudioImport extends Import {
           $master->subclassType = 'AudioMaster';
           $master->subclassId = $audioMaster->id;
           $master->save();
-          array_push($masters, $master);
+          $masters[] = $master;
           $created++;
 
           // There's really no information to import here, 
@@ -291,7 +314,7 @@ class AudioImport extends Import {
           $transfer->subclassType = 'AudioTransfer';
           $transfer->subclassId = $audioTransfer->id;
           $transfer->save();
-          array_push($transfers, $transfer);
+          $transfers[] = $transfer;
           $created++;
 
           // Create the cut

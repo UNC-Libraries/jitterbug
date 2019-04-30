@@ -20,5 +20,4 @@ class CollectionType extends Model
   {
     return $this->hasMany(Prefix::class);
   }
-
 }

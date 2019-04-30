@@ -21,7 +21,7 @@ jobs:
           environment:
             DOCKERIZE_VERSION: v0.3.0
       - run:
-          name: Install PHP exts
+          name: Install PHP & other exts
           command: |
             sudo docker-php-ext-install zip
             sudo docker-php-ext-install pdo_mysql
@@ -30,11 +30,67 @@ jobs:
             sudo rm -rf /var/lib/apt/lists/*
             sudo docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/
             sudo docker-php-ext-install ldap
+            sudo apt-get update -y
+            sudo apt-get install lsof
 
       - run: sudo composer self-update
       - run:
           name: Copy Circle CI version of .env.testing
           command: cp .env.testing.circleci .env.testing
+      - run:
+          name: Install Java
+          command: |
+            cd /
+            sudo apt-get update -y
+            sudo apt-get install openjdk-8-jdk -y
+
+      - run:
+          name: Install Solr
+          command: |
+            cd ~
+            sudo wget --no-verbose http://archive.apache.org/dist/lucene/solr/7.2.1/solr-7.2.1.tgz
+            sudo tar xzf solr-7.2.1.tgz solr-7.2.1/bin/install_solr_service.sh --strip-components=2
+            sudo ./install_solr_service.sh solr-7.2.1.tgz -n
+
+      - run:
+          name: Get and hook up connector file
+          command: |
+            cd ~/jitterbug
+            sudo wget --no-verbose -nc http://www.mirrorservice.org/sites/ftp.mysql.com/Downloads/Connector-J/mysql-connector-java-8.0.15.zip
+            sudo unzip -n mysql-connector-java-8.0.15.zip
+            cd /
+            sudo cp ~/jitterbug/mysql-connector-java-8.0.15/mysql-connector-java-8.0.15.jar /opt/solr/contrib/dataimporthandler-extras/lib/.
+
+      - run:
+          name: Change solr home directory
+          command: |
+            sudo sed -i.bak 's|SOLR_HOME="/var/solr/data"|SOLR_HOME="/opt/solr/server/solr"|' /etc/default/solr.in.sh
+
+      - run:
+          name: Configure Solr cores and start Solr
+          command: |
+            cd /opt/solr
+            sudo chown -R circleci .
+            sudo chgrp -R circleci .
+            sudo chmod -R g+w .
+            cd server/solr
+            mkdir jitterbug-items
+            mkdir jitterbug-masters
+            mkdir jitterbug-transfers
+            cd jitterbug-items
+            cat ~/jitterbug/dev_files/jitterbug-items.core.properties.example > core.properties
+            ln -s ~/jitterbug/solrconfig/jitterbug-items/conf conf
+            cd ..
+            cd jitterbug-masters
+            cat ~/jitterbug/dev_files/jitterbug-masters.core.properties.example > core.properties
+            ln -s ~/jitterbug/solrconfig/jitterbug-masters/conf conf
+            cd ..
+            cd jitterbug-transfers
+            cat ~/jitterbug/dev_files/jitterbug-transfers.core.properties.example > core.properties
+            ln -s ~/jitterbug/solrconfig/jitterbug-transfers/conf conf
+            cd /opt/solr
+            bin/solr start
+            cd ~/jitterbug
 
       # Download and cache dependencies
       - restore_cache:
@@ -58,7 +114,9 @@ jobs:
           command: |
             php artisan config:cache --env=testing
             php artisan migrate --env=testing --force
-
+      - run:
+          name: Wait for Solr
+          command: dockerize -wait tcp://127.0.0.1:8983 -timeout 120s
       - run:
           name: Run Tests
           command: ./vendor/bin/phpunit

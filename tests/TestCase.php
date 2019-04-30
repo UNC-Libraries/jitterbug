@@ -1,4 +1,6 @@
 <?php
+use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Http\UploadedFile;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
@@ -16,7 +18,38 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 		return $app;
 	}
 
-	protected $connectionsToTransact = [
+  protected function disableExceptionHandling()
+  {
+    app()->instance(ExceptionHandler::class, new PassThroughHandler);
+  }
+
+  protected function getUploadableFile($file, $original_name, $type)
+  {
+    $dummy = file_get_contents($file);
+    file_put_contents(base_path('tests/' . basename($file)), $dummy);
+    $path = base_path('tests/' . basename($file));
+    $size = 111;
+    $error = null;
+    $test = true;
+    $file = new UploadedFile($path, $original_name, $type, $size, $error, $test);
+    return $file;
+  }
+
+  protected $connectionsToTransact = [
 	  'mysql'
   ];
 }
+
+class PassThroughHandler extends Jitterbug\Exceptions\Handler
+{
+  public function __construct() {}
+  public function report(Exception $e)
+  {
+    // no-op
+  }
+  public function render($request, Exception $e)
+  {
+    throw $e;
+  }
+}
+

@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 namespace Jitterbug\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -20,4 +21,13 @@ class Prefix extends Model
   {
     return $this->belongsToMany(Format::class);
   }
+=======
+namespace Jitterbug;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Prefix extends Model
+{
+    //
+>>>>>>> master
 }
