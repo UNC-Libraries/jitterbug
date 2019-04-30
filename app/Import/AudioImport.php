@@ -67,80 +67,80 @@ class AudioImport extends Import {
         }
 
         // Validate call number exists
-        if ($key==='CallNumber' 
+        if ($key === 'CallNumber'
           && !empty($row[$key]) && !$this->callNumberExists($row[$key])) {
           $bag->add($key, $key . ' must already exist in the database.');
         }
         // Validate call number is audio
-        if ($key==='CallNumber' 
+        if ($key === 'CallNumber'
           && !empty($row[$key]) && !$this->isAudio($row[$key])) {
           $bag->add($key, $key . ' is not an audio item.');
         }
         // Validate playback machine exists
-        if ($key==='PlaybackMachine' 
+        if ($key === 'PlaybackMachine'
           && !empty($row[$key]) && !$this->playbackMachineExists($row[$key])) {
           $bag->add($key, $key . ' is not a recognized playback machine.');
         }
         // Validate originator reference (preservation_master.file_name) 
         // doesn't exist
-        if ($key==='OriginatorReference' 
+        if ($key === 'OriginatorReference'
           && !empty($row[$key]) && $this->fileNameExists($row[$key])) {
           $bag->add($key, $key . ' already exists in the database.');
         }
         // Validate originator reference (preservation_master.file_name) 
         // is unique amongst values in the rest of the file
-        if ($key==='OriginatorReference' 
+        if ($key === 'OriginatorReference'
           && !empty($row[$key]) && in_array($row[$key], $originatorReferences)) {
           $bag->add($key, $key . ' has already been used in this file.');
         } else if ($key==='OriginatorReference' && !empty($row[$key])) {
           array_push($originatorReferences, $row[$key]);
         }
         // Validate file size is an integer
-        if ($key==='FileSize' 
+        if ($key === 'FileSize'
           && !empty($row[$key]) && !ctype_digit($row[$key])) {
           $bag->add($key, $key . ' must be an integer.');
         }
         // Validate duration format
-        if ($key==='Duration' 
+        if ($key === 'Duration'
           && !empty($row[$key]) && !DurationFormat::isDuration($row[$key])) {
           $bag->add($key, 
             $key . ' must adhere to the following format: HH:MM:SS.mmm.');
         }
         // Validate transfer date is formatted correctly
-        if ($key==='OriginationDate' 
+        if ($key === 'OriginationDate'
           && !empty($row[$key]) && !$this->isValidDate($row[$key])) {
           $bag->add(
             $key, $key . ' must be adhere to the following format: ' 
             . 'YYYY-MM-DD');
         }
         // Validate department exists
-        if ($key==='IART' 
+        if ($key === 'IART'
           && !empty($row[$key]) && !$this->departmentExists($row[$key])) {
           $bag->add($key, $key . ' is not a recognized department.');
         }
         // Validate pm is an integer
-        if ($key==='OriginalPm' 
+        if ($key === 'OriginalPm'
           && !empty($row[$key]) && !ctype_digit($row[$key])) {
           $bag->add($key, $key . ' must be an integer.');
         }
         // Validate pm number exists in the DB
-        if ($key==='OriginalPm'
+        if ($key === 'OriginalPm'
           && !empty($row[$key]) && !$this->pmExists($row[$key])) {
           $bag->add($key, $key . ' must already exist in the database.');
         }
         // Validate pm belongs to the audio visual item identified by
         // call number
-        if ($key==='OriginalPm' 
+        if ($key === 'OriginalPm'
           && !empty($row[$key]) && !empty($row['CallNumber'])
           && !$this->belongsToItem($row[$key], $row['CallNumber'])) {
           $bag->add($key, $key . ' does not belong to the given call number.');
         }
         // Validate the pm is unique amongst pm values in the rest of the file
-        if ($key==='OriginalPm' 
+        if ($key === 'OriginalPm'
           && !empty($row[$key]) && in_array($row[$key], $originalPms)) {
           $bag->add($key, $key . ' has already been used in this file.');
-        } else if ($key==='OriginalPm' && !empty($row[$key])) {
-          array_push($originalPms, $row[$key]);
+        } else if ($key === 'OriginalPm' && !empty($row[$key])) {
+          $originalPms[] = $row[$key];
         }
       }
     }
