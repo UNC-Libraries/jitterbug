@@ -80,18 +80,33 @@ class CollectionTypesTest extends TestCase
     $collectionType = factory(CollectionType::class)->create();
     factory(Collection::class)->create(['collection_type_id' => $collectionType->id]);
     $adminUser = $this->adminUser;
-    $queriedCollectionType = CollectionType::find($collectionType->id);
-    $this->assertNotNull($queriedCollectionType);
+    $this->assertNotNull(CollectionType::find($collectionType->id));
 
     $this->be($adminUser);
     $response = $this->delete("/collection-types/{$collectionType->id}",
                               [],
                               array('HTTP_X-Requested-With' => 'XMLHttpRequest'));
-    print($response->status());
-    $this->assertEquals(422, $response->getStatusCode(), 'Did not get a 422 response.');
-    $response->assertJson(['status' => 'Looks like that collection type is currently ' .
-          'in use. Change the collection type of the related collections ' .
-          'and/or prefixes before deleting.']);
 
+    $this->assertEquals(422, $response->getStatusCode(), 'Did not get a 422 response.');
+    $response->assertJson(['status' => array('Looks like that collection type is currently ' .
+                                            'in use. Change the collection type of the related collections ' .
+                                            'and/or prefixes before deleting.')]);
+
+  }
+
+  public function testDeleteRemovesUnusedCollectionType()
+  {
+    $this->disableExceptionHandling();
+    $collectionType = factory(CollectionType::class)->create(['deleted_at' => null]);
+    $adminUser = $this->adminUser;
+
+    $this->be($adminUser);
+    $response = $this->delete("/collection-types/{$collectionType->id}",
+                              [],
+                              array('HTTP_X-Requested-With' => 'XMLHttpRequest'));
+    $collectionType = $collectionType->fresh();
+
+    $this->assertNotNull($collectionType->deleted_at);
+    $response->assertJson(['status' => 'success']);
   }
 }

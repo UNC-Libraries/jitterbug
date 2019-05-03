@@ -64,11 +64,10 @@ class CollectionTypesController extends Controller
 
   public function destroy($id, Request $request) {
     if ($request->ajax()) {
-      print('in the ajax');
       $collectionCount = Collection::where('collection_type_id', $id)->count();
       $prefixCount = Prefix::where('collection_type_id', $id)->count();
       if ($collectionCount === 0 && $prefixCount === 0) {
-        $collectionType = Collection::findOrFail($id);
+        $collectionType = CollectionType::findOrFail($id);
         $collectionType->delete();
         $response = array('status'=>'success');
         return response()->json($response);
