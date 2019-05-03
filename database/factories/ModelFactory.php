@@ -125,6 +125,13 @@ $factory->define(Jitterbug\Models\Collection::class, function (Faker\Generator $
   ];
 });
 
+$factory->define(Jitterbug\Models\CollectionType::class, function (Faker\Generator $faker) {
+  return [
+    'id' => $faker->randomNumber(),
+    'name' => $faker->word,
+  ];
+});
+
 $factory->define(Jitterbug\Models\Cut::class, function (Faker\Generator $faker) {
   return [
     'call_number' => function () {
