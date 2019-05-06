@@ -235,6 +235,13 @@ $factory->define(Jitterbug\Models\PmSpeed::class, function (Faker\Generator $fak
   ];
 });
 
+$factory->define(Jitterbug\Models\Prefix::class, function (Faker\Generator $faker) {
+  return [
+    'label' => $faker->name,
+    'collection_type_id' => $faker->randomNumber(),
+  ];
+});
+
 $factory->define(Jitterbug\Models\PreservationMaster::class, function (Faker\Generator $faker) {
   return [
     'call_number' => function () {

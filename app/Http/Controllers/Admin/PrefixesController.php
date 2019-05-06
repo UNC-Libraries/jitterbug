@@ -6,6 +6,7 @@ use Log;
 
 use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Models\Prefix;
+use Jitterbug\Http\Requests\PrefixRequest;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
@@ -27,7 +28,8 @@ class PrefixesController extends Controller
 
   public function index(Request $request) {
     if ($request->ajax()) {
-      $records = Prefix::orderBy('name')->get();
+      $records = Prefix::orderBy('label')->get();
+      // TODO APPDEV-8639 need to write new view for this with different column
       return view('admin._names', compact('records'));
     }
   }
