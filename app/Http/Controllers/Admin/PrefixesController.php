@@ -64,19 +64,13 @@ class PrefixesController extends Controller
   public function destroy($id, Request $request) {
     if ($request->ajax()) {
       $prefix = Prefix::findOrFail($id);
-      $formatCount = $prefix->formats->count();
-      if ($collectionCount === 0 && $prefixCount === 0) {
-        $bag = new MessageBag();
-        $prefix->delete();
-        $response = array('status'=>'success');
-        return response()->json($response);
-      } else {
-        $bag = new MessageBag();
-        $bag->add('status', 'Looks like that collection type is currently ' .
-          'in use. Change the collection type of the related collections ' .
-          'and/or prefixes before deleting.');
-        return response()->json($bag, 422);
-      }
+      //$formatCount = $prefix->formats->count();
+      $prefix->detachAllFormats();
+      $prefix->delete();
+      $response = array('status'=>'success');
+      //$bag = new MessageBag();
+      //$bag->add('status', "Detaching the prefix from {$formatCount} formats.");
+      return response()->json($response);
     }
   }
 }

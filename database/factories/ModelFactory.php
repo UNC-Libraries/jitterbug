@@ -237,7 +237,7 @@ $factory->define(Jitterbug\Models\PmSpeed::class, function (Faker\Generator $fak
 
 $factory->define(Jitterbug\Models\Prefix::class, function (Faker\Generator $faker) {
   return [
-    'label' => $faker->name,
+    'label' => strtoupper($faker->lexify('??')),
     'collection_type_id' => $faker->randomNumber(),
   ];
 });

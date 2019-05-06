@@ -21,4 +21,9 @@ class Prefix extends Model
   {
     return $this->belongsToMany(Format::class);
   }
+
+  public function detachAllFormats()
+  {
+    $this->formats()->detach();
+  }
 }
