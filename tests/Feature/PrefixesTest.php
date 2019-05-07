@@ -83,7 +83,6 @@ class PrefixesTest extends TestCase
 
   public function testDeleteRemovesPrefixAndConnectionsToFormats()
   {
-    $this->disableExceptionHandling();
     $prefix = factory(Prefix::class)->create(['deleted_at' => null]);
     $format1 = factory(Format::class)->create();
     $format2 = factory(Format::class)->create();

@@ -60,14 +60,12 @@ class CollectionTypesTest extends TestCase
     $collectionType = factory(CollectionType::class)->create(['name' => 'SFC Collection']);
     $newName = 'Amazing SFC Collection';
     $adminUser = $this->adminUser;
-    $queriedCollectionType = CollectionType::find($collectionType->id);
-    $this->assertNotEquals($newName, $queriedCollectionType->name);
 
     $this->be($adminUser);
     $response = $this->put("/collection-types/{$collectionType->id}",
                             ['name' => $newName],
                             array('HTTP_X-Requested-With' => 'XMLHttpRequest'));
-    $queriedCollectionType = $queriedCollectionType->fresh();
+    $queriedCollectionType = CollectionType::find($collectionType->id);
 
     $this->assertEquals($newName, $queriedCollectionType->name, 'CollectionType@update did not update the name.');
     $this->assertEquals(200, $response->getStatusCode(), 'Did not get a successful response.');
@@ -94,7 +92,6 @@ class CollectionTypesTest extends TestCase
 
   public function testDeleteRemovesUnusedCollectionType()
   {
-    $this->disableExceptionHandling();
     $collectionType = factory(CollectionType::class)->create(['deleted_at' => null]);
     $adminUser = $this->adminUser;
 
