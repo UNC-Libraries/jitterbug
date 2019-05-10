@@ -125,6 +125,13 @@ $factory->define(Jitterbug\Models\Collection::class, function (Faker\Generator $
   ];
 });
 
+$factory->define(Jitterbug\Models\CollectionType::class, function (Faker\Generator $faker) {
+  return [
+    'id' => $faker->randomNumber(),
+    'name' => $faker->word,
+  ];
+});
+
 $factory->define(Jitterbug\Models\Cut::class, function (Faker\Generator $faker) {
   return [
     'call_number' => function () {
@@ -225,6 +232,13 @@ $factory->define(Jitterbug\Models\PlaybackMachine::class, function (Faker\Genera
 $factory->define(Jitterbug\Models\PmSpeed::class, function (Faker\Generator $faker) {
   return [
     'name' => $faker->name,
+  ];
+});
+
+$factory->define(Jitterbug\Models\Prefix::class, function (Faker\Generator $faker) {
+  return [
+    'label' => strtoupper($faker->lexify('??')),
+    'collection_type_id' => $faker->randomNumber(),
   ];
 });
 

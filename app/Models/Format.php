@@ -22,7 +22,12 @@ class Format extends Model {
 
   public function audioVisualItems()
   {
-    return $this->hasMany('Jitterbug\Models\AudioVisualItem');
+    return $this->hasMany(AudioVisualItem::class);
+  }
+
+  public function prefixes()
+  {
+    return $this->belongsToMany(Prefix::class);
   }
 
   public function identifiableName()
