@@ -133,149 +133,16 @@ jitterbug = {
         // If this is the users table, bind click handlers to the 
         // admin checkboxes
         if (table == 'users') {
-          jitterbug.toggleAdmin(this);
-        // This is one of the reference tables. Setup the 'new record' popover
-        // first, then setup the field popovers.
+          jitterbug.toggleAdmin();
+          // If this is the prefixes table, bind click handlers to
+          // legacy checkboxes and set up the popovers
+        } else if (table === 'prefixes') {
+          jitterbug.toggleLegacy();
+          jitterbug.initAdminEditableFields(resource);
+          // This is one of the reference tables. Setup the 'new record' popover
+          // first, then setup the field popovers.
         } else {
-          $('#new-record-button').popover({
-            // Setting the 'container' option here doesn't work with Bootstrap
-            // alpha 2
-            placement: 'bottom',
-            html: true,
-            content: $('#new-record-form').html()
-          }).click(function(event) {
-            event.preventDefault();
-            var button = this;
-            // Because setting the container option is broken, we have to resort
-            // to this ugliness to style the popover with an unlimited max-width
-            // (for our inline form) for only this use.
-            var popover = $('#' + $(this).attr('aria-describedby'));
-            popover.css('max-width', 'none');
-            // This causes the popover to redraw properly centered after the
-            // max-width was changed. This must be popover('show') rather than
-            // popover('toggle').
-            $(button).popover('show');
-
-            // Hookup the new record popover form submit
-            popover.find('form').submit(function(event) {
-              event.preventDefault();
-              var form = $(this).serialize();
-
-              // Disable submit buttons and start the spinner
-              var submitButton = $(this).find('button[type="submit"]');
-              var cancelButton = $(this).find('button.cancel-new-record');
-              submitButton.attr('disabled', true);
-              cancelButton.attr('disabled', true);
-              var icon = submitButton.find('i');
-              icon.removeClass('fa-check');
-              icon.addClass('fa-spinner').addClass('fa-pulse');
-
-              $.ajax({
-                url: '/' + resource,
-                type: 'post',
-                data: form,
-                success: function (data) {
-                  var tableContainer = $('#table-container');
-                  // Scroll the table div to the top to show the new record
-                  tableContainer.animate({ scrollTop: 0 });
-
-                  // Use the first row of the table as a template
-                  var templateRow = tableContainer.find('tbody > tr:first').clone();
-                  templateRow.find('[data-field]').each(function() {
-                    var field = $(this).attr('data-field');
-                    $(this).attr('data-id', data.id);
-                    $(this).html(  // If field is empty, add non-breaking spaces so 
-                      // there is something to click on
-                      data[field] == '' ? '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : data[field]);
-
-                    // Hookup the new field popovers
-                    if ($(this).hasClass('editable')) {
-                      jitterbug.createAdminEditableFieldPopover(resource, this);
-                    }
-                  });
-                  var deleteAnchor = templateRow.find('.delete');
-                  jitterbug.bindAdminRecordDelete(resource, deleteAnchor);
-
-                  // Insert row
-                  templateRow.prependTo('#table-container > table > tbody');
-                },
-                error: function (jqXHR, textStatus, error) {
-                  // Validation error
-                  if (jqXHR.status==422) {
-                    var errors = JSON.parse(jqXHR.responseText);
-                    // Get the first error, no matter which it is.
-                    for (var key in errors) if (errors.hasOwnProperty(key)) break;
-                    // Unfortunately, we have to hide the popover here
-                    // because it doesn't stay pinned to the field it
-                    // relates to when the alert div is opened (a bug 
-                    // in Bootstrap/Tether).
-                    jitterbug.displayAlert('danger', 
-                      '<strong>Whoops.</strong> ' + errors[key]);
-                  } else {
-                    jitterbug.displayAlert('danger', 
-                      '<strong>Uh oh.</strong> An error has occurred: ' + error);
-                  }
-                },
-                complete: function() {
-                  $(button).popover('hide');
-                }
-              });
-            });
-          });
-
-          // This will hide the 'create new record' popover, canceling the create
-          $('body').on('click', '.cancel-new-record', function(event) {
-            event.preventDefault();
-            $('#new-record-button').popover('hide');
-          });
-
-          // There is a bug in Bootstrap 4 where manually hiding a popover 
-          // (as we do above) will cause the popover to require 2 clicks to
-          // show again:
-          // https://github.com/twbs/bootstrap/issues/16732
-          $('body').on('hidden.bs.popover', function (event) {
-            // This hack fixes the bug referenced above
-            $(event.target).data('bs.popover')._activeTrigger.click = false;
-          });
-
-          // Hookup the field popovers
-          $('.editable').each(function() {
-            jitterbug.createAdminEditableFieldPopover(resource, this);
-          });
-
-          // Hookup the delete x's
-          $('.delete').each(function() {
-            jitterbug.bindAdminRecordDelete(resource, this);
-          });
-
-          // This will hide any editable field popover, canceling the edit
-          $('body').on('click', '.cancel-edit', function(event) {
-            event.preventDefault();
-            var popover = $(this).closest('.popover');
-            popover.popover('hide');
-          });
-
-          // When a new popover is opened, hide any already opened.
-          $('body').on('show.bs.popover', function (event) {
-            var target = event.target;
-            $('.editable').each(function() {
-              if ($(this).is(target)) {
-                return true;
-              } else {
-                if ($(this).attr('aria-describedby')) {
-                  $(this).popover('hide');
-                }
-              }
-            });
-            if (!$('#new-record-button').is(target)) {
-              $('#new-record-button').popover('hide');
-            }
-          });
-
-          // Hide all popovers when the table div is scrolled
-          $('#table-container').scroll(function() {
-            $('.editable').popover('hide');
-          });
+          jitterbug.initAdminEditableFields(resource);
         }
       });
     });
@@ -303,6 +170,168 @@ jitterbug = {
             : 'User ' + username + ' is no longer an admin.';
         jitterbug.displayAlert('success', message);
       });
+    });
+  },
+
+  toggleLegacy: function() {
+    console.log("in toggleLegacy");
+    var legacyCheckboxes = $('#table-container input:checkbox');
+    legacyCheckboxes.click(function(event) {
+      console.log("checkbox is clicked");
+      var makeLegacy = $(this).is(':checked');
+      var route = makeLegacy === true ? '/prefixes/make-legacy'
+          : '/prefixes/remove-legacy';
+      var data = {};
+      var id = $(this).data('id');
+      data['id'] = id;
+      $.post(route, data, function(data) {
+        var message = makeLegacy === true
+            ? 'That prefix was successfully made legacy.'
+            : 'That prefix is no longer legacy.';
+        jitterbug.displayAlert('success', message);
+      });
+    });
+  },
+
+  initAdminEditableFields: function(resource) {
+    $('#new-record-button').popover({
+      // Setting the 'container' option here doesn't work with Bootstrap
+      // alpha 2
+      placement: 'bottom',
+      html: true,
+      content: $('#new-record-form').html()
+    }).click(function(event) {
+      event.preventDefault();
+      var button = this;
+      // Because setting the container option is broken, we have to resort
+      // to this ugliness to style the popover with an unlimited max-width
+      // (for our inline form) for only this use.
+      var popover = $('#' + $(this).attr('aria-describedby'));
+      popover.css('max-width', 'none');
+      // This causes the popover to redraw properly centered after the
+      // max-width was changed. This must be popover('show') rather than
+      // popover('toggle').
+      $(button).popover('show');
+
+      // Hookup the new record popover form submit
+      popover.find('form').submit(function(event) {
+        event.preventDefault();
+        var form = $(this).serialize();
+
+        // Disable submit buttons and start the spinner
+        var submitButton = $(this).find('button[type="submit"]');
+        var cancelButton = $(this).find('button.cancel-new-record');
+        submitButton.attr('disabled', true);
+        cancelButton.attr('disabled', true);
+        var icon = submitButton.find('i');
+        icon.removeClass('fa-check');
+        icon.addClass('fa-spinner').addClass('fa-pulse');
+
+        $.ajax({
+          url: '/' + resource,
+          type: 'post',
+          data: form,
+          success: function (data) {
+            var tableContainer = $('#table-container');
+            // Scroll the table div to the top to show the new record
+            tableContainer.animate({ scrollTop: 0 });
+
+            // Use the first row of the table as a template
+            var templateRow = tableContainer.find('tbody > tr:first').clone();
+            templateRow.find('[data-field]').each(function() {
+              var field = $(this).attr('data-field');
+              $(this).attr('data-id', data.id);
+              $(this).html(  // If field is empty, add non-breaking spaces so
+                  // there is something to click on
+                  data[field] == '' ? '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : data[field]);
+
+              // Hookup the new field popovers
+              if ($(this).hasClass('editable')) {
+                jitterbug.createAdminEditableFieldPopover(resource, this);
+              }
+            });
+            var deleteAnchor = templateRow.find('.delete');
+            jitterbug.bindAdminRecordDelete(resource, deleteAnchor);
+
+            // Insert row
+            templateRow.prependTo('#table-container > table > tbody');
+          },
+          error: function (jqXHR, textStatus, error) {
+            // Validation error
+            if (jqXHR.status==422) {
+              var errors = JSON.parse(jqXHR.responseText);
+              // Get the first error, no matter which it is.
+              for (var key in errors) if (errors.hasOwnProperty(key)) break;
+              // Unfortunately, we have to hide the popover here
+              // because it doesn't stay pinned to the field it
+              // relates to when the alert div is opened (a bug
+              // in Bootstrap/Tether).
+              jitterbug.displayAlert('danger',
+                  '<strong>Whoops.</strong> ' + errors[key]);
+            } else {
+              jitterbug.displayAlert('danger',
+                  '<strong>Uh oh.</strong> An error has occurred: ' + error);
+            }
+          },
+          complete: function() {
+            $(button).popover('hide');
+          }
+        });
+      });
+    });
+
+    // This will hide the 'create new record' popover, canceling the create
+    $('body').on('click', '.cancel-new-record', function(event) {
+      event.preventDefault();
+      $('#new-record-button').popover('hide');
+    });
+
+    // There is a bug in Bootstrap 4 where manually hiding a popover
+    // (as we do above) will cause the popover to require 2 clicks to
+    // show again:
+    // https://github.com/twbs/bootstrap/issues/16732
+    $('body').on('hidden.bs.popover', function (event) {
+      // This hack fixes the bug referenced above
+      $(event.target).data('bs.popover')._activeTrigger.click = false;
+    });
+
+    // Hookup the field popovers
+    $('.editable').each(function() {
+      jitterbug.createAdminEditableFieldPopover(resource, this);
+    });
+
+    // Hookup the delete x's
+    $('.delete').each(function() {
+      jitterbug.bindAdminRecordDelete(resource, this);
+    });
+
+    // This will hide any editable field popover, canceling the edit
+    $('body').on('click', '.cancel-edit', function(event) {
+      event.preventDefault();
+      var popover = $(this).closest('.popover');
+      popover.popover('hide');
+    });
+
+    // When a new popover is opened, hide any already opened.
+    $('body').on('show.bs.popover', function (event) {
+      var target = event.target;
+      $('.editable').each(function() {
+        if ($(this).is(target)) {
+          return true;
+        } else {
+          if ($(this).attr('aria-describedby')) {
+            $(this).popover('hide');
+          }
+        }
+      });
+      if (!$('#new-record-button').is(target)) {
+        $('#new-record-button').popover('hide');
+      }
+    });
+
+    // Hide all popovers when the table div is scrolled
+    $('#table-container').scroll(function() {
+      $('.editable').popover('hide');
     });
   },
 

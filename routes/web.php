@@ -64,6 +64,8 @@ Route::resource('collection-types',
   'Admin\CollectionTypesController', ['except' => ['show', 'create', 'edit']]);
 Route::resource('prefixes',
   'Admin\PrefixesController', ['except' => ['show', 'create', 'edit']]);
+Route::post('prefixes/make-legacy', 'Admin\PrefixesController@makeLegacy');
+Route::post('prefixes/remove-legacy', 'Admin\PrefixesController@removeLegacy');
 
 /*
 |--------------------------------------------------------------------------
