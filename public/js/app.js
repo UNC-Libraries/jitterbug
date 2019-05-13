@@ -133,21 +133,7 @@ jitterbug = {
         // If this is the users table, bind click handlers to the 
         // admin checkboxes
         if (table == 'users') {
-          var adminCheckboxes = $('#table-container input:checkbox');
-          adminCheckboxes.click(function(event) {
-            var makeAdmin = $(this).is(':checked');
-            var route = makeAdmin == true ? '/admin/make-admin' 
-              : '/admin/remove-admin';
-            var data = {};
-            var username = $(this).data('username');
-            data['username'] = username;
-            $.post(route, data, function(data) {
-              var message = makeAdmin == true 
-                ? 'User ' + username + ' was successfully made admin.'
-                : 'User ' + username + ' is no longer an admin.'
-              jitterbug.displayAlert('success', message);
-            });
-          });
+          jitterbug.toggleAdmin(this);
         // This is one of the reference tables. Setup the 'new record' popover
         // first, then setup the field popovers.
         } else {
@@ -299,6 +285,24 @@ jitterbug = {
       if ($(this).val() == selectedTable) {
         $(this).trigger('click');
       }
+    });
+  },
+
+  toggleAdmin: function() {
+    var adminCheckboxes = $('#table-container input:checkbox');
+    adminCheckboxes.click(function(event) {
+      var makeAdmin = $(this).is(':checked');
+      var route = makeAdmin == true ? '/admin/make-admin'
+          : '/admin/remove-admin';
+      var data = {};
+      var username = $(this).data('username');
+      data['username'] = username;
+      $.post(route, data, function(data) {
+        var message = makeAdmin == true
+            ? 'User ' + username + ' was successfully made admin.'
+            : 'User ' + username + ' is no longer an admin.';
+        jitterbug.displayAlert('success', message);
+      });
     });
   },
 

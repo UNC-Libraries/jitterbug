@@ -31,9 +31,4 @@ class Prefix extends Model
   {
     return $this->collectionType->name;
   }
-
-  public function legacyInReadableFormat()
-  {
-    return ($this->legacy === 1 ? 'true' : 'false');
-  }
 }
