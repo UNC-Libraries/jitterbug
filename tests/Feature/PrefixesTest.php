@@ -75,7 +75,6 @@ class PrefixesTest extends TestCase
       ],
       array('HTTP_X-Requested-With' => 'XMLHttpRequest'));
     $queriedPrefix = Prefix::find($prefix->id);
-    print($response->getContent());
 
     $this->assertEquals($newLabel, $queriedPrefix->label, 'Prefix@update did not update the label.');
     $this->assertEquals(200, $response->getStatusCode(), 'Did not get a successful response.');
