@@ -174,10 +174,8 @@ jitterbug = {
   },
 
   toggleLegacy: function() {
-    console.log("in toggleLegacy");
     var legacyCheckboxes = $('#table-container input:checkbox');
     legacyCheckboxes.click(function(event) {
-      console.log("checkbox is clicked");
       var makeLegacy = $(this).is(':checked');
       var route = makeLegacy === true ? '/prefixes/make-legacy'
           : '/prefixes/remove-legacy';
@@ -374,8 +372,16 @@ jitterbug = {
         event.preventDefault();
         // This needs to be attr('data-id') instead of .data('id')
         var id = $(fieldSpan).attr('data-id'),
+        // we assume it's not a dropdown
+        dropdownSelect = false,
         // Get field value set by the user
-        formInputVal = $(this).find('input[name=' + fieldName + ']').val(),
+        formInputVal = $(this).find('input[name=' + fieldName + ']').val();
+        // If it's undefined, then it's a dropdown field
+        if (formInputVal === undefined ) {
+          formInputVal = parseInt($(this).find(':selected').val());
+          dropdownSelect = true;
+          var formInputText = $(this).find(':selected').text();
+        }
         data = {};
         data[fieldName] = formInputVal;
 
@@ -393,8 +399,16 @@ jitterbug = {
           type: 'put',
           data: data,
           success: function (data) {
-            $(fieldSpan).html(formInputVal == '' ? 
-              '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : formInputVal);
+            // If ajax is successful we need to change the cell value
+            // to the new value. the default is an empty space
+            // if the input was a select, we need the text, not the value
+            var newCellValue = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+            if (dropdownSelect === true) {
+              newCellValue = formInputText;
+            } else if (formInputVal !== '') {
+              newCellValue = formInputVal;
+            }
+            $(fieldSpan).html(newCellValue);
 
             // If the user just edited an id field (allowed only
             // on the collections table) we need to update the DOM

@@ -23,10 +23,15 @@ class PrefixRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-          'label' => 'required|min:2|max:255',
-          'collection_type_id' => 'required|integer',
-        ];
+      $required = '';
+      // Only require the fields if it's a new record
+      if ($this->route()->getName() === 'prefixes.store') {
+        $required = 'required|';
+      }
+      return [
+        'label' => $required.'min:2|max:255',
+        'collection_type_id' => $required.'integer',
+      ];
     }
 
   public function messages()
