@@ -42,6 +42,7 @@ class PrefixesController extends Controller
       $prefix = new Prefix;
       $prefix->fill($input);
       $prefix->save();
+      $prefix['collectionTypeName'] = $prefix->collectionTypeName();
       return response()->json($prefix);
     }
   }

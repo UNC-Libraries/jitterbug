@@ -215,7 +215,7 @@ jitterbug = {
       popover.find('form').submit(function(event) {
         event.preventDefault();
         var form = $(this).serialize();
-
+        
         // Disable submit buttons and start the spinner
         var submitButton = $(this).find('button[type="submit"]');
         var cancelButton = $(this).find('button.cancel-new-record');
@@ -239,9 +239,14 @@ jitterbug = {
             templateRow.find('[data-field]').each(function() {
               var field = $(this).attr('data-field');
               $(this).attr('data-id', data.id);
-              $(this).html(  // If field is empty, add non-breaking spaces so
-                  // there is something to click on
-                  data[field] == '' ? '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : data[field]);
+              // If field is empty, add non-breaking spaces so
+              // there is something to click on
+              var newCellValue = data[field] == '' ? '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : data[field];
+              // if it's the collection type ID column, display the name instead of the ID
+              if (field === 'collectionTypeId') {
+                newCellValue = data['collectionTypeName']
+              }
+              $(this).html(newCellValue);
 
               // Hookup the new field popovers
               if ($(this).hasClass('editable')) {
@@ -402,11 +407,9 @@ jitterbug = {
             // If ajax is successful we need to change the cell value
             // to the new value. the default is an empty space
             // if the input was a select, we need the text, not the value
-            var newCellValue = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+            var newCellValue = formInputVal === '' ? '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : formInputVal;
             if (dropdownSelect === true) {
               newCellValue = formInputText;
-            } else if (formInputVal !== '') {
-              newCellValue = formInputVal;
             }
             $(fieldSpan).html(newCellValue);
 
