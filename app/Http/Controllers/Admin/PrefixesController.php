@@ -30,7 +30,6 @@ class PrefixesController extends Controller
   public function index(Request $request) {
     if ($request->ajax()) {
       $records = Prefix::orderBy('label')->get();
-      //$collectionTypes = CollectionType::orderBy('name')->get();
       $collectionTypes = CollectionType::pluck('name','id')->toArray();
       return view('admin._prefixes', compact('records', 'collectionTypes'));
     }
@@ -67,12 +66,13 @@ class PrefixesController extends Controller
   public function destroy($id, Request $request) {
     if ($request->ajax()) {
       $prefix = Prefix::findOrFail($id);
-      //$formatCount = $prefix->formats->count();
+      $formatCount = $prefix->formats->count();
       $prefix->detachAllFormats();
       $prefix->delete();
-      $response = array('status'=>'success');
-      //$bag = new MessageBag();
-      //$bag->add('status', "Detaching the prefix from {$formatCount} formats.");
+      $message = ' ' .$formatCount . ' '. str_plural('format', $formatCount) .
+        ' were detached from the deleted prefix.';
+      $response = array('status'=>'success', 'message' => $message);
+
       return response()->json($response);
     }
   }

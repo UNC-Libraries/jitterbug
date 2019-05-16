@@ -215,7 +215,7 @@ jitterbug = {
       popover.find('form').submit(function(event) {
         event.preventDefault();
         var form = $(this).serialize();
-        
+
         // Disable submit buttons and start the spinner
         var submitButton = $(this).find('button[type="submit"]');
         var cancelButton = $(this).find('button.cancel-new-record');
@@ -457,9 +457,10 @@ jitterbug = {
         url: '/' + resource + '/' + id,
         type: 'delete',
         success: function (data) {
+          var additionalMessage = data['message'] === undefined ? '' : data['message'];
           row.remove();
           jitterbug.displayAlert('success',
-              '<strong>Gone.</strong> The record was successfully deleted.');
+              '<strong>Gone.</strong> The record was successfully deleted. ' + additionalMessage);
         },
         error: function (jqXHR, textStatus, error) {
           // Validation error
