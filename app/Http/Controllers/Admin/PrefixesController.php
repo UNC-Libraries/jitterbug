@@ -77,7 +77,7 @@ class PrefixesController extends Controller
     }
   }
 
-  public function makeLegacy(Request $request)
+  public function setLegacyStatus(Request $request)
   {
     if ($request->ajax()) {
       $input = $request->all();
@@ -88,7 +88,7 @@ class PrefixesController extends Controller
     }
   }
 
-  public function removeLegacy(Request $request)
+  public function removeLegacyStatus(Request $request)
   {
     if ($request->ajax()) {
       $input = $request->all();

@@ -177,8 +177,8 @@ jitterbug = {
     var legacyCheckboxes = $('#table-container input:checkbox');
     legacyCheckboxes.click(function(event) {
       var makeLegacy = $(this).is(':checked');
-      var route = makeLegacy === true ? '/prefixes/make-legacy'
-          : '/prefixes/remove-legacy';
+      var route = makeLegacy === true ? '/prefixes/set-legacy-status'
+          : '/prefixes/remove-legacy-status';
       var data = {};
       var id = $(this).data('id');
       data['id'] = id;
