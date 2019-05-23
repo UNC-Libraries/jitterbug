@@ -27,24 +27,8 @@
       <li>
         <div class="radio">
           <label>
-            <input type="radio" name="table" value="formats">
-            Formats
-          </label>
-        </div>
-      </li>
-      <li>
-        <div class="radio">
-          <label>
-            <input type="radio" name="table" value="projects">
-            Projects
-          </label>
-        </div>
-      </li>
-      <li>
-        <div class="radio">
-          <label>
-            <input type="radio" name="table" value="vendors">
-            Vendors
+            <input type="radio" name="table" value="collection_types">
+            Collection Types
           </label>
         </div>
       </li>
@@ -59,8 +43,40 @@
       <li>
         <div class="radio">
           <label>
+            <input type="radio" name="table" value="formats">
+            Formats
+          </label>
+        </div>
+      </li>
+      <li>
+        <div class="radio">
+          <label>
             <input type="radio" name="table" value="playback_machines">
             Playback Machines
+          </label>
+        </div>
+      </li>
+      <li>
+        <div class="radio">
+          <label>
+            <input type="radio" name="table" value="pm_speeds">
+            PM Speeds
+          </label>
+        </div>
+      </li>
+      <li>
+        <div class="radio">
+          <label>
+            <input type="radio" name="table" value="prefixes">
+            Prefixes
+          </label>
+        </div>
+      </li>
+      <li>
+        <div class="radio">
+          <label>
+            <input type="radio" name="table" value="projects">
+            Projects
           </label>
         </div>
       </li>
@@ -83,16 +99,16 @@
       <li>
         <div class="radio">
           <label>
-            <input type="radio" name="table" value="pm_speeds">
-            PM Speeds
+            <input type="radio" name="table" value="tape_brands">
+            Tape Brands
           </label>
         </div>
       </li>
       <li>
         <div class="radio">
           <label>
-            <input type="radio" name="table" value="tape_brands">
-            Tape Brands
+            <input type="radio" name="table" value="vendors">
+            Vendors
           </label>
         </div>
       </li>

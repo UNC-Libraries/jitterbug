@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Prefix extends Model
 {
   use SoftDeletes;
+  use CamelCasing;
 
   protected $fillable = array('label', 'legacy', 'collectionTypeId');
 
@@ -25,5 +26,10 @@ class Prefix extends Model
   public function detachAllFormats()
   {
     $this->formats()->detach();
+  }
+
+  public function collectionTypeName()
+  {
+    return $this->collectionType->name;
   }
 }
