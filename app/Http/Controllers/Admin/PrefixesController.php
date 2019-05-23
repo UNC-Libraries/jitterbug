@@ -70,7 +70,7 @@ class PrefixesController extends Controller
       $prefix->detachAllFormats();
       $prefix->delete();
       $message = ' ' .$formatCount . ' '. str_plural('format', $formatCount) .
-        ' were detached from the deleted prefix.';
+        ' detached from the deleted prefix.';
       $response = array('status'=>'success', 'message' => $message);
 
       return response()->json($response);
