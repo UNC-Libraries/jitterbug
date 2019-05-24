@@ -41,7 +41,7 @@ class PrefixRequest extends FormRequest
       'label.min' => 'The prefix label must be at least :min characters.',
       'label.max' => 'The prefix label must be less than :max characters.',
       'collectionTypeId.required' => 'A collection type ID is required.',
-      'collectionTypeId.integer' => 'The collection type ID must be an integer.'
+      'collectionTypeId.integer' => 'The collection type ID must be an integer.',
     ];
   }
 }

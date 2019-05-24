@@ -30,6 +30,7 @@ class Prefix extends Model
 
   public function collectionTypeName()
   {
-    return $this->collectionType->name;
+    $collectionType= $this->collectionType;
+    return CollectionType::formattedName($collectionType);
   }
 }

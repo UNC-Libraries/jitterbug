@@ -20,4 +20,14 @@ class CollectionType extends Model
   {
     return $this->hasMany(Prefix::class);
   }
+
+  public static function arrayForSelect()
+  {
+    return self::pluck('name','id')->toArray();
+  }
+
+  public static function formattedName($collectionType)
+  {
+    return $collectionType === null ? '--' : $collectionType->name;
+  }
 }

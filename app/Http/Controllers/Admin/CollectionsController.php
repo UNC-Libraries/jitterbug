@@ -11,7 +11,7 @@ use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Http\Requests\CollectionRequest;
 use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\Collection;
-use Jitterbug\Models\Format;
+use Jitterbug\Models\CollectionType;
 use Jitterbug\Models\NewCallNumberSequence;
 use Jitterbug\Models\PreservationMaster;
 use Jitterbug\Models\Transfer;
@@ -43,7 +43,8 @@ class CollectionsController extends Controller
   public function index(Request $request) {
     if ($request->ajax()) {
       $records = Collection::orderBy('name')->get();
-      return view('admin._collections', compact('records'));
+      $collectionTypes = CollectionType::arrayForSelect();
+      return view('admin._collections', compact('records', 'collectionTypes'));
     }
   }
 
