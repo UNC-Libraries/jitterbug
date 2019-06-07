@@ -26,8 +26,8 @@ class CollectionType extends Model
     return self::pluck('name','id')->toArray();
   }
 
-  public function formattedName()
+  public static function formattedName($collectionType)
   {
-    return $this === null ? '--' : $this->name;
+    return $collectionType === null ? '--' : $collectionType->name;
   }
 }

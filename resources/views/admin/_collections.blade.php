@@ -1,3 +1,4 @@
+
     <div id="record-container">
       <div style="margin-top: .75rem;">
         <a id="new-record-button" class="btn btn-sm btn-secondary" href="#" role="button"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
@@ -19,7 +20,7 @@
               <td><span class="editable" data-id="{{ $record->id }}" data-field="name" role="button">{{ $record->name }}</span></td>
               <td>
                 <span class="editable" data-id="{{ $record->id }}" data-field="collectionTypeId" data-role="button">
-                  {{ $record->collectionType->formattedName() }}
+                  {{ \Jitterbug\Models\CollectionType::formattedName($record->collectionType) }}
                 </span>
               </td>
               <td><a href="#" role="button" class="delete" title="Delete record" style="float: right;"><i class="fa fa-times" aria-hidden="true"></i></a></td>
