@@ -20,7 +20,7 @@
           <td><span class="editable" data-id="{{ $record->id }}" data-field="label" role="button">{{ $record->label }}</span></td>
           <td>
             <span class="editable" data-id="{{ $record->id }}" data-field="collectionTypeId" data-role="button">
-              {{ $record->collectionTypeName() }}
+              {{ $record->collectionType->formattedName() }}
             </span>
           </td>
           <td><input role="button" data-id="{{ $record->id }}" type="checkbox" @if ($record->legacy === 1) checked="checked" @endif></td>

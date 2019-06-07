@@ -19,7 +19,7 @@
               <td><span class="editable" data-id="{{ $record->id }}" data-field="name" role="button">{{ $record->name }}</span></td>
               <td>
                 <span class="editable" data-id="{{ $record->id }}" data-field="collectionTypeId" data-role="button">
-                  {{ $record->collectionTypeName() }}
+                  {{ $record->collectionType->formattedName() }}
                 </span>
               </td>
               <td><a href="#" role="button" class="delete" title="Delete record" style="float: right;"><i class="fa fa-times" aria-hidden="true"></i></a></td>

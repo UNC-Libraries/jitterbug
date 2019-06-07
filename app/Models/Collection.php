@@ -24,13 +24,6 @@ class Collection extends Model {
     return $this->belongsTo(CollectionType::class);
   }
 
-  public function collectionTypeName()
-  {
-    $collectionType = $this->collectionType;
-    $name = CollectionType::formattedName($collectionType);
-    return $name;
-  }
-
   /**
    * Used by Revisionable to get a display name for the model.
    */
