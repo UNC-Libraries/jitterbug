@@ -56,11 +56,11 @@
         <button class="btn btn-sm btn-secondary cancel-edit"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
       </form>
     </div>
-
-    <div id="edit-collectionTypeId-form" class="hidden">
-      <form class="form-inline">
-        {!! Form::select('collectionTypeId', $collectionTypes, null, array('class' => 'form-control form-control-sm', 'data-field' => 'collectionTypeId')) !!}
-        <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
-        <button class="btn btn-sm btn-secondary cancel-edit"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
-      </form>
-    </div>
+{{--TODO APPDEV-8640--}}
+{{--    <div id="edit-collectionTypeId-form" class="hidden">--}}
+{{--      <form class="form-inline">--}}
+{{--        {!! Form::select('collectionTypeId', $collectionTypes, null, array('class' => 'form-control form-control-sm', 'data-field' => 'collectionTypeId')) !!}--}}
+{{--        <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>--}}
+{{--        <button class="btn btn-sm btn-secondary cancel-edit"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>--}}
+{{--      </form>--}}
+{{--    </div>--}}
