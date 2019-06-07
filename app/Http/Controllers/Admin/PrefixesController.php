@@ -30,7 +30,7 @@ class PrefixesController extends Controller
   public function index(Request $request) {
     if ($request->ajax()) {
       $records = Prefix::orderBy('label')->get();
-      $collectionTypes = CollectionType::pluck('name','id')->toArray();
+      $collectionTypes = CollectionType::arrayForSelect();
       return view('admin._prefixes', compact('records', 'collectionTypes'));
     }
   }

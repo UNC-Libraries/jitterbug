@@ -27,9 +27,4 @@ class Prefix extends Model
   {
     $this->formats()->detach();
   }
-
-  public function collectionTypeName()
-  {
-    return $this->collectionType->name;
-  }
 }
