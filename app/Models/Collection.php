@@ -10,7 +10,7 @@ class Collection extends Model {
 
   protected $dates = array('deleted_at');
 
-  protected $fillable = array('id', 'name', 'collectionTypeId');
+  protected $fillable = array('id', 'name', 'collectionTypeId', 'archivalIdentifier');
 
   public $incrementing = false;
 
