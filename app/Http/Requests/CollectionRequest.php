@@ -35,8 +35,7 @@ class CollectionRequest extends Request {
          $this->route()->parameter('collections'),
       'name' => $required . 'min:3|max:255|unique:collections,name,' .
          $this->route()->parameter('collections'),
-      //TODO APPDEV-8640
-      //'collectionTypeId' => $required.'integer',
+      'collectionTypeId' => $required.'integer',
     ];
   }
 
@@ -52,9 +51,8 @@ class CollectionRequest extends Request {
       'name.unique' => 'The collection name has already been used.',
       'name.min' => 'The collection name must be at least :min characters.',
       'name.max' => 'The collection name must be less than :max characters.',
-      //TODO APPDEV-8640
-      //'collectionTypeId.required' => 'A collection type ID is required.',
-      //'collectionTypeId.integer' => 'The collection type ID must be an integer.',
+      'collectionTypeId.required' => 'A collection type ID is required.',
+      'collectionTypeId.integer' => 'The collection type ID must be an integer.',
     ];
   }
 

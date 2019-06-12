@@ -36,7 +36,7 @@
       <form class="form-inline">
         <input type="text" name="id" class="form-control form-control-sm" maxlength="8" placeholder="Id" autocomplete="off" style="width: 65px;">
         <input type="text" name="name" class="form-control form-control-sm" maxlength="255" placeholder="Name" autocomplete="off" style="width: 250px;">
-{{--   TODO APPDEV-8640     {!! Form::select('collectionTypeId', $collectionTypes, null, array('class' => 'form-control form-control-sm')) !!}--}}
+        {!! Form::select('collectionTypeId', $collectionTypes, null, array('class' => 'form-control form-control-sm')) !!}
         <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
         <button class="btn btn-sm btn-secondary cancel-new-record"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
       </form>
@@ -57,11 +57,11 @@
         <button class="btn btn-sm btn-secondary cancel-edit"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
       </form>
     </div>
-{{--TODO APPDEV-8640--}}
-{{--    <div id="edit-collectionTypeId-form" class="hidden">--}}
-{{--      <form class="form-inline">--}}
-{{--        {!! Form::select('collectionTypeId', $collectionTypes, null, array('class' => 'form-control form-control-sm', 'data-field' => 'collectionTypeId')) !!}--}}
-{{--        <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>--}}
-{{--        <button class="btn btn-sm btn-secondary cancel-edit"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>--}}
-{{--      </form>--}}
-{{--    </div>--}}
+
+    <div id="edit-collectionTypeId-form" class="hidden">
+      <form class="form-inline">
+        {!! Form::select('collectionTypeId', $collectionTypes, null, array('class' => 'form-control form-control-sm', 'data-field' => 'collectionTypeId')) !!}
+        <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
+        <button class="btn btn-sm btn-secondary cancel-edit"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
+      </form>
+    </div>
