@@ -45,6 +45,11 @@ class FormatsController extends Controller
     }
   }
 
+  public function show($id) {
+    $format = Format::findOrFail($id);
+    return view('admin.formats.show', compact('format'));
+  }
+
   public function store(FormatRequest $request) {
     if ($request->ajax()) {
       $input = $request->all();

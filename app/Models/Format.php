@@ -30,6 +30,11 @@ class Format extends Model {
     return $this->belongsToMany(Prefix::class);
   }
 
+  public function uniquePrefixLabels()
+  {
+    return $this->prefixes->unique('label')->pluck('label')->all();
+  }
+
   public function identifiableName()
   {
     return $this->name;

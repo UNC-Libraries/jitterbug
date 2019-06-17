@@ -43,7 +43,7 @@ Route::get('users', 'Admin\UsersController@index');
 Route::resource('collections', 
   'Admin\CollectionsController', ['except' => ['show', 'create', 'edit']]);
 Route::resource('formats', 
-  'Admin\FormatsController', ['except' => ['show', 'create', 'edit']]);
+  'Admin\FormatsController', ['except' => ['create', 'edit']]);
 Route::resource('projects', 
   'Admin\ProjectsController', ['except' => ['show', 'create', 'edit']]);
 Route::resource('vendors', 
