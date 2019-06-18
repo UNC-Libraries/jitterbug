@@ -39,4 +39,9 @@ class Format extends Model {
   {
     return $this->name;
   }
+
+  public function detachPrefixes($prefixIds)
+  {
+    $this->prefixes()->detach($prefixIds);
+  }
 }

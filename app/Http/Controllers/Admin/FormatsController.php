@@ -47,7 +47,8 @@ class FormatsController extends Controller
 
   public function show($id) {
     $format = Format::findOrFail($id);
-    return view('admin.formats.show', compact('format'));
+    $prefixes = $format->prefixes;
+    return view('admin.formats.show', compact('format', 'prefixes'));
   }
 
   public function store(FormatRequest $request) {
@@ -111,6 +112,10 @@ class FormatsController extends Controller
         return response()->json($bag, 422);
       }
     }
+  }
+
+  public function detachPrefix() {
+
   }
 
 }
