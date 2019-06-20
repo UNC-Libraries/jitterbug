@@ -190,6 +190,16 @@ JITTERBUG = {
     }
   },
 
+  formats: {
+    init: function() {
+      // controller-wide code
+    },
+
+    show: function() {
+      jitterbug.initPrefixDetachment();
+    },
+  },
+
 };
 
 ROUTER = {

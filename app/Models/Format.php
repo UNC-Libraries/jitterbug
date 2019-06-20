@@ -42,6 +42,7 @@ class Format extends Model {
 
   public function detachPrefixes($prefixIds)
   {
+    // prefixIds may be: an integer, an array, or null (which will detach all prefixes)
     $this->prefixes()->detach($prefixIds);
   }
 }

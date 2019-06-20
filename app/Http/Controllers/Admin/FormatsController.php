@@ -114,8 +114,13 @@ class FormatsController extends Controller
     }
   }
 
-  public function detachPrefix() {
-
+  public function detachPrefix($id, $prefixId, Request $request) {
+    if ($request->ajax()) {
+      $format = Format::findOrFail($id);
+      $format->detachPrefix($prefixId);
+      $response = array('status'=>'success');
+      return response()->json($response);
+    }
   }
 
 }

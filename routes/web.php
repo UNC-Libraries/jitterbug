@@ -66,6 +66,7 @@ Route::resource('prefixes',
   'Admin\PrefixesController', ['except' => ['show', 'create', 'edit']]);
 Route::post('prefixes/set-legacy-status', 'Admin\PrefixesController@setLegacyStatus');
 Route::post('prefixes/remove-legacy-status', 'Admin\PrefixesController@removeLegacyStatus');
+Route::post('formats/detach_prefixes', 'Admin\FormatsController@detachPrefixes');
 
 /*
 |--------------------------------------------------------------------------
