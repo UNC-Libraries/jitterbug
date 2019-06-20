@@ -14,7 +14,7 @@ class AddArchivalIdentifierToCollectionsTable extends Migration
     public function up()
     {
       Schema::table('collections', function (Blueprint $table) {
-        $table->string('archival_identifier')->after('collection_type_id');
+        $table->string('archival_identifier')->after('collection_type_id')->unique()->nullable();
       });
     }
 
