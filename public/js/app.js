@@ -489,36 +489,27 @@ jitterbug = {
 
   bindFormatPrefixDetachment: function(anchor) {
     $(anchor).click(function(event) {
-      console.log("i did it");
-      // event.preventDefault();
+      event.preventDefault();
 
-      // var row = $(this).closest('tr');
-      // var formatId = row.find('.prefix').first().attr('data-format-id');
-      // var prefixId = row.find('.prefix').first().attr('data-prefix-id');
-      // var data = {id: formatId, prefixId: prefixId};
-      //
-      // $.ajax({
-      //   url: '/formats/detach_prefixes',
-      //   data: data,
-      //   success: function () {
-      //     row.remove();
-      //     jitterbug.displayAlert('success',
-      //         '<strong>Gone.</strong> The prefix was successfully detached.');
-      //   },
-      //   error: function (jqXHR, textStatus, error) {
-      //     // Validation error
-      //     if (jqXHR.status==422) {
-      //       var errors = JSON.parse(jqXHR.responseText);
-      //       // Get the first error
-      //       for (var key in errors) if (errors.hasOwnProperty(key)) break;
-      //       jitterbug.displayAlert('danger',
-      //           '<strong>Hmm.</strong> ' + errors[key]);
-      //     } else {
-      //       jitterbug.displayAlert('danger',
-      //           '<strong>Uh oh.</strong> An error has occurred: ' + error);
-      //     }
-      //   }
-      // });
+      var row = $(this).closest('tr');
+      var data = {
+        'id': row.attr('data-format-id'),
+        'prefixId': row.attr('data-prefix-id')
+      };
+
+      $.ajax({
+        url: '/formats/detach_prefixes',
+        type: 'POST',
+        data: data,
+        success: function () {
+          row.remove();
+          jitterbug.displayAlert('success',
+              '<strong>Gone.</strong> The prefix was successfully detached.');
+        },
+        error: function (jqXHR, textStatus, error) {
+          jitterbug.displayAlert('danger', '<strong>Uh oh.</strong> An error has occurred: ' + error);
+        }
+      });
 
     });
   },
