@@ -32,7 +32,12 @@
       </div>
       <div class="col-xs-6 p-l-1 pull-right" style="width:40%">
         <div class="dashboard-module" >
-          Form for adding new prefixes
+          <h6>Attach new prefixes</h6>
+          <form class="form-inline">
+            {!! Form::select('prefixes', $possiblePrefixes, null, array('class' => 'chosen-select',
+              'multiple' => 'multiple', 'data-placeholder' => 'Choose one or more of the following:')) !!}
+            <button class="btn btn-sm btn-secondary popover-submit" type="submit" style="margin: 0.5em 0"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
+          </form>
         </div>
       </div>
     </div>

@@ -13,6 +13,7 @@ use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\Format;
 use Jitterbug\Models\PreservationMaster;
 use Jitterbug\Models\Transfer;
+use Jitterbug\Models\Prefix;
 use Jitterbug\Support\SolariumProxy;
 
 /**
@@ -48,7 +49,8 @@ class FormatsController extends Controller
   public function show($id) {
     $format = Format::findOrFail($id);
     $prefixes = $format->prefixes;
-    return view('admin.formats.show', compact('format', 'prefixes'));
+    $possiblePrefixes = Prefix::possiblePrefixes($format->id);
+    return view('admin.formats.show', compact('format', 'prefixes', 'possiblePrefixes'));
   }
 
   public function store(FormatRequest $request) {

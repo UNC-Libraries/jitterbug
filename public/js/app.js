@@ -485,6 +485,10 @@ jitterbug = {
     $('.delete').each(function() {
       jitterbug.bindFormatPrefixDetachment(this);
     });
+    $(document).ready(function() {
+      $('.chosen-select').chosen({width: '500px'});
+      $('.chosen-select-deselect').chosen({ allow_single_deselect: true });
+    });
   },
 
   bindFormatPrefixDetachment: function(anchor) {

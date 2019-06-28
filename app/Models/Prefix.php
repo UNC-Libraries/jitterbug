@@ -27,4 +27,21 @@ class Prefix extends Model
   {
     $this->formats()->detach();
   }
+
+  public static function possiblePrefixes($formatId)
+  {
+    $arrayForSelect = [];
+    $prefixObjects = self::whereDoesntHave('formats', function ($q) use ($formatId) {
+      $q->where('id', $formatId);
+    })->orderBy('label')->get()->all();
+
+    foreach ($prefixObjects as $prefix) {
+      $label = $prefix->label;
+      $collectionTypeName = CollectionType::formattedName($prefix->collectionType);
+      $dropdownName = $label . ' -- ' . $collectionTypeName . ' Collection';
+      $arrayForSelect[$prefix->id] = $dropdownName;
+    }
+
+    return $arrayForSelect;
+  }
 }
