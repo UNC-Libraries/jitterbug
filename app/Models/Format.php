@@ -27,7 +27,7 @@ class Format extends Model {
 
   public function prefixes()
   {
-    return $this->belongsToMany(Prefix::class);
+    return $this->belongsToMany(Prefix::class)->withTimestamps();;
   }
 
   public function uniquePrefixLabels()
@@ -42,7 +42,13 @@ class Format extends Model {
 
   public function detachPrefixes($prefixIds)
   {
-    // prefixIds may be: an integer, an array, or null (which will detach all prefixes)
+    // prefixIds may be: an integer, an array of IDs, or null (which will detach all prefixes)
     $this->prefixes()->detach($prefixIds);
+  }
+
+  public function attachPrefixes($prefixIds)
+  {
+    // prefixIds may be: an integer or an array of IDs
+    $this->prefixes()->attach($prefixIds);
   }
 }

@@ -48,7 +48,7 @@ class FormatsController extends Controller
 
   public function show($id) {
     $format = Format::findOrFail($id);
-    $prefixes = $format->prefixes;
+    $prefixes = $format->prefixes->sortBy('label');
     $possiblePrefixes = Prefix::possiblePrefixes($format->id);
     return view('admin.formats.show', compact('format', 'prefixes', 'possiblePrefixes'));
   }
@@ -119,7 +119,17 @@ class FormatsController extends Controller
   public function detachPrefixes(Request $request) {
     if ($request->ajax()) {
       $format = Format::findOrFail($request->id);
-      $format->detachPrefixes((integer) $request->prefixId);
+      $format->detachPrefixes($request->prefixId);
+      $response = array('status'=>'success');
+      return response()->json($response);
+    }
+  }
+
+  public function attachPrefixes(Request $request) {
+    if ($request->ajax()) {
+      $id = $request->id;
+      $format = Format::findOrFail($id);
+      $format->attachPrefixes($request->prefixIds);
       $response = array('status'=>'success');
       return response()->json($response);
     }

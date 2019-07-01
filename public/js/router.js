@@ -196,7 +196,7 @@ JITTERBUG = {
     },
 
     show: function() {
-      jitterbug.initPrefixDetachment();
+      jitterbug.initPrefixActions();
     },
   },
 

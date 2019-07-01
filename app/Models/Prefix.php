@@ -20,7 +20,7 @@ class Prefix extends Model
 
   public function formats()
   {
-    return $this->belongsToMany(Format::class);
+    return $this->belongsToMany(Format::class)->withTimestamps();;
   }
 
   public function detachAllFormats()

@@ -480,14 +480,50 @@ jitterbug = {
     });
   },
 
-  initPrefixDetachment: function() {
+  initPrefixActions: function() {
     // Hookup the delete x's
     $('.delete').each(function() {
       jitterbug.bindFormatPrefixDetachment(this);
     });
+    jitterbug.handlePrefixAttachmentForm();
+    jitterbug.initChosenMultiSelect('.chosen-select', {width: '500px'}, {width: '500px'})
+  },
+
+  initChosenMultiSelect: function(selector, options, deselectOptions) {
     $(document).ready(function() {
-      $('.chosen-select').chosen({width: '500px'});
-      $('.chosen-select-deselect').chosen({ allow_single_deselect: true });
+      $(selector).chosen(options);
+      $('.chosen-select-deselect').chosen(deselectOptions);
+    });
+  },
+
+  handlePrefixAttachmentForm: function() {
+    $('#prefix-attach-form').submit(function(event) {
+      event.preventDefault();
+
+      var prefixIds = $(this).find('select').val();
+      var id = $(this).attr('data-format-id');
+      var url = window.location.href;
+
+      var data = {
+        'id': id,
+        'prefixIds': prefixIds
+      };
+
+      $.ajax({
+        url: '/formats/attach_prefixes',
+        type: 'POST',
+        data: data,
+        success: function () {
+          jitterbug.displayAlert('success',
+              'The prefixes were successfully attached.');
+          $('#detail').load(url + ' #detail', function() {
+            jitterbug.initChosenMultiSelect('.chosen-select', {width: '500px'}, {width: '500px'})
+          });
+        },
+        error: function (jqXHR, textStatus, error) {
+          jitterbug.displayAlert('danger', '<strong>Uh oh.</strong> An error has occurred: ' + error);
+        }
+      });
     });
   },
 

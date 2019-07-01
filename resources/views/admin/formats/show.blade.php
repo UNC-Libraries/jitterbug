@@ -9,7 +9,7 @@
     </div>
     <div class="row last">
       <div class="col-xs-6 p-l-1 pull-left" style="width:50%">
-        <div id="table-container dashboard-module" >
+        <div id="prefix-table" class="table-container dashboard-module" >
           <table class="table table-sm pull-left">
             <thead>
               <tr>
@@ -33,10 +33,10 @@
       <div class="col-xs-6 p-l-1 pull-right" style="width:40%">
         <div class="dashboard-module" >
           <h6>Attach new prefixes</h6>
-          <form class="form-inline">
+          <form class="form-inline" id="prefix-attach-form" data-format-id={{$format->id}}>
             {!! Form::select('prefixes', $possiblePrefixes, null, array('class' => 'chosen-select',
               'multiple' => 'multiple', 'data-placeholder' => 'Choose one or more of the following:')) !!}
-            <button class="btn btn-sm btn-secondary popover-submit" type="submit" style="margin: 0.5em 0"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
+            <button id="prefix-attach" class="btn btn-sm btn-secondary popover-submit" type="submit" style="margin: 0.5em 0"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
           </form>
         </div>
       </div>
