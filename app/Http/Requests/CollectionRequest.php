@@ -36,6 +36,8 @@ class CollectionRequest extends Request {
       'name' => $required . 'min:3|max:255|unique:collections,name,' .
          $this->route()->parameter('collections'),
       'collectionTypeId' => $required.'integer',
+      'archivalIdentifier' => $required . 'min:3|max:255|unique:collections,archival_identifier,' .
+        $this->route()->parameter('collections'),
     ];
   }
 
@@ -53,6 +55,10 @@ class CollectionRequest extends Request {
       'name.max' => 'The collection name must be less than :max characters.',
       'collectionTypeId.required' => 'A collection type ID is required.',
       'collectionTypeId.integer' => 'The collection type ID must be an integer.',
+      'archivalIdentifier.required' => 'A collection archival identifier is required.',
+      'archivalIdentifier.unique' => 'The collection archival identifier has already been used.',
+      'archivalIdentifier.min' => 'The collection archival identifier must be at least :min characters.',
+      'archivalIdentifier.max' => 'The collection archival identifier must be less than :max characters.',
     ];
   }
 
