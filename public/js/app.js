@@ -500,7 +500,8 @@ jitterbug = {
     $('#prefix-attach-form').submit(function(event) {
       event.preventDefault();
 
-      var prefixIds = $(this).find('select').val();
+      var dropdown = $(this).find('select');
+      var prefixIds = dropdown.val();
       var id = $(this).attr('data-format-id');
       var url = window.location.href;
 
@@ -514,10 +515,15 @@ jitterbug = {
         type: 'POST',
         data: data,
         success: function () {
+          // clear out dropdown selections
+          dropdown.val('');
           jitterbug.displayAlert('success',
               'The prefixes were successfully attached.');
           $('#data-panel').load(url + ' #data-panel', function() {
-            jitterbug.initChosenMultiSelect('.chosen-select', {width: '500px'}, {width: '500px'})
+            // re-enable prefix attachment form
+            jitterbug.handlePrefixAttachmentForm();
+            jitterbug.initChosenMultiSelect('.chosen-select',
+                {width: '500px'}, {width: '500px'});
           });
         },
         error: function (jqXHR, textStatus, error) {
@@ -532,7 +538,6 @@ jitterbug = {
       event.preventDefault();
 
       var row = $(this).closest('tr');
-      var url = window.location.href;
       var data = {
         'id': row.attr('data-format-id'),
         'prefixId': row.attr('data-prefix-id')
@@ -544,9 +549,6 @@ jitterbug = {
         data: data,
         success: function () {
           row.remove();
-          $('#attach-prefix-form').load(url + ' #attach-prefix-form', function() {
-            jitterbug.initChosenMultiSelect('.chosen-select', {width: '500px'}, {width: '500px'})
-          });
           jitterbug.displayAlert('success',
               '<strong>Gone.</strong> The prefix was successfully detached.');
         },
