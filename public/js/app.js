@@ -516,7 +516,7 @@ jitterbug = {
         success: function () {
           jitterbug.displayAlert('success',
               'The prefixes were successfully attached.');
-          $('#detail').load(url + ' #detail', function() {
+          $('#data-panel').load(url + ' #data-panel', function() {
             jitterbug.initChosenMultiSelect('.chosen-select', {width: '500px'}, {width: '500px'})
           });
         },
@@ -532,6 +532,7 @@ jitterbug = {
       event.preventDefault();
 
       var row = $(this).closest('tr');
+      var url = window.location.href;
       var data = {
         'id': row.attr('data-format-id'),
         'prefixId': row.attr('data-prefix-id')
@@ -543,6 +544,9 @@ jitterbug = {
         data: data,
         success: function () {
           row.remove();
+          $('#attach-prefix-form').load(url + ' #attach-prefix-form', function() {
+            jitterbug.initChosenMultiSelect('.chosen-select', {width: '500px'}, {width: '500px'})
+          });
           jitterbug.displayAlert('success',
               '<strong>Gone.</strong> The prefix was successfully detached.');
         },

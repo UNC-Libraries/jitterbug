@@ -1,16 +1,16 @@
 @extends('layouts.master', ['title' => 'Format', 'section' => 'formats'])
 
 @section('content')
-  <div id="detail">
+  <div id="data-panel">
     <div class="row">
       <div class="col-xs-12 m-t-1">
-        <span class="well-lg"><h6>{{$format->name}} Format</h6></span>
+        <span class="well-lg"><h5><b>{{$format->name}}</b> Format</h5></span>
       </div>
     </div>
     <div class="row last">
       <div class="col-xs-6 p-l-1 pull-left" style="width:50%">
         <div id="prefix-table" class="table-container dashboard-module" >
-          <table class="table table-sm pull-left">
+          <table class="table table-sm pull-left table-hover">
             <thead>
               <tr>
                 <th width="30%">Prefixes</th>
@@ -31,7 +31,7 @@
         </div>
       </div>
       <div class="col-xs-6 p-l-1 pull-right" style="width:40%">
-        <div class="dashboard-module" >
+        <div class="dashboard-module">
           <h6>Attach new prefixes</h6>
           <form class="form-inline" id="prefix-attach-form" data-format-id={{$format->id}}>
             {!! Form::select('prefixes', $possiblePrefixes, null, array('class' => 'chosen-select',
