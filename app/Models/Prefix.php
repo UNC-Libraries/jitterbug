@@ -31,22 +31,27 @@ class Prefix extends Model
 
   public static function findPrefixLabel($formatId, $collectionId)
   {
-    $collectionTypeId = DB::table('collections')->select('collection_type_id')
-                                                ->where('id', '=', $collectionId)
-                                                ->get()
-                                                ->first()->collection_type_id;
+    $collectionTypeIdQuery = DB::table('collections')->select('collection_type_id')
+                                                     ->where('id', '=', $collectionId)
+                                                     ->get()
+                                                     ->first();
+
+    $collectionTypeId = $collectionTypeIdQuery === null ? null : $collectionTypeIdQuery->collection_type_id;
 
     # find the prefix attached to the specified format
     # that has the same collection type ID as the specified collection
-    $label = DB::table('prefixes')->select('label')
-                                  ->join('format_prefix', 'prefixes.id', '=', 'format_prefix.prefix_id')
-                                  ->where([
-                                    ['format_prefix.format_id', '=', $formatId],
-                                    ['prefixes.collection_type_id', '=', $collectionTypeId]
-                                  ])
-                                  ->get()
-                                  ->first()->label;
+    $labelQuery = DB::table('prefixes')->select('label')
+                                       ->join('format_prefix', 'prefixes.id', '=', 'format_prefix.prefix_id')
+                                       ->where([
+                                         ['format_prefix.format_id', '=', $formatId],
+                                         ['prefixes.collection_type_id', '=', $collectionTypeId]
+                                       ])
+                                       ->get()
+                                       ->first();
 
+    $label = $labelQuery === null ? null : $labelQuery->label;
+
+    # TODO APPDEV-8643 remove when prefix column in formats table is deleted
     if ($label === null) {
       $label = Format::findOrFail($formatId)->prefix;
     }
