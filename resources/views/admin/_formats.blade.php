@@ -8,8 +8,9 @@
             <tr>
               <th width="8%">ID</th>
               <th width="30%">Name</th>
-{{--              <th width="15%">Prefix</th>--}}
-{{--              <th width="15%">Legacy Prefix</th>--}}
+              {{--  TODO APPDEV-8643 remove when unneeded columns are removed  --}}
+              {{--              <th width="15%">Prefix</th>--}}
+              {{--              <th width="15%">Legacy Prefix</th>--}}
               <th width="32%">Prefixes</th>
               <th width="5%"></th>
             </tr>
@@ -19,8 +20,9 @@
             <tr>
               <td><span data-field="id">{{ $record->id }}</td>
               <td><span class="editable" data-id="{{ $record->id }}" data-field="name" role="button">{{ $record->name }}</span></td>
-{{--              <td><span class="editable" data-id="{{ $record->id }}" data-field="prefix" role="button">{{ $record->prefix }}</span></td>--}}
-{{--              <td><span class="editable" data-id="{{ $record->id }}" data-field="legacyPrefix" role="button">{{ empty($record->legacyPrefix) ? "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" : $record->legacyPrefix }}</span></td> --}}{{-- This is an optional field so we need those non-breaking spaces so there is something to click on --}}
+              {{--TODO APPDEV-8643 remove when columns are removed--}}
+              {{--              <td><span class="editable" data-id="{{ $record->id }}" data-field="prefix" role="button">{{ $record->prefix }}</span></td>--}}
+              {{--              <td><span class="editable" data-id="{{ $record->id }}" data-field="legacyPrefix" role="button">{{ empty($record->legacyPrefix) ? "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" : $record->legacyPrefix }}</span></td> --}}{{-- This is an optional field so we need those non-breaking spaces so there is something to click on --}}
               <td>
                 @foreach ($record->uniquePrefixLabels() as $prefix)
                   <span>{{$prefix}}</span>,&nbsp;

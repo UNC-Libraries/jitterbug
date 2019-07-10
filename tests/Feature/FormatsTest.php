@@ -22,7 +22,6 @@ class FormatsTest extends TestCase
 
   public function testAttachPrefixes()
   {
-    $this->disableExceptionHandling();
     $adminUser = $this->adminUser;
     $format = $this->format;
     $this->be($adminUser);
