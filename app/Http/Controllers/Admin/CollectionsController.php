@@ -59,12 +59,13 @@ class CollectionsController extends Controller
         $collection->save();
 
         // Since this is a new collection, create new sequences 
-        // for all format prefixes
-        $results = DB::table('formats')->select('prefix')
-                                       ->distinct()
-                                       ->get();
+        // for all prefixes with the same collection type ID
+        $results = DB::table('prefixes')->select('label')
+                                        ->where('collection_type_id', '=', $collection->collection_type_id)
+                                        ->distinct()
+                                        ->get();
         foreach ($results as $result) {
-          $prefix = $result->prefix;
+          $prefix = $result->label;
           $sequence = new NewCallNumberSequence;
           $sequence->prefix = $prefix;
           $sequence->collectionId = $collection->id;
