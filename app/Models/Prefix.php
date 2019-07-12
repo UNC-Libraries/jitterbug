@@ -20,11 +20,28 @@ class Prefix extends Model
 
   public function formats()
   {
-    return $this->belongsToMany(Format::class);
+    return $this->belongsToMany(Format::class)->withTimestamps();;
   }
 
   public function detachAllFormats()
   {
     $this->formats()->detach();
+  }
+
+  public static function possiblePrefixes($formatId)
+  {
+    $arrayForSelect = [];
+    $prefixObjects = self::whereDoesntHave('formats', function ($q) use ($formatId) {
+      $q->where('id', $formatId);
+    })->orderBy('label')->get()->all();
+
+    foreach ($prefixObjects as $prefix) {
+      $label = $prefix->label;
+      $collectionTypeName = CollectionType::formattedName($prefix->collectionType);
+      $dropdownName = $label . ' -- ' . $collectionTypeName . ' Collection';
+      $arrayForSelect[$prefix->id] = $dropdownName;
+    }
+
+    return $arrayForSelect;
   }
 }

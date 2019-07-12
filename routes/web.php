@@ -43,7 +43,7 @@ Route::get('users', 'Admin\UsersController@index');
 Route::resource('collections', 
   'Admin\CollectionsController', ['except' => ['show', 'create', 'edit']]);
 Route::resource('formats', 
-  'Admin\FormatsController', ['except' => ['show', 'create', 'edit']]);
+  'Admin\FormatsController', ['except' => ['create', 'edit']]);
 Route::resource('projects', 
   'Admin\ProjectsController', ['except' => ['show', 'create', 'edit']]);
 Route::resource('vendors', 
@@ -66,6 +66,8 @@ Route::resource('prefixes',
   'Admin\PrefixesController', ['except' => ['show', 'create', 'edit']]);
 Route::post('prefixes/set-legacy-status', 'Admin\PrefixesController@setLegacyStatus');
 Route::post('prefixes/remove-legacy-status', 'Admin\PrefixesController@removeLegacyStatus');
+Route::post('formats/detach_prefixes', 'Admin\FormatsController@detachPrefixes');
+Route::post('formats/attach_prefixes', 'Admin\FormatsController@attachPrefixes');
 
 /*
 |--------------------------------------------------------------------------

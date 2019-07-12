@@ -27,11 +27,28 @@ class Format extends Model {
 
   public function prefixes()
   {
-    return $this->belongsToMany(Prefix::class);
+    return $this->belongsToMany(Prefix::class)->withTimestamps();;
+  }
+
+  public function uniquePrefixLabels()
+  {
+    return $this->prefixes->unique('label')->pluck('label')->all();
   }
 
   public function identifiableName()
   {
     return $this->name;
+  }
+
+  public function detachPrefixes($prefixIds)
+  {
+    // prefixIds may be: an integer, an array of IDs, or null (which will detach all prefixes)
+    $this->prefixes()->detach($prefixIds);
+  }
+
+  public function attachPrefixes($prefixIds)
+  {
+    // prefixIds may be: an integer or an array of IDs
+    $this->prefixes()->attach($prefixIds);
   }
 }

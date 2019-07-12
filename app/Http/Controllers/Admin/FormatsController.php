@@ -13,6 +13,7 @@ use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\Format;
 use Jitterbug\Models\PreservationMaster;
 use Jitterbug\Models\Transfer;
+use Jitterbug\Models\Prefix;
 use Jitterbug\Support\SolariumProxy;
 
 /**
@@ -43,6 +44,13 @@ class FormatsController extends Controller
       $records = Format::orderBy('name')->get();
       return view('admin._formats', compact('records'));
     }
+  }
+
+  public function show($id) {
+    $format = Format::findOrFail($id);
+    $prefixes = $format->prefixes->sortBy('label');
+    $possiblePrefixes = Prefix::possiblePrefixes($format->id);
+    return view('admin.formats.show', compact('format', 'prefixes', 'possiblePrefixes'));
   }
 
   public function store(FormatRequest $request) {
@@ -105,6 +113,25 @@ class FormatsController extends Controller
         $response = $bag;
         return response()->json($bag, 422);
       }
+    }
+  }
+
+  public function detachPrefixes(Request $request) {
+    if ($request->ajax()) {
+      $format = Format::findOrFail($request->id);
+      $format->detachPrefixes($request->prefixId);
+      $response = array('status'=>'success');
+      return response()->json($response);
+    }
+  }
+
+  public function attachPrefixes(Request $request) {
+    if ($request->ajax()) {
+      $id = $request->id;
+      $format = Format::findOrFail($id);
+      $format->attachPrefixes($request->prefixIds);
+      $response = array('status'=>'success');
+      return response()->json($response);
     }
   }
 
