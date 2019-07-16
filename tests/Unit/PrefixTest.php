@@ -12,7 +12,6 @@ class PrefixTest extends TestCase
 
   public function testFindPrefixLabel()
   {
-    $this->disableExceptionHandling();
     $collection = factory(Collection::class)->create(['collection_type_id' => 3]);
     $prefix1 = factory(Prefix::class)->create(['deleted_at' => null, 'collection_type_id' => 3]);
     $prefix2 = factory(Prefix::class)->create(['deleted_at' => null, 'collection_type_id' => 4]);
