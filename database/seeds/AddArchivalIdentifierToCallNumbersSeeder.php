@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Jitterbug\Models\NewCallNumberSequence;
 
 class AddArchivalIdentifierToCallNumbersSeeder extends Seeder
 {
@@ -12,7 +11,8 @@ class AddArchivalIdentifierToCallNumbersSeeder extends Seeder
      */
     public function run()
     {
-      $callNumberSequences = NewCallNumberSequence::all();
+      // find all the new call number sequences that need their archival_identifier field populated
+      $callNumberSequences = DB::table('new_call_number_sequences')->whereNull('archival_identifier')->get();
 
       foreach ($callNumberSequences as $callNumberSequence) {
         $callNumberSequence->archivalIdentifier = (string) $callNumberSequence->collectionId;
