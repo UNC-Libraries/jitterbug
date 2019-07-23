@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Jitterbug\Models\Collection;
 
-class AddArchivalIdentifierSeeder extends Seeder
+class AddArchivalIdentifierSeederToCollections extends Seeder
 {
     /**
      * Run the database seeds.

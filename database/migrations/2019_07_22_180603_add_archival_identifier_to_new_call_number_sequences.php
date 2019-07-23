@@ -14,7 +14,7 @@ class AddArchivalIdentifierToNewCallNumberSequences extends Migration
     public function up()
     {
       Schema::table('new_call_number_sequences', function (Blueprint $table) {
-        $table->string('archival_identifier')->after('collection_id')->unique()->nullable();
+        $table->string('archival_identifier')->after('collection_id')->nullable();
       });
     }
 
