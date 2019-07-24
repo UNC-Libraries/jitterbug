@@ -122,6 +122,9 @@ $factory->define(Jitterbug\Models\Collection::class, function (Faker\Generator $
   return [
     'id' => $faker->randomNumber(),
     'name' => $faker->name,
+    'collection_type_id' => function () {
+      return factory(Jitterbug\Models\CollectionType::class)->create()->id;
+    },
   ];
 });
 
