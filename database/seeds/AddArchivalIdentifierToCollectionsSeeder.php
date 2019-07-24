@@ -15,6 +15,7 @@ class AddArchivalIdentifierToCollectionsSeeder extends Seeder
       $collections = DB::table('collections')->whereNull('archival_identifier')->get();
 
       foreach ($collections as $collection) {
+        // TODO APPDEV-8779 delete seeder when collection ID is auto incrementing
         $collection->archivalIdentifier = (string) $collection->id;
         $collection->save();
       }
