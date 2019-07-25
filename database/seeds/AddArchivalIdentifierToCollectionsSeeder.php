@@ -12,12 +12,11 @@ class AddArchivalIdentifierToCollectionsSeeder extends Seeder
     public function run()
     {
       // to backfill the collection IDs as strings in the archival_identifier column
-      $collections = DB::table('collections')->whereNull('archival_identifier')->get();
-
-      foreach ($collections as $collection) {
-        // TODO APPDEV-8779 delete seeder when collection ID is auto incrementing
-        $collection->archivalIdentifier = (string) $collection->id;
-        $collection->save();
-      }
+      // TODO APPDEV-8779 delete seeder when collection ID is auto incrementing
+      DB::table('collections')->whereNull('archival_identifier')
+                              ->whereNull('deleted_at')
+                              ->update([
+                                'archival_identifier' => DB::raw('`id`')
+                              ]);
     }
 }
