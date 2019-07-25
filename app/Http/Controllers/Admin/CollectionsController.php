@@ -69,6 +69,7 @@ class CollectionsController extends Controller
           $sequence = new NewCallNumberSequence;
           $sequence->prefix = $prefix;
           $sequence->collectionId = $collection->id;
+          $sequence->archivalIdentifier = $collection->archivalIdentifier;
           $sequence->next = 1;
           $sequence->save();
         }
