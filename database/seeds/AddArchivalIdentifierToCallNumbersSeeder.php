@@ -11,14 +11,11 @@ class AddArchivalIdentifierToCallNumbersSeeder extends Seeder
      */
     public function run()
     {
-
       // find all the new call number sequences that need their archival_identifier field populated
-      $callNumberSequences = DB::table('new_call_number_sequences')->whereNull('archival_identifier')->get();
-
-      foreach ($callNumberSequences as $callNumberSequence) {
-        // TODO APPDEV-8779 rework seeder to grab archival identifier from collection record
-        $callNumberSequence->archivalIdentifier = (string) $callNumberSequence->collectionId;
-        $callNumberSequence->save();
-      }
+      // TODO APPDEV-8779 rework seeder to grab archival identifier from collection record
+      DB::table('new_call_number_sequences')->whereNull('archival_identifier')
+                                            ->update([
+                                              'archival_identifier' => DB::raw('`collection_id`')
+                                            ]);
     }
 }
