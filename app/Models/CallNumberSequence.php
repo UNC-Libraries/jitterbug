@@ -11,6 +11,7 @@ class CallNumberSequence extends Model {
   public static function next($collectionId, $formatId)
   {
     $prefix = Prefix::findPrefixLabel($formatId, $collectionId);
+    $archivalIdentifier = Collection::findArchivalIdentifier($collectionId);
 
     $sequence = NewCallNumberSequence::where('prefix', '=', $prefix)->
                   where('collection_id', '=', $collectionId)->first();
@@ -19,6 +20,7 @@ class CallNumberSequence extends Model {
         $sequence = new NewCallNumberSequence();
         $sequence->prefix = $prefix;
         $sequence->collectionId = $collectionId;
+        $sequence->archivalIdentifier = $archivalIdentifier;
         $sequence->next = 1;
         $sequence->save();
       } else {
