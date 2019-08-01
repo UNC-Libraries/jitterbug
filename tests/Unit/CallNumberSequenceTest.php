@@ -81,6 +81,4 @@ class CallNumberSequenceTest extends TestCase
     $this->assertSame($legacyCallNumber->id, $sequence->id,
       'Sequence is not the existing legacyCallNumberSequence, as it should be.');
   }
-
-
 }
