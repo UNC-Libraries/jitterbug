@@ -1,6 +1,6 @@
 <?php
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Jitterbug\Models as Models;
+use Jitterbug\Models;
 
 class CallNumberSequenceTest extends TestCase
 {
@@ -81,4 +81,6 @@ class CallNumberSequenceTest extends TestCase
     $this->assertSame($legacyCallNumber->id, $sequence->id,
       'Sequence is not the existing legacyCallNumberSequence, as it should be.');
   }
+
+
 }
