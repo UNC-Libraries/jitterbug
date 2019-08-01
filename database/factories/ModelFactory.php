@@ -125,6 +125,7 @@ $factory->define(Jitterbug\Models\Collection::class, function (Faker\Generator $
     'collection_type_id' => function () {
       return factory(Jitterbug\Models\CollectionType::class)->create()->id;
     },
+    'archival_identifier' => $faker->word,
   ];
 });
 
@@ -221,6 +222,7 @@ $factory->define(Jitterbug\Models\NewCallNumberSequence::class, function (Faker\
     'collection_id' => function () {
       return factory(Jitterbug\Models\Collection::class)->create()->id;
     },
+    'archival_identifier' => $faker->word,
     'next' => $faker->randomNumber(),
     'reserved' => $faker->word,
   ];
