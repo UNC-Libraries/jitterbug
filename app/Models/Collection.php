@@ -31,4 +31,60 @@ class Collection extends Model {
   {
     return $this->name;
   }
+
+  public static function autoIncrementIdsScript()
+  {
+    $collections = self::all();
+    $idTrack = 1;
+    $collectionIdMapping = [];
+
+    foreach ($collections as $collection) {
+      $oldId = $collection->id;
+      $collection->id = $idTrack;
+      $collection->save();
+
+      $collectionIdMapping[$oldId] = $idTrack;
+
+      $idTrack++;
+    }
+    return $collectionIdMapping;
+  }
+
+  public static function updateCollectionIdInAudioVisualItems($collectionIdMapping)
+  {
+    $avItems = AudioVisualItem::all();
+    $brokenAvItemIds = [];
+
+    foreach ($avItems as $avItem) {
+      $oldCollectionId = $avItem->collection_id;
+
+      $avItem->collection_id = $collectionIdMapping[$oldCollectionId];
+      if ($avItem->collection_id === null) {
+        $brokenAvItemIds[] = $avItem->id;
+        continue;
+      }
+      $avItem->save();
+
+      return $brokenAvItemIds;
+    }
+  }
+
+  public static function updateCollectionIdInNewCallNumberSequences($collectionIdMapping)
+  {
+    $sequences = NewCallNumberSequence::all();
+    $brokenSequenceIds = [];
+
+    foreach($sequences as $sequence) {
+      $oldCollectionId = $sequence->collection_id;
+
+      $sequence->collection_id = $collectionIdMapping[$oldCollectionId];
+      if ($sequence->collection_id === null) {
+        $brokenSequenceIds[] = $sequence->id;
+        continue;
+      }
+      $sequence->save();
+
+      return $brokenSequenceIds;
+    }
+  }
 }
