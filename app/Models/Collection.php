@@ -34,7 +34,8 @@ class Collection extends Model {
 
   public static function autoIncrementIdsScript()
   {
-    $collections = self::all();
+    //$collections = self::all();
+    $collections = Collection::whereIn('id', [100, 200])->get();
     $idTrack = 1;
     $collectionIdMapping = [];
 
@@ -52,21 +53,26 @@ class Collection extends Model {
 
   public static function updateCollectionIdInAudioVisualItems($collectionIdMapping)
   {
-    $avItems = AudioVisualItem::all();
+    //$avItems = AudioVisualItem::all();
+    $avItems = AudioVisualItem::whereIn('id', [1,2,3]);
     $brokenAvItemIds = [];
 
     foreach ($avItems as $avItem) {
       $oldCollectionId = $avItem->collection_id;
+      if ($oldCollectionId === null) {
+        $brokenAvItemIds[] = $avItem->id;
+        continue;
+      }
 
       $avItem->collection_id = $collectionIdMapping[$oldCollectionId];
       if ($avItem->collection_id === null) {
         $brokenAvItemIds[] = $avItem->id;
         continue;
       }
-      $avItem->save();
 
-      return $brokenAvItemIds;
+      $avItem->save();
     }
+    return $brokenAvItemIds;
   }
 
   public static function updateCollectionIdInNewCallNumberSequences($collectionIdMapping)
@@ -82,9 +88,9 @@ class Collection extends Model {
         $brokenSequenceIds[] = $sequence->id;
         continue;
       }
-      $sequence->save();
 
-      return $brokenSequenceIds;
+      $sequence->save();
     }
+    return $brokenSequenceIds;
   }
 }
