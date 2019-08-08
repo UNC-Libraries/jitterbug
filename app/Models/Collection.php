@@ -63,8 +63,9 @@ class Collection extends Model {
            continue;
          }
 
-         $newCollectionId = $collectionIdMapping[$result->collection_id];
-         if ($newCollection_id === null) {
+         if (isset($collectionIdMapping[$result->collection_id])) {
+           $newCollectionId = $collectionIdMapping[$result->collection_id];
+         } else {
            $brokenIds[] = $result->id;
            continue;
          }
