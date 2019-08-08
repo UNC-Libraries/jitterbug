@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class Collection extends Model {
   use CamelCasing;
@@ -34,63 +36,45 @@ class Collection extends Model {
 
   public static function autoIncrementIdsScript()
   {
-    //$collections = self::all();
-    $collections = Collection::whereIn('id', [100, 200])->get();
-    $idTrack = 1;
+    $collections = self::withTrashed()->get();
+    $idTracker = 1;
     $collectionIdMapping = [];
 
     foreach ($collections as $collection) {
       $oldId = $collection->id;
-      $collection->id = $idTrack;
+      $collection->id = $idTracker;
       $collection->save();
 
-      $collectionIdMapping[$oldId] = $idTrack;
+      $collectionIdMapping[$oldId] = $idTracker;
 
-      $idTrack++;
+      $idTracker++;
     }
     return $collectionIdMapping;
   }
 
-  public static function updateCollectionIdInAudioVisualItems($collectionIdMapping)
+  // $tableName should be snake case, plural string
+  public static function updateCollectionIdInTable($tableName, $collectionIdMapping)
   {
-    //$avItems = AudioVisualItem::all();
-    $avItems = AudioVisualItem::whereIn('id', [1,2,3]);
-    $brokenAvItemIds = [];
+    $brokenIds = array();
+    DB::table($tableName)->chunkById(1000, function ($results) use (&$brokenIds, &$collectionIdMapping, $tableName) {
+       foreach ($results as $result) {
+         if ($result->collection_id === null) {
+           $brokenIds[] = $result->id;
+           continue;
+         }
 
-    foreach ($avItems as $avItem) {
-      $oldCollectionId = $avItem->collection_id;
-      if ($oldCollectionId === null) {
-        $brokenAvItemIds[] = $avItem->id;
-        continue;
-      }
+         $newCollectionId = $collectionIdMapping[$result->collection_id];
+         if ($newCollection_id === null) {
+           $brokenIds[] = $result->id;
+           continue;
+         }
 
-      $avItem->collection_id = $collectionIdMapping[$oldCollectionId];
-      if ($avItem->collection_id === null) {
-        $brokenAvItemIds[] = $avItem->id;
-        continue;
-      }
+         DB::table($tableName)
+           ->where('id', $result->id)
+           ->update(['collection_id' => $newCollectionId]);
+       }
+     });
 
-      $avItem->save();
-    }
-    return $brokenAvItemIds;
-  }
-
-  public static function updateCollectionIdInNewCallNumberSequences($collectionIdMapping)
-  {
-    $sequences = NewCallNumberSequence::all();
-    $brokenSequenceIds = [];
-
-    foreach($sequences as $sequence) {
-      $oldCollectionId = $sequence->collection_id;
-
-      $sequence->collection_id = $collectionIdMapping[$oldCollectionId];
-      if ($sequence->collection_id === null) {
-        $brokenSequenceIds[] = $sequence->id;
-        continue;
-      }
-
-      $sequence->save();
-    }
-    return $brokenSequenceIds;
+    return $brokenIds;
   }
 }
