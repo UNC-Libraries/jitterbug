@@ -1,6 +1,6 @@
 <?php
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Jitterbug\Models as Models;
+use Jitterbug\Models;
 
 class CallNumberSequenceTest extends TestCase
 {

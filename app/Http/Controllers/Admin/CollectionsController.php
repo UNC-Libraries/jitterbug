@@ -69,6 +69,7 @@ class CollectionsController extends Controller
           $sequence = new NewCallNumberSequence;
           $sequence->prefix = $prefix;
           $sequence->collectionId = $collection->id;
+          $sequence->archivalIdentifier = $collection->archivalIdentifier;
           $sequence->next = 1;
           $sequence->save();
         }
@@ -96,6 +97,7 @@ class CollectionsController extends Controller
         // Update MySQL
         DB::transaction(function () 
           use ($id, $collection, &$affectedItems) {
+          # TODO APPDEV-8779 remove ability to change the ID
           if($collection->isDirty('id')) {
             // Mass update rather than item by item, otherwise
             // revision tracking will kick in.
@@ -104,6 +106,12 @@ class CollectionsController extends Controller
             NewCallNumberSequence::where('collection_id', $id)
               ->update(['collection_id' => $collection->id]);
           }
+
+          if ($collection->isDirty('archival_identifier')) {
+            NewCallNumberSequence::where('collection_id', $id)
+              ->update(['archival_identifier', $collection->archival_identifier]);
+          }
+
           $collection->save();
 
           $affectedItems = 

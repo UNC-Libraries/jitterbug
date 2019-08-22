@@ -45,7 +45,6 @@ class TransferAudioImportsTest extends TestCase
 
     public function testAudioImportUploadExecuteWithErrors()
     {
-      $this->disableExceptionHandling();
       $user = $this->user;
       $filePath = base_path('tests/import-test-files/audio-import/small_import_non_validated.csv');
 
@@ -80,13 +79,5 @@ class TransferAudioImportsTest extends TestCase
 
       $this->assertEquals('success', $responseArray['status'], "The JSON status should be 'success'.");
       $this->assertTrue($htmlContainsSuccessMessage, 'The HTML in the response does not include the correct success notification.');
-    }
-    protected function tearDown()
-    {
-      $this->user->delete();
-      $this->callNumber1->delete();
-      $this->callNumber2->delete();
-      $this->department->delete();
-      $this->playbackMachine->delete();
     }
 }
