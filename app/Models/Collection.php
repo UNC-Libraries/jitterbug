@@ -25,18 +25,6 @@ class Collection extends Model {
     return $this->belongsTo(CollectionType::class);
   }
 
-  public static function findArchivalIdentifier($collectionId)
-  {
-    $queryResult = DB::table('collections')->select('archival_identifier')
-                                           ->where('id', $collectionId)
-                                           ->get()
-                                           ->first();
-    if ($queryResult === null) {
-      abort(404, 'Could not find archival identifier for collection ID ' . $collectionId);
-    }
-    return $queryResult->archival_identifier;
-  }
-
   /**
    * Used by Revisionable to get a display name for the model.
    */
