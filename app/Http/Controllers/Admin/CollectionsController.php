@@ -83,11 +83,6 @@ class CollectionsController extends Controller
     if ($request->ajax()) {
       $input = $request->all();
 
-      // If $input['id'] isn't set, the user is editing the name form
-      if (!isset($input['id'])) {
-        $input['id'] = $id;
-      }
-
       $collection = Collection::findOrFail($id);
       $collection->fill($input);
 

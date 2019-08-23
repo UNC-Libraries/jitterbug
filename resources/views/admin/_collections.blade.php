@@ -36,7 +36,6 @@
     {{--Need the surrounding div here to keep the form displaying inline--}}
     <div id="new-record-form" class="hidden">
       <form class="form-inline">
-        <input type="text" name="id" class="form-control form-control-sm" maxlength="8" placeholder="Id" autocomplete="off" style="width: 65px;">
         <input type="text" name="name" class="form-control form-control-sm" maxlength="255" placeholder="Name" autocomplete="off" style="width: 250px;">
         {!! Form::select('collectionTypeId', $collectionTypes, null, array('class' => 'form-control form-control-sm')) !!}
         <input type="text" name="archivalIdentifier" class="form-control form-control-sm" maxlength="255" placeholder="Archival Identifier" autocomplete="off" style="width: 250px;">
