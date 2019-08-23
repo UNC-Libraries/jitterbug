@@ -17,10 +17,10 @@
           <tbody>
             @foreach ($records as $record)
             <tr>
-              <td><span class="editable" data-id="{{ $record->id }}" data-field="id" role="button">{{ $record->id }}</span></td>
+              <td><span data-id="{{ $record->id }}" data-field="id">{{ $record->id }}</span></td>
               <td><span class="editable" data-id="{{ $record->id }}" data-field="name" role="button">{{ $record->name }}</span></td>
               <td>
-                <span class="editable" data-id="{{ $record->id }}" data-field="collectionTypeId" data-role="button">
+                <span class="editable" data-id="{{ $record->id }}" data-field="collectionTypeId" role="button">
                   {{ \Jitterbug\Models\CollectionType::formattedName($record->collectionType) }}
                 </span>
               </td>
@@ -42,14 +42,6 @@
         <input type="text" name="archivalIdentifier" class="form-control form-control-sm" maxlength="255" placeholder="Archival Identifier" autocomplete="off" style="width: 250px;">
         <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
         <button class="btn btn-sm btn-secondary cancel-new-record"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
-      </form>
-    </div>
-
-    <div id="edit-id-form" class="hidden">
-      <form class="form-inline">
-        <input type="text" name="id" class="form-control form-control-sm" maxlength="8" placeholder="Id" autocomplete="off" style="width: 65px;">
-        <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
-        <button class="btn btn-sm btn-secondary cancel-edit"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
       </form>
     </div>
 
