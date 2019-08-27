@@ -56,13 +56,10 @@ class Collection extends Model {
   public static function updateCollectionIdInTable($tableName, $collectionIdMapping)
   {
     $brokenIds = array();
-    DB::table($tableName)->chunkById(1000, function ($results) use (&$brokenIds, &$collectionIdMapping, $tableName) {
+    DB::table($tableName)
+      ->whereNotNull('collection_id')
+      ->chunkById(1000, function ($results) use (&$brokenIds, &$collectionIdMapping, $tableName) {
        foreach ($results as $result) {
-         if ($result->collection_id === null) {
-           $brokenIds[] = $result->id;
-           continue;
-         }
-
          if (isset($collectionIdMapping[$result->collection_id])) {
            $newCollectionId = $collectionIdMapping[$result->collection_id];
          } else {
@@ -74,7 +71,7 @@ class Collection extends Model {
            ->where('id', $result->id)
            ->update(['collection_id' => $newCollectionId]);
        }
-     });
+    });
 
     return $brokenIds;
   }
