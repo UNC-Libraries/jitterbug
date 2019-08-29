@@ -162,7 +162,7 @@ class ItemsImport extends Import {
       foreach($this->data as $row) {
         $subclassType = studly_case($row['Type'] . '_item');
         $subclass = new $subclassType;
-        $collectionId = $row['Collection'];
+        $collectionId = Collection::where('archival_identifier', $row['Collection'])->first()->id;
         $formatId = $row['FormatID'];
         $sequence = CallNumberSequence::next($collectionId, $formatId);
         $subclass->callNumber = $sequence->callNumber();
@@ -232,20 +232,13 @@ class ItemsImport extends Import {
 
   private function formatExists($formatId)
   {
-    $format = Format::find($formatId);
-    if ($format !== null) {
-      return true;
-    }
-    return false;
+    return Format::find($formatId) !== null;
   }
 
-  private function collectionExists($collectionId)
+  private function collectionExists($archivalIdentifier)
   {
-    $collection = Collection::find($collectionId);
-    if ($collection !== null) {
-      return true;
-    }
-    return false;
+    $collection = Collection::where('archival_identifier', $archivalIdentifier)->first();
+    return $collection !== null;
   }
 
   private function validSoundType($soundType)
