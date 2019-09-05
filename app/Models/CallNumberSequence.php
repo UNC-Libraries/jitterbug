@@ -2,6 +2,7 @@
 
 use Log;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class CallNumberSequence extends Model {
   use CamelCasing;
@@ -57,4 +58,33 @@ class CallNumberSequence extends Model {
     $this->save();
   }
 
+  public static function backfillSequencesForNewCollectionTypes($collectionTypeId)
+  {
+    $prefixes = DB::table('prefixes')->select('label')
+      ->where('collection_type_id', '=', $collectionTypeId)
+      ->distinct()
+      ->get();
+
+    $collections = DB::table('collections')->where('collection_type_id', '=', $collectionTypeId)->get();
+
+    foreach ($collections as $collection)  {
+      echo $collection->id . ':';
+      foreach ($prefixes as $prefix) {
+        echo '&-';
+        $sequenceExists = DB::table('new_call_number_sequences')
+                          ->where('prefix', '=', $prefix->label)
+                          ->where('collection_id', '=', $collection->id)
+                          ->exists();
+
+        if (!$sequenceExists) {
+          $sequence = new NewCallNumberSequence();
+          $sequence->prefix = $prefix->label;
+          $sequence->collection_id = $collection->id;
+          $sequence->archival_identifier = $collection->archival_identifier;
+          $sequence->next = 1;
+          $sequence->save();
+        }
+      }
+    }
+  }
 }

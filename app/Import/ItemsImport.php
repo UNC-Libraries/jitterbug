@@ -128,6 +128,7 @@ class ItemsImport extends Import {
           && !empty($row[$key]) && !empty($row['Type']) 
           && $this->isValidType($row['Type']) && $row['Type'] === 'film' 
           && !$this->validSoundType($row[$key])) {
+          // TODO APPDEV-8900 fix hardcoded values
           $bag->add($key, $key . ' must be "Magnetic", "Optical", "Magnetic; Optical", or "Silent".');
         }
         // Validate record type is film since this field is set
