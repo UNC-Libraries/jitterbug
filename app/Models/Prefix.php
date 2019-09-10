@@ -6,6 +6,7 @@ namespace Jitterbug\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Log;
 
 class Prefix extends Model
 {
@@ -38,7 +39,9 @@ class Prefix extends Model
                                                      ->first();
 
     if ($collectionTypeIdQuery === null) {
-      abort(404, 'Collection does not have a collection type ID.');
+      $message = 'Collection does not have a collection type ID.';
+      Log::error($message);
+      abort(404, $message);
     }
 
     $collectionTypeId = $collectionTypeIdQuery->collection_type_id;

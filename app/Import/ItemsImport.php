@@ -76,7 +76,8 @@ class ItemsImport extends Import {
           $bag->add($key, $key . ' is not a recognized format.');
         }
         // Validate call number exists for Collection & Format pair
-        if (!$this->callNumberSequenceExists($row['Collection'], $row['FormatID'])) {
+        if ($this->collectionExists($row['Collection']) && $this->formatExists($row['FormatID']) &&
+          !$this->callNumberSequenceExists($row['Collection'], $row['FormatID'])) {
           $bag->add('Collection', 'The Collection/Format pairing does not have a valid CallNumberSequence available.');
           $bag->add('FormatID', 'The Collection/Format pairing does not have a valid CallNumberSequence available.');
         }
