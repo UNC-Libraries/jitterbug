@@ -75,6 +75,11 @@ class ItemsImport extends Import {
           && !empty($row[$key]) && !$this->formatExists($row[$key])) {
           $bag->add($key, $key . ' is not a recognized format.');
         }
+        // Validate call number exists for Collection & Format pair
+        if (!$this->callNumberSequenceExists($row['Collection'], $row['FormatID'])) {
+          $bag->add('Collection', 'The Collection/Format pairing does not have a valid CallNumberSequence available.');
+          $bag->add('FormatID', 'The Collection/Format pairing does not have a valid CallNumberSequence available.');
+        }
         // Validate item date is formatted correctly
         if ($key==='ItemDate' 
           && !empty($row[$key]) && !$this->isValidDate($row[$key])) {
@@ -233,13 +238,17 @@ class ItemsImport extends Import {
 
   private function formatExists($formatId)
   {
-    return Format::find($formatId) !== null;
+    return Format::where('id', $formatId)->exists();
   }
 
   private function collectionExists($archivalIdentifier)
   {
-    $collection = Collection::where('archival_identifier', $archivalIdentifier)->first();
-    return $collection !== null;
+    return Collection::where('archival_identifier', $archivalIdentifier)->exists();
+  }
+
+  private function callNumberSequenceExists($collectionId, $formatId)
+  {
+    return CallNumberSequence::next($collectionId, $formatId) !== null;
   }
 
   private function validSoundType($soundType)
