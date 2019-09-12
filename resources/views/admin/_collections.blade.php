@@ -7,24 +7,22 @@
         <table style="margin-top: .5rem;" class="table table-sm table-hover">
           <thead>
             <tr>
-              <th width="8%">ID</th>
-              <th width="47%">Name</th>
+              <th width="24%">Archival Identifier</th>
+              <th width="51%">Name</th>
               <th width="20%">Collection Type</th>
-              <th width="20%">Archival Identifier</th>
               <th width="5%"></th>
             </tr>
           </thead>
           <tbody>
             @foreach ($records as $record)
             <tr>
-              <td><span data-id="{{ $record->id }}" data-field="id">{{ $record->id }}</span></td>
+              <td><span class="editable" data-id="{{ $record->id }}" data-field="archivalIdentifier" role="button">{{ $record->archivalIdentifier }}</span></td>
               <td><span class="editable" data-id="{{ $record->id }}" data-field="name" role="button">{{ $record->name }}</span></td>
               <td>
                 <span class="editable" data-id="{{ $record->id }}" data-field="collectionTypeId" role="button">
                   {{ \Jitterbug\Models\CollectionType::formattedName($record->collectionType) }}
                 </span>
               </td>
-              <td><span class="editable" data-id="{{ $record->id }}" data-field="archivalIdentifier" role="button">{{ $record->archivalIdentifier }}</span></td>
               <td><a href="#" role="button" class="delete" title="Delete record" style="float: right;"><i class="fa fa-times" aria-hidden="true"></i></a></td>
             </tr>
             @endforeach
