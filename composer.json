@@ -19,11 +19,12 @@
 		"ramsey/uuid": "^3.5",
 		"adldap2/adldap2-laravel": "2.1.*",
 		"jimmiw/php-time-ago": "^0.4.14",
-		"laravel/tinker": "^1.0"
+		"laravel/tinker": "^1.0",
+		"doctrine/dbal": "^2.5"
 	},
 	"require-dev": {
         "fzaninotto/faker": "~1.4",
-		"mockery/mockery": "~0.9",
+		"mockery/mockery": "1.2.2",
 		"phpunit/phpunit": "~5.7",
 		"symfony/css-selector": "~3.1",
 		"symfony/dom-crawler": "~3.1",

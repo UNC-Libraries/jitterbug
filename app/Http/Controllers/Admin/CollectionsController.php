@@ -83,11 +83,6 @@ class CollectionsController extends Controller
     if ($request->ajax()) {
       $input = $request->all();
 
-      // If $input['id'] isn't set, the user is editing the name form
-      if (!isset($input['id'])) {
-        $input['id'] = $id;
-      }
-
       $collection = Collection::findOrFail($id);
       $collection->fill($input);
 
@@ -97,15 +92,6 @@ class CollectionsController extends Controller
         // Update MySQL
         DB::transaction(function () 
           use ($id, $collection, &$affectedItems) {
-          # TODO APPDEV-8779 remove ability to change the ID
-          if($collection->isDirty('id')) {
-            // Mass update rather than item by item, otherwise
-            // revision tracking will kick in.
-            AudioVisualItem::where('collection_id', $id)
-              ->update(['collection_id' => $collection->id]);
-            NewCallNumberSequence::where('collection_id', $id)
-              ->update(['collection_id' => $collection->id]);
-          }
 
           if ($collection->isDirty('archival_identifier')) {
             NewCallNumberSequence::where('collection_id', $id)

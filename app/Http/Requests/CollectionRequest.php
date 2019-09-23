@@ -31,8 +31,6 @@ class CollectionRequest extends Request {
       $required = 'required|';
     }
     return [
-      'id' => $required . 'integer|unique:collections,id,' . 
-         $this->route()->parameter('collections'),
       'name' => $required . 'min:3|max:255|unique:collections,name,' .
          $this->route()->parameter('collections'),
       'collectionTypeId' => $required.'integer',
