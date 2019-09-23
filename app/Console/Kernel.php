@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel {
    */
   protected $commands = [
     'Jitterbug\Console\Commands\Inspire',
+    'Jitterbug\Console\Commands\AutoIncrementCollectionIds',
   ];
 
   /**
@@ -34,7 +35,7 @@ class Kernel extends ConsoleKernel {
       $activityStream = new ActivityStream;
       $activityStream->generate();
     })->everyMinute()
-      ->when(function () { 
+      ->when(function () {
         $date = new \DateTime();
         $date->setTimezone(new \DateTimeZone('America/New_York'));
         $hour = $date->format('G');
