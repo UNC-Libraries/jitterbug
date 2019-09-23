@@ -247,8 +247,9 @@ class ItemsImport extends Import {
     return Collection::where('archival_identifier', $archivalIdentifier)->exists();
   }
 
-  private function callNumberSequenceExists($collectionId, $formatId)
+  private function callNumberSequenceExists($archivalIdentifier, $formatId)
   {
+    $collectionId = Collection::where('archival_identifier', $archivalIdentifier)->first()->id;
     return CallNumberSequence::next($collectionId, $formatId) !== null;
   }
 
