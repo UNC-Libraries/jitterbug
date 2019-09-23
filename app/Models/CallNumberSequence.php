@@ -2,6 +2,7 @@
 
 use Log;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class CallNumberSequence extends Model {
   use CamelCasing;
@@ -56,5 +57,4 @@ class CallNumberSequence extends Model {
     }
     $this->save();
   }
-
 }

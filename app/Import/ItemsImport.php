@@ -75,6 +75,12 @@ class ItemsImport extends Import {
           && !empty($row[$key]) && !$this->formatExists($row[$key])) {
           $bag->add($key, $key . ' is not a recognized format.');
         }
+        // Validate call number exists for Collection & Format pair
+        if ($this->collectionExists($row['Collection']) && $this->formatExists($row['FormatID']) &&
+          !$this->callNumberSequenceExists($row['Collection'], $row['FormatID'])) {
+          $bag->add('Collection', 'The Collection/Format pairing does not have a valid CallNumberSequence available.');
+          $bag->add('FormatID', 'The Collection/Format pairing does not have a valid CallNumberSequence available.');
+        }
         // Validate item date is formatted correctly
         if ($key==='ItemDate' 
           && !empty($row[$key]) && !$this->isValidDate($row[$key])) {
@@ -128,6 +134,7 @@ class ItemsImport extends Import {
           && !empty($row[$key]) && !empty($row['Type']) 
           && $this->isValidType($row['Type']) && $row['Type'] === 'film' 
           && !$this->validSoundType($row[$key])) {
+          // TODO APPDEV-8900 fix hardcoded values
           $bag->add($key, $key . ' must be "Magnetic", "Optical", "Magnetic; Optical", or "Silent".');
         }
         // Validate record type is film since this field is set
@@ -162,7 +169,7 @@ class ItemsImport extends Import {
       foreach($this->data as $row) {
         $subclassType = studly_case($row['Type'] . '_item');
         $subclass = new $subclassType;
-        $collectionId = $row['Collection'];
+        $collectionId = Collection::where('archival_identifier', $row['Collection'])->first()->id;
         $formatId = $row['FormatID'];
         $sequence = CallNumberSequence::next($collectionId, $formatId);
         $subclass->callNumber = $sequence->callNumber();
@@ -232,20 +239,17 @@ class ItemsImport extends Import {
 
   private function formatExists($formatId)
   {
-    $format = Format::find($formatId);
-    if ($format !== null) {
-      return true;
-    }
-    return false;
+    return Format::where('id', $formatId)->exists();
   }
 
-  private function collectionExists($collectionId)
+  private function collectionExists($archivalIdentifier)
   {
-    $collection = Collection::find($collectionId);
-    if ($collection !== null) {
-      return true;
-    }
-    return false;
+    return Collection::where('archival_identifier', $archivalIdentifier)->exists();
+  }
+
+  private function callNumberSequenceExists($collectionId, $formatId)
+  {
+    return CallNumberSequence::next($collectionId, $formatId) !== null;
   }
 
   private function validSoundType($soundType)

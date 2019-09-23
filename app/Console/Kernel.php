@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel {
    */
   protected $commands = [
     'Jitterbug\Console\Commands\Inspire',
+    'Jitterbug\Console\Commands\BackfillNewCollectionTypesSequences',
     'Jitterbug\Console\Commands\AutoIncrementCollectionIds',
   ];
 
