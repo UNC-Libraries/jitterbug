@@ -57,8 +57,6 @@ class CollectionsController extends Controller
       // Update MySQL
       DB::transaction(function () use ($collection) {
         $collection->save();
-        // need to query the DB for the just-saved object's ID
-        $collectionId = Collection::where('archival_identifier', $collection->archival_identifier)->first()->id;
 
         // Since this is a new collection, create new sequences
         // for all prefixes with the same collection type ID
@@ -70,7 +68,7 @@ class CollectionsController extends Controller
           $prefix = $result->label;
           $sequence = new NewCallNumberSequence;
           $sequence->prefix = $prefix;
-          $sequence->collectionId = $collectionId;
+          $sequence->collectionId = $collection->id;
           $sequence->archivalIdentifier = $collection->archivalIdentifier;
           $sequence->next = 1;
           $sequence->save();
