@@ -75,6 +75,7 @@ class CollectionsController extends Controller
         }
       });
 
+      $collection['collectionTypeName'] = $collection->collectionType->name;
       return response()->json($collection);
     }
   }
