@@ -31,7 +31,7 @@ jobs:
             sudo rm -rf /var/lib/apt/lists/*
             sudo docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/
             sudo docker-php-ext-install ldap
-            sudo apt-get install lsof
+            sudo apt-get install lsof -y
 
       - run: sudo composer self-update
       - run:
