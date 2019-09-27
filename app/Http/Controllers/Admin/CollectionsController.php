@@ -58,7 +58,7 @@ class CollectionsController extends Controller
       DB::transaction(function () use ($collection) {
         $collection->save();
 
-        // Since this is a new collection, create new sequences 
+        // Since this is a new collection, create new sequences
         // for all prefixes with the same collection type ID
         $results = DB::table('prefixes')->select('label')
                                         ->where('collection_type_id', '=', $collection->collection_type_id)
