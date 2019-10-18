@@ -4,7 +4,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PmSpeed extends Model {
-	use CamelCasing;
   use NullFieldPreserver;
   use SoftDeletes;
 

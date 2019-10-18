@@ -63,7 +63,7 @@ class PrefixesTest extends TestCase
   public function testUpdateEditsPrefix()
   {
     $collectionType = $this->collectionType;
-    $prefix = factory(Prefix::class)->create(['label' => 'SFC', 'collectionTypeId' => $collectionType->id]);
+    $prefix = factory(Prefix::class)->create(['label' => 'SFC', 'collection_type_id' => $collectionType->id]);
     $newLabel = 'FFS';
     $adminUser = $this->adminUser;
 
