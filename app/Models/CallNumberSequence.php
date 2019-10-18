@@ -5,7 +5,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class CallNumberSequence extends Model {
-  use CamelCasing;
 
   const ALWAYS_USE_NEW_STYLE = array('F', 'VM', 'VT');
 
@@ -20,8 +19,8 @@ class CallNumberSequence extends Model {
       if (in_array($prefix, self::ALWAYS_USE_NEW_STYLE)) {
         $sequence = new NewCallNumberSequence();
         $sequence->prefix = $prefix;
-        $sequence->collectionId = $collectionId;
-        $sequence->archivalIdentifier = $archivalIdentifier;
+        $sequence->collection_id = $collectionId;
+        $sequence->archival_identifier = $archivalIdentifier;
         $sequence->next = 1;
         $sequence->save();
       } else {
