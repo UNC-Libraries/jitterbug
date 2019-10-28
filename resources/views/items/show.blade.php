@@ -23,7 +23,7 @@
           Call Number
         </div>
         <div class="col-xs-7 detail-value">
-          {{$item->callNumber}}
+          {{$item->call_number}}
         </div>
       </div>
       @if ($item->title)
@@ -36,13 +36,13 @@
         </div>
       </div>
       @endif
-      @if ($item->containerNote)
+      @if ($item->container_note)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
           Container Note
         </div>
         <div class="col-xs-7 detail-value">
-          {{$item->containerNote}}
+          {{$item->container_note}}
         </div>
       </div>
       @endif
@@ -56,13 +56,13 @@
         </div>
       </div>
       @endif
-      @if ($item->accessionNumber)
+      @if ($item->accession_number)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
           Accession Number
         </div>
         <div class="col-xs-7 detail-value">
-          {{$item->accessionNumber}}
+          {{$item->accession_number}}
         </div>
       </div>
       @endif
@@ -86,43 +86,43 @@
         </div>
       </div>
       @endif
-      @if ($item->reelTapeNumber)
+      @if ($item->reel_tape_number)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
           Reel/Tape Number
         </div>
         <div class="col-xs-7 detail-value">
-          {{$item->reelTapeNumber}}
+          {{$item->reel_tape_number}}
         </div>
       </div>
       @endif
-      @if ($item->recordingLocation)
+      @if ($item->recording_location)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
           Recording Location
         </div>
         <div class="col-xs-7 detail-value">
-          {{$item->recordingLocation}}
+          {{$item->recording_location}}
         </div>
       </div>
       @endif
-      @if ($item->physicalLocation)
+      @if ($item->physical_location)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
           Physical Location
         </div>
         <div class="col-xs-7 detail-value">
-          {{$item->physicalLocation}}
+          {{$item->physical_location}}
         </div>
       </div>
       @endif
-      @if ($item->accessRestrictions)
+      @if ($item->access_restrictions)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
           Access Restrictions
         </div>
         <div class="col-xs-7 detail-value">
-          {{$item->accessRestrictions}}
+          {{$item->access_restrictions}}
         </div>
       </div>
       @endif
@@ -136,23 +136,23 @@
         </div>
       </div>
       @endif
-      @if ($item->itemYear)
+      @if ($item->item_year)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
           Item Year
         </div>
         <div class="col-xs-7 detail-value">
-          {{$item->itemYear}}
+          {{$item->item_year}}
         </div>
       </div>
       @endif
-      @if ($item->itemDate)
+      @if ($item->item_date)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
           Item Date
         </div>
         <div class="col-xs-7 detail-value">
-          {{$item->itemDate}}
+          {{$item->item_date}}
         </div>
       </div>
       @endif
@@ -166,13 +166,13 @@
         </div>
       </div>
       @endif
-      @if ($item->entryDate)
+      @if ($item->entry_date)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
           Entry Date
         </div>
         <div class="col-xs-7 detail-value">
-          {{$item->entryDate}}
+          {{$item->entry_date}}
         </div>
       </div>
       @endif
@@ -186,16 +186,16 @@
           Listening Copy
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->subclass->listeningCopyDisplay}}
+          {{$item->subclass->listening_copy_display}}
         </div>
       </div>
-      @if ($item->subclass->monoStereo)
+      @if ($item->subclass->mono_stereo)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Mono/Stereo
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->subclass->monoStereoDisplay}}
+          {{$item->subclass->mono_stereo_display}}
         </div>
       </div>
       @endif
@@ -209,13 +209,13 @@
         </div>
       </div>
       @endif
-      @if ($item->subclass->trackConfiguration)
+      @if ($item->subclass->track_configuration)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Track Config
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->subclass->trackConfiguration}}
+          {{$item->subclass->track_configuration}}
         </div>
       </div>
       @endif
@@ -229,13 +229,13 @@
         </div>
       </div>
       @endif
-      @if ($item->subclass->contentDescription)
+      @if ($item->subclass->content_description)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Content Description
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->subclass->contentDescription}}
+          {{$item->subclass->content_description}}
         </div>
       </div>
       @endif
@@ -271,63 +271,63 @@
         </div>
       </div>
       @endif
-      @if ($item->subclass->soundType)
+      @if ($item->subclass->sound_type)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Sound Type
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->subclass->soundType}}
+          {{$item->subclass->sound_type}}
         </div>
       </div>
       @endif
-      @if ($item->subclass->lengthInFeet)
+      @if ($item->subclass->length_in_feet)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Length in Feet
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->subclass->lengthInFeet}}
+          {{$item->subclass->length_in_feet}}
         </div>
       </div>
       @endif
-      @if ($item->subclass->filmStock)
+      @if ($item->subclass->film_stock)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Film Stock
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->subclass->filmStock}}
+          {{$item->subclass->film_stock}}
         </div>
       </div>
       @endif
-      @if ($item->subclass->edgeCode)
+      @if ($item->subclass->edge_code)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Edge Code
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->subclass->edgeCode}}
+          {{$item->subclass->edge_code}}
         </div>
       </div>
       @endif
-      @if ($item->subclass->shrinkagePercent)
+      @if ($item->subclass->shrinkage_percent)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Shrinkage Percent
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->subclass->shrinkagePercent}}
+          {{$item->subclass->shrinkage_percent}}
         </div>
       </div>
       @endif
-      @if ($item->subclass->canNumber)
+      @if ($item->subclass->can_number)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Can Number
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->subclass->canNumber}}
+          {{$item->subclass->can_number}}
         </div>
       </div>
       @endif
@@ -341,25 +341,25 @@
         </div>
       </div>
       @endif
-      @if ($item->subclass->contentDescription)
+      @if ($item->subclass->content_description)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Content Description
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->subclass->contentDescription}}
+          {{$item->subclass->content_description}}
         </div>
       </div>
       @endif
       @endif
       @if (get_class($item->subclass) === 'Jitterbug\Models\VideoItem')
-      @if ($item->subclass->monoStereoDisplay)
+      @if ($item->subclass->mono_stereo_display)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Mono/Stereo
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->subclass->monoStereoDisplay}}
+          {{$item->subclass->mono_stereo_display}}
         </div>
       </div>
       @endif
@@ -383,23 +383,23 @@
         </div>
       </div>
       @endif
-      @if ($item->subclass->recordingStandard)
+      @if ($item->subclass->recording_standard)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Recording Standard
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->subclass->recordingStandard}}
+          {{$item->subclass->recording_standard}}
         </div>
       </div>
       @endif
-      @if ($item->subclass->contentDescription)
+      @if ($item->subclass->content_description)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Content Description
         </div>
         <div class="col-xs-8 detail-value">
-          {{$item->subclass->contentDescription}}
+          {{$item->subclass->content_description}}
         </div>
       </div>
       @endif
