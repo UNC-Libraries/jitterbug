@@ -2,19 +2,19 @@
       <div class="row">
         <div class="form-group">
           <div class="col-xs-4 detail-label">
-            {!! Form::label('subclass[listeningCopy]', 'Listening Copy', array('class' => 'form-control-label')) !!}
+            {!! Form::label('subclass[listening_copy]', 'Listening Copy', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             @if (!$item->batch() || $item->subclass->listeningCopy !== '<mixed>')
               <label class="radio-inline">
-                {!! Form::radio('subclass[listeningCopy]', '1') !!} Yes
+                {!! Form::radio('subclass[listening_copy]', '1') !!} Yes
               </label>
               <label class="radio-inline">
-                {!! Form::radio('subclass[listeningCopy]', '0', true) !!} No
+                {!! Form::radio('subclass[listening_copy]', '0', true) !!} No
               </label>
             @else
-              {!! Form::select('subclass[listeningCopy]',
-              array('1' => 'Yes', '0' => 'No', '<mixed>' => '<mixed>'), $item->subclass->listeningCopy, array('class' => 'form-control form-control-sm')) !!}
+              {!! Form::select('subclass[listening_copy]',
+              array('1' => 'Yes', '0' => 'No', '<mixed>' => '<mixed>'), $item->subclass->listening_copy, array('class' => 'form-control form-control-sm')) !!}
             @endif
           </div>
         </div>
@@ -22,22 +22,22 @@
       <div class="row">
         <div class="form-group">
           <div class="col-xs-4 detail-label">
-            {!! Form::label('subclass[audioMonoStereo]', 'Mono/Stereo', array('class' => 'form-control-label')) !!}
+            {!! Form::label('subclass[audio_mono_stereo]', 'Mono/Stereo', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            @if (!$item->batch() || $item->subclass->audioMonoStereo !== '<mixed>')
+            @if (!$item->batch() || $item->subclass->audio_mono_stereo !== '<mixed>')
               <label class="radio-inline">
-                {!! Form::radio('subclass[audioMonoStereo]', 'M') !!} Mono
+                {!! Form::radio('subclass[audio_mono_stereo]', 'M') !!} Mono
               </label>
               <label class="radio-inline">
-                {!! Form::radio('subclass[audioMonoStereo]', 'S') !!} Stereo
+                {!! Form::radio('subclass[audio_mono_stereo]', 'S') !!} Stereo
               </label>
               <label class="radio-inline">
-                {!! Form::radio('subclass[audioMonoStereo]', '', true) !!} N/A
+                {!! Form::radio('subclass[audio_mono_stereo]', '', true) !!} N/A
               </label>
             @else
-              {!! Form::select('subclass[audioMonoStereo]',
-              array('M' => 'Mono', 'S' => 'Stereo', '' => 'N/A', '<mixed>' => '<mixed>'), $item->subclass->audioMonoStereo, array('class' => 'form-control form-control-sm')) !!}
+              {!! Form::select('subclass[audio_mono_stereo]',
+              array('M' => 'Mono', 'S' => 'Stereo', '' => 'N/A', '<mixed>' => '<mixed>'), $item->subclass->audio_mono_stereo, array('class' => 'form-control form-control-sm')) !!}
             @endif
           </div>
         </div>
@@ -56,40 +56,40 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group @if ($errors->has('subclass.trackConfiguration')) has-danger @endif">
+        <div class="form-group @if ($errors->has('subclass.track_configuration')) has-danger @endif">
           <div class="col-xs-4 detail-label">
-            {!! Form::label('subclass[trackConfiguration]', 'Track Config', array('class' => 'form-control-label')) !!}
+            {!! Form::label('subclass[track_configuration]', 'Track Config', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('subclass[trackConfiguration]', null, array('id' => 'track-configuration', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. 1/2 track')) !!}
-            @if ($errors->has('subclass.trackConfiguration'))
-              <div class="form-control-label"><small>{!! $errors->first('subclass.trackConfiguration') !!}</small></div>
+            {!! Form::text('subclass[track_configuration]', null, array('id' => 'track-configuration', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. 1/2 track')) !!}
+            @if ($errors->has('subclass.track_configuration'))
+              <div class="form-control-label"><small>{!! $errors->first('subclass.track_configuration') !!}</small></div>
             @endif
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="form-group @if ($errors->has('subclass.audioBase')) has-danger @endif">
+        <div class="form-group @if ($errors->has('subclass.audio_base')) has-danger @endif">
           <div class="col-xs-4 detail-label">
-            {!! Form::label('subclass[audioBase]', 'Base', array('class' => 'form-control-label')) !!}
+            {!! Form::label('subclass[audio_base]', 'Base', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('subclass[audioBase]', null, array('id' => 'audio-base', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. Polyester')) !!}
-            @if ($errors->has('subclass.audioBase'))
-              <div class="form-control-label"><small>{!! $errors->first('subclass.audioBase') !!}</small></div>
+            {!! Form::text('subclass[audio_base]', null, array('id' => 'audio-base', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. Polyester')) !!}
+            @if ($errors->has('subclass.audio_base'))
+              <div class="form-control-label"><small>{!! $errors->first('subclass.audio_base') !!}</small></div>
             @endif
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="form-group @if ($errors->has('subclass.audioContentDescription')) has-danger @endif">
+        <div class="form-group @if ($errors->has('subclass.audio_content_description')) has-danger @endif">
           <div class="col-xs-4 detail-label">
-            {!! Form::label('subclass[audioContentDescription]', 'Content Description', array('class' => 'form-control-label')) !!}
+            {!! Form::label('subclass[audio_content_description]', 'Content Description', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::textarea('subclass[audioContentDescription]', null, array('class' => 'form-control form-control-sm', 'rows' => 3)) !!}
-            @if ($errors->has('subclass.audioContentDescription'))
-              <div class="form-control-label"><small>{!! $errors->first('subclass.audioContentDescription') !!}</small></div>
+            {!! Form::textarea('subclass[audio_content_description]', null, array('class' => 'form-control form-control-sm', 'rows' => 3)) !!}
+            @if ($errors->has('subclass.audio_content_description'))
+              <div class="form-control-label"><small>{!! $errors->first('subclass.audio_content_description') !!}</small></div>
             @endif
           </div>
         </div>

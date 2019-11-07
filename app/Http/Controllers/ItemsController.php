@@ -127,7 +127,7 @@ class ItemsController extends Controller
   {
     $input = $request->all();
     $batch = isset($input['batch']) ? true : false;
-    $batchSize = $input['batchSize'];
+    $batchSize = $input['batch_size'];
     $mark = isset($input['mark']) ? true : false;
 
     $itemId = null;
@@ -150,12 +150,12 @@ class ItemsController extends Controller
         $sequence = 
           CallNumberSequence::next($input['collectionId'], $input['formatId']);
 
-        $subclass = new $request->subclassType;
-        $subclass->callNumber = $sequence->callNumber();
+        $subclass = new $request->subclass_type;
+        $subclass->call_number = $sequence->callNumber();
         $subclass->fill($input['subclass']);
 
         $item = new AudioVisualItem;
-        $item->subclass_type = $input['subclassType'];
+        $item->subclass_type = $input['subclass_type'];
         $item->fill($input);
         $item->call_number = $sequence->callNumber();
 
