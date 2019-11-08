@@ -148,7 +148,7 @@ class ItemsController extends Controller
       do {
         // Get a fresh sequence just to be sure the one we used isn't now stale
         $sequence = 
-          CallNumberSequence::next($input['collectionId'], $input['formatId']);
+          CallNumberSequence::next($input['collection_id'], $input['format_id']);
 
         $subclass = new $request->subclass_type;
         $subclass->call_number = $sequence->callNumber();

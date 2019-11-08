@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class FilmItem extends Model {
-  use CamelCasing;
   use NullFieldPreserver;
   use RevisionableTrait;
   use SoftDeletes;
@@ -40,9 +39,9 @@ class FilmItem extends Model {
     'content_description' => 'content description',
   );
 
-  protected $fillable = array('callNumber','filmElement','filmBase', 
-    'filmColor', 'soundType','lengthInFeet','filmStock','edgeCode',
-        'shrinkagePercent','canNumber', 'condition', 'filmContentDescription');
+  protected $fillable = array('call_number','film_element','film_base',
+    'film_color', 'sound_type','length_in_feet','film_stock','edge_code',
+        'shrinkage_percent','can_number', 'condition', 'film_content_description');
 
   public function superclass()
   {
@@ -81,12 +80,12 @@ class FilmItem extends Model {
 
   public function getFilmContentDescriptionAttribute($value)
   {
-    return $value===null ? $this->contentDescription : $value;
+    return $value===null ? $this->content_description : $value;
   }
 
   public function setFilmContentDescriptionAttribute($value)
   {
-    $this->contentDescription = $value;
+    $this->content_description = $value;
   }
 }
 
