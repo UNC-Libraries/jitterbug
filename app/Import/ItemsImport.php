@@ -162,8 +162,8 @@ class ItemsImport extends Import {
       DB::statement("set @transaction_id = '$transactionId';");
       
       $importTransaction = new ImportTransaction;
-      $importTransaction->transactionId = $transactionId;
-      $importTransaction->importType = 'items';
+      $importTransaction->transaction_id = $transactionId;
+      $importTransaction->import_type = 'items';
       $importTransaction->save();
 
       foreach($this->data as $row) {
@@ -172,7 +172,7 @@ class ItemsImport extends Import {
         $collectionId = Collection::where('archival_identifier', $row['Collection'])->first()->id;
         $formatId = $row['FormatID'];
         $sequence = CallNumberSequence::next($collectionId, $formatId);
-        $subclass->callNumber = $sequence->callNumber();
+        $subclass->call_number = $sequence->callNumber();
         // Optional subclass fields
         $size = isset($row['Size']) ? $row['Size'] : null;
         $element = isset($row['Element']) ? $row['Element'] : null;
@@ -180,7 +180,7 @@ class ItemsImport extends Import {
         $color = isset($row['Color']) ? $row['Color'] : null;
         $soundType = isset($row['SoundType']) ? $row['SoundType'] : null;
         $length = isset($row['LengthInFeet']) ? $row['LengthInFeet'] : null;
-        $subclass->contentDescription = 
+        $subclass->content_description =
           isset($row['ContentDescription']) ? $row['ContentDescription'] : null;
         if ($subclassType === 'AudioItem') {
           $subclass->base = $base;
@@ -189,8 +189,8 @@ class ItemsImport extends Import {
           $subclass->element = $element;
           $subclass->base = $base;
           $subclass->color = $color;
-          $subclass->soundType = $soundType;
-          $subclass->lengthInFeet = $length;
+          $subclass->sound_type = $soundType;
+          $subclass->length_in_feet = $length;
         } else if ($subclassType === 'VideoItem') {
           $subclass->element = $element;
           $subclass->color = $color;
@@ -198,27 +198,27 @@ class ItemsImport extends Import {
         $subclass->save();
 
         $item = new AudioVisualItem;
-        $item->callNumber = $sequence->callNumber();
-        $item->subclassType = $subclassType;
-        $item->subclassId = $subclass->id;
-        $item->entryDate = date('Y-m-d');
+        $item->call_number = $sequence->callNumber();
+        $item->subclass_type = $subclassType;
+        $item->subclass_id = $subclass->id;
+        $item->entry_date = date('Y-m-d');
         // Required fields
         $item->title = $row['Title'];
-        $item->collectionId = $collectionId;
-        $item->formatId = $formatId;
-        $item->accessionNumber = $row['AccessionNumber'];
+        $item->collection_id = $collectionId;
+        $item->format_id = $formatId;
+        $item->accession_number = $row['AccessionNumber'];
         // Optional fields
-        $item->containerNote = 
+        $item->container_note =
           isset($row['ContainerNote']) ? $row['ContainerNote'] : null;
         $item->legacy = 
           isset($row['LegacyID']) ? $row['LegacyID'] : null;
-        $item->recordingLocation = 
+        $item->recording_location =
           isset($row['RecLocation']) ? $row['RecLocation'] : null;
-        $item->itemYear = 
+        $item->item_year =
           isset($row['ItemYear']) ? $row['ItemYear'] : null;
-        $item->itemDate = 
+        $item->item_date =
           isset($row['ItemDate']) ? $row['ItemDate'] : null;
-        $item->reelTapeNumber =
+        $item->reel_tape_number =
           isset($row['ReelTapeNumber']) ? $row['ReelTapeNumber'] : null;
         $item->save();
         $created++;

@@ -7,6 +7,5 @@ use Illuminate\Database\Eloquent\Model;
  * section of the application. The underlying database object is a view.
  */
 class AudioVisualItemCollection extends Model {
-//	use CamelCasing;
 
 }

@@ -142,7 +142,7 @@ class ItemsController extends Controller
       // variable.
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
-      
+
       $batchIndex = 0;
 
       do {
