@@ -19,13 +19,13 @@
         </thead>
         <tbody>
           @foreach ($transfers as $transfer)
-          <tr role="button" data-master="{{$transfer->preservationMasterId}}" data-id="{{$transfer->id}}">
-            <td>{{$transfer->preservationMasterId}}</td>
-            <td>{{$transfer->transferDate}}</td>
+          <tr role="button" data-master="{{$transfer->preservation_master_id}}" data-id="{{$transfer->id}}">
+            <td>{{$transfer->preservation_master_id}}</td>
+            <td>{{$transfer->transfer_date}}</td>
             <td>@if ($transfer->playbackMachine != null){{$transfer->playbackMachine->name}}@endif</td>
-            <td>{{$transfer->engineerName}}</td>
+            <td>{{$transfer->engineer_name}}</td>
             <td>@if ($transfer->vendor != null){{$transfer->vendor->name}}@endif</td>
-            <td>{{$transfer->conditionNote}}</td>
+            <td>{{$transfer->condition_note}}</td>
           </tr>
           @endforeach                       
         </tbody>
@@ -55,13 +55,13 @@
         </thead>
         <tbody>
           @foreach ($cuts as $cut)
-          <tr role="button" data-master="{{$cut->preservationMasterId}}" data-id="{{$cut->id}}">
-            <td>{{$cut->preservationMasterId}}</td>
-            <td>{{$cut->cutNumber}}</td>
+          <tr role="button" data-master="{{$cut->preservation_master_id}}" data-id="{{$cut->id}}">
+            <td>{{$cut->preservation_master_id}}</td>
+            <td>{{$cut->cut_number}}</td>
             <td>{{$cut->side}}</td>
             <td>{{$cut->title}}</td>
-            <td>{{$cut->performerComposer}}</td>
-            <td>{{$cut->pmStartTime}}</td>
+            <td>{{$cut->performer_composer}}</td>
+            <td>{{$cut->pm_start_time}}</td>
           </tr>
           @endforeach                       
         </tbody>

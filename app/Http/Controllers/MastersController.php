@@ -121,8 +121,8 @@ class MastersController extends Controller {
     $master = new PreservationMaster;
     $linked = false;
     if($item !== null) {
-      $master->callNumber = $item->callNumber;
-      $master->subclassType = $item->type . 'Master';
+      $master->call_number = $item->call_number;
+      $master->subclass_type = $item->type . 'Master';
       $linked = true;
     }
 
@@ -149,7 +149,7 @@ class MastersController extends Controller {
   {
     $input = $request->all();
     $batch = isset($input['batch']) ? true : false;
-    $batchSize = $input['batchSize'];
+    $batchSize = $input['batch_size'];
     $mark = isset($input['mark']) ? true : false;
 
     $masterId = null;
@@ -168,15 +168,15 @@ class MastersController extends Controller {
       $batchIndex = 0;
 
       do {
-        $subclass = new $request->subclassType;
+        $subclass = new $request->subclass_type;
         $subclass->fill($input['subclass']);
 
         $master = new PreservationMaster;
-        $master->subclassType = $input['subclassType'];
+        $master->subclass_type = $input['subclass_type'];
         $master->fill($input);
 
         $subclass->save();
-        $master->subclassId = $subclass->id;
+        $master->subclass_id = $subclass->id;
         $master->save();
         if ($mark) $master->addMark();
 
@@ -266,7 +266,7 @@ class MastersController extends Controller {
     }
     
     $first = PreservationMaster::find($masterIds[0]);
-    $subclassType = $first->subclassType;
+    $subclassType = $first->subclass_type;
 
     $masters = PreservationMaster::whereIn('id', $masterIds)
                             ->where('subclass_type', $subclassType)->get();
@@ -288,7 +288,7 @@ class MastersController extends Controller {
 
     // Build select lists
     $departments = array();
-    if ($master->departmentId === '<mixed>') {
+    if ($master->department_id === '<mixed>') {
       $departments = ['' => 'Select a department'] + 
                      ['<mixed>' => '<mixed>'] +
                      Department::pluck('name', 'id')->all();
@@ -298,7 +298,7 @@ class MastersController extends Controller {
     }
 
     $projects = array();
-    if ($master->projectId === '<mixed>') {
+    if ($master->project_id === '<mixed>') {
       $projects = ['' => 'Select a project'] + 
                      ['<mixed>' => '<mixed>'] +
                      Project::orderBy('name')->pluck('name', 'id')->all();
@@ -308,7 +308,7 @@ class MastersController extends Controller {
     }
 
     $reproductionMachines = array();
-    if ($master->reproductionMachineId === '<mixed>') {
+    if ($master->reproduction_machine_id === '<mixed>') {
       $reproductionMachines = ['' => 'Select a reproduction machine'] + 
                      ['<mixed>' => '<mixed>'] +
                      ReproductionMachine::pluck('name', 'id')->all();
@@ -318,7 +318,7 @@ class MastersController extends Controller {
     }
 
     $tapeBrands = array();
-    if ($master->tapeBrandId === '<mixed>') {
+    if ($master->tape_brand_id === '<mixed>') {
       $tapeBrands = ['' => 'Select a tape brand'] + 
                      ['<mixed>' => '<mixed>'] +
                      TapeBrand::pluck('name', 'id')->all();
@@ -328,7 +328,7 @@ class MastersController extends Controller {
     }
 
     $samplingRates = array();
-    if ($master->samplingRateId === '<mixed>') {
+    if ($master->sampling_rate_id === '<mixed>') {
       $samplingRates = ['' => 'Select a sampling rate'] + 
                      ['<mixed>' => '<mixed>'] +
                      SamplingRate::pluck('name', 'id')->all();
@@ -338,7 +338,7 @@ class MastersController extends Controller {
     }
 
     $pmSpeeds = array();
-    if ($master->pmSpeedId === '<mixed>') {
+    if ($master->pm_speed_id === '<mixed>') {
       $pmSpeeds = ['' => 'Select a speed'] + 
                      ['<mixed>' => '<mixed>'] +
                      PmSpeed::pluck('name', 'id')->all();
@@ -364,7 +364,7 @@ class MastersController extends Controller {
     $master = PreservationMaster::findOrFail($id);
     $subclass = $master->subclass;
 
-    $originalCallNumber = $master->callNumber;
+    $originalCallNumber = $master->call_number;
 
     $master->fill($input);
     $subclass->fill($input['subclass']);
@@ -380,12 +380,12 @@ class MastersController extends Controller {
       if ($callNumberChanged) {
         $transfers = $master->transfers;
         foreach ($transfers as $transfer) {
-          $transfer->callNumber = $master->callNumber;
+          $transfer->call_number = $master->call_number;
           $transfer->save();
         }
         $cuts = $master->cuts;
         foreach ($cuts as $cut) {
-          $cut->callNumber = $master->callNumber;
+          $cut->call_number = $master->call_number;
           $cut->save();
         }
       }
@@ -404,7 +404,7 @@ class MastersController extends Controller {
       $originalItem = 
         AudioVisualItem::where('call_number', $originalCallNumber)->first();
       $newItem = 
-        AudioVisualItem::where('call_number', $master->callNumber)->first();
+        AudioVisualItem::where('call_number', $master->call_number)->first();
       $this->solrItems->update(array($originalItem, $newItem));
       // Need to update transfers since the call number has changed.
       $this->solrTransfers->update($master->transfers);

@@ -20,28 +20,28 @@
       <div class="col-xs-12 preform">
         <span id="master-type-controls">
           <span style="margin-right: .75rem">
-            {!! Form::label('subclassType', 'Master Type: ', array('class' => 'form-control-label')) !!}
+            {!! Form::label('subclass_type', 'Master Type: ', array('class' => 'form-control-label')) !!}
           </span>
           @if ($linked)
-            {!! Form::hidden('subclassType') !!}
+            {!! Form::hidden('subclass_type') !!}
             <label class="radio-inline">
-              {!! Form::radio('subclassType', 'AudioMaster', null, array('disabled' => 'disabled')) !!} Audio
+              {!! Form::radio('subclass_type', 'AudioMaster', null, array('disabled' => 'disabled')) !!} Audio
             </label>
             <label class="radio-inline">
-              {!! Form::radio('subclassType', 'FilmMaster', null, array('disabled' => 'disabled')) !!} Film
+              {!! Form::radio('subclass_type', 'FilmMaster', null, array('disabled' => 'disabled')) !!} Film
             </label>
             <label class="radio-inline">
-              {!! Form::radio('subclassType', 'VideoMaster', null, array('disabled' => 'disabled')) !!} Video
+              {!! Form::radio('subclass_type', 'VideoMaster', null, array('disabled' => 'disabled')) !!} Video
             </label>
           @else
             <label class="radio-inline">
-              {!! Form::radio('subclassType', 'AudioMaster') !!} Audio
+              {!! Form::radio('subclass_type', 'AudioMaster') !!} Audio
             </label>
             <label class="radio-inline">
-              {!! Form::radio('subclassType', 'FilmMaster') !!} Film
+              {!! Form::radio('subclass_type', 'FilmMaster') !!} Film
             </label>
             <label class="radio-inline">
-              {!! Form::radio('subclassType', 'VideoMaster') !!} Video
+              {!! Form::radio('subclass_type', 'VideoMaster') !!} Video
             </label>
           @endif
         </span>
@@ -52,11 +52,11 @@
         <label style="margin-right: 1.25rem">
           {!! Form::checkbox('batch', '1', null, array('id' => 'batch-checkbox')) !!}
         </label>
-        <span @if ($errors->has('batchSize')) class='has-danger' @endif style="margin-right: .75rem">
-          {!! Form::label('batchSize', 'Batch Size: ', array('class' => 'form-control-label')) !!}
+        <span @if ($errors->has('batch_size')) class='has-danger' @endif style="margin-right: .75rem">
+          {!! Form::label('batch_size', 'Batch Size: ', array('class' => 'form-control-label')) !!}
         </span>
-        <label @if ($errors->has('batchSize')) class='has-danger' @endif>
-          {!! Form::text('batchSize', null, array('class' => 'form-control form-control-sm', 'style' => 'display: inline; width: 50px; padding: 0.2rem 0.5rem;', 'maxlength' => '3')) !!}
+        <label @if ($errors->has('batch_size')) class='has-danger' @endif>
+          {!! Form::text('batch_size', null, array('class' => 'form-control form-control-sm', 'style' => 'display: inline; width: 50px; padding: 0.2rem 0.5rem;', 'maxlength' => '3')) !!}
         </label>
         <span class="divider"></span>
         <span style="margin-right: .75rem">
@@ -80,13 +80,13 @@
       </div>
       <div class="col-xs-6">
         {{-- Begin subclass fields --}}
-        <div id="audio-form" @if (($linked && $master->subclassType !== 'AudioMaster') || old('subclassType') !== null && old('subclassType') !== 'AudioMaster') style="display: none" @endif>
+        <div id="audio-form" @if (($linked && $master->subclass_type !== 'AudioMaster') || old('subclass_type') !== null && old('subclass_type') !== 'AudioMaster') style="display: none" @endif>
           @include('masters._form-audio')
         </div>
-        <div id="film-form" @if ($master->subclassType !== 'FilmMaster' && old('subclassType') !== 'FilmMaster') style="display: none" @endif>
+        <div id="film-form" @if ($master->subclass_type !== 'FilmMaster' && old('subclass_type') !== 'FilmMaster') style="display: none" @endif>
           @include('masters._form-film')
         </div>
-        <div id="video-form" @if ($master->subclassType !== 'VideoMaster' && old('subclassType') !== 'VideoMaster') style="display: none" @endif>
+        <div id="video-form" @if ($master->subclass_type !== 'VideoMaster' && old('subclass_type') !== 'VideoMaster') style="display: none" @endif>
           @include('masters._form-video')
         </div>
         {{-- End subclass fields --}}

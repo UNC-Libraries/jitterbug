@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Transfer extends Model {
-  use CamelCasing;
   use NullFieldPreserver;
   use RevisionableTrait;
   use CompositeHistory;
