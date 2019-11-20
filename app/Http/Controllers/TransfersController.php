@@ -119,9 +119,9 @@ class TransfersController extends Controller {
     $transfer = new Transfer;
     $linked = false;
     if($master !== null) {
-      $transfer->preservationMasterId = $master->id;
-      $transfer->callNumber = $master->callNumber;
-      $transfer->subclassType = $master->type . 'Transfer';
+      $transfer->preservation_master_id = $master->id;
+      $transfer->call_number = $master->call_number;
+      $transfer->subclass_type = $master->type . 'Transfer';
       $linked = true;
     }
 
@@ -156,14 +156,14 @@ class TransfersController extends Controller {
       $subclass->fill($input['subclass']);
 
       $transfer = new Transfer;
-      $transfer->subclassType = $input['subclassType'];
+      $transfer->subclass_type = $input['subclass_type'];
       $master = 
-        PreservationMaster::where('id', $input['preservationMasterId'])->first();
-      $transfer->callNumber = $master->callNumber;
+        PreservationMaster::where('id', $input['preservation_master_id'])->first();
+      $transfer->call_number = $master->call_number;
       $transfer->fill($input);
 
       $subclass->save();
-      $transfer->subclassId = $subclass->id;
+      $transfer->subclass_id = $subclass->id;
       $transfer->save();
 
       $mark = isset($input['mark']) ? true : false;
@@ -192,11 +192,10 @@ class TransfersController extends Controller {
              PlaybackMachine::orderBy('name')->pluck('name', 'id')->all();
     $engineers = ['' => 'Select an engineer'] + 
              User::engineerList();
-    if ($transfer->engineerId !== null) {
-      $engineer = User::findOrFail($transfer->engineerId);
+    if ($transfer->engineer_id !== null) {
+      $engineer = User::findOrFail($transfer->engineer_id);
       if ($engineer->legacy()) {
-        $engineers = 
-          $engineers + [$engineer->id => $engineer->legacyInitials];
+        $engineers += [$engineer->id => $engineer->legacy_initials];
       }
     }
     $vendors = ['' => 'Select a vendor'] + 
@@ -240,7 +239,7 @@ class TransfersController extends Controller {
     }
     
     $first = Transfer::find($transferIds[0]);
-    $subclassType = $first->subclassType;
+    $subclassType = $first->subclass_type;
 
     $transfers = Transfer::whereIn('id', $transferIds)
                             ->where('subclass_type', $subclassType)->get();
@@ -262,7 +261,7 @@ class TransfersController extends Controller {
 
     // Build select lists
     $playbackMachines = array();
-    if ($transfer->playbackMachineId === '<mixed>') {
+    if ($transfer->playback_machine_id === '<mixed>') {
       $playbackMachines = ['' => 'Select a playback machine'] + 
               ['<mixed>' => '<mixed>'] +
               PlaybackMachine::orderBy('name')->pluck('name', 'id')->all();
@@ -272,23 +271,22 @@ class TransfersController extends Controller {
     }
 
     $engineers = array();
-    if ($transfer->engineerId === '<mixed>') {
+    if ($transfer->engineer_id === '<mixed>') {
       $engineers = ['' => 'Select an engineer'] + 
               ['<mixed>' => '<mixed>'] + User::engineerList();
     } else {
       $engineers = ['' => 'Select an engineer'] + 
               User::engineerList();
     }
-    if ($transfer->engineerId !== null && $transfer->engineerId !== '<mixed>') {
-      $engineer = User::findOrFail($transfer->engineerId);
+    if ($transfer->engineer_id !== null && $transfer->engineer_id !== '<mixed>') {
+      $engineer = User::findOrFail($transfer->engineer_id);
       if ($engineer->legacy()) {
-        $engineers = 
-          $engineers + [$engineer->id => $engineer->legacyInitials];
+        $engineers += [$engineer->id => $engineer->legacy_initials];
       }
     }
 
     $vendors = array();
-    if ($transfer->vendorId === '<mixed>') {
+    if ($transfer->vendor_id === '<mixed>') {
       $vendors = ['' => 'Select a vendor'] + 
               ['<mixed>' => '<mixed>'] +
               Vendor::pluck('name', 'id')->all();
@@ -430,7 +428,7 @@ class TransfersController extends Controller {
     $subclass = $transfer->subclass;
 
     $originalMaster = $transfer->preservationMaster;
-    $originalCallNumber = $transfer->callNumber;
+    $originalCallNumber = $transfer->call_number;
 
     $transfer->fill($input);
     $subclass->fill($input['subclass']);
@@ -444,13 +442,13 @@ class TransfersController extends Controller {
     $newMaster = null;
     if ($pmChanged) {
       // Get the new preservation master
-      $newMaster = PreservationMaster::findOrFail($transfer->preservationMasterId);
-      $transfer->callNumber = $newMaster->callNumber;
+      $newMaster = PreservationMaster::findOrFail($transfer->preservation_master_id);
+      $transfer->call_number = $newMaster->call_number;
 
       $cut = $transfer->cut;
       if ($cut !== null) {
-        $cut->callNumber = $newMaster->callNumber;
-        $cut->preservationMasterId = $newMaster->id;
+        $cut->call_number = $newMaster->call_number;
+        $cut->preservation_master_id = $newMaster->id;
       }
     }
 
@@ -478,7 +476,7 @@ class TransfersController extends Controller {
       $originalItem = 
         AudioVisualItem::where('call_number', $originalCallNumber)->first();
       $newItem = 
-        AudioVisualItem::where('call_number', $newMaster->callNumber)->first();
+        AudioVisualItem::where('call_number', $newMaster->call_number)->first();
       $this->solrItems->update(array($originalItem, $newItem));
       $this->solrMasters->update(array($originalMaster, $newMaster));
     }
@@ -502,7 +500,7 @@ class TransfersController extends Controller {
 
     $pmChanged = false;
     // Determine if PM has been changed
-    if (isset($input['preservationMasterId'])) {
+    if (isset($input['preservation_master_id'])) {
       foreach ($transfers as $transfer) {
         if ($transfer->preservationMasterId !== 
              intval($input['preservationMasterId'])) {
@@ -519,9 +517,9 @@ class TransfersController extends Controller {
     $newMaster = null;
     if ($pmChanged) {
       $newMaster = 
-        PreservationMaster::findOrFail($input['preservationMasterId']);
+        PreservationMaster::findOrFail($input['preservation_master_id']);
       $newItem = 
-        AudioVisualItem::where('call_number', $newMaster->callNumber)->first();
+        AudioVisualItem::where('call_number', $newMaster->call_number)->first();
     }
 
     $originaItems = array();
@@ -535,18 +533,18 @@ class TransfersController extends Controller {
       
       foreach ($transfers as $transfer) {
         $originalMaster = $transfer->preservationMaster;
-        $originalCallNumber = $transfer->callNumber;
+        $originalCallNumber = $transfer->call_number;
 
         $transfer->fill($input);
         $subclass=$transfer->subclass;
         $subclass->fill($input['subclass']);
 
         if ($pmChanged) {
-          $transfer->callNumber = $newMaster->callNumber;
+          $transfer->call_number = $newMaster->call_number;
           $cut = $transfer->cut;
           if ($cut !== null) {
-            $cut->preservationMasterId = $newMaster->id;
-            $cut->callNumber = $newMaster->callNumber;
+            $cut->preservation_master_id = $newMaster->id;
+            $cut->call_number = $newMaster->call_number;
             $cut->save();
           }
 
@@ -612,7 +610,7 @@ class TransfersController extends Controller {
       // Since a cut was deleted, we need to get the related master and audio
       // visual item and update them in Solr to remove the cut from the index.
       $item = 
-        AudioVisualItem::where('call_number', $transfer->callNumber)->first();
+        AudioVisualItem::where('call_number', $transfer->call_number)->first();
       if ($item !== null) {
         $this->solrItems->update($item);
       }

@@ -25,12 +25,12 @@ class CutRequest extends Request {
   public function rules()
   {
     return [
-      'preservationMasterId' => 'required|exists:preservation_masters,id,deleted_at,NULL',
+      'preservation_master_id' => 'required|exists:preservation_masters,id,deleted_at,NULL',
       'side' => 'required|max:4',
       'cutNumber' => 'integer',
       'title' => 'max:255',
-      'performerComposer' => 'max:255',
-      'pmStartTime' => 'max:10',
+      'performer_composer' => 'max:255',
+      'pm_start_time' => 'max:10',
     ];
   }
 
@@ -43,13 +43,13 @@ class CutRequest extends Request {
   {
     return [
       // Messages for transfer fields
-      'preservationMasterId.required' => 'The preservation master number field is required.',
-      'preservationMasterId.exists' => 'The given preservation master does not exist.',
+      'preservation_master_id.required' => 'The preservation master number field is required.',
+      'preservation_master_id.exists' => 'The given preservation master does not exist.',
       'side.required' => 'The side field is required.',
       'side.max' => 'The side field must be less than :max characters.',
       'title.max' => 'The title field must be less than :max characters.',
-      'performerComposer.max' => 'The performer composer field must be less than :max characters.',
-      'pmStartTime.max' => 'The PM start time must be less than :max characters.',
+      'performer_composer.max' => 'The performer composer field must be less than :max characters.',
+      'pm_start_time.max' => 'The PM start time must be less than :max characters.',
     ];
   }
 

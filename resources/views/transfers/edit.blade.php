@@ -20,12 +20,12 @@
   @if ($transfer->batch())
     {!! Form::model($transfer, array('route' => array('transfers.batch.update'), 'method' => 'put')) !!}
     {!! Form::hidden('ids') !!}
-    {!! Form::hidden('subclassType') !!}
+    {!! Form::hidden('subclass_type') !!}
   @else
     {!! Form::model($transfer, array('route' => array('transfers.update', $transfer->id), 'method' => 'put')) !!}
     {!! Form::hidden('id') !!}
-    {!! Form::hidden('subclassType') !!}
-    {!! Form::hidden('subclassId') !!}
+    {!! Form::hidden('subclass_type') !!}
+    {!! Form::hidden('subclass_id') !!}
   @endif
 
   <div class="row first detail-container">

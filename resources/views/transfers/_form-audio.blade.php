@@ -26,14 +26,14 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group @if ($errors->has('subclass.firstSound')) has-danger @endif">
+        <div class="form-group @if ($errors->has('subclass.first_sound')) has-danger @endif">
           <div class="col-xs-4 detail-label">
-            {!! Form::label('subclass[firstSound]', 'First Sound', array('class' => 'form-control-label')) !!}
+            {!! Form::label('subclass[first_sound]', 'First Sound', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::textarea('subclass[firstSound]', null, array('class' => 'form-control form-control-sm', 'rows' => 3)) !!}
-            @if ($errors->has('subclass.firstSound'))
-              <div class="form-control-label"><small>{!! $errors->first('subclass.firstSound') !!}</small></div>
+            {!! Form::textarea('subclass[first_sound]', null, array('class' => 'form-control form-control-sm', 'rows' => 3)) !!}
+            @if ($errors->has('subclass.first_sound'))
+              <div class="form-control-label"><small>{!! $errors->first('subclass.first_sound') !!}</small></div>
             @endif
           </div>
         </div>
