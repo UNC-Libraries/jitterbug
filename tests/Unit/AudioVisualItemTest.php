@@ -13,10 +13,10 @@ class AudioVisualItemTest extends TestCase
     {
       $av_audio_item = factory(Jitterbug\Models\AudioVisualItem::class)->make();
       $av_film_item = factory(Jitterbug\Models\AudioVisualItem::class)->make([
-        'subclassType' => 'FilmItem',
+        'subclass_type' => 'FilmItem',
       ]);
       $av_video_item = factory(Jitterbug\Models\AudioVisualItem::class)->make([
-        'subclassType' => 'VideoItem',
+        'subclass_type' => 'VideoItem',
       ]);
 
       $this->assertSame(1, $av_audio_item->getTypeIdAttribute(),'TypeIdAttribute returned wrong ID for Audio Item');
