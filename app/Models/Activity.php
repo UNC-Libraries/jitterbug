@@ -13,15 +13,14 @@ use Illuminate\Database\Eloquent\Model;
  * only for the purpose of display in the recent activity stream. 
  */
 class Activity extends Model {
-  use CamelCasing;
 
   // Fields in this model:
   // transactionId: the transaction UUID.
   // action: created, updated, deleted or imported.
   // batch: true or false if batch. (stored as tiny int in the database)
-  // batchSize: the total number of objects that the user selected for modification.
+  // batch_size: the total number of objects that the user selected for modification.
   // field: the field that was updated, only populated for updates.
-  // importType: it it was an import, the type (audio, film or video).
+  // import_type: it it was an import, the type (audio, film or video).
   // itemCallNumber: the call number of the related item, not populated for 
   // batch operations.
   // itemType: the type of the related item, (audio, film or video).
@@ -50,7 +49,7 @@ class Activity extends Model {
 
   public function getObjectTypesToIdsAttribute($value)
   {
-    if ($value === null) $value = $this->objectTypesToIds;
+    if ($value === null) $value = $this->object_types_to_ids;
     if ($this->unserializedObjectTypesToIds === null) {
       $this->unserializedObjectTypesToIds = unserialize($value);
       return $this->unserializedObjectTypesToIds;
@@ -84,14 +83,14 @@ class Activity extends Model {
    */
   public function object()
   {
-    if ($this->action === 'imported' && $this->importType === 'audio') {
-      return 'batch of ' . $this->batchSize . ' audio records';
-    } else if ($this->action === 'imported' && $this->importType === 'film') {
-      return 'batch of ' . $this->batchSize . ' film records';
-    } else if ($this->action === 'imported' && $this->importType === 'video') {
-      return 'batch of ' . $this->batchSize . ' video records';
-    } else if ($this->action === 'imported' && $this->importType === 'items') {
-      return 'batch of ' . $this->batchSize . ' audio visual item records';
+    if ($this->action === 'imported' && $this->import_type === 'audio') {
+      return 'batch of ' . $this->batch_size . ' audio records';
+    } else if ($this->action === 'imported' && $this->import_type === 'film') {
+      return 'batch of ' . $this->batch_size . ' film records';
+    } else if ($this->action === 'imported' && $this->import_type === 'video') {
+      return 'batch of ' . $this->batch_size . ' video records';
+    } else if ($this->action === 'imported' && $this->import_type === 'items') {
+      return 'batch of ' . $this->batch_size . ' audio visual item records';
     }
 
     $objectType = $this->objectType();
@@ -102,7 +101,7 @@ class Activity extends Model {
     }
 
     $mediaTypes = array();
-    foreach ($this->getAttribute('objectTypesToIds') as $key => $value) {
+    foreach ($this->getAttribute('object_types_to_ids') as $key => $value) {
       $explodedKey = explode(' ', $key);
       if ($explodedKey[0] === 'cut') {
         break;
@@ -120,7 +119,7 @@ class Activity extends Model {
                 $this->formatMediaTypesAndObject($mediaTypes, $objectType);
 
     if ($this->batch) {
-      return 'batch of ' . $this->batchSize . ' ' . $formattedObject . 's'; 
+      return 'batch of ' . $this->batch_size . ' ' . $formattedObject . 's';
     } else {
       return $formattedObject;
     }
@@ -163,7 +162,7 @@ class Activity extends Model {
     // means it will be the first one when the revisions are fetched in 
     // descending order of their ids, which is done in the constructor
     // of TransactionDigest.
-    $objectTypesToIds = $this->getAttribute('objectTypesToIds');
+    $objectTypesToIds = $this->getAttribute('object_types_to_ids');
     reset($objectTypesToIds);
     $objectKey = key($objectTypesToIds);
     if ($objectKey === 'cut') {
@@ -187,7 +186,7 @@ class Activity extends Model {
    */
   public function objectId()
   {
-    $objectTypesToIds = $this->getAttribute('objectTypesToIds');
+    $objectTypesToIds = $this->getAttribute('object_types_to_ids');
     reset($objectTypesToIds);
     return key(current($objectTypesToIds));
   }
@@ -200,7 +199,7 @@ class Activity extends Model {
    */
   public function objectExists()
   {
-    $objectTypesToIds = $this->getAttribute('objectTypesToIds');
+    $objectTypesToIds = $this->getAttribute('object_types_to_ids');
     reset($objectTypesToIds);
     return current($objectTypesToIds)[key(current($objectTypesToIds))];
   }

@@ -73,13 +73,13 @@ class Transfer extends Model {
   {
     $name = null;
     if ($this->engineer !== null) {
-      $firstName = $this->engineer->firstName;
-      $lastName = $this->engineer->lastName;
+      $firstName = $this->engineer->first_name;
+      $lastName = $this->engineer->last_name;
     } else {
       return null;
     }
     if ($firstName===null || $lastName===null) {
-      $name = $this->engineer->legacyInitials;
+      $name = $this->engineer->legacy_initials;
     } else {
       $name = $firstName . ' ' . $lastName;
     }

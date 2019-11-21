@@ -74,8 +74,8 @@ class Cut extends Model {
 
   public function formattedHistory($history)
   {
-    $user = $history->userResponsible()->firstName 
-      . ' ' . $history->userResponsible()->lastName;
+    $user = $history->userResponsible()->first_name
+      . ' ' . $history->userResponsible()->last_name;
     $date =  date('n/j/Y', strtotime($history->created_at));
     return $date . ' by ' . $user;
   }

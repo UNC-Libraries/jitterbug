@@ -58,8 +58,8 @@ class MasterRequest extends Request {
     } else if ($subclassType === 'FilmMaster') {
       $this->addRuleIfNotMixed($rules, 'film_file_format', 'required|max:60');
       $this->addRuleIfNotMixed($rules, 'film_file_codec', 'required|max:60');
-      $this->addRuleIfNotMixed($rules, 'subclass.filmFrameSize', 'max:30');
-      $this->addRuleIfNotMixed($rules, 'subclass.filmAspectRatio', 'max:30');
+      $this->addRuleIfNotMixed($rules, 'subclass.film_frame_size', 'max:30');
+      $this->addRuleIfNotMixed($rules, 'subclass.film_aspect_ratio', 'max:30');
     // Add rules for video masters
     } else if ($subclassType === 'VideoMaster') {
       $this->addRuleIfNotMixed($rules, 'video_file_format', 'required|max:60');
@@ -104,8 +104,8 @@ class MasterRequest extends Request {
       'film_file_format.max' => 'The file format must be less than :max characters.',
       'film_file_codec.required' => 'The file codec field is required.',
       'film_file_codec.max' => 'The file codec must be less than :max characters.',
-      'subclass.filmFrameSize.max' => 'The frame size must be less than :max characters.',
-      'subclass.filmAspectRatio.max' => 'The aspect ratio must be less than :max characters.',
+      'subclass.film_frame_size.max' => 'The frame size must be less than :max characters.',
+      'subclass.film_aspect_ratio.max' => 'The aspect ratio must be less than :max characters.',
 
       // Messages for video master fields
       'video_file_format.required' => 'The file format field is required.',
