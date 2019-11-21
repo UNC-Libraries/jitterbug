@@ -71,7 +71,7 @@ abstract class Export {
     $class = $this->exportClass;
     $records = $class::whereIn('id', $this->ids)->get();
     foreach ($records as $record) {
-      $attributes = $this->getSnakeAttributes($record);
+      $attributes = $record->attributesToArray();
       $row = array();
       foreach ($selectedFields as $selectedField) {
         if ($selectedField === 'cut') {
@@ -88,7 +88,7 @@ abstract class Export {
           if (array_key_exists($selectedField, $attributes)) {
             $fieldValue = $this->getFieldValue($record, $selectedField);
           } else if (array_key_exists($selectedField, 
-              $this->getSnakeAttributes($record->subclass))) {
+              $record->subclass->attributesToArray())) {
             $subclass = $record->subclass;
             $fieldValue = $this->getFieldValue($subclass, $selectedField);
           }
@@ -158,11 +158,6 @@ abstract class Export {
   private function displayAccessorFor($fieldName)
   {
     return 'get' . studly_case($fieldName) . 'DisplayAttribute';
-  }
-
-  private function getSnakeAttributes($model)
-  {
-    return $model->toSnakeCase($model->attributesToArray());
   }
 
   private function isForeignKey($fieldName)
