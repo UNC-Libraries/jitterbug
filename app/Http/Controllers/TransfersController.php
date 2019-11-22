@@ -110,7 +110,7 @@ class TransfersController extends Controller {
    */
   public function create(Request $request)
   {
-    $masterId = $request->masterId;
+    $masterId = $request->master_id;
     $master = null;
     if ($masterId !== null) {
       $master = PreservationMaster::findOrFail($masterId);
@@ -152,7 +152,7 @@ class TransfersController extends Controller {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
 
-      $subclass = new $request->subclassType;
+      $subclass = new $request->subclass_type;
       $subclass->fill($input['subclass']);
 
       $transfer = new Transfer;

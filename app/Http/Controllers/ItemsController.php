@@ -97,7 +97,7 @@ class ItemsController extends Controller
   public function show($id)
   {
     $item = AudioVisualItem::findOrFail($id);
-    $cuts = Cut::where('call_number', $item->callNumber)
+    $cuts = Cut::where('call_number', $item->call_number)
                ->orderBy('preservation_master_id', 'asc')
                ->orderBy('cut_number', 'asc')
                ->get();
@@ -198,7 +198,7 @@ class ItemsController extends Controller
   public function edit($id)
   {
     $item = AudioVisualItem::findOrFail($id);
-    $cuts = Cut::where('call_number', $item->callNumber)
+    $cuts = Cut::where('call_number', $item->call_number)
                ->orderBy('preservation_master_id', 'asc')
                ->orderBy('cut_number', 'asc')
                ->get();

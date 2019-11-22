@@ -432,7 +432,7 @@ class MastersController extends Controller {
     // Determine if the call number has changed, which will be uncommon
     if (isset($input['callNumber'])) {
       foreach ($masters as $master) {
-        if ($master->callNumber !== $input['callNumber']) {
+        if ($master->call_number !== $input['callNumber']) {
           $callNumberChanged = true;
           break;
         }
@@ -457,13 +457,13 @@ class MastersController extends Controller {
         if ($callNumberChanged) {
           $transfers = $master->transfers;
           foreach ($transfers as $transfer) {
-            $transfer->callNumber = $master->callNumber;
+            $transfer->call_number = $master->call_number;
             $transfer->save();
             array_push($transfersToUpateInSolr, $transfer);
           }
           $cuts = $master->cuts;
           foreach ($cuts as $cut) {
-            $cut->callNumber = $master->callNumber;
+            $cut->call_number = $master->call_number;
             $cut->save();
           }
         }
@@ -547,7 +547,7 @@ class MastersController extends Controller {
         // Since cuts were deleted, we need to get the audio visual item
         // and update it in Solr to remove the cuts from the index.
         $item = 
-          AudioVisualItem::where('call_number', $master->callNumber)->first();
+          AudioVisualItem::where('call_number', $master->call_number)->first();
         if ($item !== null) {
           $this->solrItems->update($item);
         }

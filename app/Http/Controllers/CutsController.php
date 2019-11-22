@@ -53,7 +53,7 @@ class CutsController extends Controller
    */
   public function create(Request $request)
   {
-    $transfer = Transfer::findOrFail($request->transferId);
+    $transfer = Transfer::findOrFail($request->transfer_id);
     $master = $transfer->preservation_master;
     $cut = new Cut;
     $cut->call_number = $transfer->call_number;
@@ -198,7 +198,7 @@ class CutsController extends Controller
   {
     $cut = Cut::findOrFail($cutId);
     return redirect()->route('masters.cuts.show', 
-        [$cut->preservationMasterId, $cut->id]);
+        [$cut->preservation_master_id, $cut->id]);
   }
 
 }

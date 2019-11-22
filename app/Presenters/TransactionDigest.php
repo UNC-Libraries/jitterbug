@@ -503,7 +503,7 @@ class TransactionDigest
   {
     if ($this->batchSize) return $this->batchSize;
     
-    if ($this->import_type === 'items') {
+    if ($this->importType === 'items') {
       $totalItems = 0;
       foreach ($this->objectTypesToIds as $key => $value) {
         if (ends_with($key, 'item')) {
