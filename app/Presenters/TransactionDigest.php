@@ -365,7 +365,7 @@ class TransactionDigest
       $instance = $instance->superclass;
     }
     $this->associatedItem = AudioVisualItem::withTrashed()
-      ->where('call_number', $instance->callNumber)
+      ->where('call_number', $instance->call_number)
       ->first();
     return $this->associatedItem;
   }
@@ -406,8 +406,8 @@ class TransactionDigest
     if (!array_key_exists($firstRev->revisionable_type, $this->baseClasses)) {
       $instance = $instance->superclass;
     }
-    $this->associatedCallNumber = $instance->callNumber;
-    return $instance->callNumber;
+    $this->associatedCallNumber = $instance->call_number;
+    return $instance->call_number;
   }
 
   /**

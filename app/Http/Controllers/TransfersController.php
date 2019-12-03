@@ -502,8 +502,8 @@ class TransfersController extends Controller {
     // Determine if PM has been changed
     if (isset($input['preservation_master_id'])) {
       foreach ($transfers as $transfer) {
-        if ($transfer->preservationMasterId !== 
-             intval($input['preservationMasterId'])) {
+        if ($transfer->preservation_master_id !==
+             intval($input['preservation_master_id'])) {
           $pmChanged = true;
           break;
         }

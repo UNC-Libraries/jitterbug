@@ -54,7 +54,7 @@ class CutsController extends Controller
   public function create(Request $request)
   {
     $transfer = Transfer::findOrFail($request->transfer_id);
-    $master = $transfer->preservation_master;
+    $master = $transfer->preservationMaster;
     $cut = new Cut;
     $cut->call_number = $transfer->call_number;
     $cut->preservation_master_id = $transfer->preservation_master_id;
@@ -87,7 +87,7 @@ class CutsController extends Controller
     // Update Solr
     $item = AudioVisualItem::where('call_number', $cut->call_number)->first();
     $this->solrItems->update($item);
-    $this->solrMasters->update($cut->preservation_master);
+    $this->solrMasters->update($cut->preservationMaster);
     $this->solrTransfers->update($cut->transfer);
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 

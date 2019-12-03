@@ -27,7 +27,7 @@ class MasterRequest extends Request {
   {
     // Add rules for base preservation masters
     $rules = array();
-    $rules['batchSize'] = 'required_if:batch,1|integer|between:2,100';
+    $rules['batch_size'] = 'required_if:batch,1|integer|between:2,100';
     $this->addRuleIfNotMixed($rules, 'call_number',
       'required|min:4|max:30|exists:audio_visual_items,call_number,deleted_at,NULL');
     // If this is a batch create or update, don't require a file name since it
