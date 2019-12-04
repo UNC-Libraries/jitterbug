@@ -52,7 +52,7 @@ class PrefixesTest extends TestCase
     $response = $this->post('/prefixes',
                             [
                               'label' => 'FS',
-                              'collectionTypeId' => $collectionType->id,
+                              'collection_type_id' => $collectionType->id,
                             ],
                             array('HTTP_X-Requested-With' => 'XMLHttpRequest'));
 
