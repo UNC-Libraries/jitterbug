@@ -5,7 +5,7 @@
             {!! Form::label('subclass[listening_copy]', 'Listening Copy', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            @if (!$item->batch() || $item->subclass->listeningCopy !== '<mixed>')
+            @if (!$item->batch() || $item->subclass->listening_copy !== '<mixed>')
               <label class="radio-inline">
                 {!! Form::radio('subclass[listening_copy]', '1') !!} Yes
               </label>
