@@ -110,7 +110,7 @@ class TransfersController extends Controller {
    */
   public function create(Request $request)
   {
-    $masterId = $request->master_id;
+    $masterId = $request->masterId;
     $master = null;
     if ($masterId !== null) {
       $master = PreservationMaster::findOrFail($masterId);

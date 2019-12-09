@@ -27,7 +27,7 @@ class CutRequest extends Request {
     return [
       'preservation_master_id' => 'required|exists:preservation_masters,id,deleted_at,NULL',
       'side' => 'required|max:4',
-      'cutNumber' => 'integer',
+      'cut_number' => 'integer',
       'title' => 'max:255',
       'performer_composer' => 'max:255',
       'pm_start_time' => 'max:10',

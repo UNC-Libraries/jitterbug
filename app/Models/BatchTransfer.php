@@ -9,11 +9,11 @@ class BatchTransfer extends Transfer {
 
   protected $transfers;
   protected $subclasses;
-  protected $aggregateTranfer;
+  protected $aggregateTransfer;
   protected $aggregateSubclass;
 
-  protected $batchGuarded = ['id', 'subclassType', 'subclassId', 'createdAt',
-    'updatedAt'];
+  protected $batchGuarded = ['id', 'subclass_type', 'subclass_id', 'created_at',
+    'updated_at'];
 
   protected $attributes;
 
@@ -25,8 +25,8 @@ class BatchTransfer extends Transfer {
     $this->subclasses = $subclasses;
 
     $this->aggregateTransfer = new Transfer;
-    $subclassType = $this->transfers->first()->subclassType;
-    $this->aggregateTransfer->subclassType = $subclassType;
+    $subclassType = $this->transfers->first()->subclass_type;
+    $this->aggregateTransfer->subclass_type = $subclassType;
     $this->aggregateSubclass = new $subclassType;
     $this->mergeAttributes($transfers, $this->aggregateTransfer);
     $this->mergeAttributes($subclasses, $this->aggregateSubclass);
@@ -60,8 +60,8 @@ class BatchTransfer extends Transfer {
 
   public function getTypeAttribute()
   {
-    $fullType = $this->transfers->first()->getAttribute("subclassType");
-    $type = substr($fullType,0,strlen($fullType) - strlen("Transfer"));
+    $fullType = $this->transfers->first()->getAttribute('subclass_type');
+    $type = substr($fullType,0,strlen($fullType) - strlen('Transfer'));
     return $type;
   }
 
