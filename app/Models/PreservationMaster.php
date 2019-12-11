@@ -158,14 +158,14 @@ class PreservationMaster extends Model {
   public function getVideoFileFormatAttribute($value)
   {
     if ($this->subclass_type === 'VideoMaster') {
-      return $value===null ? $this->fileFormat : $value;
+      return $value===null ? $this->file_format : $value;
     }
   }
 
   public function setVideoFileFormatAttribute($value)
   {
     if ($this->subclass_type === 'VideoMaster') {
-      $this->fileFormat = $value;
+      $this->file_format = $value;
     }
   }
 

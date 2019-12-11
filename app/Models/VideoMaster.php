@@ -33,12 +33,12 @@ class VideoMaster extends Model {
   
   public function getVideoFrameSizeAttribute($value)
   {
-    return $value===null ? $this->frameSize : $value;
+    return $value===null ? $this->frame_size : $value;
   }
 
   public function setVideoFrameSizeAttribute($value)
   {
-    $this->frameSize = $value;
+    $this->frame_size = $value;
   }
 
   public function getVideoAspectRatioAttribute($value)
