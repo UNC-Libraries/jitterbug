@@ -14,7 +14,7 @@ use Jitterbug\Models\Mark;
 class User extends Model implements AuthenticatableContract,
                                     AuthorizableContract, 
                                     CanResetPasswordContract {
-
+  use CamelCasing;
   use Authenticatable, Authorizable, CanResetPassword;
 
   /**
@@ -68,9 +68,9 @@ class User extends Model implements AuthenticatableContract,
   {
     $fullName = null;
     if ($this->legacy()) {
-      $fullName = $this->legacy_initials;
+      $fullName = $this->legacyInitials;
     } else {
-      $fullName = $this->first_name . ' ' . $this->last_name;
+      $fullName = $this->firstName . ' ' . $this->lastName;
     }
     return trim($fullName);
   }
@@ -116,6 +116,6 @@ class User extends Model implements AuthenticatableContract,
    */
   public function legacy()
   {
-    return $this->legacy_initials !== null;
+    return $this->legacyInitials !== null;
   }
 }

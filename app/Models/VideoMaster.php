@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class VideoMaster extends Model {
+  use CamelCasing;
   use NullFieldPreserver;
   use RevisionableTrait;
   use SoftDeletes;
@@ -24,7 +25,7 @@ class VideoMaster extends Model {
     'aspect_ratio' => 'aspect ratio',
   );
 
-  protected $fillable = array('video_frame_size', 'video_aspect_ratio');
+  protected $fillable = array('videoFrameSize', 'videoAspectRatio');
 
   public function superclass()
   {
@@ -33,21 +34,21 @@ class VideoMaster extends Model {
   
   public function getVideoFrameSizeAttribute($value)
   {
-    return $value===null ? $this->frame_size : $value;
+    return $value===null ? $this->frameSize : $value;
   }
 
   public function setVideoFrameSizeAttribute($value)
   {
-    $this->frame_size = $value;
+    $this->frameSize = $value;
   }
 
   public function getVideoAspectRatioAttribute($value)
   {
-    return $value===null ? $this->aspect_ratio : $value;
+    return $value===null ? $this->aspectRatio : $value;
   }
 
   public function setVideoAspectRatioAttribute($value)
   {
-    $this->aspect_ratio = $value;
+    $this->aspectRatio = $value;
   }
 }

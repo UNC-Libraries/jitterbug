@@ -1,21 +1,21 @@
       {{-- AudioVisualItem fields --}}
       <div class="row">
-        <div class="form-group @if ($errors->has('call_number')) has-danger @endif">
+        <div class="form-group @if ($errors->has('callNumber')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('call_number', 'Call Number', array('class' => 'form-control-label')) !!}
+            {!! Form::label('callNumber', 'Call Number', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             @if (!$item->batch())
               @if (routeName() === 'items.create')
-                {!! Form::text('call_number', null, array('id' => 'call-number', 'class' => 'form-control form-control-sm', 'readonly' => 'readonly', 'placeholder' => 'Will be auto-generated')) !!}
+                {!! Form::text('callNumber', null, array('id' => 'call-number', 'class' => 'form-control form-control-sm', 'readonly' => 'readonly', 'placeholder' => 'Will be auto-generated')) !!}
               @else
-                {!! Form::text('call_number', null, array('id' => 'call-number', 'class' => 'form-control form-control-sm')) !!}
+                {!! Form::text('callNumber', null, array('id' => 'call-number', 'class' => 'form-control form-control-sm')) !!}
               @endif
-              @if ($errors->has('call_number'))
-                <div class="form-control-label"><small>{!! $errors->first('call_number') !!}</small></div>
+              @if ($errors->has('callNumber'))
+                <div class="form-control-label"><small>{!! $errors->first('callNumber') !!}</small></div>
               @endif
             @else
-              {!! Form::text('call_number', null, array('id' => 'call-number', 'class' => 'form-control form-control-sm', 'readonly' => 'readonly')) !!}
+              {!! Form::text('callNumber', null, array('id' => 'call-number', 'class' => 'form-control form-control-sm', 'readonly' => 'readonly')) !!}
             @endif
           </div>
         </div>
@@ -34,40 +34,40 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group @if ($errors->has('container_note')) has-danger @endif">
+        <div class="form-group @if ($errors->has('containerNote')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('container_note', 'Container Note', array('class' => 'form-control-label')) !!}
+            {!! Form::label('containerNote', 'Container Note', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::textarea('container_note', null, array('class' => 'form-control form-control-sm', 'rows' => 3)) !!}
-            @if ($errors->has('container_note'))
-              <div class="form-control-label"><small>{!! $errors->first('container_note') !!}</small></div>
+            {!! Form::textarea('containerNote', null, array('class' => 'form-control form-control-sm', 'rows' => 3)) !!}
+            @if ($errors->has('containerNote'))
+              <div class="form-control-label"><small>{!! $errors->first('containerNote') !!}</small></div>
             @endif
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="form-group @if ($errors->has('collection_id')) has-danger @endif">
+        <div class="form-group @if ($errors->has('collectionId')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('collection_id', 'Collection', array('class' => 'form-control-label')) !!}
+            {!! Form::label('collectionId', 'Collection', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::select('collection_id', $collections, $item->collection_id, array('id' => 'collection-id', 'class' => 'form-control form-control-sm')) !!}
-            @if ($errors->has('collection_id'))
-              <div class="form-control-label"><small>{!! $errors->first('collection_id') !!}</small></div>
+            {!! Form::select('collectionId', $collections, $item->collectionId, array('id' => 'collection-id', 'class' => 'form-control form-control-sm')) !!}
+            @if ($errors->has('collectionId'))
+              <div class="form-control-label"><small>{!! $errors->first('collectionId') !!}</small></div>
             @endif
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="form-group @if ($errors->has('accession_number')) has-danger @endif">
+        <div class="form-group @if ($errors->has('accessionNumber')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('accession_number', 'Accession Number', array('class' => 'form-control-label')) !!}
+            {!! Form::label('accessionNumber', 'Accession Number', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('accession_number', null, array('class' => 'form-control form-control-sm')) !!}
-            @if ($errors->has('accession_number'))
-              <div class="form-control-label"><small>{!! $errors->first('accession_number') !!}</small></div>
+            {!! Form::text('accessionNumber', null, array('class' => 'form-control form-control-sm')) !!}
+            @if ($errors->has('accessionNumber'))
+              <div class="form-control-label"><small>{!! $errors->first('accessionNumber') !!}</small></div>
             @endif
           </div>
         </div>
@@ -86,66 +86,66 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group @if ($errors->has('format_id')) has-danger @endif">
+        <div class="form-group @if ($errors->has('formatId')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('format_id', 'Format', array('class' => 'form-control-label')) !!}
+            {!! Form::label('formatId', 'Format', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::select('format_id', $formats, $item->format_id, array('id' => 'format-id', 'class' => 'form-control form-control-sm')) !!}
-            @if ($errors->has('format_id'))
-              <div class="form-control-label"><small>{!! $errors->first('format_id') !!}</small></div>
+            {!! Form::select('formatId', $formats, $item->formatId, array('id' => 'format-id', 'class' => 'form-control form-control-sm')) !!}
+            @if ($errors->has('formatId'))
+              <div class="form-control-label"><small>{!! $errors->first('formatId') !!}</small></div>
             @endif
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="form-group @if ($errors->has('reel_tape_number')) has-danger @endif">
+        <div class="form-group @if ($errors->has('reelTapeNumber')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('reel_tape_number', 'Reel/Tape Number', array('class' => 'form-control-label')) !!}
+            {!! Form::label('reelTapeNumber', 'Reel/Tape Number', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('reel_tape_number', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. 1/2')) !!}
-            @if ($errors->has('reel_tape_number'))
-              <div class="form-control-label"><small>{!! $errors->first('reel_tape_number') !!}</small></div>
+            {!! Form::text('reelTapeNumber', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. 1/2')) !!}
+            @if ($errors->has('reelTapeNumber'))
+              <div class="form-control-label"><small>{!! $errors->first('reelTapeNumber') !!}</small></div>
             @endif
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="form-group @if ($errors->has('recording_location')) has-danger @endif">
+        <div class="form-group @if ($errors->has('recordingLocation')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('recording_location', 'Recording Location', array('class' => 'form-control-label')) !!}
+            {!! Form::label('recordingLocation', 'Recording Location', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('recording_location', null, array('id' => 'recording-location', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. New Orleans, LA')) !!}
-            @if ($errors->has('recording_location'))
-              <div class="form-control-label"><small>{!! $errors->first('recording_location') !!}</small></div>
+            {!! Form::text('recordingLocation', null, array('id' => 'recording-location', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. New Orleans, LA')) !!}
+            @if ($errors->has('recordingLocation'))
+              <div class="form-control-label"><small>{!! $errors->first('recordingLocation') !!}</small></div>
             @endif
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="form-group @if ($errors->has('physical_location')) has-danger @endif">
+        <div class="form-group @if ($errors->has('physicalLocation')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('physical_location', 'Physical Location', array('class' => 'form-control-label')) !!}
+            {!! Form::label('physicalLocation', 'Physical Location', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('physical_location', null, array('id' => 'physical-location', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. 26K.b31')) !!}
-            @if ($errors->has('physical_location'))
-              <div class="form-control-label"><small>{!! $errors->first('physical_location') !!}</small></div>
+            {!! Form::text('physicalLocation', null, array('id' => 'physical-location', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. 26K.b31')) !!}
+            @if ($errors->has('physicalLocation'))
+              <div class="form-control-label"><small>{!! $errors->first('physicalLocation') !!}</small></div>
             @endif
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="form-group @if ($errors->has('access_restrictions')) has-danger @endif">
+        <div class="form-group @if ($errors->has('accessRestrictions')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('access_restrictions', 'Access Restrictions', array('class' => 'form-control-label')) !!}
+            {!! Form::label('accessRestrictions', 'Access Restrictions', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('access_restrictions', null, array('id' => 'access-restrictions', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. Campus')) !!}
-            @if ($errors->has('access_restrictions'))
-              <div class="form-control-label"><small>{!! $errors->first('access_restrictions') !!}</small></div>
+            {!! Form::text('accessRestrictions', null, array('id' => 'access-restrictions', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. Campus')) !!}
+            @if ($errors->has('accessRestrictions'))
+              <div class="form-control-label"><small>{!! $errors->first('accessRestrictions') !!}</small></div>
             @endif
           </div>
         </div>
@@ -164,30 +164,30 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group @if ($errors->has('item_year')) has-danger @endif">
+        <div class="form-group @if ($errors->has('itemYear')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('item_year', 'Item Year', array('class' => 'form-control-label')) !!}
+            {!! Form::label('itemYear', 'Item Year', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('item_year', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. Item year or range')) !!}
-            @if ($errors->has('item_year'))
-              <div class="form-control-label"><small>{!! $errors->first('item_year') !!}</small></div>
+            {!! Form::text('itemYear', null, array('class' => 'form-control form-control-sm', 'placeholder' => 'e.g. Item year or range')) !!}
+            @if ($errors->has('itemYear'))
+              <div class="form-control-label"><small>{!! $errors->first('itemYear') !!}</small></div>
             @endif
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="form-group @if ($errors->has('item_date')) has-danger @endif">
+        <div class="form-group @if ($errors->has('itemDate')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('item_date', 'Item Date', array('class' => 'form-control-label')) !!}
+            {!! Form::label('itemDate', 'Item Date', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             <div class="input-group date">
-              {!! Form::text('item_date', null, array('class' => 'form-control form-control-sm')) !!}
+              {!! Form::text('itemDate', null, array('class' => 'form-control form-control-sm')) !!}
               <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
             </div>
-            @if ($errors->has('item_date'))
-              <div class="form-control-label"><small>{!! $errors->first('item_date') !!}</small></div>
+            @if ($errors->has('itemDate'))
+              <div class="form-control-label"><small>{!! $errors->first('itemDate') !!}</small></div>
             @endif
           </div>
         </div>
@@ -206,17 +206,17 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group @if ($errors->has('entry_date')) has-danger @endif">
+        <div class="form-group @if ($errors->has('entryDate')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('entry_date', 'Entry Date', array('class' => 'form-control-label')) !!}
+            {!! Form::label('entryDate', 'Entry Date', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             <div class="input-group date">
-              {!! Form::text('entry_date', null, array('class' => 'form-control form-control-sm')) !!}
+              {!! Form::text('entryDate', null, array('class' => 'form-control form-control-sm')) !!}
               <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
             </div>
-            @if ($errors->has('entry_date'))
-              <div class="form-control-label"><small>{!! $errors->first('entry_date') !!}</small></div>
+            @if ($errors->has('entryDate'))
+              <div class="form-control-label"><small>{!! $errors->first('entryDate') !!}</small></div>
             @endif
           </div>
         </div>

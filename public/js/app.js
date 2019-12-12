@@ -520,8 +520,10 @@ jitterbug = {
           jitterbug.displayAlert('success',
               'The prefixes were successfully attached.');
           $('#data-panel').load(url + ' #data-panel', function() {
-            // re-enable prefix actions
-            jitterbug.initPrefixActions();
+            // re-enable prefix attachment form
+            jitterbug.handlePrefixAttachmentForm();
+            jitterbug.initChosenMultiSelect('.chosen-select',
+                {width: '500px'}, {width: '500px'});
           });
         },
         error: function (jqXHR, textStatus, error) {

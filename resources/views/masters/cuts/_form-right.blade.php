@@ -13,27 +13,27 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group @if ($errors->has('performer_composer')) has-danger @endif">
+        <div class="form-group @if ($errors->has('performerComposer')) has-danger @endif">
           <div class="col-xs-4 detail-label">
-            {!! Form::label('performer_composer', 'Performer Composer', array('class' => 'form-control-label')) !!}
+            {!! Form::label('performerComposer', 'Performer Composer', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('performer_composer', null, array('class' => 'form-control form-control-sm')) !!}
-            @if ($errors->has('performer_composer'))
-              <div class="form-control-label"><small>{!! $errors->first('performer_composer') !!}</small></div>
+            {!! Form::text('performerComposer', null, array('class' => 'form-control form-control-sm')) !!}
+            @if ($errors->has('performerComposer'))
+              <div class="form-control-label"><small>{!! $errors->first('performerComposer') !!}</small></div>
             @endif
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="form-group @if ($errors->has('pm_start_time')) has-danger @endif">
+        <div class="form-group @if ($errors->has('pmStartTime')) has-danger @endif">
           <div class="col-xs-4 detail-label">
-            {!! Form::label('pm_start_time', 'PM Start Time', array('class' => 'form-control-label')) !!}
+            {!! Form::label('pmStartTime', 'PM Start Time', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('pm_start_time', null, array('class' => 'form-control form-control-sm')) !!}
-            @if ($errors->has('pm_start_time'))
-              <div class="form-control-label"><small>{!! $errors->first('pm_start_time') !!}</small></div>
+            {!! Form::text('pmStartTime', null, array('class' => 'form-control form-control-sm')) !!}
+            @if ($errors->has('pmStartTime'))
+              <div class="form-control-label"><small>{!! $errors->first('pmStartTime') !!}</small></div>
             @endif
           </div>
         </div>

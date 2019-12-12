@@ -26,26 +26,26 @@ class TransferRequest extends Request {
   {
     // Add rules for base transfer
     $rules = array();
-    $this->addRuleIfNotMixed($rules, 'preservation_master_id',
+    $this->addRuleIfNotMixed($rules, 'preservationMasterId',
       'required|exists:preservation_masters,id,deleted_at,NULL');
-    $this->addRuleIfNotMixed($rules, 'transfer_date', 'required|date_format:Y-m-d');
-    $this->addRuleIfNotMixed($rules, 'playback_machine_id', 'required');
-    $this->addRuleIfNotMixed($rules, 'transfer_note', 'max:1000');
-    $this->addRuleIfNotMixed($rules, 'condition_note', 'max:1000');
+    $this->addRuleIfNotMixed($rules, 'transferDate', 'required|date_format:Y-m-d');
+    $this->addRuleIfNotMixed($rules, 'playbackMachineId', 'required');
+    $this->addRuleIfNotMixed($rules, 'transferNote', 'max:1000');
+    $this->addRuleIfNotMixed($rules, 'conditionNote', 'max:1000');
 
     $subclassType = $this->input('subclassType');
     // Add rules for audio transfers
     if($subclassType === 'AudioTransfer') {
       $this->addRuleIfNotMixed($rules, 'subclass.stylus', 'max:255');
       $this->addRuleIfNotMixed($rules, 'subclass.cartridge', 'max:255');
-      $this->addRuleIfNotMixed($rules, 'subclass.first_sound', 'max:1000');
+      $this->addRuleIfNotMixed($rules, 'subclass.firstSound', 'max:1000');
     // Add rules for film transfers
     } else if ($subclassType === 'FilmTransfer') {
         // No film transfer rules at the moment
     // Add rules for video transfers
     } else if ($subclassType === 'VideoTransfer') {
-      $this->addRuleIfNotMixed($rules, 'subclass.time_base_corrector', 'max:255');
-      $this->addRuleIfNotMixed($rules, 'subclass.ad_converter', 'max:255');
+      $this->addRuleIfNotMixed($rules, 'subclass.timeBaseCorrector', 'max:255');
+      $this->addRuleIfNotMixed($rules, 'subclass.adConverter', 'max:255');
     }
     
     return $rules;
@@ -60,23 +60,23 @@ class TransferRequest extends Request {
   {
     return [
       // Messages for transfer fields
-      'preservation_master_id.required' => 'The preservation master number field is required.',
-      'preservation_master_id.exists' => 'The given preservation master does not exist.',
-      'playback_machine_id.required' => 'The playback machine field is required.',
-      'transfer_note.max' => 'The transfer note must be less than :max characters.',
-      'condition_note.max' => 'The condition note must be less than :max characters.',
+      'preservationMasterId.required' => 'The preservation master number field is required.',
+      'preservationMasterId.exists' => 'The given preservation master does not exist.',
+      'playbackMachineId.required' => 'The playback machine field is required.',
+      'transferNote.max' => 'The transfer note must be less than :max characters.',
+      'conditionNote.max' => 'The condition note must be less than :max characters.',
 
       // Messages for audio transfer fields
       'subclass.stylus.max' => 'The stylus field must be less than :max characters.',
       'subclass.cartridge.max' => 'The cartridge field must be less than :max characters.',
-      'subclass.first_sound.max' => 'The first sound field must be less than :max characters.',
+      'subclass.firstSound.max' => 'The first sound field must be less than :max characters.',
 
       // Messages for film transfer fields
       // Add fillm transfer messages here when necessary
 
       // Messages for video transfer fields
-      'subclass.time_base_corrector.max' => 'The time base corrector field must be less than :max characters.',
-      'subclass.ad_converter.max' => 'The A/D converter field must be less than :max characters.',
+      'subclass.timeBaseCorrector.max' => 'The time base corrector field must be less than :max characters.',
+      'subclass.adConverter.max' => 'The A/D converter field must be less than :max characters.',
     ];
   }
 
@@ -89,7 +89,7 @@ class TransferRequest extends Request {
 
     $validator->after(function($validator) {
       if ($this->typeMismatch()) {
-        $validator->errors()->add('preservation_master_id', 'The preservation master type must match the transfer type.');
+        $validator->errors()->add('preservationMasterId', 'The preservation master type must match the transfer type.');
       }
     });
 
@@ -98,9 +98,9 @@ class TransferRequest extends Request {
 
   private function typeMismatch()
   {
-    $inputType = $this->input('subclass_type');
+    $inputType = $this->input('subclassType');
     $type = substr($inputType, 0, strlen($inputType) - strlen('Transfer'));
-    $master = PreservationMaster::find($this->input('preservation_master_id'));
+    $master = PreservationMaster::find($this->input('preservationMasterId'));
     return $master !== null && $type !== $master->type;
   }
 

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class AudioTransfer extends Model {
+  use CamelCasing;
   use NullFieldPreserver;
   use RevisionableTrait;
   use SoftDeletes;
@@ -30,6 +31,6 @@ class AudioTransfer extends Model {
   );
 
   protected $fillable = array('stylus',
-    'cartridge', 'first_sound');
+    'cartridge', 'firstSound');
 
 }

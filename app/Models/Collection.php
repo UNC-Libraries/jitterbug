@@ -4,12 +4,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Collection extends Model {
+  use CamelCasing;
   use NullFieldPreserver;
   use SoftDeletes;
 
   protected $dates = array('deleted_at');
 
-  protected $fillable = array('name', 'collection_type_id', 'archival_identifier');
+  protected $fillable = array('name', 'collectionTypeId', 'archivalIdentifier');
 
   public function audioVisualItems()
   {

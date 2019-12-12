@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class FilmTransfer extends Model {
+  use CamelCasing;
   use NullFieldPreserver;
   use RevisionableTrait;
   use SoftDeletes;

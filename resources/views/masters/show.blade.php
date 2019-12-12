@@ -31,47 +31,47 @@
         words they were not linked to an AudioVisualItem, so here we will
         check to make sure a call number is defined before we display it.
        --}}
-      @if ($master->call_number)
+      @if ($master->callNumber)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
           Call Number
         </div>
         <div class="col-xs-7 detail-value">
           @if ($master->item)
-            <a href="{{route('items.show', $master->item->id)}}" class="detail-link">{{$master->call_number}}</a>
+            <a href="{{route('items.show', $master->item->id)}}" class="detail-link">{{$master->callNumber}}</a>
           @else
-            <span class="text-danger" title="Missing audio visual item">{{$master->call_number}}&nbsp;<i class="fa fa-question" aria-hidden="true"></i></span>
+            <span class="text-danger" title="Missing audio visual item">{{$master->callNumber}}&nbsp;<i class="fa fa-question" aria-hidden="true"></i></span>
           @endif
         </div>
       </div>
       @endif
-      @if ($master->file_name)
+      @if ($master->fileName)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
           File Name
         </div>
         <div class="col-xs-7 detail-value">
-          {{$master->file_name}}
+          {{$master->fileName}}
         </div>
       </div>
       @endif
-      @if ($master->file_location)
+      @if ($master->fileLocation)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
           File Location
         </div>
         <div class="col-xs-7 detail-value">
-          {{$master->file_location}}
+          {{$master->fileLocation}}
         </div>
       </div>
       @endif
-      @if ($master->file_size_in_bytes)
+      @if ($master->fileSizeInBytes)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
           File Size (bytes)
         </div>
         <div class="col-xs-7 detail-value">
-          {{$master->file_size_in_bytes}}
+          {{$master->fileSizeInBytes}}
         </div>
       </div>
       @endif
@@ -95,13 +95,13 @@
         </div>
       </div>
       @endif
-      @if ($master->access_file_location)
+      @if ($master->accessFileLocation)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
           Access File Location
         </div>
         <div class="col-xs-7 detail-value">
-          {{$master->access_file_location}}
+          {{$master->accessFileLocation}}
         </div>
       </div>
       @endif
@@ -137,23 +137,23 @@
       @endif
     </div>
     <div class="col-xs-6">
-      @if ($master->file_format)
+      @if ($master->fileFormat)
       <div class="row">
         <div class="col-xs-4 detail-label">
           File Format
         </div>
         <div class="col-xs-8 detail-value">
-          {{$master->file_format}}
+          {{$master->fileFormat}}
         </div>
       </div>
       @endif
-      @if ($master->file_codec)
+      @if ($master->fileCodec)
       <div class="row">
         <div class="col-xs-4 detail-label">
           File Codec
         </div>
         <div class="col-xs-8 detail-value">
-          {{$master->file_codec}}
+          {{$master->fileCodec}}
         </div>
       </div>
       @endif
@@ -192,57 +192,57 @@
         </div>
       </div>
       @endif
-      @if ($master->subclass->test_tones)
+      @if ($master->subclass->testTones)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Test Tones
         </div>
         <div class="col-xs-8 detail-value">
-          {{$master->subclass->test_tones}}
+          {{$master->subclass->testTones}}
         </div>
       </div>
       @endif
       @endif
       @if (get_class($master->subclass) === 'Jitterbug\Models\FilmMaster')
-      @if ($master->subclass->frame_size)
+      @if ($master->subclass->frameSize)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Frame Size
         </div>
         <div class="col-xs-8 detail-value">
-          {{$master->subclass->frame_size}}
+          {{$master->subclass->frameSize}}
         </div>
       </div>
       @endif
-      @if ($master->subclass->aspect_ratio)
+      @if ($master->subclass->aspectRatio)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Aspect Ratio
         </div>
         <div class="col-xs-8 detail-value">
-          {{$master->subclass->aspect_ratio}}
+          {{$master->subclass->aspectRatio}}
         </div>
       </div>
       @endif
       @endif
       @if (get_class($master->subclass) === 'Jitterbug\Models\VideoMaster')
-      @if ($master->subclass->frame_size)
+      @if ($master->subclass->frameSize)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Frame Size
         </div>
         <div class="col-xs-8 detail-value">
-          {{$master->subclass->frame_size}}
+          {{$master->subclass->frameSize}}
         </div>
       </div>
       @endif
-      @if ($master->subclass->aspect_ratio)
+      @if ($master->subclass->aspectRatio)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Aspect Ratio
         </div>
         <div class="col-xs-8 detail-value">
-          {{$master->subclass->aspect_ratio}}
+          {{$master->subclass->aspectRatio}}
         </div>
       </div>
       @endif

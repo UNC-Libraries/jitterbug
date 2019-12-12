@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Cut extends Model {
+  use CamelCasing;
   use NullFieldPreserver;
   use RevisionableTrait;
   use SoftDeletes;
@@ -28,9 +29,9 @@ class Cut extends Model {
     'pm_start_time' => 'PM start time',
   );
 
-  protected $fillable = array('call_number',
-    'preservation_master_id', 'transfer_id', 'side', 'cut_number',
-    'side', 'title', 'performer_composer', 'pm_start_time');
+  protected $fillable = array('callNumber',
+    'preservationMasterId', 'transferId', 'side', 'cutNumber',
+    'side', 'title', 'performerComposer', 'pmStartTime');
 
   protected $revisionCreationsEnabled = true;
 
@@ -74,8 +75,8 @@ class Cut extends Model {
 
   public function formattedHistory($history)
   {
-    $user = $history->userResponsible()->first_name
-      . ' ' . $history->userResponsible()->last_name;
+    $user = $history->userResponsible()->firstName 
+      . ' ' . $history->userResponsible()->lastName;
     $date =  date('n/j/Y', strtotime($history->created_at));
     return $date . ' by ' . $user;
   }

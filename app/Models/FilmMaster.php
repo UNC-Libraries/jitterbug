@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class FilmMaster extends Model {
+  use CamelCasing;
   use NullFieldPreserver;
   use RevisionableTrait;
   use SoftDeletes;
@@ -24,7 +25,7 @@ class FilmMaster extends Model {
     'aspect_ratio' => 'aspect ratio',
   );
 
-  protected $fillable = array('film_frame_size', 'film_aspect_ratio');
+  protected $fillable = array('filmFrameSize', 'filmAspectRatio');
 
   public function superclass()
   {
@@ -33,22 +34,22 @@ class FilmMaster extends Model {
   
   public function getFilmFrameSizeAttribute($value)
   {
-    return $value===null ? $this->frame_size : $value;
+    return $value===null ? $this->frameSize : $value;
   }
 
   public function setFilmFrameSizeAttribute($value)
   {
-    $this->frame_size = $value;
+    $this->frameSize = $value;
   }
 
   public function getFilmAspectRatioAttribute($value)
   {
-    return $value===null ? $this->aspect_ratio : $value;
+    return $value===null ? $this->aspectRatio : $value;
   }
 
   public function setFilmAspectRatioAttribute($value)
   {
-    $this->aspect_ratio = $value;
+    $this->aspectRatio = $value;
   }
 
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class AudioVisualItem extends Model {
+  use CamelCasing;
   use NullFieldPreserver;
   use RevisionableTrait;
   use CompositeHistory;
@@ -53,16 +54,16 @@ class AudioVisualItem extends Model {
     'oclc' => 'OCLC Id',
   );
 
-  protected $fillable = array('call_number', 'title',
-    'recording_location', 'physical_location', 'access_restrictions',
-    'item_year', 'item_date', 'collection_id', 'accession_number',
-    'legacy', 'format_id', 'reel_tape_number', 'container_note',
-    'condition_note', 'oclc', 'entry_date', 'speed');
+  protected $fillable = array('callNumber', 'title',
+    'recordingLocation', 'physicalLocation', 'accessRestrictions',
+    'itemYear', 'itemDate', 'collectionId', 'accessionNumber', 
+    'legacy', 'formatId', 'reelTapeNumber', 'containerNote',
+    'conditionNote', 'oclc', 'entryDate', 'speed');
 
   public function __construct($attributes = [])
   {
-    $this->subclass_type = 'AudioItem';
-    $this->entry_date = (new \DateTime())->format('Y-m-d');
+    $this->subclassType = 'AudioItem';
+    $this->entryDate = (new \DateTime())->format('Y-m-d');
     parent::__construct($attributes);
   }
 
@@ -109,7 +110,7 @@ class AudioVisualItem extends Model {
 
   public function getTypeAttribute()
   {
-    $fullType = $this->subclass_type;
+    $fullType = $this->subclassType;
     $type = substr($fullType, 0, strlen($fullType) - strlen("Item"));
     return $type;
   }

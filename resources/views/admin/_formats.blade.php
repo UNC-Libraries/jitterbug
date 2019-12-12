@@ -42,7 +42,7 @@
       <form class="form-inline">
         <input type="text" name="name" class="form-control form-control-sm" maxlength="255" placeholder="Name" autocomplete="off" style="width: 200px;">
         <input type="text" name="prefix" class="form-control form-control-sm" maxlength="255" placeholder="Prefix" autocomplete="off" style="width: 110px;">
-        <input type="text" name="legacy_prefix" class="form-control form-control-sm" maxlength="255" placeholder="Legacy Prefix" autocomplete="off" style="width: 110px;">
+        <input type="text" name="legacyPrefix" class="form-control form-control-sm" maxlength="255" placeholder="Legacy Prefix" autocomplete="off" style="width: 110px;">
         <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
         <button class="btn btn-sm btn-secondary cancel-new-record"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
       </form>
@@ -51,6 +51,22 @@
     <div id="edit-name-form" class="hidden">
       <form class="form-inline">
         <input type="text" name="name" class="form-control form-control-sm" maxlength="255" placeholder="Name" autocomplete="off" style="width: 200px;">
+        <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
+        <button class="btn btn-sm btn-secondary cancel-edit"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
+      </form>
+    </div>
+
+    <div id="edit-prefix-form" class="hidden">
+      <form class="form-inline">
+        <input type="text" name="prefix" class="form-control form-control-sm" maxlength="255" placeholder="Prefix" autocomplete="off" style="width: 110px;">
+        <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
+        <button class="btn btn-sm btn-secondary cancel-edit"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
+      </form>
+    </div>
+
+    <div id="edit-legacyPrefix-form" class="hidden">
+      <form class="form-inline">
+        <input type="text" name="legacyPrefix" class="form-control form-control-sm" maxlength="255" placeholder="Legacy Prefix" autocomplete="off" style="width: 110px;">
         <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
         <button class="btn btn-sm btn-secondary cancel-edit"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
       </form>

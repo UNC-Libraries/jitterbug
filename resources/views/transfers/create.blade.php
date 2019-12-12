@@ -20,28 +20,28 @@
       <div class="col-xs-12 preform">
         <span id="transfer-type-controls">
           <span style="margin-right: .75rem">
-            {!! Form::label('subclass_type', 'Transfer Type: ', array('class' => 'form-control-label')) !!}
+            {!! Form::label('subclassType', 'Transfer Type: ', array('class' => 'form-control-label')) !!}
           </span>
           @if ($linked)
-            {!! Form::hidden('subclass_type') !!}
+            {!! Form::hidden('subclassType') !!}
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'AudioTransfer', null, array('disabled' => 'disabled')) !!} Audio
+              {!! Form::radio('subclassType', 'AudioTransfer', null, array('disabled' => 'disabled')) !!} Audio
             </label>
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'FilmTransfer', null, array('disabled' => 'disabled')) !!} Film
+              {!! Form::radio('subclassType', 'FilmTransfer', null, array('disabled' => 'disabled')) !!} Film
             </label>
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'VideoTransfer', null, array('disabled' => 'disabled')) !!} Video
+              {!! Form::radio('subclassType', 'VideoTransfer', null, array('disabled' => 'disabled')) !!} Video
             </label>
           @else
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'AudioTransfer') !!} Audio
+              {!! Form::radio('subclassType', 'AudioTransfer') !!} Audio
             </label>
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'FilmTransfer') !!} Film
+              {!! Form::radio('subclassType', 'FilmTransfer') !!} Film
             </label>
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'VideoTransfer') !!} Video
+              {!! Form::radio('subclassType', 'VideoTransfer') !!} Video
             </label>
           @endif
         </span>
@@ -67,13 +67,13 @@
       </div>
       <div class="col-xs-6">
         {{-- Begin subclass fields --}}
-        <div id="audio-form" @if (($linked && $transfer->subclass_type !== 'AudioTransfer') || old('subclass_type') !== null && old('subclass_type') !== 'AudioTransfer') style="display: none" @endif>
+        <div id="audio-form" @if (($linked && $transfer->subclassType !== 'AudioTransfer') || old('subclassType') !== null && old('subclassType') !== 'AudioTransfer') style="display: none" @endif>
           @include('transfers._form-audio')
         </div>
-        <div id="film-form" @if ($transfer->subclass_type !== 'FilmTransfer' && old('subclass_type') !== 'FilmTransfer') style="display: none" @endif>
+        <div id="film-form" @if ($transfer->subclassType !== 'FilmTransfer' && old('subclassType') !== 'FilmTransfer') style="display: none" @endif>
           @include('transfers._form-film')
         </div>
-        <div id="video-form" @if ($transfer->subclass_type !== 'VideoTransfer' && old('subclass_type') !== 'VideoTransfer') style="display: none" @endif>
+        <div id="video-form" @if ($transfer->subclassType !== 'VideoTransfer' && old('subclassType') !== 'VideoTransfer') style="display: none" @endif>
           @include('transfers._form-video')
         </div>
         {{-- End subclass fields --}}

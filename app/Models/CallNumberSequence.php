@@ -5,13 +5,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class CallNumberSequence extends Model {
+  use CamelCasing;
 
   const ALWAYS_USE_NEW_STYLE = array('F', 'VM', 'VT');
 
   public static function next($collectionId, $formatId)
   {
     $prefix = Prefix::findPrefixLabel($formatId, $collectionId);
-    $archivalIdentifier = Collection::find($collectionId)->archival_identifier;
+    $archivalIdentifier = Collection::find($collectionId)->archivalIdentifier;
 
     $sequence = NewCallNumberSequence::where('prefix', '=', $prefix)->
                   where('collection_id', '=', $collectionId)->first();
@@ -19,8 +20,8 @@ class CallNumberSequence extends Model {
       if (in_array($prefix, self::ALWAYS_USE_NEW_STYLE)) {
         $sequence = new NewCallNumberSequence();
         $sequence->prefix = $prefix;
-        $sequence->collection_id = $collectionId;
-        $sequence->archival_identifier = $archivalIdentifier;
+        $sequence->collectionId = $collectionId;
+        $sequence->archivalIdentifier = $archivalIdentifier;
         $sequence->next = 1;
         $sequence->save();
       } else {

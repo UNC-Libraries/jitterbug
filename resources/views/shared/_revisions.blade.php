@@ -10,9 +10,9 @@
       <ul>
         @foreach ($revisionHistory as $history)
           @if($history->field === 'created_at' && !$history->old_value)
-            <li>{{revisionTimestamp($history->created_at)}}: <strong><em>{{$history->userResponsible()->first_name}} {{$history->userResponsible()->last_name}}</em></strong> created this record</li>
+            <li>{{revisionTimestamp($history->created_at)}}: <strong><em>{{$history->userResponsible()->firstName}} {{$history->userResponsible()->lastName}}</em></strong> created this record</li>
           @else
-            <li>{{revisionTimestamp($history->created_at)}}: <strong><em>{{$history->userResponsible()->first_name}} {{$history->userResponsible()->last_name}}</em></strong> changed <strong><em>{{ $history->fieldName() }}</em></strong> from <strong><em>{{ $history->oldValue() }}</em></strong> to <strong><em>{{ $history->newValue() }}</em></strong></li>
+            <li>{{revisionTimestamp($history->created_at)}}: <strong><em>{{$history->userResponsible()->firstName}} {{$history->userResponsible()->lastName}}</em></strong> changed <strong><em>{{ $history->fieldName() }}</em></strong> from <strong><em>{{ $history->oldValue() }}</em></strong> to <strong><em>{{ $history->newValue() }}</em></strong></li>
           @endif
         @endforeach
       </ul>

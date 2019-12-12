@@ -1,26 +1,26 @@
       {{-- Cut fields (left column) --}}
       <div class="row">
-        <div class="form-group @if ($errors->has('preservation_master_id')) has-danger @endif">
+        <div class="form-group @if ($errors->has('preservationMasterId')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('preservation_master_id', 'PM #', array('class' => 'form-control-label')) !!}
+            {!! Form::label('preservationMasterId', 'PM #', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('preservation_master_id', null, array('id' => 'preservation-master-id', 'class' => 'form-control form-control-sm', 'readonly' => 'readonly')) !!}
-            @if ($errors->has('preservation_master_id'))
-              <div class="form-control-label"><small>{!! $errors->first('preservation_master_id') !!}</small></div>
+            {!! Form::text('preservationMasterId', null, array('id' => 'preservation-master-id', 'class' => 'form-control form-control-sm', 'readonly' => 'readonly')) !!}
+            @if ($errors->has('preservationMasterId'))
+              <div class="form-control-label"><small>{!! $errors->first('preservationMasterId') !!}</small></div>
             @endif
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="form-group @if ($errors->has('call_number')) has-danger @endif">
+        <div class="form-group @if ($errors->has('callNumber')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('call_number', 'Call Number', array('class' => 'form-control-label')) !!}
+            {!! Form::label('callNumber', 'Call Number', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('call_number', null, array('id' => 'call-number', 'class' => 'form-control form-control-sm', 'readonly' => 'readonly', 'placeholder' => 'Will be auto-populated')) !!}
-            @if ($errors->has('call_number'))
-              <div class="form-control-label"><small>{!! $errors->first('call_number') !!}</small></div>
+            {!! Form::text('callNumber', null, array('id' => 'call-number', 'class' => 'form-control form-control-sm', 'readonly' => 'readonly', 'placeholder' => 'Will be auto-populated')) !!}
+            @if ($errors->has('callNumber'))
+              <div class="form-control-label"><small>{!! $errors->first('callNumber') !!}</small></div>
             @endif
           </div>
         </div>
@@ -39,14 +39,14 @@
         </div>
       </div>
       <div class="row">
-        <div class="form-group @if ($errors->has('cut_number')) has-danger @endif">
+        <div class="form-group @if ($errors->has('cutNumber')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('cut_number', 'Cut Number', array('class' => 'form-control-label')) !!}
+            {!! Form::label('cutNumber', 'Cut Number', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('cut_number', null, array('class' => 'form-control form-control-sm')) !!}
-            @if ($errors->has('cut_number'))
-              <div class="form-control-label"><small>{!! $errors->first('cut_number') !!}</small></div>
+            {!! Form::text('cutNumber', null, array('class' => 'form-control form-control-sm')) !!}
+            @if ($errors->has('cutNumber'))
+              <div class="form-control-label"><small>{!! $errors->first('cutNumber') !!}</small></div>
             @endif
           </div>
         </div>

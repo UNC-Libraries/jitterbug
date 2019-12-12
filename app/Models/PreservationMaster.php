@@ -9,6 +9,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
 use Jitterbug\Util\DurationFormat;
 
 class PreservationMaster extends Model {
+  use CamelCasing;
   use NullFieldPreserver;
   use RevisionableTrait;
   use CompositeHistory;
@@ -47,16 +48,16 @@ class PreservationMaster extends Model {
     'access_file_location' => 'access file location',
   );
 
-  protected $fillable = array('call_number', 'checksum',
-    'project_id', 'reproduction_machine_id', 'department_id',
-    'duration', 'file_name', 'file_location',
-    'file_size_in_bytes', 'audio_file_format', 'audio_file_codec',
-    'film_file_format', 'film_file_codec', 'video_file_format',
-    'video_file_codec', 'access_file_location');
+  protected $fillable = array('callNumber', 'checksum',
+    'projectId', 'reproductionMachineId', 'departmentId', 
+    'duration', 'fileName', 'fileLocation', 
+    'fileSizeInBytes', 'audioFileFormat', 'audioFileCodec',
+    'filmFileFormat', 'filmFileCodec', 'videoFileFormat',
+    'videoFileCodec', 'accessFileLocation');
 
   public function __construct($attributes = [])
   {
-    $this->subclass_type = 'AudioMaster';
+    $this->subclassType = 'AudioMaster';
     parent::__construct($attributes);
   }
 
@@ -107,7 +108,7 @@ class PreservationMaster extends Model {
   
   public function getTypeAttribute()
   {
-    $fullType = $this->subclass_type;
+    $fullType = $this->subclassType;
     $type = substr($fullType, 0, strlen($fullType) - strlen("Master"));
     return $type;
   }
@@ -129,43 +130,43 @@ class PreservationMaster extends Model {
 
   public function getAudioFileFormatAttribute($value)
   {
-    if ($this->subclass_type === 'AudioMaster') {
-      return $value===null ? $this->file_format : $value;
+    if ($this->subclassType === 'AudioMaster') {
+      return $value===null ? $this->fileFormat : $value;
     }
   }
 
   public function setAudioFileFormatAttribute($value)
   {
-    if ($this->subclass_type === 'AudioMaster') {
-      $this->file_format = $value;
+    if ($this->subclassType === 'AudioMaster') {
+      $this->fileFormat = $value;
     }
   }
 
   public function getFilmFileFormatAttribute($value)
   {
-    if ($this->subclass_type === 'FilmMaster') {
-      return $value===null ? $this->file_format : $value;
+    if ($this->subclassType === 'FilmMaster') {
+      return $value===null ? $this->fileFormat : $value;
     }
   }
 
   public function setFilmFileFormatAttribute($value)
   {
-    if ($this->subclass_type === 'FilmMaster') {
-      $this->file_format = $value;
+    if ($this->subclassType === 'FilmMaster') {
+      $this->fileFormat = $value;
     }
   }
 
   public function getVideoFileFormatAttribute($value)
   {
-    if ($this->subclass_type === 'VideoMaster') {
-      return $value===null ? $this->file_format : $value;
+    if ($this->subclassType === 'VideoMaster') {
+      return $value===null ? $this->fileFormat : $value;
     }
   }
 
   public function setVideoFileFormatAttribute($value)
   {
-    if ($this->subclass_type === 'VideoMaster') {
-      $this->file_format = $value;
+    if ($this->subclassType === 'VideoMaster') {
+      $this->fileFormat = $value;
     }
   }
 
@@ -173,59 +174,59 @@ class PreservationMaster extends Model {
 
   public function getAudioFileCodecAttribute($value)
   {
-    if ($this->subclass_type === 'AudioMaster') {
-      return $value===null ? $this->file_codec : $value;
+    if ($this->subclassType === 'AudioMaster') {
+      return $value===null ? $this->fileCodec : $value;
     }
   }
 
   public function setAudioFileCodecAttribute($value)
   {
-    if ($this->subclass_type === 'AudioMaster') {
-      $this->file_codec = $value;
+    if ($this->subclassType === 'AudioMaster') {
+      $this->fileCodec = $value;
     }
   }
 
   public function getFilmFileCodecAttribute($value)
   {
-    if ($this->subclass_type === 'FilmMaster') {
-      return $value===null ? $this->file_codec : $value;
+    if ($this->subclassType === 'FilmMaster') {
+      return $value===null ? $this->fileCodec : $value;
     }
   }
 
   public function setFilmFileCodecAttribute($value)
   {
-    if ($this->subclass_type === 'FilmMaster') {
-      $this->file_codec = $value;
+    if ($this->subclassType === 'FilmMaster') {
+      $this->fileCodec = $value;
     }
   }
 
   public function getVideoFileCodecAttribute($value)
   {
-    if ($this->subclass_type === 'VideoMaster') {
-      return $value===null ? $this->file_codec : $value;
+    if ($this->subclassType === 'VideoMaster') {
+      return $value===null ? $this->fileCodec : $value;
     }
   }
 
   public function setVideoFileCodecAttribute($value)
   {
-    if ($this->subclass_type === 'VideoMaster') {
-      $this->file_codec = $value;
+    if ($this->subclassType === 'VideoMaster') {
+      $this->fileCodec = $value;
     }
   }
 
   public function getDurationAttribute()
   {
-    return DurationFormat::toDuration($this->duration_in_seconds);
+    return DurationFormat::toDuration($this->durationInSeconds);
   }
 
   public function setDurationAttribute($value)
   {
-    $this->duration_in_seconds = DurationFormat::toSeconds($value);
+    $this->durationInSeconds = DurationFormat::toSeconds($value);
   }
   
   public function getDurationInSecondsDisplayAttribute()
   {
-    return DurationFormat::toDuration($this->duration_in_seconds);
+    return DurationFormat::toDuration($this->durationInSeconds);
   }
 }
 

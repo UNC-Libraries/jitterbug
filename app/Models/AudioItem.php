@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class AudioItem extends Model {
+  use CamelCasing;
   use NullFieldPreserver;
   use RevisionableTrait;
   use SoftDeletes;
@@ -31,9 +32,9 @@ class AudioItem extends Model {
     'content_description' => 'content description',
   );
 
-  protected $fillable = array('call_number', 'listening_copy',
-    'audio_mono_stereo', 'track_configuration', 'size', 'audio_base',
-    'audio_content_description');
+  protected $fillable = array('callNumber', 'listeningCopy',
+    'audioMonoStereo', 'trackConfiguration', 'size', 'audioBase',
+    'audioContentDescription');
 
   public function superclass()
   {
@@ -42,7 +43,7 @@ class AudioItem extends Model {
 
   public function getListeningCopyDisplayAttribute($value)
   {
-    $listeningCopy = ($value===null ? $this->listening_copy : $value);
+    $listeningCopy = ($value===null ? $this->listeningCopy : $value);
     if($listeningCopy) {
       return 'Yes';
     } else {
@@ -52,7 +53,7 @@ class AudioItem extends Model {
 
   public function getMonoStereoDisplayAttribute($value)
   {
-    $monoStereo = ($value===null ? $this->mono_stereo : $value);
+    $monoStereo = ($value===null ? $this->monoStereo : $value);
     if($monoStereo==='M') {
       $monoStereo = 'Mono';
     } else if($monoStereo==='S')  {
@@ -73,12 +74,12 @@ class AudioItem extends Model {
 
   public function getAudioMonoStereoAttribute($value)
   {
-    return $value===null ? $this->mono_stereo : $value;
+    return $value===null ? $this->monoStereo : $value;
   }
 
   public function setAudioMonoStereoAttribute($value)
   {
-    $this->mono_stereo = $value;
+    $this->monoStereo = $value;
   }
 
   public function getAudioBaseAttribute($value)
@@ -93,12 +94,12 @@ class AudioItem extends Model {
 
   public function getAudioContentDescriptionAttribute($value)
   {
-    return $value===null ? $this->content_description : $value;
+    return $value===null ? $this->contentDescription : $value;
   }
 
   public function setAudioContentDescriptionAttribute($value)
   {
-    $this->content_description = $value;
+    $this->contentDescription = $value;
   }
 
 }

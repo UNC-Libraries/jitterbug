@@ -16,10 +16,10 @@
           <tbody>
             @foreach ($records as $record)
             <tr>
-              <td><span class="editable" data-id="{{ $record->id }}" data-field="archival_identifier" role="button">{{ $record->archival_identifier }}</span></td>
+              <td><span class="editable" data-id="{{ $record->id }}" data-field="archivalIdentifier" role="button">{{ $record->archivalIdentifier }}</span></td>
               <td><span class="editable" data-id="{{ $record->id }}" data-field="name" role="button">{{ $record->name }}</span></td>
               <td>
-                <span class="editable" data-id="{{ $record->id }}" data-field="collection_type_id" role="button">
+                <span class="editable" data-id="{{ $record->id }}" data-field="collectionTypeId" role="button">
                   {{ \Jitterbug\Models\CollectionType::formattedName($record->collectionType) }}
                 </span>
               </td>
@@ -34,9 +34,9 @@
     {{--Need the surrounding div here to keep the form displaying inline--}}
     <div id="new-record-form" class="hidden">
       <form class="form-inline">
-        <input type="text" name="archival_identifier" class="form-control form-control-sm" maxlength="255" placeholder="Archival Identifier" autocomplete="off" style="width: 150px;">
+        <input type="text" name="archivalIdentifier" class="form-control form-control-sm" maxlength="255" placeholder="Archival Identifier" autocomplete="off" style="width: 150px;">
         <input type="text" name="name" class="form-control form-control-sm" maxlength="255" placeholder="Name" autocomplete="off" style="width: 250px;">
-        {!! Form::select('collection_type_id', $collectionTypes, null, array('class' => 'form-control form-control-sm')) !!}
+        {!! Form::select('collectionTypeId', $collectionTypes, null, array('class' => 'form-control form-control-sm')) !!}
         <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
         <button class="btn btn-sm btn-secondary cancel-new-record"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
       </form>
@@ -50,17 +50,17 @@
       </form>
     </div>
 
-    <div id="edit-collection_type_id-form" class="hidden">
+    <div id="edit-collectionTypeId-form" class="hidden">
       <form class="form-inline">
-        {!! Form::select('collection_type_id', $collectionTypes, null, array('class' => 'form-control form-control-sm', 'data-field' => 'collectionTypeId')) !!}
+        {!! Form::select('collectionTypeId', $collectionTypes, null, array('class' => 'form-control form-control-sm', 'data-field' => 'collectionTypeId')) !!}
         <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
         <button class="btn btn-sm btn-secondary cancel-edit"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
       </form>
     </div>
 
-    <div id="edit-archival_identifier-form" class="hidden">
+    <div id="edit-archivalIdentifier-form" class="hidden">
       <form class="form-inline">
-        <input type="text" name="archival_identifier" class="form-control form-control-sm" maxlength="255" placeholder="Archival Identifier" autocomplete="off" style="width: 250px;">
+        <input type="text" name="archivalIdentifier" class="form-control form-control-sm" maxlength="255" placeholder="Archival Identifier" autocomplete="off" style="width: 250px;">
         <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
         <button class="btn btn-sm btn-secondary cancel-edit"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
       </form>

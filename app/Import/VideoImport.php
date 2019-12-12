@@ -145,8 +145,8 @@ class VideoImport extends Import {
       DB::statement("set @transaction_id = '$transactionId';");
 
       $importTransaction = new ImportTransaction;
-      $importTransaction->transaction_id = $transactionId;
-      $importTransaction->import_type = 'video';
+      $importTransaction->transactionId = $transactionId;
+      $importTransaction->importType = 'video';
       $importTransaction->save();
 
       $playbackMachineCache = array();
@@ -208,49 +208,49 @@ class VideoImport extends Import {
 
         // Create the video master which we need for the PM.
         $videoMaster = new VideoMaster;
-        $videoMaster->aspect_ratio =
+        $videoMaster->aspectRatio = 
           isset($row['AspectRatio']) ? $row['AspectRatio'] : null;
         $videoMaster->save();
         $created++;
 
         // Create the PM
         $master = new PreservationMaster;
-        $master->call_number = $callNumber;
-        $master->file_name = $row['FileName'];
-        $master->file_size_in_bytes = isset($row['FileSize']) ? $row['FileSize'] : null;
+        $master->callNumber = $callNumber;
+        $master->fileName = $row['FileName'];
+        $master->fileSizeInBytes = isset($row['FileSize']) ? $row['FileSize'] : null;
         $master->checksum = 
           isset($row['PreservationChecksum']) ? $row['PreservationChecksum'] : null;
-        $master->duration_in_seconds =
+        $master->durationInSeconds = 
           isset($row['Duration']) ? DurationFormat::toSeconds($row['Duration']) : null;
-        $master->file_format = isset($row['Format']) ? $row['Format'] : null;
-        $master->file_codec = isset($row['Codec']) ? $row['Codec'] : null;
-        $master->department_id = $department->id;
-        $master->subclass_type = 'VideoMaster';
-        $master->subclass_id = $videoMaster->id;
+        $master->fileFormat = isset($row['Format']) ? $row['Format'] : null;
+        $master->fileCodec = isset($row['Codec']) ? $row['Codec'] : null;
+        $master->departmentId = $department->id;
+        $master->subclassType = 'VideoMaster';
+        $master->subclassId = $videoMaster->id;
         $master->save();
         array_push($masters, $master);
         $created++;
 
         // Create the video transfer
         $videoTransfer = new VideoTransfer;
-        $videoTransfer->time_base_corrector =
+        $videoTransfer->timeBaseCorrector = 
           isset($row['TimeBaseCorrector']) ? $row['TimeBaseCorrector'] : null;
-        $videoTransfer->ad_converter =
+        $videoTransfer->adConverter = 
           isset($row['A/Dconverter']) ? $row['A/Dconverter'] : null;
         $videoTransfer->save();
         $created++;
 
         // Create the transfer
         $transfer = new Transfer;
-        $transfer->call_number = $callNumber;
-        $transfer->preservation_master_id = $master->id;
-        $transfer->playback_machine_id =
+        $transfer->callNumber = $callNumber;
+        $transfer->preservationMasterId = $master->id;
+        $transfer->playbackMachineId = 
           ($playbackMachine !== null) ? $playbackMachine->id : null;
-        $transfer->vendor_id = ($vendor !== null) ? $vendor->id : null;
-        $transfer->transfer_date =
+        $transfer->vendorId = ($vendor !== null) ? $vendor->id : null;
+        $transfer->transferDate = 
           isset($row['Date']) ? date('Y-m-d', strtotime($row['Date'])) : null;
-        $transfer->subclass_type = 'VideoTransfer';
-        $transfer->subclass_id = $videoTransfer->id;
+        $transfer->subclassType = 'VideoTransfer';
+        $transfer->subclassId = $videoTransfer->id;
         $transfer->save();
         array_push($transfers, $transfer);
         $created++;
@@ -258,7 +258,7 @@ class VideoImport extends Import {
         // Update the video item
         $videoItem = VideoItem::where('call_number', $callNumber)->first();
         $videoItem->color = isset($row['Color']) ? $row['Color'] : null;
-        $videoItem->mono_stereo =
+        $videoItem->monoStereo = 
           isset($row['Sound']) ? $this->toMonoStereo($row['Sound']) : null;
         $videoItem->save();
         $updated++;
@@ -285,7 +285,7 @@ class VideoImport extends Import {
   private function isVideo($callNumber)
   {
     $item = AudioVisualItem::where('call_number', $callNumber)->first();
-    return $item !== null && $item->subclass_type === 'VideoItem';
+    return $item !== null && $item->subclassType === 'VideoItem';
   }
 
   private function validSound($sound)

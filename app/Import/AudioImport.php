@@ -161,8 +161,8 @@ class AudioImport extends Import {
       DB::statement("set @transaction_id = '$transactionId';");
 
       $importTransaction = new ImportTransaction;
-      $importTransaction->transaction_id = $transactionId;
-      $importTransaction->import_type = 'audio';
+      $importTransaction->transactionId = $transactionId;
+      $importTransaction->importType = 'audio';
       $importTransaction->save();
 
       $playbackMachineCache = array();
@@ -216,19 +216,19 @@ class AudioImport extends Import {
           $masterUpdated = false;
           $master = PreservationMaster::find($originalPm);
           if (!empty($row['OriginatorReference'])) {
-            $master->file_name = $row['OriginatorReference'];
+            $master->fileName = $row['OriginatorReference'];
             $masterUpdated = true;
           }
           if (!empty($row['FileSize'])) {
-            $master->file_size_in_bytes = $row['FileSize'];
+            $master->fileSizeInBytes = $row['FileSize'];
             $masterUpdated = true;
           }
           if (isset($duration)) {
-            $master->duration_in_seconds = $duration;
+            $master->durationInSeconds = $duration;
             $masterUpdated = true;
           }
           if (isset($department)) {
-            $master->department_id = $department->id;
+            $master->departmentId = $department->id;
             $masterUpdated = true;
           }
           if ($masterUpdated === true) {
@@ -242,14 +242,14 @@ class AudioImport extends Import {
             $relatedTransfers = $master->transfers;
             foreach ($relatedTransfers as $transfer) {
               if (isset($playbackMachine)) {
-                $transfer->playback_machine_id = $playbackMachine->id;
+                $transfer->playbackMachineId = $playbackMachine->id;
                 Log::debug('Its playback machine');
               }
               if (!empty($row['OriginationDate'])) {
-                $transfer->transfer_date = $row['OriginationDate'];
+                $transfer->transferDate = $row['OriginationDate'];
               }
               if (!empty($row['TransferNote'])) {
-                $transfer->transfer_note = $row['TransferNote'];
+                $transfer->transferNote = $row['TransferNote'];
               }
               $transfer->save();
               $transfers[] = $transfer;
@@ -273,23 +273,23 @@ class AudioImport extends Import {
           // ID for the new PM record.
           $audioMaster = new AudioMaster;
           // Sampling rate id 8 = 96kHz/24bit
-          $audioMaster->sampling_rate_id = 8;
+          $audioMaster->samplingRateId = 8;
           $audioMaster->save();
           $created++;
 
           // Create the PM using data from the import.
           $master = new PreservationMaster;
-          $master->call_number = $callNumber;
-          $master->file_name = $row['OriginatorReference'];
-          $master->file_size_in_bytes = $row['FileSize'];
-          $master->duration_in_seconds = $duration;
-          $master->department_id = $department->id;
+          $master->callNumber = $callNumber;
+          $master->fileName = $row['OriginatorReference'];
+          $master->fileSizeInBytes = $row['FileSize'];
+          $master->durationInSeconds = $duration;
+          $master->departmentId = $department->id;
           // APPDEV-6760
-          $master->file_format = 'BWF';
-          $master->file_codec = 'Uncompressed PCM';
+          $master->fileFormat = 'BWF';
+          $master->fileCodec = 'Uncompressed PCM';
 
-          $master->subclass_type = 'AudioMaster';
-          $master->subclass_id = $audioMaster->id;
+          $master->subclassType = 'AudioMaster';
+          $master->subclassId = $audioMaster->id;
           $master->save();
           $masters[] = $master;
           $created++;
@@ -302,28 +302,28 @@ class AudioImport extends Import {
 
           // Create the transfer
           $transfer = new Transfer;
-          $transfer->call_number = $callNumber;
-          $transfer->preservation_master_id = $master->id;
-          $transfer->playback_machine_id = $playbackMachine->id;
+          $transfer->callNumber = $callNumber;
+          $transfer->preservationMasterId = $master->id;
+          $transfer->playbackMachineId = $playbackMachine->id;
           // Right now we will assume the person importing is the
           // engineer, but that might change in the future.
-          $transfer->engineer_id = Auth::user()->id;
-          $transfer->transfer_date = $row['OriginationDate'];
-          $transfer->transfer_note =
+          $transfer->engineerId = Auth::user()->id;
+          $transfer->transferDate = $row['OriginationDate'];
+          $transfer->transferNote = 
             isset($row['TransferNote']) ? $row['TransferNote'] : null;
-          $transfer->subclass_type = 'AudioTransfer';
-          $transfer->subclass_id = $audioTransfer->id;
+          $transfer->subclassType = 'AudioTransfer';
+          $transfer->subclassId = $audioTransfer->id;
           $transfer->save();
           $transfers[] = $transfer;
           $created++;
 
           // Create the cut
           $cut = new Cut;
-          $cut->call_number = $callNumber;
-          $cut->preservation_master_id = $master->id;
-          $cut->transfer_id = $transfer->id;
+          $cut->callNumber = $callNumber;
+          $cut->preservationMasterId = $master->id;
+          $cut->transferId = $transfer->id;
           $cut->side = $row['Side'];
-          $cut->cut_number = 1;
+          $cut->cutNumber = 1;
           $cut->save();
           $created++;
 
@@ -357,7 +357,7 @@ class AudioImport extends Import {
   private function isAudio($callNumber)
   {
     $item = AudioVisualItem::where('call_number', $callNumber)->first();
-    return $item !== null && $item->subclass_type === 'AudioItem';
+    return $item !== null && $item->subclassType === 'AudioItem';
   }
 
 }

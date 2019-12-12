@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Transfer extends Model {
+  use CamelCasing;
   use NullFieldPreserver;
   use RevisionableTrait;
   use CompositeHistory;
@@ -39,15 +40,15 @@ class Transfer extends Model {
     'enginer_id' => 'engineer',
   );
 
-  protected $fillable = array('call_number',
-    'preservation_master_id', 'transfer_date',
-    'playback_machine_id', 'engineer_id', 'vendor_id',
-    'condition_note', 'transfer_note');
+  protected $fillable = array('callNumber',
+    'preservationMasterId', 'transferDate',
+    'playbackMachineId', 'engineerId', 'vendorId',
+    'conditionNote', 'transferNote');
 
   public function __construct($attributes = [])
   {
-    $this->subclass_type = 'AudioTransfer';
-    $this->transfer_date = (new \DateTime())->format('Y-m-d');
+    $this->subclassType = 'AudioTransfer';
+    $this->transferDate = (new \DateTime())->format('Y-m-d');
     parent::__construct($attributes);
   }
 
@@ -73,13 +74,13 @@ class Transfer extends Model {
   {
     $name = null;
     if ($this->engineer !== null) {
-      $firstName = $this->engineer->first_name;
-      $lastName = $this->engineer->last_name;
+      $firstName = $this->engineer->firstName;
+      $lastName = $this->engineer->lastName;
     } else {
       return null;
     }
     if ($firstName===null || $lastName===null) {
-      $name = $this->engineer->legacy_initials;
+      $name = $this->engineer->legacyInitials;
     } else {
       $name = $firstName . ' ' . $lastName;
     }
@@ -113,7 +114,7 @@ class Transfer extends Model {
 
   public function getTypeAttribute()
   {
-    $fullType = $this->getAttribute("subclass_type");
+    $fullType = $this->getAttribute("subclassType");
     $type = substr($fullType,0,strlen($fullType)
       - strlen("Transfer"));
     return $type;

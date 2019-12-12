@@ -23,41 +23,41 @@
         words they were not linked to an AudioVisualItem. So we will check to
         make sure there is a call number.
        --}}
-      @if ($transfer->preservation_master_id)
+      @if ($transfer->preservationMasterId)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
           PM #
         </div>
         <div class="col-xs-7 detail-value">
           @if ($transfer->preservationMaster)
-            <a href="{{route('masters.show', $transfer->preservationMaster->id)}}" class="detail-link">{{$transfer->preservation_master_id}}</a>
+            <a href="{{route('masters.show', $transfer->preservationMaster->id)}}" class="detail-link">{{$transfer->preservationMasterId}}</a>
           @else
-            <span class="text-danger" title="Missing preservation master">{{$transfer->preservation_master_id}}&nbsp;<i class="fa fa-question" aria-hidden="true"></i></span>
+            <span class="text-danger" title="Missing preservation master">{{$transfer->preservationMasterId}}&nbsp;<i class="fa fa-question" aria-hidden="true"></i></span>
           @endif
         </div>
       </div>
       @endif
-      @if ($transfer->call_number)
+      @if ($transfer->callNumber)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
           Call Number
         </div>
         <div class="col-xs-7 detail-value">
           @if ($transfer->item)
-            <a href="{{route('items.show', $transfer->item->id)}}" class="detail-link">{{$transfer->call_number}}</a>
+            <a href="{{route('items.show', $transfer->item->id)}}" class="detail-link">{{$transfer->callNumber}}</a>
           @else
-            <span class="text-danger" title="Missing audio visual item">{{$transfer->call_number}}&nbsp;<i class="fa fa-question" aria-hidden="true"></i></span>
+            <span class="text-danger" title="Missing audio visual item">{{$transfer->callNumber}}&nbsp;<i class="fa fa-question" aria-hidden="true"></i></span>
           @endif
         </div>
       </div>
       @endif
-      @if ($transfer->transfer_date)
+      @if ($transfer->transferDate)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
           Transfer Date
         </div>
         <div class="col-xs-7 detail-value">
-          {{$transfer->transfer_date}}
+          {{$transfer->transferDate}}
         </div>
       </div>
       @endif
@@ -67,7 +67,7 @@
           Engineer
         </div>
         <div class="col-xs-7 detail-value">
-          {{$transfer->engineer_name}}
+          {{$transfer->engineerName}}
         </div>
       </div>
       @endif
@@ -91,23 +91,23 @@
         </div>
       </div>
       @endif
-      @if ($transfer->transfer_note)
+      @if ($transfer->transferNote)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
           Transfer Note
         </div>
         <div class="col-xs-7 detail-value">
-          {{$transfer->transfer_note}}
+          {{$transfer->transferNote}}
         </div>
       </div>
       @endif
-      @if ($transfer->condition_note)
+      @if ($transfer->conditionNote)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
           Condition Note
         </div>
         <div class="col-xs-7 detail-value">
-          {{$transfer->condition_note}}
+          {{$transfer->conditionNote}}
         </div>
       </div>
       @endif
@@ -137,13 +137,13 @@
         </div>
       </div>
       @endif
-      @if ($transfer->subclass->first_sound)
+      @if ($transfer->subclass->firstSound)
       <div class="row">
         <div class="col-xs-4 detail-label">
           First Sound
         </div>
         <div class="col-xs-8 detail-value">
-          {{$transfer->subclass->first_sound}}
+          {{$transfer->subclass->firstSound}}
         </div>
       </div>
       @endif
@@ -152,23 +152,23 @@
         {{-- There are currently no type specific fields for film transfers --}}
       @endif
       @if (get_class($transfer->subclass) === 'Jitterbug\Models\VideoTransfer')
-      @if ($transfer->subclass->time_base_corrector)
+      @if ($transfer->subclass->timeBaseCorrector)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Time Base Corrector
         </div>
         <div class="col-xs-8 detail-value">
-          {{$transfer->subclass->time_base_corrector}}
+          {{$transfer->subclass->timeBaseCorrector}}
         </div>
       </div>
       @endif
-      @if ($transfer->subclass->ad_converter)
+      @if ($transfer->subclass->adConverter)
       <div class="row">
         <div class="col-xs-4 detail-label">
           A/D Converter
         </div>
         <div class="col-xs-8 detail-value">
-          {{$transfer->subclass->ad_converter}}
+          {{$transfer->subclass->adConverter}}
         </div>
       </div>
       @endif

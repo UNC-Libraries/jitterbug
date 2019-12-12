@@ -20,12 +20,12 @@
   @if ($item->batch())
     {!! Form::model($item, array('route' => array('items.batch.update'), 'method' => 'put')) !!}
     {!! Form::hidden('ids') !!}
-    {!! Form::hidden('subclass_type') !!}
+    {!! Form::hidden('subclassType') !!}
   @else
     {!! Form::model($item, array('route' => array('items.update', $item->id), 'method' => 'put')) !!}
     {!! Form::hidden('id') !!}
-    {!! Form::hidden('subclass_type') !!}
-    {!! Form::hidden('subclass_id') !!}
+    {!! Form::hidden('subclassType') !!}
+    {!! Form::hidden('subclassId') !!}
   @endif
 
   <div class="row first detail-container">

@@ -4,6 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TapeBrand extends Model {
+	use CamelCasing;
   use NullFieldPreserver;
   use SoftDeletes;
 

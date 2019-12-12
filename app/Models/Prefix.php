@@ -11,8 +11,9 @@ use Log;
 class Prefix extends Model
 {
   use SoftDeletes;
+  use CamelCasing;
 
-  protected $fillable = array('label', 'legacy', 'collection_type_id');
+  protected $fillable = array('label', 'legacy', 'collectionTypeId');
 
   public function collectionType()
   {
@@ -21,7 +22,7 @@ class Prefix extends Model
 
   public function formats()
   {
-    return $this->belongsToMany(Format::class)->withTimestamps();
+    return $this->belongsToMany(Format::class)->withTimestamps();;
   }
 
   public function detachAllFormats()

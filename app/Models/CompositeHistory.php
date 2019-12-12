@@ -45,8 +45,8 @@ trait CompositeHistory
 
   public function formattedHistory($history)
   {
-    $user = $history->userResponsible()->first_name
-      . ' ' . $history->userResponsible()->last_name;
+    $user = $history->userResponsible()->firstName 
+      . ' ' . $history->userResponsible()->lastName;
     $date =  date('n/j/Y', strtotime($history->created_at));
     return $date . ' by ' . $user;
   }

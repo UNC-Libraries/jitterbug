@@ -19,13 +19,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr role="button" data-master="{{$cut->preservation_master_id}}" data-id="{{$cut->id}}">
-            <td>{{$cut->preservation_master_id}}</td>
-            <td>{{$cut->cut_number}}</td>
+          <tr role="button" data-master="{{$cut->preservationMasterId}}" data-id="{{$cut->id}}">
+            <td>{{$cut->preservationMasterId}}</td>
+            <td>{{$cut->cutNumber}}</td>
             <td>{{$cut->side}}</td>
             <td>{{$cut->title}}</td>
-            <td>{{$cut->performer_composer}}</td>
-            <td>{{$cut->pm_start_time}}</td>
+            <td>{{$cut->performerComposer}}</td>
+            <td>{{$cut->pmStartTime}}</td>
           </tr>                      
         </tbody>
       </table>

@@ -12,8 +12,8 @@ class BatchAudioVisualItem extends AudioVisualItem {
   protected $aggregateItem;
   protected $aggregateSubclass;
 
-  protected $batchGuarded = ['id', 'subclass_type', 'subclass_id', 'created_at',
-    'updated_at'];
+  protected $batchGuarded = ['id', 'subclassType', 'subclassId', 'createdAt',
+    'updatedAt'];
 
   protected $attributes;
 
@@ -25,9 +25,9 @@ class BatchAudioVisualItem extends AudioVisualItem {
     $this->subclasses = $subclasses;
 
     $this->aggregateItem = new AudioVIsualItem;
-    $this->aggregateItem->entry_date = null;
-    $subclassType = $this->items->first()->subclass_type;
-    $this->aggregateItem->subclass_type = $subclassType;
+    $this->aggregateItem->entryDate = null;
+    $subclassType = $this->items->first()->subclassType;
+    $this->aggregateItem->subclassType = $subclassType;
     $this->aggregateSubclass = new $subclassType;
     $this->mergeAttributes($items, $this->aggregateItem);
     $this->mergeAttributes($subclasses, $this->aggregateSubclass);
@@ -61,8 +61,8 @@ class BatchAudioVisualItem extends AudioVisualItem {
 
   public function getTypeAttribute()
   {
-    $fullType = $this->items->first()->getAttribute('subclass_type');
-    $type = substr($fullType,0,strlen($fullType) - strlen('Item'));
+    $fullType = $this->items->first()->getAttribute("subclassType");
+    $type = substr($fullType,0,strlen($fullType) - strlen("Item"));
     return $type;
   }
 

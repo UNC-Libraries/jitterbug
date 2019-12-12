@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class VideoTransfer extends Model {
+  use CamelCasing;
   use NullFieldPreserver;
   use RevisionableTrait;
   use SoftDeletes;
@@ -24,8 +25,8 @@ class VideoTransfer extends Model {
     'ad_converter' => 'A/D converter',
   );
 
-  protected $fillable = array('time_base_corrector',
-    'ad_converter');
+  protected $fillable = array('timeBaseCorrector', 
+    'adConverter');
 
   public function superclass()
   {

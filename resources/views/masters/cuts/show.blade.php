@@ -21,9 +21,9 @@
         </div>
         <div class="col-xs-7 detail-value">
           @if ($cut->preservationMaster)
-            <a href="{{route('masters.show', $cut->preservationMaster->id)}}" class="detail-link">{{$cut->preservation_master_id}}</a>
+            <a href="{{route('masters.show', $cut->preservationMaster->id)}}" class="detail-link">{{$cut->preservationMasterId}}</a>
           @else
-            <span class="text-danger" title="Missing preservation master">{{$cut->preservation_master_id}}&nbsp;<i class="fa fa-question" aria-hidden="true"></i></span>
+            <span class="text-danger" title="Missing preservation master">{{$cut->preservationMasterId}}&nbsp;<i class="fa fa-question" aria-hidden="true"></i></span>
           @endif
         </div>
       </div>
@@ -33,9 +33,9 @@
         </div>
         <div class="col-xs-7 detail-value">
           @if ($cut->item)
-            <a href="{{route('items.show', $cut->item->id)}}" class="detail-link">{{$cut->call_number}}</a>
+            <a href="{{route('items.show', $cut->item->id)}}" class="detail-link">{{$cut->callNumber}}</a>
           @else
-            <span class="text-danger" title="Missing audio visual item">{{$cut->call_number}}&nbsp;<i class="fa fa-question" aria-hidden="true"></i></span>
+            <span class="text-danger" title="Missing audio visual item">{{$cut->callNumber}}&nbsp;<i class="fa fa-question" aria-hidden="true"></i></span>
           @endif
         </div>
       </div>
@@ -49,13 +49,13 @@
         </div>
       </div>
       @endif
-      @if ($cut->cut_number)
+      @if ($cut->cutNumber)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
           Cut Number
         </div>
         <div class="col-xs-7 detail-value">
-          {{$cut->cut_number}}
+          {{$cut->cutNumber}}
         </div>
       </div>
       @endif
@@ -72,23 +72,23 @@
         </div>
       </div>
       @endif
-      @if ($cut->performer_composer)
+      @if ($cut->performerComposer)
       <div class="row">
         <div class="col-xs-4 detail-label">
           Performer Composer
         </div>
         <div class="col-xs-8 detail-value">
-          {{$cut->performer_composer}}
+          {{$cut->performerComposer}}
         </div>
       </div>
       @endif
-      @if ($cut->pm_start_time)
+      @if ($cut->pmStartTime)
       <div class="row">
         <div class="col-xs-4 detail-label">
           PM Start Time
         </div>
         <div class="col-xs-8 detail-value">
-          {{$cut->pm_start_time}}
+          {{$cut->pmStartTime}}
         </div>
       </div>
       @endif

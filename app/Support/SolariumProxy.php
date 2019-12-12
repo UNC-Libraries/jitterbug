@@ -126,9 +126,9 @@ class SolariumProxy {
     $doc = $update->createDocument();
 
     $doc->setKey('id', $item->id);
-    $doc->setField('callNumber', $item->call_number, null, 'set');
+    $doc->setField('callNumber', $item->callNumber, null, 'set');
     $doc->setField('title', $item->title, null, 'set');
-    $doc->setField('containerNote', $item->container_note, null, 'set');
+    $doc->setField('containerNote', $item->containerNote, null, 'set');
     $doc->setField('collectionId', 
       $item->collection ? $item->collection->id : null, null, 'set');
     $doc->setField('collectionName', 
@@ -137,19 +137,19 @@ class SolariumProxy {
       $item->format ? $item->format->id : null, null, 'set');
     $doc->setField('formatName',
       $item->format ? $item->format->name : null, null, 'set');
-    $doc->setField('accessionNumber', $item->accession_number, null, 'set');
+    $doc->setField('accessionNumber', $item->accessionNumber, null, 'set');
     $doc->setField('typeName', $item->type, null, 'set');
-    $doc->setField('typeId', $item->type_id, null, 'set');
-    $doc->setField('createdAt', $item->created_at, null, 'set');
-    $doc->setField('updatedAt', $item->updated_at, null, 'set');
+    $doc->setField('typeId', $item->typeId, null, 'set');
+    $doc->setField('createdAt', $item->createdAt, null, 'set');
+    $doc->setField('updatedAt', $item->updatedAt, null, 'set');
 
-    if ($item->subclass_type === 'FilmItem') {
+    if ($item->subclassType === 'FilmItem') {
       $doc->setField('filmElement', $item->subclass->element, null, 'set');
-    } else if ($item->subclass_type === 'VideoItem') {
+    } else if ($item->subclassType === 'VideoItem') {
       $doc->setField('videoElement', $item->subclass->element, null, 'set');
     }
 
-    $this->appendCutsForItem($item->call_number, $doc);
+    $this->appendCutsForItem($item->callNumber, $doc);
 
     $update->addDocument($doc);
   }
@@ -167,9 +167,9 @@ class SolariumProxy {
     $doc = $update->createDocument();
 
     $doc->setKey('id', $master->id);
-    $doc->setField('callNumber', $master->call_number, null, 'set');
-    $doc->setField('fileName', $master->file_name, null, 'set');
-    $doc->setField('durationInSeconds', $master->duration_in_seconds, null, 'set');
+    $doc->setField('callNumber', $master->callNumber, null, 'set');
+    $doc->setField('fileName', $master->fileName, null, 'set');
+    $doc->setField('durationInSeconds', $master->durationInSeconds, null, 'set');
     $doc->setField('departmentId', 
       $master->department ? $master->department->id : null, null, 'set');
     $doc->setField('departmentName', 
@@ -179,13 +179,13 @@ class SolariumProxy {
     $doc->setField('projectName', 
       $master->project ? $master->project->name : null, null, 'set');
     $doc->setField('typeName', $master->type, null, 'set');
-    $doc->setField('typeId', $master->type_id, null, 'set');
-    $doc->setField('createdAt', $master->created_at, null, 'set');
-    $doc->setField('updatedAt', $master->updated_at, null, 'set');
+    $doc->setField('typeId', $master->typeId, null, 'set');
+    $doc->setField('createdAt', $master->createdAt, null, 'set');
+    $doc->setField('updatedAt', $master->updatedAt, null, 'set');
     
     // Get other fields from the associated audio visual item since that's where
     // they reside, not on the master
-    $this->appendCollectionAndFormat($master->call_number, $doc);
+    $this->appendCollectionAndFormat($master->callNumber, $doc);
     $this->appendCutsForMaster($master->id, $doc);
 
     $update->addDocument($doc);
@@ -204,36 +204,36 @@ class SolariumProxy {
     $doc = $update->createDocument();
 
     $doc->setKey('id', $transfer->id);
-    $doc->setField('callNumber', $transfer->call_number, null, 'set');
-    $doc->setField('transferDate', $transfer->transfer_date, null, 'set');
+    $doc->setField('callNumber', $transfer->callNumber, null, 'set');
+    $doc->setField('transferDate', $transfer->transferDate, null, 'set');
     $doc->setField('preservationMasterId',
-      $transfer->preservation_master_id, null, 'set');
+      $transfer->preservationMasterId, null, 'set');
     $doc->setField('vendorId', 
       $transfer->vendor != null ? $transfer->vendor->id : null, null, 'set');
     $doc->setField('vendorName', 
       $transfer->vendor != null ? $transfer->vendor->name : null, null, 'set');
-    $doc->setField('engineerId', $transfer->engineer_id, null, 'set');
+    $doc->setField('engineerId', $transfer->engineerId, null, 'set');
     $doc->setField('engineerFirstName', 
       $transfer->engineer != null ? 
-      $transfer->engineer->first_name : null, null, 'set');
+      $transfer->engineer->firstName : null, null, 'set');
     $doc->setField('engineerLastName', 
       $transfer->engineer != null ? 
-      $transfer->engineer->last_name : null, null, 'set');
+      $transfer->engineer->lastName : null, null, 'set');
     $doc->setField('typeName', $transfer->type, null, 'set');
-    $doc->setField('typeId', $transfer->type_id, null, 'set');
-    $doc->setField('createdAt', $transfer->created_at, null, 'set');
-    $doc->setField('updatedAt', $transfer->updated_at, null, 'set');
+    $doc->setField('typeId', $transfer->typeId, null, 'set');
+    $doc->setField('createdAt', $transfer->createdAt, null, 'set');
+    $doc->setField('updatedAt', $transfer->updatedAt, null, 'set');
 
     // Get other fields from the associated audio visual item since that's where
     // they reside, not on the transfer
-    $this->appendCollectionAndFormat($transfer->call_number, $doc);
+    $this->appendCollectionAndFormat($transfer->callNumber, $doc);
 
     $cut = Cut::where('transfer_id', $transfer->id)->first();
     if ($cut !== null) {
       $doc->setField('cutId', $cut->id, null, 'set');
       $doc->setField('cutTitle', $cut->title, null, 'set');
       $doc->setField('cutPerformerComposer', 
-        $cut->performer_composer, null, 'set');
+        $cut->performerComposer, null, 'set');
     }
 
     $update->addDocument($doc);
