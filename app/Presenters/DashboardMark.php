@@ -17,7 +17,7 @@ class DashboardMark
   {
     $this->mark = $mark;
 
-    $class = $this->mark->markableType;
+    $class = $this->mark->markable_type;
     $snakeClass = snake_case($class);
     $explodedClass = explode('_', $snakeClass);
     $this->objectType = array_pop($explodedClass);
@@ -40,26 +40,26 @@ class DashboardMark
 
   public function object()
   {
-    $class = $this->mark->markableType;
+    $class = $this->mark->markable_type;
     $instance = 
-      $class::findOrFail($this->mark->markableId);
+      $class::findOrFail($this->mark->markable_id);
     $mediaType = $instance->type;
 
     if ($this->objectType === 'item') {
       return $mediaType . ' ' 
         . $this->objectType . ' ' 
-        . $instance->callNumber;
+        . $instance->call_number;
     } else {
       return $mediaType . ' ' 
         . $this->objectType . ' ' 
         . 'for item '
-        . $instance->callNumber;
+        . $instance->call_number;
     }
   }
 
   public function objectId()
   {
-    return $this->mark->markableId;
+    return $this->mark->markable_id;
   }
 
   public function objectType()
@@ -69,6 +69,6 @@ class DashboardMark
   
   public function timestamp()
   {
-    return timeAgoInWords($this->mark->updatedAt);
+    return timeAgoInWords($this->mark->updated_at);
   }
 }

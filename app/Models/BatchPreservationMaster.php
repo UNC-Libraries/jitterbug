@@ -13,8 +13,8 @@ class BatchPreservationMaster extends PreservationMaster {
   protected $aggregateMaster;
   protected $aggregateSubclass;
 
-  protected $batchGuarded = ['id', 'subclassType', 'subclassId', 'createdAt',
-    'updatedAt'];
+  protected $batchGuarded = ['id', 'subclass_type', 'subclass_id', 'created_at',
+    'updated_at'];
 
   protected $attributes;
 
@@ -26,8 +26,8 @@ class BatchPreservationMaster extends PreservationMaster {
     $this->subclasses = $subclasses;
 
     $this->aggregateMaster = new PreservationMaster;
-    $subclassType = $this->masters->first()->subclassType;
-    $this->aggregateMaster->subclassType = $subclassType;
+    $subclassType = $this->masters->first()->subclass_type;
+    $this->aggregateMaster->subclass_type = $subclassType;
     $this->aggregateSubclass = new $subclassType;
     $this->mergeAttributes($masters, $this->aggregateMaster);
     $this->mergeAttributes($subclasses, $this->aggregateSubclass);
@@ -42,10 +42,10 @@ class BatchPreservationMaster extends PreservationMaster {
 
   public function getDurationAttribute()
   {
-    if ($this->durationInSeconds==='<mixed>') {
-      return $this->durationInSeconds;
+    if ($this->duration_in_seconds==='<mixed>') {
+      return $this->duration_in_seconds;
     } else {
-      return DurationFormat::toDuration($this->durationInSeconds);
+      return DurationFormat::toDuration($this->duration_in_seconds);
     }
   }
 
@@ -70,8 +70,8 @@ class BatchPreservationMaster extends PreservationMaster {
 
   public function getTypeAttribute()
   {
-    $fullType = $this->masters->first()->getAttribute("subclassType");
-    $type = substr($fullType,0,strlen($fullType) - strlen("Master"));
+    $fullType = $this->masters->first()->getAttribute('subclass_type');
+    $type = substr($fullType,0,strlen($fullType) - strlen('Master'));
     return $type;
   }
 

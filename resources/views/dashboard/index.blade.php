@@ -44,17 +44,17 @@
 
               {{-- A create or delete operation --}}
               @if ($activity->field === null && $activity->numFields === null && !$activity->batch)
-              <li @if ($activity->objectExists()) role="button" data-object-type="{{$activity->objectType()}}" data-object-id="{{$activity->objectId()}}" @endif><span class="user">{{$activity->user}}</span> <span class="action">{{$activity->action}}</span> {{$activity->objectArticle()}} <span class="object">{{$activity->object()}}</span> @if (!$activity->objectIsItem()) for {{$activity->itemType}} item {{$activity->itemCallNumber}} @else {{$activity->itemCallNumber}} @endif - <span class="timestamp">{{$activity->timeAgo}}</span></li>
+              <li @if ($activity->objectExists()) role="button" data-object-type="{{$activity->objectType()}}" data-object-id="{{$activity->objectId()}}" @endif><span class="user">{{$activity->user}}</span> <span class="action">{{$activity->action}}</span> {{$activity->objectArticle()}} <span class="object">{{$activity->object()}}</span> @if (!$activity->objectIsItem()) for {{$activity->item_type}} item {{$activity->item_call_number}} @else {{$activity->item_call_number}} @endif - <span class="timestamp">{{$activity->timeAgo}}</span></li>
               @endif
 
               {{-- An update operation where there have been no more than a few fields updated on the object --}}
               @if ($activity->field !== null)
-              <li @if ($activity->objectExists()) role="button" data-object-type="{{$activity->objectType()}}" data-object-id="{{$activity->objectId()}}" @endif><span class="user">{{$activity->user}}</span> <span class="action">{{$activity->action}}</span> the <span class="field">{{$activity->field}}</span> field of {{$activity->objectArticle()}} <span class="object">{{$activity->object()}}</span> @if (!$activity->objectIsItem()) for {{$activity->itemType}} item {{$activity->itemCallNumber}} @else {{$activity->itemCallNumber}} @endif - <span class="timestamp">{{$activity->timeAgo}}</span></li>
+              <li @if ($activity->objectExists()) role="button" data-object-type="{{$activity->objectType()}}" data-object-id="{{$activity->objectId()}}" @endif><span class="user">{{$activity->user}}</span> <span class="action">{{$activity->action}}</span> the <span class="field">{{$activity->field}}</span> field of {{$activity->objectArticle()}} <span class="object">{{$activity->object()}}</span> @if (!$activity->objectIsItem()) for {{$activity->item_type}} item {{$activity->item_call_number}} @else {{$activity->item_call_number}} @endif - <span class="timestamp">{{$activity->timeAgo}}</span></li>
               @endif
 
               {{-- An update operation where there have been many fields updated on the object --}}
               @if ($activity->numFields !== null)
-              <li @if ($activity->objectExists()) role="button" data-object-type="{{$activity->objectType()}}" data-object-id="{{$activity->objectId()}}" @endif><span class="user">{{$activity->user}}</span> <span class="action">{{$activity->action}}</span> {{$activity->numFields}} fields of {{$activity->objectArticle()}} <span class="object">{{$activity->object()}}</span> @if (!$activity->objectIsItem()) for {{$activity->itemType}} item {{$activity->itemCallNumber}} @else {{$activity->itemCallNumber}} @endif - <span class="timestamp">{{$activity->timeAgo}}</span></li>
+              <li @if ($activity->objectExists()) role="button" data-object-type="{{$activity->objectType()}}" data-object-id="{{$activity->objectId()}}" @endif><span class="user">{{$activity->user}}</span> <span class="action">{{$activity->action}}</span> {{$activity->numFields}} fields of {{$activity->objectArticle()}} <span class="object">{{$activity->object()}}</span> @if (!$activity->objectIsItem()) for {{$activity->item_type}} item {{$activity->item_call_number}} @else {{$activity->item_call_number}} @endif - <span class="timestamp">{{$activity->timeAgo}}</span></li>
               @endif
 
               @endforeach

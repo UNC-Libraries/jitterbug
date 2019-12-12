@@ -39,9 +39,9 @@ class MarksController extends Controller {
                     ->where('user_id', $userId)->first();
         if ($mark === null) {
           $mark = new Mark;
-          $mark->markableType = $markableType;
-          $mark->markableId = $markableId;
-          $mark->userId = $userId;
+          $mark->markable_type = $markableType;
+          $mark->markable_id = $markableId;
+          $mark->user_id = $userId;
         } else {
           $mark->touch();
         }

@@ -18,13 +18,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr role="button" data-master="{{$transfer->preservationMasterId}}" data-id="{{$transfer->id}}">
-            <td>{{$transfer->preservationMasterId}}</td>
-            <td>{{$transfer->transferDate}}</td>
+          <tr role="button" data-master="{{$transfer->preservation_master_id}}" data-id="{{$transfer->id}}">
+            <td>{{$transfer->preservation_master_id}}</td>
+            <td>{{$transfer->transfer_date}}</td>
             <td>@if ($transfer->playbackMachine){{$transfer->playbackMachine->name}}@endif</td>
-            <td>{{$transfer->engineerName}}</td>
+            <td>{{$transfer->engineer_name}}</td>
             <td>@if ($transfer->vendor){{$transfer->vendor->name}}@endif</td>
-            <td>{{$transfer->conditionNote}}</td>
+            <td>{{$transfer->condition_note}}</td>
           </tr>                      
         </tbody>
       </table>

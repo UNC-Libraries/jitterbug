@@ -19,17 +19,14 @@ use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\AudioVisualItemType;
 use Jitterbug\Models\AudioVisualItemCollection;
 use Jitterbug\Models\AudioVisualItemFormat;
-use Jitterbug\Models\AudioItem;
 use Jitterbug\Models\BatchAudioVisualItem;
 use Jitterbug\Models\CallNumberSequence;
 use Jitterbug\Models\Collection;
 use Jitterbug\Models\Cut;
-use Jitterbug\Models\FilmItem;
 use Jitterbug\Models\Format;
 use Jitterbug\Models\Mark;
 use Jitterbug\Models\PreservationMaster;
 use Jitterbug\Models\Transfer;
-use Jitterbug\Models\VideoItem;
 use Jitterbug\Http\Requests\ItemRequest;
 use Jitterbug\Support\SolariumProxy;
 use Jitterbug\Support\SolariumPaginator;
@@ -100,7 +97,7 @@ class ItemsController extends Controller
   public function show($id)
   {
     $item = AudioVisualItem::findOrFail($id);
-    $cuts = Cut::where('call_number', $item->callNumber)
+    $cuts = Cut::where('call_number', $item->call_number)
                ->orderBy('preservation_master_id', 'asc')
                ->orderBy('cut_number', 'asc')
                ->get();
@@ -130,7 +127,7 @@ class ItemsController extends Controller
   {
     $input = $request->all();
     $batch = isset($input['batch']) ? true : false;
-    $batchSize = $input['batchSize'];
+    $batchSize = $input['batch_size'];
     $mark = isset($input['mark']) ? true : false;
 
     $itemId = null;
@@ -145,25 +142,25 @@ class ItemsController extends Controller
       // variable.
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
-      
+
       $batchIndex = 0;
 
       do {
         // Get a fresh sequence just to be sure the one we used isn't now stale
         $sequence = 
-          CallNumberSequence::next($input['collectionId'], $input['formatId']);
+          CallNumberSequence::next($input['collection_id'], $input['format_id']);
 
-        $subclass = new $request->subclassType;
-        $subclass->callNumber = $sequence->callNumber();
+        $subclass = new $request->subclass_type;
+        $subclass->call_number = $sequence->callNumber();
         $subclass->fill($input['subclass']);
 
         $item = new AudioVisualItem;
-        $item->subclassType = $input['subclassType'];
+        $item->subclass_type = $input['subclass_type'];
         $item->fill($input);
-        $item->callNumber = $sequence->callNumber();
+        $item->call_number = $sequence->callNumber();
 
         $subclass->save();
-        $item->subclassId = $subclass->id;
+        $item->subclass_id = $subclass->id;
         $item->save();
         if ($mark) $item->addMark();
 
@@ -201,7 +198,7 @@ class ItemsController extends Controller
   public function edit($id)
   {
     $item = AudioVisualItem::findOrFail($id);
-    $cuts = Cut::where('call_number', $item->callNumber)
+    $cuts = Cut::where('call_number', $item->call_number)
                ->orderBy('preservation_master_id', 'asc')
                ->orderBy('cut_number', 'asc')
                ->get();
@@ -267,7 +264,7 @@ class ItemsController extends Controller
       return redirect()->route('items.index');
     }
     $first = AudioVisualItem::find($itemIds[0]);
-    $subclassType = $first->subclassType;
+    $subclassType = $first->subclass_type;
 
     $items = AudioVisualItem::whereIn('id', $itemIds)
                             ->where('subclass_type', $subclassType)->get();
@@ -287,8 +284,7 @@ class ItemsController extends Controller
 
     $item = new BatchAudioVisualItem($items, $subclasses);
 
-    $collections = array();
-    if ($item->collectionId === '<mixed>') {
+    if ($item->collection_id === '<mixed>') {
       $collections = ['' => 'Select a collection'] + 
                      ['<mixed>' => '<mixed>'] +
                      Collection::orderBy('name', 'asc')
@@ -299,8 +295,7 @@ class ItemsController extends Controller
                      ->pluck('name', 'id')->all();
     }
 
-    $formats = array();
-    if ($item->formatId === '<mixed>') {
+    if ($item->format_id === '<mixed>') {
       $formats = ['' => 'Select a format'] + 
                  ['<mixed>' => '<mixed>'] +
                  Format::orderBy('name', 'asc')
@@ -348,10 +343,10 @@ class ItemsController extends Controller
 
       // Update call number everywhere if it has changed
       if($item->isDirty('call_number')) {
-        $subclass->callNumber = $item->callNumber;
+        $subclass->call_number = $item->call_number;
 
-        $origCall = $item->getOriginal()['callNumber'];
-        $newCall = $item->callNumber;
+        $origCall = $item->getOriginal()['call_number'];
+        $newCall = $item->call_number;
 
         // Yes, it would be nice (and more performant) if we 
         // could use the batch update syntax for this, rather
@@ -361,19 +356,19 @@ class ItemsController extends Controller
         // auditing.
         $masters = PreservationMaster::where('call_number', $origCall)->get();
         foreach ($masters as $master) {
-          $master->callNumber = $newCall;
+          $master->call_number = $newCall;
           $master->save();
         }
 
         $cuts = Cut::where('call_number', $origCall)->get();
         foreach ($cuts as $cut) {
-          $cut->callNumber = $newCall;
+          $cut->call_number = $newCall;
           $cut->save();
         }
 
         $transfers = Transfer::where('call_number', $origCall)->get();
         foreach ($transfers as $transfer) {
-          $transfer->callNumber = $newCall;
+          $transfer->call_number = $newCall;
           $transfer->save();
         }
       }
@@ -389,12 +384,12 @@ class ItemsController extends Controller
     $this->solrItems->update($item);
     if ($updateSolrMastersAndTransfers) {
       $masters = PreservationMaster::where('call_number', 
-                                                  $item->callNumber)->get();
+                                                  $item->call_number)->get();
       if ($masters->count() > 0) {
         $this->solrMasters->update($masters);
       }
 
-      $transfers = Transfer::where('call_number', $item->callNumber)->get();
+      $transfers = Transfer::where('call_number', $item->call_number)->get();
       if ($transfers->count() > 0) {
         $this->solrTransfers->update($transfers);
       }
@@ -451,12 +446,12 @@ class ItemsController extends Controller
     $this->solrItems->update($items);
     foreach ($collectionOrFormatUpdated as $item) {
       $masters = 
-        PreservationMaster::where('call_number', $item->callNumber)->get();
+        PreservationMaster::where('call_number', $item->call_number)->get();
       if ($masters->count() > 0) {
         $this->solrMasters->update($masters);
       }
       $transfers = 
-        Transfer::where('call_number', $item->callNumber)->get();
+        Transfer::where('call_number', $item->call_number)->get();
       if ($transfers->count() > 0) {
         $this->solrTransfers->update($transfers);
       }
@@ -489,7 +484,7 @@ class ItemsController extends Controller
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
       
-      $callNumber = $item->callNumber;
+      $callNumber = $item->call_number;
       if ($command==='all') {
         $masters = 
           PreservationMaster::where('call_number', $callNumber)->get();

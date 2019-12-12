@@ -49,7 +49,7 @@ abstract class Request extends FormRequest {
   {
     // Since there's not really a good place for this message on the form,
     // we're going to flash a message at the top of the page.
-    if ($validator->errors()->has('batchSize')) {
+    if ($validator->errors()->has('batch_size')) {
       $this->session()->put('alert', array('type' => 'danger', 'message' => 
           '<strong>Oops!</strong> ' . 
           'Please provide a batch size between 2 and 100 items.'));

@@ -13,8 +13,8 @@ class NewCallNumberSequenceTest extends TestCase
     $prefix = factory(Prefix::class)->create(['label' => 'TR']);
     $sequence = factory(NewCallNumberSequence::class)->create([
       'prefix' => $prefix->label,
-      'collectionId' => 1,
-      'archivalIdentifier' => '20013B',
+      'collection_id' => 1,
+      'archival_identifier' => '20013B',
       'next' => 2
     ]);
 

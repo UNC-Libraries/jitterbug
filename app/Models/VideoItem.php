@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class VideoItem extends Model {
-  use CamelCasing;
   use NullFieldPreserver;
   use RevisionableTrait;
   use SoftDeletes;
@@ -32,9 +31,9 @@ class VideoItem extends Model {
     'recording_standard' => 'recording standard',
   );
 
-  protected $fillable = array('callNumber','videoElement', 
-    'videoColor', 'videoMonoStereo', 
-    'videoContentDescription', 'recordingStandard');
+  protected $fillable = array('call_number','video_element',
+    'video_color', 'video_mono_stereo',
+    'video_content_description', 'recording_standard');
 
   public function superclass()
   {
@@ -43,7 +42,7 @@ class VideoItem extends Model {
 
   public function getMonoStereoDisplayAttribute($value)
   {
-    $monoStereo = ($value==null ? $this->monoStereo : $value);
+    $monoStereo = ($value==null ? $this->mono_stereo : $value);
     if($monoStereo=='M') {
       $monoStereo = 'Mono';
     } else if($monoStereo=='S')  {
@@ -84,21 +83,21 @@ class VideoItem extends Model {
 
   public function getVideoMonoStereoAttribute($value)
   {
-    return $value==null ? $this->monoStereo : $value;
+    return $value==null ? $this->mono_stereo : $value;
   }
 
   public function setVideoMonoStereoAttribute($value)
   {
-    $this->monoStereo = $value;
+    $this->mono_stereo = $value;
   }
 
   public function getVideoContentDescriptionAttribute($value)
   {
-    return $value==null ? $this->contentDescription : $value;
+    return $value==null ? $this->content_description : $value;
   }
 
   public function setVideoContentDescriptionAttribute($value)
   {
-    $this->contentDescription = $value;
+    $this->content_description = $value;
   }
 }

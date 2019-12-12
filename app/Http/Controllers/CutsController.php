@@ -53,12 +53,12 @@ class CutsController extends Controller
    */
   public function create(Request $request)
   {
-    $transfer = Transfer::findOrFail($request->transferId);
+    $transfer = Transfer::findOrFail($request->transfer_id);
     $master = $transfer->preservationMaster;
     $cut = new Cut;
-    $cut->callNumber = $transfer->callNumber;
-    $cut->preservationMasterId = $transfer->preservationMasterId;
-    $cut->transferId = $transfer->id;
+    $cut->call_number = $transfer->call_number;
+    $cut->preservation_master_id = $transfer->preservation_master_id;
+    $cut->transfer_id = $transfer->id;
 
     return view('masters.cuts.create', compact('cut', 'master', 'transfer'));
   }
@@ -85,7 +85,7 @@ class CutsController extends Controller
     });
 
     // Update Solr
-    $item = AudioVisualItem::where('call_number', $cut->callNumber)->first();
+    $item = AudioVisualItem::where('call_number', $cut->call_number)->first();
     $this->solrItems->update($item);
     $this->solrMasters->update($cut->preservationMaster);
     $this->solrTransfers->update($cut->transfer);
@@ -169,7 +169,7 @@ class CutsController extends Controller
     });
 
     // Update Solr
-    $item = AudioVisualItem::where('call_number', $cut->callNumber)->first();
+    $item = AudioVisualItem::where('call_number', $cut->call_number)->first();
     $this->solrItems->update($item);
     $this->solrMasters->update($cut->preservationMaster);
     if ($command !== 'all') {
@@ -198,7 +198,7 @@ class CutsController extends Controller
   {
     $cut = Cut::findOrFail($cutId);
     return redirect()->route('masters.cuts.show', 
-        [$cut->preservationMasterId, $cut->id]);
+        [$cut->preservation_master_id, $cut->id]);
   }
 
 }

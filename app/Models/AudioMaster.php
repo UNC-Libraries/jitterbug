@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class AudioMaster extends Model {
-  use CamelCasing;
   use NullFieldPreserver;
   use RevisionableTrait;
   use SoftDeletes;
@@ -29,8 +28,8 @@ class AudioMaster extends Model {
     'test_tones' => 'test tones',
   );
 
-  protected $fillable = array('tapeBrandId', 'pmSpeedId',
-    'samplingRateId', 'testTones');
+  protected $fillable = array('tape_brand_id', 'pm_speed_id',
+    'sampling_rate_id', 'test_tones');
 
   public function superclass()
   {

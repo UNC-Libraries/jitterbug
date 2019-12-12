@@ -5,13 +5,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Format extends Model {
-  use CamelCasing;
   use NullFieldPreserver;
   use SoftDeletes;
 
   protected $dates = array('deleted_at');
 
-  protected $fillable = array('name', 'prefix', 'legacyPrefix');
+  protected $fillable = array('name', 'prefix', 'legacy_prefix');
 
   // Filters out formats that will not be used for new items
   public function scopeWithFutureUse($query)
@@ -27,7 +26,7 @@ class Format extends Model {
 
   public function prefixes()
   {
-    return $this->belongsToMany(Prefix::class)->withTimestamps();;
+    return $this->belongsToMany(Prefix::class)->withTimestamps();
   }
 
   public function uniquePrefixLabels()

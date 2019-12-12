@@ -37,7 +37,7 @@ class CallNumbersController extends Controller {
   {
     $preservationMasterId = $request->query('preservation-master-id');
     $master = PreservationMaster::where('id', $preservationMasterId)->first();
-    $response = array('callNumber' => $master === null ? '' : $master->callNumber);
+    $response = array('callNumber' => $master === null ? '' : $master->call_number);
     return response()->json($response);
   }
 

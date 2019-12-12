@@ -38,7 +38,7 @@ class CallNumberSequenceTest extends TestCase
   {
     $callNumber = factory(Models\NewCallNumberSequence::class)->create([
       'prefix' => $this->prefix->label,
-      'collectionId' => $this->collection->id,
+      'collection_id' => $this->collection->id,
       'next' => 2
     ]);
     $format = factory(Models\Format::class)->create([
@@ -62,7 +62,7 @@ class CallNumberSequenceTest extends TestCase
     ]);
     factory(Models\NewCallNumberSequence::class)->create([
       'prefix' => $prefix1->label,
-      'collectionId' => 20013,
+      'collection_id' => 20013,
       'next' => 2
     ]);
     $legacyCallNumber = factory(Models\LegacyCallNumberSequence::class)->create([

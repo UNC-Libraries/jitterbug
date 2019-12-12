@@ -219,24 +219,24 @@ class TransactionDigest
 
     // Populate a new activity with the base attributes
     $activity = new Activity;
-    $activity->transactionId = $this->transactionId;
+    $activity->transaction_id = $this->transactionId;
     $activity->action = $this->action;
     $activity->batch = $this->batch;
-    $activity->batchSize = $this->batchSize;
+    $activity->batch_size = $this->batchSize;
     $activity->timestamp = $this->revisions->first()->created_at;
     $activity->user = $this->getUserResponsibleName();
     // If batch, itemCallNumber & itemType will be null
-    $activity->itemCallNumber = $this->associatedCallNumber;
-    $activity->itemType = $this->associatedItemType;
-    $activity->importType = $this->importType;
+    $activity->item_call_number = $this->associatedCallNumber;
+    $activity->item_type = $this->associatedItemType;
+    $activity->import_type = $this->importType;
 
     $this->filterCallNumberUpdates();
 
     // filterCallNumberUpdates() may change the numAffected value and
     // objectTypesToIds map, so setting these need to come after that 
     // function call
-    $activity->numAffected = $this->numAffected;
-    $activity->objectTypesToIds = $this->objectTypesToIds;
+    $activity->num_affected = $this->numAffected;
+    $activity->object_types_to_ids = $this->objectTypesToIds;
 
     // Since this is a regular update, each revision will
     // be for an individual field. If there are just a handfull
@@ -365,7 +365,7 @@ class TransactionDigest
       $instance = $instance->superclass;
     }
     $this->associatedItem = AudioVisualItem::withTrashed()
-      ->where('call_number', $instance->callNumber)
+      ->where('call_number', $instance->call_number)
       ->first();
     return $this->associatedItem;
   }
@@ -406,8 +406,8 @@ class TransactionDigest
     if (!array_key_exists($firstRev->revisionable_type, $this->baseClasses)) {
       $instance = $instance->superclass;
     }
-    $this->associatedCallNumber = $instance->callNumber;
-    return $instance->callNumber;
+    $this->associatedCallNumber = $instance->call_number;
+    return $instance->call_number;
   }
 
   /**
