@@ -7,14 +7,14 @@
 	"repositories" : [
 		{
 			"type": "vcs",
-			"url": "https://github.com/UNC-Libraries/revisionable.git"
+			"url": "https://github.com/UNC-Libraries/revisionable-1.git"
 		}
 	],
 	"require": {
 		"laravel/framework": "5.4.*",
 		"laravelcollective/html": "5.4.*",
 		"solarium/solarium": "^3.6",
-		"venturecraft/revisionable": "dev-master",
+		"venturecraft/revisionable": "dev-APPDEV-9066-updated-revisionable-custom-fork",
 		"davejamesmiller/laravel-breadcrumbs": "^3.0",
 		"ramsey/uuid": "^3.5",
 		"adldap2/adldap2-laravel": "2.1.*",

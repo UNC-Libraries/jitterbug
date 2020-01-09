@@ -170,6 +170,7 @@ return [
     'DaveJamesMiller\Breadcrumbs\ServiceProvider',
     'Adldap\Laravel\AdldapServiceProvider',
     'Adldap\Laravel\AdldapAuthServiceProvider',
+    'Venturecraft\Revisionable\RevisionableServiceProvider',
 
 
   ],
