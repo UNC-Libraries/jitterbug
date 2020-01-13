@@ -204,7 +204,7 @@ This will take about 25 minutes for all cores.
 ## Revisionable
 A key feature of Jitterbug is how it maintains a detailed paper trail of all changes to the 
 four object types (items, masters, cuts, and transfers). Jitterbug leverages 
-[a fork](https://github.com/UNC-Libraries/revisionable) of a 3rd party package for Laravel, 
+[a fork](https://github.com/UNC-Libraries/revisionable-1) of a 3rd party package for Laravel, 
 called Revisionable, that hooks into the lifecycle of Eloquent models to maintain revision histories. 
 Revisionable preserves the fields that are modified, what their old value was, and what their new 
 value is. Revisionable writes to a single table, “revisions” which implements 
@@ -217,7 +217,7 @@ Revisionable out of the box, there is no way to determine which revisions happen
 database transaction, critical information for retrospective analyses of revision histories, such as those 
 performed by the code that generates the Dashboard activity stream. The revision timestamp cannot be used as 
 a unique identifier because long running transactions will be made up of revisions with different timestamps. 
-To implement this feature, a ['transaction_id' field was added](https://gitlab.lib.unc.edu/cappdev/revisionable/commit/753a3e959205375ba51933f92f3bd0afd738a0b4) 
+To implement this feature, a ['transaction_id' field was added](https://github.com/UNC-Libraries/revisionable-1/commit/1fe065280c6911091d13e182004947a9b73fdc14) 
 to the revisions table, and code was added to persist the transaction id when creating, updating, or deleting 
 models. The transaction id itself is a UUID4 generated key that is passed down from application code to 
 Revisionable via a database connection variable. Look in any of the controller classes and you will see 
