@@ -13,7 +13,7 @@
 	],
 	"require": {
 		"laravel/framework": "5.5.*",
-		"laravelcollective/html": "5.4.*",
+		"laravelcollective/html": "^5.4.0",
 		"solarium/solarium": "^3.6",
 		"venturecraft/revisionable": "dev-master",
 		"davejamesmiller/laravel-breadcrumbs": "^3.0",
@@ -51,12 +51,10 @@
 	},
 	"scripts": {
 		"post-install-cmd": [
-			"php artisan clear-compiled",
-			"php artisan optimize"
+			"php artisan clear-compiled"
 		],
 		"post-update-cmd": [
-			"php artisan clear-compiled",
-			"php artisan optimize"
+			"php artisan clear-compiled"
 		],
 		"post-create-project-cmd": [
 			"php -r \"copy('.env.example', '.env');\"",
@@ -68,6 +66,7 @@
 		]
 	},
 	"config": {
-		"preferred-install": "dist"
+		"preferred-install": "dist",
+		"optimize-autoloader": true
 	}
 }
