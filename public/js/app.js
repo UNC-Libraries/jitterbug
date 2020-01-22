@@ -243,7 +243,7 @@ jitterbug = {
               // there is something to click on
               var newCellValue = data[field] == '' ? '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : data[field];
               // if it's the collection type ID column, display the name instead of the ID
-              if (field === 'collectionTypeId') {
+              if (field === 'collection_type_id') {
                 newCellValue = data['collectionTypeName']
               }
               $(this).html(newCellValue);
