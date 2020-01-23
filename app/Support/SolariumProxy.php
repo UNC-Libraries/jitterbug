@@ -32,9 +32,8 @@ class SolariumProxy {
     $endpointKeys = array_keys($config);
     $endpointConfig = $config[$endpointKeys[0]];
     $hostKeys = array_keys($endpointConfig);
-    $hostConfig = $config[$endpointKeys[0]][$hostKeys[0]];
-    $path = $hostConfig['path'];
-    $config[$endpointKeys[0]][$hostKeys[0]]['path'] = $path . $core;
+    $config[$endpointKeys[0]][$hostKeys[0]]['core'] = $core;
+    $config[$endpointKeys[0]][$hostKeys[0]]['path'] = '/';
     return new Solarium\Client($config);
   }
 
