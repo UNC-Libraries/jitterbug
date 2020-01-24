@@ -225,7 +225,7 @@ return [
     'FilmTransfer'              => 'Jitterbug\Models\FilmTransfer',
     'VideoTransfer'             => 'Jitterbug\Models\VideoTransfer',
 
-    'Breadcrumbs' => 'DaveJamesMiller\Breadcrumbs\Facade',
+    'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs::class,
     'Uuid'        => 'Ramsey\Uuid\Uuid',
     'Adldap'      => 'Adldap\Laravel\Facades\Adldap',
 
