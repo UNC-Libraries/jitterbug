@@ -150,8 +150,8 @@ return [
     /*
      * Third-party Service Providers
      */
-    // Comes from davejamesmiller/laravel-breadcrumbs (3.0)
-    'DaveJamesMiller\Breadcrumbs\ServiceProvider',
+    // Comes from davejamesmiller/laravel-breadcrumbs (^5.0)
+    DaveJamesMiller\Breadcrumbs\BreadcrumbsServiceProvider::class,
     'Adldap\Laravel\AdldapServiceProvider',
     'Adldap\Laravel\AdldapAuthServiceProvider',
     'Venturecraft\Revisionable\RevisionableServiceProvider',
