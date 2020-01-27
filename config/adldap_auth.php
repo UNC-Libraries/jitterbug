@@ -116,7 +116,7 @@ return [
 
         // Only allow members of specified groups to login.
 
-        App\Scopes\AdldapLimitationScope::class,
+        Jitterbug\Scopes\AdldapLimitationScope::class,
 
     ],
 
