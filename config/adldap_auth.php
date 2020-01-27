@@ -114,6 +114,10 @@ return [
 
         Adldap\Laravel\Scopes\UpnScope::class,
 
+        // Only allow members of specified groups to login.
+
+        App\Scopes\AdldapLimitationScope::class,
+
     ],
 
     'usernames' => [
