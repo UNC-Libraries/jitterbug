@@ -18,7 +18,7 @@
 		"venturecraft/revisionable": "dev-master",
 		"davejamesmiller/laravel-breadcrumbs": "^5.0",
 		"ramsey/uuid": "^3.5",
-		"adldap2/adldap2-laravel": "3.0",
+		"adldap2/adldap2-laravel": "4.0",
 		"jimmiw/php-time-ago": "^0.4.14",
 		"laravel/tinker": "^1.0",
 		"doctrine/dbal": "^2.5"
