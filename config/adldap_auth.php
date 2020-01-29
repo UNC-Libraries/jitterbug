@@ -35,7 +35,7 @@ return [
     |
     */
 
-    'provider' => Adldap\Laravel\Auth\DatabaseUserProvider::class,
+    'provider' => env('LDAP_PROVIDER','Adldap\Laravel\Auth\NoDatabaseUserProvider'),
 
     /*
     |--------------------------------------------------------------------------
@@ -284,7 +284,7 @@ return [
 
     'logging' => [
 
-        'enabled' => true,
+        'enabled' => env('LDAP_LOGGING', true),
 
         'events' => [
 
