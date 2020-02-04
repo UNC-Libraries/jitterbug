@@ -16,7 +16,8 @@ class CollectionTypesTest extends TestCase
   private $adminUser;
   private $user;
 
-  protected function setUp() {
+  protected function setUp() : void
+  {
     parent::setUp();
     $this->adminUser = factory(User::class)->create(['admin' => 1]);
     $this->user = factory(User::class)->create(['admin' => 0]);

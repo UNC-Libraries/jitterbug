@@ -9,7 +9,8 @@ class CallNumberSequenceTest extends TestCase
   private $prefix;
   private $collection;
 
-  protected function setUp() {
+  protected function setUp() : void
+  {
     parent::setUp();
     $new_prefix_array = Models\CallNumberSequence::ALWAYS_USE_NEW_STYLE;
     $this->collectionType = factory(Models\CollectionType::class)->create(['name' => 'SFC Collection']);

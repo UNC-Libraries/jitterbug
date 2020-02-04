@@ -16,7 +16,8 @@ class TransferAudioImportsTest extends TestCase
     private $department;
     private $playbackMachine;
 
-    protected function setUp() {
+    protected function setUp() : void
+    {
       parent::setUp();
       $this->user = factory(Jitterbug\Models\User::class)->create();
       $this->department = factory(Jitterbug\Models\Department::class)->create(['name' => 'SFC']);

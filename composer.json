@@ -12,19 +12,19 @@
 		}
 	],
 	"require": {
-		"laravel/framework": "5.7.*",
-		"laravelcollective/html": "5.7.*",
+		"laravel/framework": "5.8.*",
+		"laravelcollective/html": "5.8.*",
 		"solarium/solarium": "^5.1",
 		"venturecraft/revisionable": "dev-master",
 		"davejamesmiller/laravel-breadcrumbs": "^5.0",
 		"ramsey/uuid": "^3.5",
 		"adldap2/adldap2-laravel": "6.0",
-		"jimmiw/php-time-ago": "^0.4.14",
+		"jimmiw/php-time-ago": "^3.1.0",
 		"laravel/tinker": "^1.0",
 		"doctrine/dbal": "^2.5"
 	},
 	"require-dev": {
-		"fzaninotto/faker": "~1.4",
+		"fzaninotto/faker": "~1.7",
 		"mockery/mockery": "1.2.2",
 		"phpunit/phpunit": "^7.0",
 		"symfony/css-selector": "~3.1",

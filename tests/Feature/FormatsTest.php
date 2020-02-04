@@ -13,7 +13,8 @@ class FormatsTest extends TestCase
   private $prefix;
   private $format;
 
-  protected function setUp() {
+  protected function setUp() : void
+  {
     parent::setUp();
     $this->adminUser = factory(User::class)->create(['admin' => 1]);
     $this->format = factory(Format::class)->create(['name' => '16mm']);
