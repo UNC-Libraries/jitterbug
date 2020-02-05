@@ -40,8 +40,9 @@ jobs:
           name: Install Java
           command: |
             cd /
-            sudo add-apt-repository universe
             sudo apt-get update -y
+            sudo apt-get install software-properties-common
+            sudo add-apt-repository universe
 
       - run:
           name: Install Solr
