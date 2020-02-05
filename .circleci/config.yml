@@ -40,8 +40,8 @@ jobs:
           name: Install Java
           command: |
             cd /
+            sudo add-apt-repository universe
             sudo apt-get update -y
-            sudo apt-get install openjdk-8-jdk -y
 
       - run:
           name: Install Solr
