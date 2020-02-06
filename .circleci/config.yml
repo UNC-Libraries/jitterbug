@@ -39,7 +39,7 @@ jobs:
       - run:
           name: fix sources list
           command: |
-            sudo /usr/bin/sed -i.bak '/^deb.*ubuntu/s/^/#/' /etc/apt/sources.list
+            sudo sed -i '6d' /etc/apt/sources.list
       - run:
           name: Install Java
           command: |
