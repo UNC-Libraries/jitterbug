@@ -39,8 +39,9 @@ jobs:
       - run:
           name: Install Java
           command: |
+            cd /etc/apt
+            sudo sed -i '/^deb.*ubuntu/s/^/#/' /etc/apt/sources.list
             cd /
-            sudo apt-get update -y
             sudo apt-get install software-properties-common
             sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) universe"
             sudo apt-get update -y
