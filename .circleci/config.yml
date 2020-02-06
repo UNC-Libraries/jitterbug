@@ -37,10 +37,13 @@ jobs:
           name: Copy Circle CI version of .env.testing
           command: cp .env.testing.circleci .env.testing
       - run:
-          name: Install Java
+          name: fix sources list
           command: |
             cd /etc/apt
-            sudo sed -i '/^deb.*ubuntu/s/^/#/' /etc/apt/sources.list
+            sudo sed -i.bak '/^deb.*ubuntu/s/^/#/' /etc/apt/sources.list
+      - run:
+          name: Install Java
+          command: |
             cd /
             sudo apt-get update -y
             sudo apt-get install software-properties-common
