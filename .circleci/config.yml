@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       # Specify the version you desire here
-      - image: circleci/php:7.1.33-buster-node
+      - image: circleci/php:7.2-node
       - image: circleci/mysql:5.7
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
@@ -37,19 +37,11 @@ jobs:
           name: Copy Circle CI version of .env.testing
           command: cp .env.testing.circleci .env.testing
       - run:
-          name: fix sources list
-          command: |
-            cat /etc/apt/sources.list
-            sudo sed -i '/^deb.*buster\/updates/s/^/#/' /etc/apt/sources.list
-            cat /etc/apt/sources.list
-      - run:
           name: Install Java
           command: |
             cd /
             sudo apt-get update -y
-            sudo apt-get install software-properties-common
-            sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu $(lsb_release -sc) universe"
-            sudo apt-get update -y
+            sudo apt-get install openjdk-8-jdk -y
 
       - run:
           name: Install Solr
