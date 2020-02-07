@@ -152,8 +152,8 @@ return [
      */
     // Comes from davejamesmiller/laravel-breadcrumbs (^5.0)
     DaveJamesMiller\Breadcrumbs\BreadcrumbsServiceProvider::class,
-    'Adldap\Laravel\AdldapServiceProvider',
-    'Adldap\Laravel\AdldapAuthServiceProvider',
+    Adldap\Laravel\AdldapServiceProvider::class,
+    Adldap\Laravel\AdldapAuthServiceProvider::class,
     'Venturecraft\Revisionable\RevisionableServiceProvider',
 
 
