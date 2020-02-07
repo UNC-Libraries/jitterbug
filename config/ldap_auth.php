@@ -33,7 +33,7 @@ return [
     |
     */
 
-    'provider' => env('LDAP_PROVIDER', 'Adldap\Laravel\Auth\DatabaseUserProvider'),
+    'provider' => env('LDAP_PROVIDER', 'Adldap\Laravel\Auth\NoDatabaseUserProvider'),
 
     /*
     |--------------------------------------------------------------------------

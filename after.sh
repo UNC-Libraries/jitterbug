@@ -10,11 +10,11 @@ cd /
 sudo apt-get update -y
 sudo apt-get install openjdk-8-jdk -y
 
-# Install PHP 7.1
-sudo DEBIAN_FRONTEND=noninteractive apt-get install php7.1 php7.1-ldap php7.1-fpm php7.1-mbstring php7.1-dom php7.1-mysql -y
+# Install PHP 7.2
+sudo DEBIAN_FRONTEND=noninteractive apt-get install php7.2 php7.2-ldap php7.2-fpm php7.2-mbstring php7.2-dom php7.2-mysql -y
 
-# set the php symlink to point to the 7.1 version (for cli)
-sudo update-alternatives --set php /usr/bin/php7.1
+# set the php symlink to point to the 7.2 version (for cli)
+sudo update-alternatives --set php /usr/bin/php7.2
 
 # Download Solr
 cd ~
@@ -27,12 +27,12 @@ sudo ./install_solr_service.sh solr-7.2.1.tgz
 
 # Get the MySQL connector file and unzip it if needed
 cd /vagrant
-sudo wget --no-verbose -nc http://www.mirrorservice.org/sites/ftp.mysql.com/Downloads/Connector-J/mysql-connector-java-8.0.17.zip
-sudo unzip -n mysql-connector-java-8.0.17.zip
+sudo wget --no-verbose -nc http://www.mirrorservice.org/sites/ftp.mysql.com/Downloads/Connector-J/mysql-connector-java-8.0.19.zip
+sudo unzip -n mysql-connector-java-8.0.19.zip
 
 # Copy the MySQL connector file to the right place
 cd /
-sudo cp /vagrant/mysql-connector-java-8.0.17/mysql-connector-java-8.0.17.jar /opt/solr/contrib/dataimporthandler-extras/lib/.
+sudo cp /vagrant/mysql-connector-java-8.0.19/mysql-connector-java-8.0.19.jar /opt/solr/contrib/dataimporthandler-extras/lib/.
 
 # Change users/groups/permissions of Solr home directory files
 cd /opt/solr
