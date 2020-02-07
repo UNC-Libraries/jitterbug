@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class PrefixTest extends TestCase
 {
   use DatabaseTransactions;
-  private $prefix1;F
+  private $prefix1;
   private $prefix2;
   private $format;
 
