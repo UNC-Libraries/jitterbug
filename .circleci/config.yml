@@ -41,7 +41,7 @@ jobs:
           command: |
             cd /
             sudo apt-get update -y
-            sudo apt-get install openjdk-11-jdk -y
+            java -version
 
       - run:
           name: Install Solr
