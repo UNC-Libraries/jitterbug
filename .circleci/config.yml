@@ -41,6 +41,8 @@ jobs:
           command: |
             cd /
             sudo apt-get update -y
+            sudo apt-get install software-properties-common
+            sudo add-apt-repository universe
             sudo apt-get install openjdk-11 -y
 
       - run:
