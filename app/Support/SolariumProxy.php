@@ -245,7 +245,7 @@ class SolariumProxy {
     if ($iterable) {
       $result = array();
       foreach ($modelOrModels as $model) {
-        array_push($result, $this->deleteOne($model));
+        $result[] = $this->deleteOne($model);
       }
     } else {
       $result = $this->deleteOne($modelOrModels);
@@ -297,9 +297,9 @@ class SolariumProxy {
     $cutPerformerComposers = array();
     if ($cuts->count() > 0) {
       foreach ($cuts as $cut) {
-        array_push($cutIds, $cut->id);
-        array_push($cutTitles, $cut->title);
-        array_push($cutPerformerComposers, $cut->performerComposer);
+        $cutIds[] = $cut->id;
+        $cutTitles[] = $cut->title;
+        $cutPerformerComposers[] = $cut->performerComposer;
       }
     }
     if (count($cutIds) === 0) {

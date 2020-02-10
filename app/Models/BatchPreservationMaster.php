@@ -53,7 +53,7 @@ class BatchPreservationMaster extends PreservationMaster {
   {
     $ids = array();
     foreach($this->masters as $master) {
-      array_push($ids, $master->id);
+      $ids[] = $master->id;
     }
     return implode(',', $ids);
   }

@@ -37,7 +37,7 @@ class CsvReader {
           $dataRow[$headRow[$index]] = $column;
         }
       }
-      array_push($data, $dataRow);
+      $data[] = $dataRow;
     }
     fclose($fileHandle);
     return $data;

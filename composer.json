@@ -12,16 +12,17 @@
 		}
 	],
 	"require": {
-		"laravel/framework": "5.8.*",
-		"laravelcollective/html": "5.8.*",
+		"laravel/framework": "6.0.*",
+		"laravelcollective/html": "6.0.*",
 		"solarium/solarium": "^5.1",
 		"venturecraft/revisionable": "dev-master",
 		"davejamesmiller/laravel-breadcrumbs": "^5.0",
 		"ramsey/uuid": "^3.5",
-		"adldap2/adldap2-laravel": "6.0",
+		"adldap2/adldap2-laravel": "^6.0",
 		"jimmiw/php-time-ago": "^3.1.0",
 		"laravel/tinker": "^1.0",
-		"doctrine/dbal": "^2.5"
+		"doctrine/dbal": "^2.5",
+		"laravel/helpers": "^1.1"
 	},
 	"require-dev": {
 		"fzaninotto/faker": "~1.7",

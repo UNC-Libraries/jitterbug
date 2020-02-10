@@ -44,7 +44,7 @@ class BatchAudioVisualItem extends AudioVisualItem {
   {
     $ids = array();
     foreach($this->items as $item) {
-      array_push($ids, $item->id);
+      $ids[] = $item->id;
     }
     return implode(',', $ids);
   }

@@ -23,7 +23,7 @@ trait CompositeHistory
       if (in_array($historyKey, $historyKeys)) {
         $completeRevisionHistory->pull($arrayKey);
       } else {
-        array_push($historyKeys,$historyKey);
+        $historyKeys[] =$historyKey;
       }
     }
 

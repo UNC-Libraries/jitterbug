@@ -113,7 +113,7 @@ class Activity extends Model {
       if ($explodedKey[0] !== $objectType) {
         break;
       }
-      array_push($mediaTypes, $mediaType);
+      $mediaTypes[] = $mediaType;
     }
     // sort media types in order of audio, film, video
     sort($mediaTypes);

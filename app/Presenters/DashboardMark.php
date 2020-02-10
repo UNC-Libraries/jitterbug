@@ -33,7 +33,7 @@ class DashboardMark
   {
   	$dashboardMarks = array();
     foreach($marks as $mark) {
-      array_push($dashboardMarks, new DashboardMark($mark));
+      $dashboardMarks[] = new DashboardMark($mark);
     }
     return $dashboardMarks;
   }
