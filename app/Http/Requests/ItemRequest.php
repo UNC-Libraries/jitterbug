@@ -25,7 +25,7 @@ class ItemRequest extends Request {
   {
     // Add rules for base audio visual item
     $rules = array();
-    $rules['batchSize'] = 'required_if:batch,1|integer|between:2,100';
+    $rules['batch_size'] = 'required_if:batch,1|integer|between:2,100';
     if ($this->route()->getName()!=='items.store') {
       $this->addRuleIfNotMixed($rules, 'call_number',
         'required|min:4|max:30|unique:audio_visual_items,call_number,'.
