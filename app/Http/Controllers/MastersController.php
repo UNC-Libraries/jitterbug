@@ -448,7 +448,7 @@ class MastersController extends Controller {
       DB::statement("set @transaction_id = '$transactionId';");
       
       foreach ($masters as $master) {
-        $originalCallNumbers[] = $master->callNumber;
+        $originalCallNumbers[] = $master->call_number;
 
         $master->fill($input);
         $subclass = $master->subclass;
