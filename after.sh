@@ -11,10 +11,10 @@ sudo apt-get update -y
 sudo apt-get install openjdk-8-jdk -y
 
 # Install PHP 7.2
-sudo DEBIAN_FRONTEND=noninteractive apt-get install php7.2 php7.2-ldap php7.2-fpm php7.2-mbstring php7.2-dom php7.2-mysql -y
+sudo DEBIAN_FRONTEND=noninteractive apt-get install php7.3 php7.3-ldap php7.3-fpm php7.3-mbstring php7.3-dom php7.3-mysql -y
 
 # set the php symlink to point to the 7.2 version (for cli)
-sudo update-alternatives --set php /usr/bin/php7.2
+sudo update-alternatives --set php /usr/bin/php7.3
 
 # Download Solr
 cd ~
