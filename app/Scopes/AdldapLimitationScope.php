@@ -7,7 +7,7 @@ class AdldapLimitationScope implements ScopeInterface
 {
   public function apply(Builder $query)
   {
-    $filters = env('ADLDAP_LIMITATION_FILTER', '');
+    $filters = env('LDAP_LIMITATION_FILTER', '');
     $query->whereMemberOf($filters);
   }
 }
