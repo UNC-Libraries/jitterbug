@@ -34,7 +34,7 @@ class ItemRequest extends Request {
     $this->addRuleIfNotMixed($rules, 'title', 'required|min:3|max:255');
     $this->addRuleIfNotMixed($rules, 'container_note', 'max:1000');
     $this->addRuleIfNotMixed($rules, 'collection_id', 'required');
-    $this->addRuleIfNotMixed($rules, 'accession_number', 'integer|digits_between:0,15');
+    $this->addRuleIfNotMixed($rules, 'accession_number', 'max:255');
     $this->addRuleIfNotMixed($rules, 'legacy', 'max:255');
     $this->addRuleIfNotMixed($rules, 'format_id', 'required');
     $this->addRuleIfNotMixed($rules, 'reel_tape_number', 'max:255');
@@ -89,7 +89,7 @@ class ItemRequest extends Request {
       // Messages for audio visual item fields
       'format_id.required' => 'The format field is required.',
       'reel_tape_number.max' => ' The reel/tape number field must be less than :max characters.',
-      'accession_number.digits_between' => 'The accession number must be less than :max digits.',
+      'accession_number.max' => 'The accession number must be less than :max characters.',
       'legacy.max' => 'The legacy id field must be less than :max characters.',
       'collection_id.required' => 'The collection field is required.',
       'physical_location.max' => ' The physical location field must be less than :max characters.',

@@ -77,7 +77,7 @@ $factory->define(Jitterbug\Models\AudioVisualItem::class, function (Faker\Genera
     'collection_id' => function () {
       return factory(Jitterbug\Models\Collection::class)->create()->id;
     },
-    'accession_number' => $faker->randomNumber(),
+    'accession_number' => $faker->word,
     'legacy' => null,
     'container_note' => $faker->text,
     'condition_note' => $faker->text,
