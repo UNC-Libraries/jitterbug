@@ -3,6 +3,7 @@
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Log;
 
 use Illuminate\Support\Str;
 use Jitterbug\Models\AudioVisualItem;
@@ -36,6 +37,7 @@ class AppServiceProvider extends ServiceProvider {
       $route = app('request')->route();
       if ($route) {
         $action = app('request')->route()->getAction();
+        Log::error($action);
         $controller = class_basename($action['controller']);
         list($controller, $action) = explode('@', $controller);
         // Remove controller from the end of the name
