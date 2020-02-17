@@ -62,7 +62,7 @@ return [
             'model' => Jitterbug\Models\User::class,
         ],
         'users' => [
-            'driver' => 'eloquent',
+            'driver' => env('APP_AUTH', 'ldap'),
             'model' => Jitterbug\Models\User::class,
         ],
         // 'users' => [
