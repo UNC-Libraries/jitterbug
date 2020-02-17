@@ -40,7 +40,6 @@ class AppServiceProvider extends ServiceProvider {
       $route = app('request')->route();
       if ($route) {
         $action = app('request')->route()->getAction();
-        Log::error($action);
         $controller = class_basename($action['controller']);
         list($controller, $action) = explode('@', $controller);
         // Remove controller from the end of the name

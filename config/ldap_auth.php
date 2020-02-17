@@ -33,7 +33,7 @@ return [
     |
     */
 
-    'provider' => env('LDAP_PROVIDER', 'Adldap\Laravel\Auth\NoDatabaseUserProvider'),
+    'provider' => Adldap\Laravel\Auth\DatabaseUserProvider::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -291,7 +291,7 @@ return [
     */
 
     'sync_attributes' => [
-
+        'username' => 'samaccountname',
         'first_name' => 'givenname',
         'last_name' => 'sn',
         'email' => 'mail',
