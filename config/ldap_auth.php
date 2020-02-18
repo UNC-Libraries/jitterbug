@@ -46,7 +46,7 @@ return [
     |
     */
 
-    'model' => Jitterbug\Models\User::class,
+//    'model' => Jitterbug\Models\User::class,
 
     /*
     |--------------------------------------------------------------------------
