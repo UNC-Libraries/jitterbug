@@ -32,13 +32,10 @@ class Kernel extends ConsoleKernel {
       $activityStream = new ActivityStream;
       $activityStream->generate();
     })->name('generateActivityStream')
-      ->when(function () {
-        $date = new \DateTime();
-        $date->setTimezone(new \DateTimeZone('America/New_York'));
-        $hour = $date->format('G');
-        return $hour >= 8 && $hour <= 17; })
-      ->withoutOverlapping(10)
-      ->everyMinute();
+      ->everyMinute()
+      ->timezone('America/New_York')
+      ->between('7:00', '18:00')
+      ->withoutOverlapping(10);
   }
 
 }
