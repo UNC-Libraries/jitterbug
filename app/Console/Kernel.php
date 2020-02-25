@@ -27,21 +27,18 @@ class Kernel extends ConsoleKernel {
    */
   protected function schedule(Schedule $schedule)
   {
-    $schedule->command('inspire')
-             ->hourly();
-
     // Generate the activity stream
     $schedule->call(function () {
       $activityStream = new ActivityStream;
       $activityStream->generate();
-    })->everyMinute()
+    })->name('generateActivityStream')
       ->when(function () {
         $date = new \DateTime();
         $date->setTimezone(new \DateTimeZone('America/New_York'));
         $hour = $date->format('G');
         return $hour >= 8 && $hour <= 17; })
-      ->name('generateActivityStream')
-      ->withoutOverlapping();
+      ->withoutOverlapping(10)
+      ->everyMinute();
   }
 
 }
