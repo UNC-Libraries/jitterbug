@@ -2,7 +2,6 @@
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 use Jitterbug\Http\Controllers\Controller;
 use Adldap\Auth\BindException;
@@ -40,7 +39,6 @@ class LoginController extends Controller
 
   public function login(Request $request)
   {
-    Log::error('made it to login controller');
     try {
       return $this->traitLogin($request);
     } catch (BindException $e) {
