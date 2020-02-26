@@ -40,11 +40,11 @@ class LoginController extends Controller
 
   public function login(Request $request)
   {
+    Log::error('made it to login controller');
     try {
       return $this->traitLogin($request);
     } catch (BindException $e) {
-      Log::error('Login failed because:');
-      Log::error($e);
+      //
     }
     return $this->sendFailedLoginResponse($request);
   }
