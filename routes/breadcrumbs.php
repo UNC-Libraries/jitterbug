@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Log;
 /*
 |--------------------------------------------------------------------------
 | Audio Visual Items
@@ -22,7 +23,8 @@ Breadcrumbs::for('items.show', function($trail, $item)
 Breadcrumbs::for('items.edit', function($trail, $item)
 {
   $trail->parent('items.index');
-  $trail->push('Edit Item', route('items.edit', $item->id));
+  $param = getParam($item->id);
+  $trail->push('Edit Item', route('items.edit', $param));
 });
 
 // Items / Create Item
@@ -55,7 +57,8 @@ Breadcrumbs::for('masters.show', function($trail, $master)
 Breadcrumbs::for('masters.edit', function($trail, $master)
 {
   $trail->parent('masters.index');
-  $trail->push('Edit Master', route('masters.edit', $master->id));
+  $param = getParam($master->id);
+  $trail->push('Edit Master', route('masters.edit', $param));
 });
 
 // Masters / View Master / View Cut
@@ -109,7 +112,8 @@ Breadcrumbs::for('transfers.show', function($trail, $transfer)
 Breadcrumbs::for('transfers.edit', function($trail, $transfer)
 {
   $trail->parent('transfers.index');
-  $trail->push('Edit Transfer', route('transfers.edit', $transfer->id));
+  $param = getParam($transfer->id);
+  $trail->push('Edit Transfer', route('transfers.edit', $param));
 });
 
 // Transfers / Create Transfer
@@ -118,4 +122,9 @@ Breadcrumbs::for('transfers.create', function($trail)
   $trail->parent('transfers.index');
   $trail->push('Create Transfer', route('transfers.create'));
 });
+
+function getParam($id) {
+  // if there is no ID, it's a batch edit
+  return $id ?? 'batch';
+}
 
