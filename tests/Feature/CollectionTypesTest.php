@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models\User;
 use Jitterbug\Models\CollectionType;
 use Jitterbug\Models\Collection;
@@ -12,7 +12,7 @@ class CollectionTypesTest extends TestCase
      *
      * @return void
      */
-  use DatabaseTransactions;
+  use RefreshDatabase;
   private $adminUser;
   private $user;
 

@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models\Prefix;
 use Jitterbug\Models\NewCallNumberSequence;
 
 class NewCallNumberSequenceTest extends TestCase
 {
-  use DatabaseTransactions;
+  use RefreshDatabase;
 
   public function testCallNumberUsesArchivalIdentifierInsteadOfCollectionId()
   {

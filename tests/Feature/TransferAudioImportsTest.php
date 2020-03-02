@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TransferAudioImportsTest extends TestCase
 {
@@ -9,7 +9,7 @@ class TransferAudioImportsTest extends TestCase
      *
      * @return void
      */
-    use DatabaseTransactions;
+    use RefreshDatabase;
     private $user;
     private $callNumber1;
     private $callNumber2;

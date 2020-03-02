@@ -3,12 +3,11 @@
 use Jitterbug\Models\Prefix;
 use Jitterbug\Models\User;
 use Jitterbug\Models\Format;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class FormatsTest extends TestCase
 {
+  use RefreshDatabase;
   private $adminUser;
   private $prefix;
   private $format;
