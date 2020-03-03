@@ -65,11 +65,6 @@ class ItemsImport extends Import {
           && !empty($row[$key]) && !$this->collectionExists($row[$key])) {
           $bag->add($key, $key . ' must already exist in the database.');
         }
-        // Validate accession number is an integer
-        if ($key==='AccessionNumber' 
-          && !empty($row[$key]) && !ctype_digit($row[$key])) {
-          $bag->add($key, $key . ' must be an integer.');
-        }
         // Validate format exists
         if ($key==='FormatID' 
           && !empty($row[$key]) && !$this->formatExists($row[$key])) {
