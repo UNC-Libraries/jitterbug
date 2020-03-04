@@ -3,7 +3,9 @@
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Log;
 
+use Illuminate\Support\Str;
 use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\AudioItem;
 use Jitterbug\Models\FilmItem;
@@ -40,7 +42,7 @@ class AppServiceProvider extends ServiceProvider {
         // Remove controller from the end of the name
         $controller = 
           substr($controller,0,strlen($controller) - strlen('Controller'));
-        $controller = camel_case($controller);
+        $controller = Str::camel($controller);
         $view->with(compact('controller', 'action'));
        }
     });

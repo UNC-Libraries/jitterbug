@@ -10,16 +10,15 @@ use Jitterbug\Presenters\ActivityStream;
 class Kernel extends ConsoleKernel {
 
   /**
-   * The Artisan commands provided by your application.
+   * Register the commands for the application
    *
-   * @var array
+   * @return void
    */
-  protected $commands = [
-    'Jitterbug\Console\Commands\Inspire',
-    'Jitterbug\Console\Commands\BackfillNewCollectionTypesSequences',
-    'Jitterbug\Console\Commands\AutoIncrementCollectionIds',
-  ];
 
+  protected function commands()
+  {
+    $this->load(__DIR__.'/Commands');
+  }
   /**
    * Define the application's command schedule.
    *
@@ -28,21 +27,15 @@ class Kernel extends ConsoleKernel {
    */
   protected function schedule(Schedule $schedule)
   {
-    $schedule->command('inspire')
-             ->hourly();
-
     // Generate the activity stream
     $schedule->call(function () {
       $activityStream = new ActivityStream;
       $activityStream->generate();
-    })->everyMinute()
-      ->when(function () {
-        $date = new \DateTime();
-        $date->setTimezone(new \DateTimeZone('America/New_York'));
-        $hour = $date->format('G');
-        return $hour >= 8 && $hour <= 17; })
-      ->name('generateActivityStream')
-      ->withoutOverlapping();
+    })->name('generateActivityStream')
+      ->everyMinute()
+      ->timezone('America/New_York')
+      ->between('7:00', '18:00')
+      ->withoutOverlapping(2);
   }
 
 }

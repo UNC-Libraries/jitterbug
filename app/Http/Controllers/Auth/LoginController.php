@@ -1,11 +1,11 @@
 <?php namespace Jitterbug\Http\Controllers\Auth;
 
-use Log;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
 use Jitterbug\Http\Controllers\Controller;
-use Jitterbug\Models\User;
+use Adldap\Auth\BindException;
+
 
 class LoginController extends Controller
 {
@@ -41,7 +41,7 @@ class LoginController extends Controller
   {
     try {
       return $this->traitLogin($request);
-    } catch (\Adldap\Exceptions\Auth\BindException $e) {
+    } catch (BindException $e) {
       //
     }
     return $this->sendFailedLoginResponse($request);

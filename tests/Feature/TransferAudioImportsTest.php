@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TransferAudioImportsTest extends TestCase
 {
@@ -9,14 +9,15 @@ class TransferAudioImportsTest extends TestCase
      *
      * @return void
      */
-    use DatabaseTransactions;
+    use RefreshDatabase;
     private $user;
     private $callNumber1;
     private $callNumber2;
     private $department;
     private $playbackMachine;
 
-    protected function setUp() {
+    protected function setUp() : void
+    {
       parent::setUp();
       $this->user = factory(Jitterbug\Models\User::class)->create();
       $this->department = factory(Jitterbug\Models\Department::class)->create(['name' => 'SFC']);

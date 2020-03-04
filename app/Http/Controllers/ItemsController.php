@@ -72,7 +72,7 @@ class ItemsController extends Controller
 
       $itemIds = array();
       foreach ($items as $item) {
-        array_push($itemIds, $item->id);
+        $itemIds[] = $item->id;
       }
       $marks = Mark::whereIn('markable_id', $itemIds)
                    ->where('markable_type', 'AudioVisualItem')
@@ -165,7 +165,7 @@ class ItemsController extends Controller
         if ($mark) $item->addMark();
 
         $itemId = $item->id;
-        array_push($items, $item);
+        $items[] = $item;
 
         $sequence->increase();
 
@@ -278,7 +278,7 @@ class ItemsController extends Controller
 
     $subclassIds = array();
     foreach ($items as $item) {
-      array_push($subclassIds, $item->subclass->id);
+      $subclassIds[] = $item->subclass->id;
     }
     $subclasses = $subclassType::whereIn('id', $subclassIds)->get();
 
@@ -432,7 +432,7 @@ class ItemsController extends Controller
 
         if ($item->isDirty('collection_id') ||
             $item->isDirty('format_id')) {
-          array_push($collectionOrFormatUpdated, $item);
+          $collectionOrFormatUpdated[] = $item;
         }
 
         $subclass->save();

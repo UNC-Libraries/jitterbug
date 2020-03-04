@@ -48,7 +48,7 @@ class ItemsImport extends Import {
     $messages = array();
     foreach($this->data as $row) {
       $bag = new MessageBag();
-      array_push($messages, $bag);
+      $messages[] = $bag;
       foreach($this->itemsImportKeys as $key) {
         // Validate that all required fields have values
         if (in_array($key, $this->requiredItemsImportKeys) 
@@ -220,7 +220,7 @@ class ItemsImport extends Import {
 
         $sequence->increase();
 
-        array_push($items, $item);
+        $items[] = $item;
       } // end foreach row
 
       DB::statement('set @transaction_id = null;');      

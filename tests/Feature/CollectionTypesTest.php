@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models\User;
 use Jitterbug\Models\CollectionType;
 use Jitterbug\Models\Collection;
@@ -12,11 +12,12 @@ class CollectionTypesTest extends TestCase
      *
      * @return void
      */
-  use DatabaseTransactions;
+  use RefreshDatabase;
   private $adminUser;
   private $user;
 
-  protected function setUp() {
+  protected function setUp() : void
+  {
     parent::setUp();
     $this->adminUser = factory(User::class)->create(['admin' => 1]);
     $this->user = factory(User::class)->create(['admin' => 0]);

@@ -43,7 +43,7 @@ class BatchTransfer extends Transfer {
   {
     $ids = array();
     foreach($this->transfers as $transfer) {
-      array_push($ids, $transfer->id);
+      $ids[] = $transfer->id;
     }
     return implode(',', $ids);
   }

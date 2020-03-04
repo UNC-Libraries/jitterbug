@@ -57,7 +57,7 @@ class VideoImport extends Import {
     $messages = array();
     foreach($this->data as $row) {
       $bag = new MessageBag();
-      array_push($messages, $bag);
+      $messages[] = $bag;
       foreach($this->videoImportKeys as $key) {
         // Validate that all required fields have values
         if (in_array($key, $this->requiredVideoImportKeys) 
@@ -85,7 +85,7 @@ class VideoImport extends Import {
           && !empty($row[$key]) && in_array($row[$key], $fileNames)) {
           $bag->add($key, $key . ' has already been used in this file.');
         } else if ($key==='FileName' && !empty($row[$key])) {
-          array_push($fileNames, $row[$key]);
+          $fileNames[] = $row[$key];
         }
         // Validate duration format
         if ($key==='Duration' 
@@ -228,7 +228,7 @@ class VideoImport extends Import {
         $master->subclass_type = 'VideoMaster';
         $master->subclass_id = $videoMaster->id;
         $master->save();
-        array_push($masters, $master);
+        $masters[] = $master;
         $created++;
 
         // Create the video transfer
@@ -252,7 +252,7 @@ class VideoImport extends Import {
         $transfer->subclass_type = 'VideoTransfer';
         $transfer->subclass_id = $videoTransfer->id;
         $transfer->save();
-        array_push($transfers, $transfer);
+        $transfers[] = $transfer;
         $created++;
 
         // Update the video item
@@ -267,7 +267,7 @@ class VideoImport extends Import {
         $item = AudioVisualItem::where('call_number', $callNumber)->first();
         $item->touch();
         $item->save();
-        array_push($items, $item);
+        $items[] = $item;
         $updated++;
 
       } // end foreach row

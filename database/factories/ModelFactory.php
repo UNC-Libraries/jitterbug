@@ -125,7 +125,7 @@ $factory->define(Jitterbug\Models\Collection::class, function (Faker\Generator $
     'collection_type_id' => function () {
       return factory(Jitterbug\Models\CollectionType::class)->create()->id;
     },
-    'archival_identifier' => $faker->word,
+    'archival_identifier' => $faker->unique()->word,
   ];
 });
 

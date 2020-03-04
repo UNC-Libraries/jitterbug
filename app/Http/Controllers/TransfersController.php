@@ -78,7 +78,7 @@ class TransfersController extends Controller {
 
       $transferIds = array();
       foreach ($transfers as $transfer) {
-        array_push($transferIds, $transfer->id);
+        $transferIds[] = $transfer->id;
       }
       $marks = Mark::whereIn('markable_id', $transferIds)
             ->where('markable_type', 'Transfer')
@@ -253,7 +253,7 @@ class TransfersController extends Controller {
 
     $subclassIds = array();
     foreach ($transfers as $transfer) {
-      array_push($subclassIds, $transfer->subclass->id);
+      $subclassIds[] = $transfer->subclass->id;
     }
     $subclasses = $subclassType::whereIn('id', $subclassIds)->get();
 
@@ -550,8 +550,8 @@ class TransfersController extends Controller {
 
           $originalItem = 
             AudioVisualItem::where('call_number', $originalCallNumber)->first();
-          array_push($originalMasters, $originalMaster);
-          array_push($originaItems, $originalItem);
+          $originalMasters[] = $originalMaster;
+          $originaItems[] = $originalItem;
         }
 
         $subclass->save();

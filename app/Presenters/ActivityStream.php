@@ -39,7 +39,7 @@ class ActivityStream
         $digests = array();
         foreach ($results as $result) {
           $digest = new TransactionDigest($result->transaction_id);
-          array_push($digests, $digest);
+          $digests[] = $digest;
         }
 
         // Collect the activities from the digests

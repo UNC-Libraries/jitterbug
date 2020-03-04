@@ -3,17 +3,17 @@
 use Jitterbug\Models\Prefix;
 use Jitterbug\Models\User;
 use Jitterbug\Models\Format;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class FormatsTest extends TestCase
 {
+  use RefreshDatabase;
   private $adminUser;
   private $prefix;
   private $format;
 
-  protected function setUp() {
+  protected function setUp() : void
+  {
     parent::setUp();
     $this->adminUser = factory(User::class)->create(['admin' => 1]);
     $this->format = factory(Format::class)->create(['name' => '16mm']);

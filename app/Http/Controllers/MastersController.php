@@ -76,7 +76,7 @@ class MastersController extends Controller {
 
       $masterIds = array();
       foreach ($masters as $master) {
-        array_push($masterIds, $master->id);
+        $masterIds[] = $master->id;
       }
       $marks = Mark::whereIn('markable_id', $masterIds)
             ->where('markable_type', 'PreservationMaster')
@@ -181,7 +181,7 @@ class MastersController extends Controller {
         if ($mark) $master->addMark();
 
         $masterId = $master->id;
-        array_push($masters, $master);
+        $masters[] = $master;
 
       } while ($batch && ++$batchIndex < $batchSize);
 
@@ -280,7 +280,7 @@ class MastersController extends Controller {
 
     $subclassIds = array();
     foreach ($masters as $master) {
-      array_push($subclassIds, $master->subclass->id);
+      $subclassIds[] = $master->subclass->id;
     }
     $subclasses = $subclassType::whereIn('id', $subclassIds)->get();
 
@@ -440,15 +440,15 @@ class MastersController extends Controller {
     }
 
     $originalCallNumbers = array();
-    $transfersToUpateInSolr = array();
+    $transfersToUpdateInSolr = array();
     // Update MySQL
     DB::transaction(function () use ($masters, $callNumberChanged, $input,
-                              &$originalCallNumbers, &$transfersToUpateInSolr) {
+                              &$originalCallNumbers, &$transfersToUpdateInSolr) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
       
       foreach ($masters as $master) {
-        array_push($originalCallNumbers, $master->callNumber);
+        $originalCallNumbers[] = $master->call_number;
 
         $master->fill($input);
         $subclass = $master->subclass;
@@ -459,7 +459,7 @@ class MastersController extends Controller {
           foreach ($transfers as $transfer) {
             $transfer->call_number = $master->call_number;
             $transfer->save();
-            array_push($transfersToUpateInSolr, $transfer);
+            $transfersToUpdateInSolr[] = $transfer;
           }
           $cuts = $master->cuts;
           foreach ($cuts as $cut) {
@@ -487,7 +487,7 @@ class MastersController extends Controller {
       $items->push($newItem);
       $this->solrItems->update($items);
       // Need to update transfers since the call number has changed.
-      $this->solrTransfers->update($transfersToUpateInSolr);
+      $this->solrTransfers->update($transfersToUpdateInSolr);
     }
     $this->solrMasters->update($masters);
 

@@ -48,7 +48,7 @@ abstract class Controller extends BaseController {
           $this->invalidRange();
         }
       }
-      array_push($itemIds, $item->id);
+      $itemIds[] = $item->id;
       $index++;
     }
     $ids = array('ids'=>$itemIds);

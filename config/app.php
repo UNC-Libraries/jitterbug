@@ -98,22 +98,6 @@ return [
 
   /*
   |--------------------------------------------------------------------------
-  | Logging Configuration
-  |--------------------------------------------------------------------------
-  |
-  | Here you may configure the log settings for your application. Out of
-  | the box, Laravel uses the Monolog PHP logging library. This gives
-  | you a variety of powerful log handlers / formatters to utilize.
-  |
-  | Available Settings: "single", "daily", "syslog", "errorlog"
-  |
-  */
-
-  'log' => 'daily',
-  'log_level' => env('APP_LOG_LEVEL', 'error'),
-
-  /*
-  |--------------------------------------------------------------------------
   | Autoloaded Service Providers
   |--------------------------------------------------------------------------
   |
@@ -166,10 +150,10 @@ return [
     /*
      * Third-party Service Providers
      */
-    // Comes from davejamesmiller/laravel-breadcrumbs (3.0)
-    'DaveJamesMiller\Breadcrumbs\ServiceProvider',
-    'Adldap\Laravel\AdldapServiceProvider',
-    'Adldap\Laravel\AdldapAuthServiceProvider',
+    // Comes from davejamesmiller/laravel-breadcrumbs (^5.0)
+    DaveJamesMiller\Breadcrumbs\BreadcrumbsServiceProvider::class,
+    Adldap\Laravel\AdldapServiceProvider::class,
+    Adldap\Laravel\AdldapAuthServiceProvider::class,
     'Venturecraft\Revisionable\RevisionableServiceProvider',
 
 
@@ -241,7 +225,7 @@ return [
     'FilmTransfer'              => 'Jitterbug\Models\FilmTransfer',
     'VideoTransfer'             => 'Jitterbug\Models\VideoTransfer',
 
-    'Breadcrumbs' => 'DaveJamesMiller\Breadcrumbs\Facade',
+    'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs::class,
     'Uuid'        => 'Ramsey\Uuid\Uuid',
     'Adldap'      => 'Adldap\Laravel\Facades\Adldap',
 

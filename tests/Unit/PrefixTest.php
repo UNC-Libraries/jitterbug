@@ -3,17 +3,17 @@
 use Jitterbug\Models\Format;
 use Jitterbug\Models\Prefix;
 use Jitterbug\Models\Collection;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PrefixTest extends TestCase
 {
-  use DatabaseTransactions;
+  use RefreshDatabase;
   private $prefix1;
   private $prefix2;
   private $format;
 
-  protected function setUp()
+  protected function setUp() : void
   {
     parent::setUp();
     $this->prefix1 = factory(Prefix::class)->create(['deleted_at' => null, 'collection_type_id' => 3]);

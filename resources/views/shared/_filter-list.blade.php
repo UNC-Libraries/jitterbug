@@ -1,5 +1,5 @@
     <h6>{{Str::title($name)}} Filters <span id="{{Str::lower($name)}}-filters-selection-count" class="selection-count label label-default" style="margin-left: 5px;"></span></h6>
-    <ul id="{{Str::lower($name)}}-filters" class="filter-list" style="{{$style or ''}}">
+    <ul id="{{Str::lower($name)}}-filters" class="filter-list" style="{{$style ?? ''}}">
       <li>
         <div class="checkbox">
           <label>

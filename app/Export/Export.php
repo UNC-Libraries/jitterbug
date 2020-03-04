@@ -1,17 +1,13 @@
 <?php namespace Jitterbug\Export;
 
 use Auth;
-
+use Illuminate\Support\Str;
 /**
  * Abstract base class for export types. Subclasses must define the 
  * exportableFields() method and 2 properties: an $exportClass property 
  * that specifies the base class to be exported, and an $ids property
  * that specifies the ids of the records (of type $exportClass) to 
  * be exported.
- *
- * This class assumes the specified $exportClass uses the 
- * Jitterbug\Models\CamelCasing trait, as it uses the toSnakeCase()
- * method for getting the attributes in snake case.
  * 
  * This class also assumes the specified $exportClass uses the
  * Venturecraft\Revisionable\RevisionableTrait trait, as it
@@ -50,13 +46,13 @@ abstract class Export {
         $cutHeadings = array_keys($this->cutExportFields);
         foreach ($cutHeadings as $heading) {
           $heading = str_replace(' ', '', $heading);
-          array_push($headings, $heading);
+          $headings[] = $heading;
         }
       } else {
         $heading = array_search($selectedField, $fields);
         // Remove the spaces from the heading labels
         $heading = str_replace(' ', '', $heading);
-        array_push($headings, $heading);
+        $headings[] = $heading;
       }
     }
     fputcsv($handle, $headings);
@@ -80,7 +76,7 @@ abstract class Export {
             $cutFields = array_values($this->cutExportFields);
             foreach ($cutFields as $cutField) {
               $fieldValue = $this->getFieldValue($cut, $cutField);
-              array_push($row, $fieldValue);
+              $row[] = $fieldValue;
             }
           }
         } else {
@@ -92,7 +88,7 @@ abstract class Export {
             $subclass = $record->subclass;
             $fieldValue = $this->getFieldValue($subclass, $selectedField);
           }
-          array_push($row, $fieldValue);
+          $row[] = $fieldValue;
         }
       }
       fputcsv($handle, $row);
@@ -131,7 +127,7 @@ abstract class Export {
     if ($this->isForeignKey($fieldName)) {
       $fieldWithoutId = 
         substr($fieldName, 0, strlen($fieldName) - strlen("_id"));
-      $relation = camel_case($fieldWithoutId);
+      $relation = Str::camel($fieldWithoutId);
       // Check for a relation method
       if(method_exists($model, $relation)) {
         $builder = $model->$relation;

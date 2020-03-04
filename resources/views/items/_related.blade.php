@@ -23,7 +23,7 @@
             <td>{{$master->id}}</td>
             <td>{{$master->file_name}}</td>
             <td>{{$master->file_location}}</td>
-            <td>{{$master->department->name or ''}}</td>
+            <td>{{$master->department->name ?? ''}}</td>
             <td>{{$master->duration}}</td>
             <td>{{$master->type}}</td>
           </tr>

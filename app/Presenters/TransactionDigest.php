@@ -249,14 +249,14 @@ class TransactionDigest
       foreach ($this->revisions as $revision) {
         $updateActivity = clone $activity;
         $updateActivity->field = $revision->fieldName();
-        array_push($this->activities, $updateActivity);
+        $this->activities[] = $updateActivity;
       }
       return;
     } else if ($this->action === 'updated' && !$this->batch) {
       $activity->numFields = $this->revisions->count();
     }
 
-    array_push($this->activities, $activity);
+    $this->activities[] = $activity;
   }
 
   /**

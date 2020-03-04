@@ -3,6 +3,7 @@
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\ValidationException;
 
 
 abstract class Request extends FormRequest {
@@ -50,14 +51,12 @@ abstract class Request extends FormRequest {
     // Since there's not really a good place for this message on the form,
     // we're going to flash a message at the top of the page.
     if ($validator->errors()->has('batch_size')) {
-      $this->session()->put('alert', array('type' => 'danger', 'message' => 
-          '<strong>Oops!</strong> ' . 
+      $this->session()->put('alert', array('type' => 'danger', 'message' =>
+          '<strong>Oops!</strong> ' .
           'Please provide a batch size between 2 and 100 items.'));
     }
 
-    throw new HttpResponseException($this->response(
-          $this->formatErrors($validator)
-    ));
+    throw new ValidationException($validator);
   }
 
 }

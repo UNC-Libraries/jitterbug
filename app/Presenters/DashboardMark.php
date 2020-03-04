@@ -1,8 +1,6 @@
 <?php namespace Jitterbug\Presenters;
 
-use Log;
-
-use Junebug\Models\Mark;
+use Westsworld\TimeAgo;
 
 /**
  * Decorates a Mark with functionality needed for the Dashboard.
@@ -33,7 +31,7 @@ class DashboardMark
   {
   	$dashboardMarks = array();
     foreach($marks as $mark) {
-      array_push($dashboardMarks, new DashboardMark($mark));
+      $dashboardMarks[] = new DashboardMark($mark);
     }
     return $dashboardMarks;
   }
@@ -69,6 +67,7 @@ class DashboardMark
   
   public function timestamp()
   {
-    return timeAgoInWords($this->mark->updated_at);
+    $timeAgo = new TimeAgo();
+    return $timeAgo->inWordsFromStrings($this->mark->updated_at);
   }
 }

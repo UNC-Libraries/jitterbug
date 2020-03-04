@@ -33,7 +33,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'adldap',
+            'provider' => 'ldap',
         ],
         'api' => [
             'driver' => 'token',
@@ -57,12 +57,12 @@ return [
     |
     */
     'providers' => [
-        'adldap' => [
-            'driver' => 'adldap',
+        'ldap' => [
+            'driver' => 'ldap',
             'model' => Jitterbug\Models\User::class,
         ],
         'users' => [
-            'driver' => 'eloquent',
+            'driver' => env('APP_AUTH', 'ldap'),
             'model' => Jitterbug\Models\User::class,
         ],
         // 'users' => [

@@ -1,15 +1,16 @@
 <?php
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models;
 
 class CallNumberSequenceTest extends TestCase
 {
-  use DatabaseTransactions;
+  use RefreshDatabase;
   private $collectionType;
   private $prefix;
   private $collection;
 
-  protected function setUp() {
+  protected function setUp() : void
+  {
     parent::setUp();
     $new_prefix_array = Models\CallNumberSequence::ALWAYS_USE_NEW_STYLE;
     $this->collectionType = factory(Models\CollectionType::class)->create(['name' => 'SFC Collection']);

@@ -7,10 +7,10 @@ $brand-danger:              #d16642 !default;
 $gray-light:                #e0e0e0 !default;
 
 $container-max-widths: (
-  sm: 576px,
-  md: 720px,
-  lg: 960px,
-  xl: 1140px
+        sm: 576px,
+        md: 720px,
+        lg: 960px,
+        xl: 1140px
 ) !default;
 
 $border-radius-sm:               .25rem !default;
@@ -127,7 +127,7 @@ Header & Footer
 }
 
 #support-nav a {
-   color: $gray-dark;
+  color: $gray-dark;
 }
 
 #support-nav ul {
@@ -174,7 +174,7 @@ Global Navigation
   margin-right: .5rem;
 }
 
-#global-nav nav li a { 
+#global-nav nav li a {
   display: block;
   color: $global-nav-color;
   text-align: center;
@@ -279,10 +279,10 @@ Admin
 }
 
 #table-container {
- height: 739px; 
- margin-top: .25rem;
- margin-bottom: 1rem;
- overflow-y: scroll;
+  height: 739px;
+  margin-top: .25rem;
+  margin-bottom: 1rem;
+  overflow-y: scroll;
 }
 
 .popover-submit {
@@ -1105,7 +1105,7 @@ label {
   font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial;
 }
 
-.popover-title { 
+.popover-title {
   display: none;
 }
 
@@ -1114,7 +1114,7 @@ label {
 }
 
 tbody > tr:hover {
- background-color: $content-bg;
+  background-color: $content-bg;
 }
 
 #content {

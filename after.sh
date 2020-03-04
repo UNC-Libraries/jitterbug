@@ -10,11 +10,11 @@ cd /
 sudo apt-get update -y
 sudo apt-get install openjdk-8-jdk -y
 
-# Install PHP 5.6
-sudo apt-get install php5.6 php5.6-ldap php5.6-fpm php5.6-mbstring php5.6-dom php5.6-mysql -y
+# Install PHP 7.3
+sudo DEBIAN_FRONTEND=noninteractive apt-get install php7.3 php7.3-ldap php7.3-fpm php7.3-mbstring php7.3-dom php7.3-mysql -y
 
-# set the php symlink to point to the 5.6 version (for cli)
-sudo update-alternatives --set php /usr/bin/php5.6
+# set the php symlink to point to the 7.3 version (for cli)
+sudo update-alternatives --set php /usr/bin/php7.3
 
 # Download Solr
 cd ~

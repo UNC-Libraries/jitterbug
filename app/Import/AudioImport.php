@@ -54,7 +54,7 @@ class AudioImport extends Import {
     $messages = array();
     foreach($this->data as $row) {
       $bag = new MessageBag();
-      array_push($messages, $bag);
+      $messages[] = $bag;
       foreach($this->audioImportKeys as $key) {
         // if the batch import edit field is empty, this is a new record
         $new_record = empty($row[Transfer::BATCH_IMPORT_KEY]);
@@ -93,7 +93,7 @@ class AudioImport extends Import {
           && !empty($row[$key]) && in_array($row[$key], $originatorReferences)) {
           $bag->add($key, $key . ' has already been used in this file.');
         } else if ($key==='OriginatorReference' && !empty($row[$key])) {
-          array_push($originatorReferences, $row[$key]);
+          $originatorReferences[] = $row[$key];
         }
         // Validate file size is an integer
         if ($key === 'FileSize'

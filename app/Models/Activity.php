@@ -3,6 +3,7 @@
 use Log;
 
 use Illuminate\Database\Eloquent\Model;
+use Westsworld\TimeAgo;
 
 /**
  * Models a single entry in the recent activity module of the dashboard.
@@ -66,7 +67,9 @@ class Activity extends Model {
   public function getTimeAgoAttribute($value)
   {
     if ($value === null) $value = $this->timestamp;
-    return timeAgoInWords($value);
+
+    $timeAgo = new TimeAgo();
+    return $timeAgo->inWordsFromStrings($value);
   }
 
   /**
@@ -110,7 +113,7 @@ class Activity extends Model {
       if ($explodedKey[0] !== $objectType) {
         break;
       }
-      array_push($mediaTypes, $mediaType);
+      $mediaTypes[] = $mediaType;
     }
     // sort media types in order of audio, film, video
     sort($mediaTypes);
