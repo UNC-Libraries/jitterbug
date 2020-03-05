@@ -1,10 +1,5 @@
 <?php namespace Jitterbug\Http\Requests;
 
-use Log;
-
-use Illuminate\Routing\Route;
-
-use Jitterbug\Http\Requests\Request;
 
 class PlaybackMachineRequest extends Request {
 
