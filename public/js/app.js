@@ -263,14 +263,15 @@ jitterbug = {
             // Validation error
             if (jqXHR.status==422) {
               var errors = JSON.parse(jqXHR.responseText);
+              var errorMessage = errors['errors']['name'][0];
               // Get the first error, no matter which it is.
-              for (var key in errors) if (errors.hasOwnProperty(key)) break;
+
               // Unfortunately, we have to hide the popover here
               // because it doesn't stay pinned to the field it
               // relates to when the alert div is opened (a bug
               // in Bootstrap/Tether).
               jitterbug.displayAlert('danger',
-                  '<strong>Whoops.</strong> ' + errors[key]);
+                  '<strong>Whoops.</strong> ' + errorMessage);
             } else {
               jitterbug.displayAlert('danger',
                   '<strong>Uh oh.</strong> An error has occurred: ' + error);
