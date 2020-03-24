@@ -66,7 +66,7 @@ class VideoImport extends Import {
         }
         // Validate call number exists
         if ($key==='CallNumber' 
-          && !empty($row[$key]) && !$this->callNumberExists($row[$key])) {
+          && !empty($row[$key]) && !$this->valueExists(AudioVisualItem::class, 'call_number', $row[$key])) {
           $bag->add($key, $key . ' must already exist in the database.');
         }
         // Validate call number is video
@@ -76,7 +76,7 @@ class VideoImport extends Import {
         }
         // Validate file name (preservation_master.file_name) doesn't exist
         if ($key==='FileName' 
-          && !empty($row[$key]) && $this->fileNameExists($row[$key])) {
+          && !empty($row[$key]) && $this->valueExists(PreservationMaster::class,'file_name', $row[$key])) {
           $bag->add($key, $key . ' already exists in the database.');
         }
         // Validate file name (preservation_master.file_name) is unqiue 
@@ -95,12 +95,12 @@ class VideoImport extends Import {
         }
         // Validate playback machine exists
         if ($key==='TransferMachine' 
-          && !empty($row[$key]) && !$this->playbackMachineExists($row[$key])) {
+          && !empty($row[$key]) && !$this->valueExists(PlaybackMachine::class, 'name', $row[$key])) {
           $bag->add($key, $key . ' is not a recognized playback machine.');
         }
         // Validate vendor exists
         if ($key==='CaptureEngineer' 
-          && !empty($row[$key]) && !$this->vendorExists($row[$key])) {
+          && !empty($row[$key]) && !$this->valueExists(Vendor::class, 'name', $row[$key])) {
           $bag->add($key, $key . ' is not a recognized vendor.');
         }
         // Validate file size is an integer
@@ -115,7 +115,7 @@ class VideoImport extends Import {
         }
         // Validate department exists
         if ($key==='IART' 
-          && !empty($row[$key]) && !$this->departmentExists($row[$key])) {
+          && !empty($row[$key]) && !$this->valueExists(Department::class,'name', $row[$key])) {
           $bag->add($key, $key . ' is not a recognized department.');
         }
         // Validate date is formatted correctly
