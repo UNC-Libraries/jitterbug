@@ -14,6 +14,18 @@ class Transfer extends Model {
 
   const BATCH_EDIT_MAX_LIMIT = 1000;
   const BATCH_IMPORT_KEY =  'OriginalPm';
+  const AUDIO_IMPORT_KEYS = [
+    'CallNumber', 'OriginatorReference', 'Side',
+    'PlaybackMachine', 'FileSize', 'Duration',
+    'OriginationDate', 'TransferNote', 'IART',
+    'OriginalPM', 'Size'
+  ];
+  const VIDEO_IMPORT_KEYS = [
+    'CallNumber', 'FileName', 'Codec', 'Duration',
+    'FileSize', 'PreservationChecksum', 'AspectRatio', 'TransferMachine',
+    'TimeBaseCorrector', 'A/Dconverter', 'CaptureEngineer', 'IART',
+    'Date', 'Color', 'Sound', 'Format'
+  ];
 
   protected $dates = ['deleted_at'];
 
