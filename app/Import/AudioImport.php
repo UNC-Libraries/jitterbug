@@ -336,7 +336,7 @@ class AudioImport extends Import {
         }
 
         if (!empty($row['Size'])) {
-          $audioVisualItem = AudioVisualItem::where('size', $row['Size'])->first();
+          $audioVisualItem = AudioVisualItem::where('call_number', $callNumber)->first();
           $audioItem = $audioVisualItem->subclass;
           $audioItem->size = $row['Size'];
           $audioItem->save();
