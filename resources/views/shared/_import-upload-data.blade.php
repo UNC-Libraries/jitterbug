@@ -1,5 +1,5 @@
-<div id={{$tableId}}>
-  @if (count($data)==0)
+<div id='{{$tableType}}-upload-data-container'>
+  @if (count($data)===0)
     <div>No records were found in the selected file. Either it was empty, or it could not be properly parsed as a .csv file.</div>
   @else
     <div>A preview of your uploaded data containing {{count($data)}} records is shown below. Click ‘Proceed’ to begin import.</div>

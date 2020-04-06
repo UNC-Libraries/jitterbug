@@ -1,4 +1,4 @@
-<div id={{ $divId }}>
+<div id='{{ $tableType }}-import-result-container'>
   <div class="text-danger">There are errors in your uploaded file. Hover over the fields for details, then correct and upload a new file.</div>
   <hr>
   <table class="table table-sm table-hover table-fit">
