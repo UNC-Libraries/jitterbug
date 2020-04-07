@@ -11,8 +11,8 @@ class TransferAudioImportsTest extends TestCase
      */
     use RefreshDatabase;
     private $user;
-    private $callNumber1;
-    private $callNumber2;
+    private $audioVisualItem1;
+    private $audioVisualItem2;
     private $department;
     private $playbackMachine;
 
@@ -21,9 +21,10 @@ class TransferAudioImportsTest extends TestCase
       parent::setUp();
       $this->user = factory(Jitterbug\Models\User::class)->create();
       $this->department = factory(Jitterbug\Models\Department::class)->create(['name' => 'SFC']);
-      $this->callNumber1 = factory(Jitterbug\Models\AudioVisualItem::class)->create(['call_number' =>'FT-6708']);
-      $this->callNumber2 = factory(Jitterbug\Models\AudioVisualItem::class)->create(['call_number' =>'FT-6709']);
+      $this->audioVisualItem1 = factory(Jitterbug\Models\AudioVisualItem::class)->create(['call_number' =>'FT-6708']);
+      $this->audioVisualItem2 = factory(Jitterbug\Models\AudioVisualItem::class)->create(['call_number' =>'FT-6709']);
       $this->playbackMachine = factory(Jitterbug\Models\PlaybackMachine::class)->create(['name' => 'Otari 19462235 D']);
+      factory(Jitterbug\Models\AudioItem::class)->create(['size' => '7"']);
     }
 
     public function testAudioImportUpload()
@@ -81,4 +82,23 @@ class TransferAudioImportsTest extends TestCase
       $this->assertEquals('success', $responseArray['status'], "The JSON status should be 'success'.");
       $this->assertTrue($htmlContainsSuccessMessage, 'The HTML in the response does not include the correct success notification.');
     }
+
+  public function testAudioImportUploadUpdateSizeWithSuccess()
+  {
+    $user = $this->user;
+    $avItem = $this->audioVisualItem1;
+    $filePath = base_path('tests/import-test-files/audio-import/small_upload_file_no_errors.csv');
+
+    $this->actingAs($user)
+      ->withSession(['audio-import-file' => $filePath])
+      ->post('/transfers/batch/audio-import-execute',
+        [],
+        array('HTTP_X-Requested-With' => 'XMLHttpRequest'));
+
+    $responseArray = json_decode($response->getContent(), true);
+    $audioItem = $avItem->subclass;
+
+    $this->assertEquals('success', $responseArray['status'], "The JSON status should be 'success'.");
+    $this->assertEquals('7"', $audioItem->size, 'The size column in the related AudioItem was not set correctly.');
+  }
 }
