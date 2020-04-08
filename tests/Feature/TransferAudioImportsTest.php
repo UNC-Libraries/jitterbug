@@ -89,11 +89,11 @@ class TransferAudioImportsTest extends TestCase
     $avItem = $this->audioVisualItem1;
     $filePath = base_path('tests/import-test-files/audio-import/small_upload_file_no_errors.csv');
 
-    $this->actingAs($user)
-      ->withSession(['audio-import-file' => $filePath])
-      ->post('/transfers/batch/audio-import-execute',
-        [],
-        array('HTTP_X-Requested-With' => 'XMLHttpRequest'));
+    $response = $this->actingAs($user)
+                     ->withSession(['audio-import-file' => $filePath])
+                     ->post('/transfers/batch/audio-import-execute',
+                        [],
+                        array('HTTP_X-Requested-With' => 'XMLHttpRequest'));
 
     $responseArray = json_decode($response->getContent(), true);
     $audioItem = $avItem->subclass;
