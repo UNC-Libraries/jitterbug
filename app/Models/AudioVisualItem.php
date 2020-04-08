@@ -14,6 +14,13 @@ class AudioVisualItem extends Model {
   use Markable;
 
   const BATCH_EDIT_MAX_LIMIT = 1000;
+  const IMPORT_KEYS = [
+    'Type', 'Title', 'Collection', 'ContainerNote',
+    'AccessionNumber', 'LegacyID', 'FormatID', 'RecLocation',
+    'ItemYear', 'ItemDate', 'Size', 'Element',
+    'Base', 'Color', 'SoundType', 'LengthInFeet',
+    'ContentDescription', 'ReelTapeNumber'
+  ];
 
   protected $dates = array('deleted_at');
   

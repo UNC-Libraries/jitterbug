@@ -624,9 +624,11 @@ class ItemsController extends Controller
  
       $import = new ItemsImport($filePath);
       $data = $import->data();
+      $possibleDataKeys = AudioVisualItem::IMPORT_KEYS;
+      $tableType = 'items';
 
-      $html = view('items._items-import-upload-data', 
-                                                compact('data'))->render();
+      $html = view('shared._import-upload-data',
+                                                compact('data', 'possibleDataKeys', 'tableType'))->render();
       $response = array('count'=>$import->count(), 'html'=>$html);
       return response()->json($response);
     }
@@ -650,8 +652,10 @@ class ItemsController extends Controller
       
       $response = array();
       if (Import::hasErrors($messages)) {
-        $html = view('items._items-import-errors', 
-                                compact('data', 'messages'))->render();
+        $tableType = 'items';
+        $possibleDataKeys = AudioVisualItem::IMPORT_KEYS;
+        $html = view('shared._import-errors',
+                                compact('data', 'messages', 'possibleDataKeys', 'tableType'))->render();
         $response = array('status'=>'error', 'html'=>$html);
       } else {
         $result = $import->execute($data);

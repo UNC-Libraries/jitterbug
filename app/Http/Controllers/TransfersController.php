@@ -316,9 +316,11 @@ class TransfersController extends Controller {
  
       $import = new AudioImport($filePath);
       $data = $import->data();
+      $possibleDataKeys = Transfer::AUDIO_IMPORT_KEYS;
+      $tableType = 'audio';
 
-      $html = view('transfers._audio-import-upload-data', 
-                                                compact('data'))->render();
+      $html = view('shared._import-upload-data',
+                                                compact('data', 'possibleDataKeys', 'tableType'))->render();
       $response = array('count'=>$import->count(), 'html'=>$html);
       return response()->json($response);
     }
@@ -342,15 +344,18 @@ class TransfersController extends Controller {
       
       $response = array();
       if (Import::hasErrors($messages)) {
-        $html = view('transfers._audio-import-errors', 
-                                compact('data', 'messages'))->render();
+        $tableType = 'audio';
+        $possibleDataKeys = Transfer::AUDIO_IMPORT_KEYS;
+        $html = view('shared._import-errors',
+                                compact('data', 'messages', 'possibleDataKeys', 'tableType'))->render();
         $response = array('status'=>'error', 'html'=>$html);
       } else {
         $result = $import->execute($data);
         $created = $result['created'];
         $updated = $result['updated'];
-        $html = view('transfers._audio-import-success',
-                              compact('created', 'updated'))->render();
+        $tableType = 'audio';
+        $html = view('transfers._import-success',
+                              compact('created', 'updated', 'tableType'))->render();
         $response = array('status'=>'success', 'html'=>$html);
       }
 
@@ -374,9 +379,11 @@ class TransfersController extends Controller {
  
       $import = new VideoImport($filePath);
       $data = $import->data();
+      $possibleDataKeys = Transfer::VIDEO_IMPORT_KEYS;
+      $tableType = 'video';
 
-      $html = view('transfers._video-import-upload-data', 
-                                                compact('data'))->render();
+      $html = view('shared._import-upload-data',
+                                                compact('data', 'possibleDataKeys', 'tableType'))->render();
       $response = array('count'=>$import->count(), 'html'=>$html);
       return response()->json($response);
     }
@@ -400,15 +407,18 @@ class TransfersController extends Controller {
       
       $response = array();
       if (Import::hasErrors($messages)) {
-        $html = view('transfers._video-import-errors', 
-                                compact('data', 'messages'))->render();
+        $possibleDataKeys = Transfer::VIDEO_IMPORT_KEYS;
+        $tableType = 'video';
+        $html = view('shared._import-errors',
+                                compact('data', 'messages', 'possibleDataKeys', 'tableType'))->render();
         $response = array('status'=>'error', 'html'=>$html);
       } else {
         $result = $import->execute($data);
         $created = $result['created'];
         $updated = $result['updated'];
-        $html = view('transfers._video-import-success', 
-                              compact('created', 'updated'))->render();
+        $tableType = 'video';
+        $html = view('transfers._import-success',
+                              compact('created', 'updated', 'tableType'))->render();
         $response = array('status'=>'success', 'html'=>$html);
       }
 

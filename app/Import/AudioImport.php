@@ -8,6 +8,7 @@ use Uuid;
 use Illuminate\Support\MessageBag;
 
 use Jitterbug\Models\AudioVisualItem;
+use Jitterbug\Models\AudioItem;
 use Jitterbug\Models\AudioMaster;
 use Jitterbug\Models\AudioTransfer;
 use Jitterbug\Models\Cut;
@@ -16,7 +17,6 @@ use Jitterbug\Models\ImportTransaction;
 use Jitterbug\Models\PlaybackMachine;
 use Jitterbug\Models\PreservationMaster;
 use Jitterbug\Models\Transfer;
-use Jitterbug\Models\User;
 use Jitterbug\Util\CsvReader;
 use Jitterbug\Util\DurationFormat;
 use Jitterbug\Support\SolariumProxy;
@@ -38,7 +38,7 @@ class AudioImport extends Import {
       'OriginatorReference', 'Side', 'PlaybackMachine', 'FileSize', 
       'Duration', 'OriginationDate', 'IART');
     $this->audioImportKeys = array_merge($this->requiredAudioImportKeys, 
-      array('TransferNote', 'OriginalPm'));
+      array('TransferNote', 'OriginalPm', 'Size'));
 
     $this->solrMasters = new SolariumProxy('jitterbug-masters');
     $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
@@ -68,9 +68,11 @@ class AudioImport extends Import {
 
         // Validate call number exists
         if ($key === 'CallNumber'
-          && !empty($row[$key]) && !$this->callNumberExists($row[$key])) {
+          && !empty($row[$key])
+          && !$this->valueExists(AudioVisualItem::class, 'call_number', $row[$key])) {
           $bag->add($key, $key . ' must already exist in the database.');
         }
+
         // Validate call number is audio
         if ($key === 'CallNumber'
           && !empty($row[$key]) && !$this->isAudio($row[$key])) {
@@ -78,13 +80,13 @@ class AudioImport extends Import {
         }
         // Validate playback machine exists
         if ($key === 'PlaybackMachine'
-          && !empty($row[$key]) && !$this->playbackMachineExists($row[$key])) {
+          && !empty($row[$key]) && !$this->valueExists(PlaybackMachine::class, 'name', $row[$key])) {
           $bag->add($key, $key . ' is not a recognized playback machine.');
         }
         // Validate originator reference (preservation_master.file_name) 
         // doesn't exist
         if ($key === 'OriginatorReference'
-          && !empty($row[$key]) && $this->fileNameExists($row[$key])) {
+          && !empty($row[$key]) && $this->valueExists(PreservationMaster::class,'file_name', $row[$key])) {
           $bag->add($key, $key . ' already exists in the database.');
         }
         // Validate originator reference (preservation_master.file_name) 
@@ -115,7 +117,7 @@ class AudioImport extends Import {
         }
         // Validate department exists
         if ($key === 'IART'
-          && !empty($row[$key]) && !$this->departmentExists($row[$key])) {
+          && !empty($row[$key]) && !$this->valueExists(Department::class, 'name', $row[$key])) {
           $bag->add($key, $key . ' is not a recognized department.');
         }
         // Validate pm is an integer
@@ -141,6 +143,11 @@ class AudioImport extends Import {
           $bag->add($key, $key . ' has already been used in this file.');
         } else if ($key === 'OriginalPm' && !empty($row[$key])) {
           $originalPms[] = $row[$key];
+        }
+        // Validate size exists in the DB
+        if ($key === 'Size'
+          && !empty($row[$key]) && !$this->valueExists(AudioItem::class, 'size', $row[$key])) {
+          $bag->add($key, $key . ' must already exist in the database.');
         }
       }
     }
@@ -243,7 +250,6 @@ class AudioImport extends Import {
             foreach ($relatedTransfers as $transfer) {
               if (isset($playbackMachine)) {
                 $transfer->playback_machine_id = $playbackMachine->id;
-                Log::debug('Its playback machine');
               }
               if (!empty($row['OriginationDate'])) {
                 $transfer->transfer_date = $row['OriginationDate'];
@@ -327,6 +333,14 @@ class AudioImport extends Import {
           $cut->save();
           $created++;
 
+        }
+
+        if (!empty($row['Size'])) {
+          $audioVisualItem = AudioVisualItem::where('call_number', $callNumber)->first();
+          $audioItem = $audioVisualItem->subclass;
+          $audioItem->size = $row['Size'];
+          $audioItem->save();
+          $updated++;
         }
 
       } // end foreach row

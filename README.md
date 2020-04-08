@@ -147,6 +147,16 @@ $('#speed').autocomplete({
 });
 ```
 
+## Compiling Assets
+Jitterbug uses [Laravel Elixir](https://laravel.com/docs/5.3/elixir) to compile its assets, including Sass for its css.
+Add your css to `resources/assets/sass/app.scss` and then run `gulp` in the application terminal to compile the new changes.
+
+For example, in the VM:
+```bash
+$ vagrant ssh
+$ cd /vagrant
+$ gulp
+```
    
 
 

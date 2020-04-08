@@ -24,32 +24,9 @@ abstract class Import {
     return count($this->data);
   }
 
-  protected function callNumberExists($callNumber)
+  protected function valueExists($class, $columnName, $value)
   {
-    return AudioVisualItem::where('call_number', 
-      $callNumber)->first() !== null;
-  }
-
-  protected function fileNameExists($fileName)
-  {
-    return PreservationMaster::where('file_name', 
-      $fileName)->first() !== null;
-  }
-
-  protected function departmentExists($department)
-  {
-    return Department::where('name', $department)->first() !== null;
-  }
-
-  protected function playbackMachineExists($playbackMachine)
-  {
-    return PlaybackMachine::where('name', 
-      $playbackMachine)->first() !== null;
-  }
-
-  protected function vendorExists($vendor)
-  {
-    return Vendor::where('name', $vendor)->first() !== null;
+    return $class::where($columnName, $value)->first() !== null;
   }
 
   protected function pmExists($pmId)
