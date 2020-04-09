@@ -38,7 +38,7 @@ class AudioImport extends Import {
       'OriginatorReference', 'Side', 'PlaybackMachine', 'FileSize', 
       'Duration', 'OriginationDate', 'IART');
     $this->audioImportKeys = array_merge($this->requiredAudioImportKeys, 
-      array('TransferNote', 'OriginalPm', 'Size', 'TrackConfiguration'));
+      array('TransferNote', 'OriginalPm', 'Size', 'TrackConfiguration', 'Base'));
 
     $this->solrMasters = new SolariumProxy('jitterbug-masters');
     $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
@@ -152,6 +152,11 @@ class AudioImport extends Import {
         // Validate track configuration exists in the DB
         if ($key === 'TrackConfiguration'
           && !empty($row[$key]) && !$this->valueExists(AudioItem::class, 'track_configuration', $row[$key])) {
+          $bag->add($key, $key . ' must already exist in the database.');
+        }
+        // Validate track configuration exists in the DB
+        if ($key === 'Base'
+          && !empty($row[$key]) && !$this->valueExists(AudioItem::class, 'base', $row[$key])) {
           $bag->add($key, $key . ' must already exist in the database.');
         }
       }
@@ -340,7 +345,7 @@ class AudioImport extends Import {
 
         }
 
-        if (!empty($row['Size']) || !empty($row['TrackConfiguration'])) {
+        if (!empty($row['Size']) || !empty($row['TrackConfiguration']) || !empty($row['Base'])) {
           $audioVisualItem = AudioVisualItem::where('call_number', $callNumber)->first();
           $audioItem = $audioVisualItem->subclass;
           if (!empty($row['Size'])) {
@@ -348,6 +353,9 @@ class AudioImport extends Import {
           }
           if (!empty($row['TrackConfiguration'])) {
             $audioItem->track_configuration = $row['TrackConfiguration'];
+          }
+          if (!empty($row['Base'])) {
+            $audioItem->base = $row['Base'];
           }
           $audioItem->save();
           $updated++;
