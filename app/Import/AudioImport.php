@@ -26,6 +26,7 @@ class AudioImport extends Import {
 
   protected $requiredAudioImportKeys = array();
   protected $audioImportKeys = array();
+  protected $mustAlreadyExistInDbKeys = array();
 
   protected $solrMasters;
   protected $solrTransfers;
@@ -38,7 +39,12 @@ class AudioImport extends Import {
       'OriginatorReference', 'Side', 'PlaybackMachine', 'FileSize', 
       'Duration', 'OriginationDate', 'IART');
     $this->audioImportKeys = array_merge($this->requiredAudioImportKeys, 
-      array('TransferNote', 'OriginalPm', 'Size', 'TrackConfiguration'));
+      array('TransferNote', 'OriginalPm', 'Size', 'TrackConfiguration', 'Base'));
+    $this->mustAlreadyExistInDbKeys = array(
+      'Size' => AudioItem::class,
+      'TrackConfiguration' => AudioItem::class,
+      'Base' => AudioItem::class
+    );
 
     $this->solrMasters = new SolariumProxy('jitterbug-masters');
     $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
@@ -60,17 +66,9 @@ class AudioImport extends Import {
         $new_record = empty($row[Transfer::BATCH_IMPORT_KEY]);
 
         // Validate that all required fields have values if this is a new record
-        if ($new_record &&
-          in_array($key, $this->requiredAudioImportKeys)
-          && empty($row[$key])) {
+        if ($new_record && empty($row[$key]) &&
+          in_array($key, $this->requiredAudioImportKeys)) {
           $bag->add($key, 'A value for ' . $key . ' is required.');
-        }
-
-        // Validate call number exists
-        if ($key === 'CallNumber'
-          && !empty($row[$key])
-          && !$this->valueExists(AudioVisualItem::class, 'call_number', $row[$key])) {
-          $bag->add($key, $key . ' must already exist in the database.');
         }
 
         // Validate call number is audio
@@ -78,7 +76,7 @@ class AudioImport extends Import {
           && !empty($row[$key]) && !$this->isAudio($row[$key])) {
           $bag->add($key, $key . ' is not an audio item.');
         }
-        // Validate playback machine exists
+       //  Validate playback machine exists
         if ($key === 'PlaybackMachine'
           && !empty($row[$key]) && !$this->valueExists(PlaybackMachine::class, 'name', $row[$key])) {
           $bag->add($key, $key . ' is not a recognized playback machine.');
@@ -144,15 +142,12 @@ class AudioImport extends Import {
         } else if ($key === 'OriginalPm' && !empty($row[$key])) {
           $originalPms[] = $row[$key];
         }
-        // Validate size exists in the DB
-        if ($key === 'Size'
-          && !empty($row[$key]) && !$this->valueExists(AudioItem::class, 'size', $row[$key])) {
-          $bag->add($key, $key . ' must already exist in the database.');
-        }
-        // Validate track configuration exists in the DB
-        if ($key === 'TrackConfiguration'
-          && !empty($row[$key]) && !$this->valueExists(AudioItem::class, 'track_configuration', $row[$key])) {
-          $bag->add($key, $key . ' must already exist in the database.');
+
+        // Validates certain field values already exist in the DB
+        foreach($this->mustAlreadyExistInDbKeys as $dbKey => $class) {
+          if (!empty($row[$dbKey]) && !$this->valueExists($class, snake_case($dbKey), $row[$dbKey])) {
+            $bag->add($dbKey, $dbKey . ' must already exist in the database.');
+          }
         }
       }
     }
@@ -340,7 +335,7 @@ class AudioImport extends Import {
 
         }
 
-        if (!empty($row['Size']) || !empty($row['TrackConfiguration'])) {
+        if (!empty($row['Size']) || !empty($row['TrackConfiguration']) || !empty($row['Base'])) {
           $audioVisualItem = AudioVisualItem::where('call_number', $callNumber)->first();
           $audioItem = $audioVisualItem->subclass;
           if (!empty($row['Size'])) {
@@ -348,6 +343,9 @@ class AudioImport extends Import {
           }
           if (!empty($row['TrackConfiguration'])) {
             $audioItem->track_configuration = $row['TrackConfiguration'];
+          }
+          if (!empty($row['Base'])) {
+            $audioItem->base = $row['Base'];
           }
           $audioItem->save();
           $updated++;

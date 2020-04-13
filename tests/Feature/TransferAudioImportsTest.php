@@ -24,7 +24,7 @@ class TransferAudioImportsTest extends TestCase
       $this->audioVisualItem1 = factory(Jitterbug\Models\AudioVisualItem::class)->create(['call_number' =>'FT-6708']);
       $this->audioVisualItem2 = factory(Jitterbug\Models\AudioVisualItem::class)->create(['call_number' =>'FT-6709']);
       $this->playbackMachine = factory(Jitterbug\Models\PlaybackMachine::class)->create(['name' => 'Otari 19462235 D']);
-      factory(Jitterbug\Models\AudioItem::class)->create(['size' => '7"', 'track_configuration' => '1/2 track']);
+      factory(Jitterbug\Models\AudioItem::class)->create(['size' => '7"', 'track_configuration' => '1/2 track', 'base' => 'Polyester']);
     }
 
     public function testAudioImportUpload()
@@ -120,5 +120,25 @@ class TransferAudioImportsTest extends TestCase
     $this->assertEquals('success', $responseArray['status'], "The JSON status should be 'success'.");
     $this->assertEquals('1/2 track', $audioItem->track_configuration,
       'The track configuration column in the related AudioItem was not set correctly.');
+  }
+
+  public function testAudioImportUploadUpdateBaseWithSuccess()
+  {
+    $user = $this->user;
+    $avItem = $this->audioVisualItem1;
+    $filePath = base_path('tests/import-test-files/audio-import/small_upload_file_no_errors.csv');
+
+    $response = $this->actingAs($user)
+      ->withSession(['audio-import-file' => $filePath])
+      ->post('/transfers/batch/audio-import-execute',
+        [],
+        array('HTTP_X-Requested-With' => 'XMLHttpRequest'));
+
+    $responseArray = json_decode($response->getContent(), true);
+    $audioItem = $avItem->subclass;
+
+    $this->assertEquals('success', $responseArray['status'], "The JSON status should be 'success'.");
+    $this->assertEquals('Polyester', $audioItem->base,
+      'The base column in the related AudioItem was not set correctly.');
   }
 }
