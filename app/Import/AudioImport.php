@@ -2,7 +2,7 @@
 
 use Auth;
 use DB;
-use Log;
+use Illuminate\Support\Facades\Log;
 use Uuid;
 
 use Illuminate\Support\MessageBag;
@@ -30,6 +30,7 @@ class AudioImport extends Import {
 
   protected $solrMasters;
   protected $solrTransfers;
+  protected $solrItems;
 
   protected $data = null;
 
@@ -39,15 +40,17 @@ class AudioImport extends Import {
       'OriginatorReference', 'Side', 'PlaybackMachine', 'FileSize', 
       'Duration', 'OriginationDate', 'IART');
     $this->audioImportKeys = array_merge($this->requiredAudioImportKeys, 
-      array('TransferNote', 'OriginalPm', 'Size', 'TrackConfiguration', 'Base'));
+      array('TransferNote', 'OriginalPm', 'Size', 'TrackConfiguration', 'Base', 'Speed'));
     $this->mustAlreadyExistInDbKeys = array(
       'Size' => AudioItem::class,
       'TrackConfiguration' => AudioItem::class,
-      'Base' => AudioItem::class
+      'Base' => AudioItem::class,
+      'Speed' => AudioVisualItem::class
     );
 
     $this->solrMasters = new SolariumProxy('jitterbug-masters');
     $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
+    $this->solrItems = new SolariumProxy('jitterbug-items');
 
     $reader = new CsvReader($filePath);
     $this->data = $reader->fetchKeys($this->audioImportKeys);
@@ -159,11 +162,12 @@ class AudioImport extends Import {
     // Keep track of which masters and transfers to update in Solr
     $masters = array();
     $transfers = array();
+    $items = array();
     $created = $updated = 0;
 
     // Update MySQL
     DB::transaction( function () 
-      use (&$masters, &$transfers, &$created, &$updated) {
+      use (&$masters, &$transfers, &$items, &$created, &$updated) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
 
@@ -335,7 +339,7 @@ class AudioImport extends Import {
 
         }
 
-        if (!empty($row['Size']) || !empty($row['TrackConfiguration']) || !empty($row['Base'])) {
+        if (!empty($row['Size']) || !empty($row['TrackConfiguration']) || !empty($row['Base']) || !empty($row['Speed'])) {
           $audioVisualItem = AudioVisualItem::where('call_number', $callNumber)->first();
           $audioItem = $audioVisualItem->subclass;
           if (!empty($row['Size'])) {
@@ -347,8 +351,19 @@ class AudioImport extends Import {
           if (!empty($row['Base'])) {
             $audioItem->base = $row['Base'];
           }
-          $audioItem->save();
-          $updated++;
+          if (!empty($row['Speed'])) {
+            $audioVisualItem->speed = $row['Speed'];
+            $items[] = $audioVisualItem;
+          }
+
+          if ($audioItem->isDirty()) {
+            $audioItem->save();
+            $updated++;
+          }
+          if ($audioVisualItem->isDirty()) {
+            $audioVisualItem->save();
+            $updated++;
+          }
         }
 
       } // end foreach row
@@ -358,6 +373,7 @@ class AudioImport extends Import {
 
     $this->solrMasters->update($masters);
     $this->solrTransfers->update($transfers);
+    $this->solrItems->update($items);
 
     return array('created' => $created, 'updated' => $updated);
   }
