@@ -49,7 +49,6 @@ class AudioImport extends Import {
 
     $this->solrMasters = new SolariumProxy('jitterbug-masters');
     $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
-    $this->solrItems = new SolariumProxy('jitterbug-items');
 
     $reader = new CsvReader($filePath);
     $this->data = $reader->fetchKeys($this->audioImportKeys);
