@@ -30,7 +30,6 @@ class AudioImport extends Import {
 
   protected $solrMasters;
   protected $solrTransfers;
-  protected $solrItems;
 
   protected $data = null;
 
@@ -162,7 +161,6 @@ class AudioImport extends Import {
     // Keep track of which masters and transfers to update in Solr
     $masters = array();
     $transfers = array();
-    $items = array();
     $created = $updated = 0;
 
     // Update MySQL
@@ -353,7 +351,6 @@ class AudioImport extends Import {
           }
           if (!empty($row['Speed'])) {
             $audioVisualItem->speed = $row['Speed'];
-            $items[] = $audioVisualItem;
           }
 
           if ($audioItem->isDirty()) {
@@ -373,7 +370,6 @@ class AudioImport extends Import {
 
     $this->solrMasters->update($masters);
     $this->solrTransfers->update($transfers);
-    $this->solrItems->update($items);
 
     return array('created' => $created, 'updated' => $updated);
   }
