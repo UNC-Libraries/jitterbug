@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Jitterbug\Models\AudioVisualItem;
 
 class TransferAudioImportsTest extends TestCase
 {
@@ -25,6 +26,7 @@ class TransferAudioImportsTest extends TestCase
       $this->audioVisualItem2 = factory(Jitterbug\Models\AudioVisualItem::class)->create(['call_number' =>'FT-6709']);
       $this->playbackMachine = factory(Jitterbug\Models\PlaybackMachine::class)->create(['name' => 'Otari 19462235 D']);
       factory(Jitterbug\Models\AudioItem::class)->create(['size' => '7"', 'track_configuration' => '1/2 track', 'base' => 'Polyester']);
+      factory(Jitterbug\Models\AudioVisualItem::class)->create(['speed' => '78 rpm']);
     }
 
     public function testAudioImportUpload()
@@ -140,5 +142,24 @@ class TransferAudioImportsTest extends TestCase
     $this->assertEquals('success', $responseArray['status'], "The JSON status should be 'success'.");
     $this->assertEquals('Polyester', $audioItem->base,
       'The base column in the related AudioItem was not set correctly.');
+  }
+
+  public function testAudioImportUploadUpdateSpeedWithSuccess()
+  {
+    $user = $this->user;
+    $avItem = $this->audioVisualItem1;
+    $filePath = base_path('tests/import-test-files/audio-import/small_upload_file_no_errors.csv');
+
+    $response = $this->actingAs($user)
+      ->withSession(['audio-import-file' => $filePath])
+      ->post('/transfers/batch/audio-import-execute',
+        [],
+        array('HTTP_X-Requested-With' => 'XMLHttpRequest'));
+
+    $responseArray = json_decode($response->getContent(), true);
+    $avItemInDb = Jitterbug\Models\AudioVisualItem::find($avItem->id);
+    $this->assertEquals('success', $responseArray['status'], "The JSON status should be 'success'.");
+    $this->assertEquals('78 rpm', $avItemInDb->speed,
+      'The speed column in the AudioVisualItem entry was not set correctly.');
   }
 }

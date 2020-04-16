@@ -1,3 +1,3 @@
-OriginalPm,CallNumber,Side,PlaybackMachine,OriginatorReference,OriginationDate,IART,FileSize,Duration,TransferNote,Size,TrackConfiguration,Base
-,FT-6708,1,Otari 19462235 D,FT6708_1_PM,2019-04-07,SFC,43546,00:33:12.69,this is a note,"7""",1/2 track,Polyester
-,FT-6709,1,Otari 19462235 D,FT6709_1_PM,2019-04-07,SFC,43546,00:33:14.79,and another one,,1/2 track
+OriginalPm,CallNumber,Side,PlaybackMachine,OriginatorReference,OriginationDate,IART,FileSize,Duration,TransferNote,Size,TrackConfiguration,Base,Speed
+,FT-6708,1,Otari 19462235 D,FT6708_1_PM,2019-04-07,SFC,43546,00:33:12.69,this is a note,"7""",1/2 track,Polyester,78 rpm
+,FT-6709,1,Otari 19462235 D,FT6709_1_PM,2019-04-07,SFC,43546,00:33:14.79,and another one,,1/2 track,,

@@ -120,7 +120,6 @@ $factory->define(Jitterbug\Models\AudioVisualItemType::class, function (Faker\Ge
 
 $factory->define(Jitterbug\Models\Collection::class, function (Faker\Generator $faker) {
   return [
-    'id' => $faker->randomNumber(),
     'name' => $faker->name,
     'collection_type_id' => function () {
       return factory(Jitterbug\Models\CollectionType::class)->create()->id;
@@ -131,7 +130,6 @@ $factory->define(Jitterbug\Models\Collection::class, function (Faker\Generator $
 
 $factory->define(Jitterbug\Models\CollectionType::class, function (Faker\Generator $faker) {
   return [
-    'id' => $faker->randomNumber(),
     'name' => $faker->word,
   ];
 });
