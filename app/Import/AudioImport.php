@@ -164,7 +164,7 @@ class AudioImport extends Import {
 
     // Update MySQL
     DB::transaction( function () 
-      use (&$masters, &$transfers, &$items, &$created, &$updated) {
+      use (&$masters, &$transfers, &$created, &$updated) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
 
