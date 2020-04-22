@@ -23,6 +23,7 @@ class ItemsImport extends Import {
 
   protected $requiredItemsImportKeys = array();
   protected $itemsImportKeys = array();
+  protected $mustAlreadyExistInDbKeys = array();
 
   protected $solrItems;
 
@@ -33,9 +34,12 @@ class ItemsImport extends Import {
     $this->requiredItemsImportKeys = array('Type', 'Title', 'Collection',
       'AccessionNumber', 'FormatID');
     $this->itemsImportKeys = array_merge($this->requiredItemsImportKeys, 
-      array('ContainerNote', 'LegacyID', 'RecLocation', 'ItemYear', 
+      array('CallNumber', 'ContainerNote', 'LegacyID', 'RecLocation', 'ItemYear',
         'ItemDate', 'Size', 'Element', 'Base', 'Color', 'SoundType', 
         'LengthInFeet', 'ContentDescription', 'ReelTapeNumber'));
+    $this->mustAlreadyExistInDbKeys = array(
+      'CallNumber' => AudioVisualItem::class
+    );
 
     $this->solrItems = new SolariumProxy('jitterbug-items');
 
@@ -49,6 +53,7 @@ class ItemsImport extends Import {
     foreach($this->data as $row) {
       $bag = new MessageBag();
       $messages[] = $bag;
+      $callNumbers = array();
       foreach($this->itemsImportKeys as $key) {
         // Validate that all required fields have values
         if (in_array($key, $this->requiredItemsImportKeys) 
@@ -138,6 +143,19 @@ class ItemsImport extends Import {
           && $this->isValidType($row['Type']) && $row['Type'] !== 'film') {
           $bag->add($key, $key . ' is not a valid field for the specified ' 
             . 'item type.');
+        }
+        // Validates certain field values already exist in the DB
+        foreach($this->mustAlreadyExistInDbKeys as $dbKey => $class) {
+          if (!empty($row[$dbKey]) && !$this->valueExists($class, snake_case($dbKey), $row[$dbKey])) {
+            $bag->add($dbKey, $dbKey . ' must already exist in the database.');
+          }
+        }
+        // Validate the call number is unique amongst call number values in the rest of the file
+        if ($key === 'CallNumber'
+          && !empty($row[$key]) && in_array($row[$key], $callNumbers, true)) {
+          $bag->add($key, $key . ' has already been used in this file.');
+        } else if ($key === 'CallNumber' && !empty($row[$key])) {
+          $callNumbers[] = $row[$key];
         }
       }
     }
