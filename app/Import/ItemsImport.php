@@ -31,14 +31,15 @@ class ItemsImport extends Import {
 
   public function __construct($filePath)
   {
-    $this->requiredItemsImportKeys = array('Type', 'Title', 'Collection',
+    $this->requiredItemsImportKeys = array('Type', 'Title', 'ArchivalIdentifier',
       'AccessionNumber', 'FormatID');
     $this->itemsImportKeys = array_merge($this->requiredItemsImportKeys, 
       array('CallNumber', 'ContainerNote', 'LegacyID', 'RecLocation', 'ItemYear',
         'ItemDate', 'Size', 'Element', 'Base', 'Color', 'SoundType', 
         'LengthInFeet', 'ContentDescription', 'ReelTapeNumber'));
     $this->mustAlreadyExistInDbKeys = array(
-      'CallNumber' => AudioVisualItem::class
+      'CallNumber' => AudioVisualItem::class,
+      'ArchivalIdentifier' => Collection::class
     );
 
     $this->solrItems = new SolariumProxy('jitterbug-items');
@@ -65,10 +66,11 @@ class ItemsImport extends Import {
           && !empty($row[$key]) && !$this->isValidType($row[$key])) {
           $bag->add($key, $key . ' is not valid. Must be \'audio\', \'film\' or \'video\'.');
         }
-        // Validate collection exists
-        if ($key==='Collection' 
-          && !empty($row[$key]) && !$this->collectionExists($row[$key])) {
-          $bag->add($key, $key . ' must already exist in the database.');
+        // Validates certain field values already exist in the DB
+        foreach($this->mustAlreadyExistInDbKeys as $dbKey => $class) {
+          if (!empty($row[$dbKey]) && !$this->valueExists($class, snake_case($dbKey), $row[$dbKey])) {
+            $bag->add($dbKey, $dbKey . ' must already exist in the database.');
+          }
         }
         // Validate format exists
         if ($key==='FormatID' 
@@ -76,9 +78,9 @@ class ItemsImport extends Import {
           $bag->add($key, $key . ' is not a recognized format.');
         }
         // Validate call number exists for Collection & Format pair
-        if ($this->collectionExists($row['Collection']) && $this->formatExists($row['FormatID']) &&
-          !$this->callNumberSequenceExists($row['Collection'], $row['FormatID'])) {
-          $bag->add('Collection', 'The Collection/Format pairing does not have a valid CallNumberSequence available.');
+        if (!empty($row['ArchivalIdentifier']) && !empty($row['FormatID']) &&
+          !$this->callNumberSequenceExists($row['ArchivalIdentifier'], $row['FormatID'])) {
+          $bag->add('ArchivalIdentifier', 'The Collection/Format pairing does not have a valid CallNumberSequence available.');
           $bag->add('FormatID', 'The Collection/Format pairing does not have a valid CallNumberSequence available.');
         }
         // Validate item date is formatted correctly
@@ -144,12 +146,7 @@ class ItemsImport extends Import {
           $bag->add($key, $key . ' is not a valid field for the specified ' 
             . 'item type.');
         }
-        // Validates certain field values already exist in the DB
-        foreach($this->mustAlreadyExistInDbKeys as $dbKey => $class) {
-          if (!empty($row[$dbKey]) && !$this->valueExists($class, snake_case($dbKey), $row[$dbKey])) {
-            $bag->add($dbKey, $dbKey . ' must already exist in the database.');
-          }
-        }
+
         // Validate the call number is unique amongst call number values in the rest of the file
         if ($key === 'CallNumber'
           && !empty($row[$key]) && in_array($row[$key], $callNumbers, true)) {
@@ -182,7 +179,7 @@ class ItemsImport extends Import {
       foreach($this->data as $row) {
         $subclassType = studly_case($row['Type'] . '_item');
         $subclass = new $subclassType;
-        $collectionId = Collection::where('archival_identifier', $row['Collection'])->first()->id;
+        $collectionId = Collection::where('archival_identifier', $row['ArchivalIdentifier'])->first()->id;
         $formatId = $row['FormatID'];
         $sequence = CallNumberSequence::next($collectionId, $formatId);
         $subclass->call_number = $sequence->callNumber();
@@ -262,8 +259,11 @@ class ItemsImport extends Import {
 
   private function callNumberSequenceExists($archivalIdentifier, $formatId)
   {
-    $collectionId = Collection::where('archival_identifier', $archivalIdentifier)->first()->id;
-    return CallNumberSequence::next($collectionId, $formatId) !== null;
+    $collection = Collection::where('archival_identifier', $archivalIdentifier)->first();
+    if ($collection === null) {
+      return false;
+    }
+    return CallNumberSequence::next($collection->id, $formatId) !== null;
   }
 
   private function validSoundType($soundType)

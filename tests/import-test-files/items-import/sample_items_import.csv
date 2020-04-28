@@ -1,4 +1,4 @@
-"Type","Title","Collection","ContainerNote","AccessionNumber","LegacyID","FormatID","RecLocation","ItemYear","ItemDate","Size","Element","Base","Color","SoundType","LengthInFeet","ContentDescription"
+"Type","Title","ArchivalIdentifier","ContainerNote","AccessionNumber","LegacyID","FormatID","RecLocation","ItemYear","ItemDate","Size","Element","Base","Color","SoundType","LengthInFeet","ContentDescription"
 "audio","Test open reel 1",20028,"Test open reel 1 blah blah hi Andrew",103021,,31,"New York, NY",1963,,"5""",,"Polyester",,,,"Some short content description"
 "audio","Test open reel 2",20028,"Test open reel 2 blah blah hi Andrew",103021,,31,"New York, NY",1963,,"5""",,"Polyester",,,,"Some short content description"
 "audio","Test audiocassette 1",20027,"Test audiocassette 1",104000,,28,"St. Louis, MO",,"1982-11-12","Audiocassette",,,,,,"Some short content description"
