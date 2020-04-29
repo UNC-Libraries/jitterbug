@@ -177,65 +177,112 @@ class ItemsImport extends Import {
       $importTransaction->save();
 
       foreach($this->data as $row) {
-        $subclassType = studly_case($row['Type'] . '_item');
-        $subclass = new $subclassType;
-        $collectionId = Collection::where('archival_identifier', $row['ArchivalIdentifier'])->first()->id;
-        $formatId = $row['FormatID'];
-        $sequence = CallNumberSequence::next($collectionId, $formatId);
-        $subclass->call_number = $sequence->callNumber();
-        // Optional subclass fields
-        $size = isset($row['Size']) ? $row['Size'] : null;
-        $element = isset($row['Element']) ? $row['Element'] : null;
-        $base = isset($row['Base']) ? $row['Base'] : null;
-        $color = isset($row['Color']) ? $row['Color'] : null;
-        $soundType = isset($row['SoundType']) ? $row['SoundType'] : null;
-        $length = isset($row['LengthInFeet']) ? $row['LengthInFeet'] : null;
-        $subclass->content_description =
-          isset($row['ContentDescription']) ? $row['ContentDescription'] : null;
-        if ($subclassType === 'AudioItem') {
-          $subclass->base = $base;
-          $subclass->size = $size;
-        } else if ($subclassType === 'FilmItem') {
-          $subclass->element = $element;
-          $subclass->base = $base;
-          $subclass->color = $color;
-          $subclass->sound_type = $soundType;
-          $subclass->length_in_feet = $length;
-        } else if ($subclassType === 'VideoItem') {
-          $subclass->element = $element;
-          $subclass->color = $color;
+        $callNumber = $row['CallNumber'];
+
+        if (isset($callNumber)) {
+          $audioVisualItem = AudioVisualItem::where('call_number', $callNumber)->first();
+          $subclass = $audioVisualItem->subclass;
+
+          if (!empty($row['Title'])) {
+            $audioVisualItem->title = $row['Title'];
+          }
+          if (!empty($row['ContainerNote'])) {
+            $audioVisualItem->container_note = $row['ContainerNote'];
+          }
+          if (!empty($row['AccessionNumber'])) {
+            $audioVisualItem->accession_number = $row['AccessionNumber'];
+          }
+          if (!empty($row['LegacyID'])) {
+            $audioVisualItem->legacy = $row['LegacyID'];
+          }
+          if (!empty($row['FormatID'])) {
+            $audioVisualItem->format_id = $row['FormatID'];
+          }
+          if (!empty($row['RecLocation'])) {
+            $audioVisualItem->recording_location = $row['RecLocation'];
+          }
+          if (!empty($row['ItemYear'])) {
+            $audioVisualItem->item_year = $row['ItemYear'];
+          }
+          if (!empty($row['ItemDate'])) {
+            $audioVisualItem->item_date = $row['ItemDate'];
+          }
+          if (!empty($row['ReelTapeNumber'])) {
+            $audioVisualItem->reel_tape_number = $row['ReelTapeNumber'];
+          }
+
+          // subclass fields
+          if (!empty($row['Size'])) {
+            $subclass->size = $row['Size'];
+          }
+
+          if ($audioVisualItem->isDirty()) {
+            $audioVisualItem->save;
+          }
+          if ($subclass->isDirty()) {
+            $subclass->save;
+          }
+        } else {
+          $subclassType = studly_case($row['Type'] . '_item');
+          $subclass = new $subclassType;
+          $collectionId = Collection::where('archival_identifier', $row['ArchivalIdentifier'])->first()->id;
+          $formatId = $row['FormatID'];
+          $sequence = CallNumberSequence::next($collectionId, $formatId);
+          $subclass->call_number = $sequence->callNumber();
+          // Optional subclass fields
+          $size = isset($row['Size']) ? $row['Size'] : null;
+          $element = isset($row['Element']) ? $row['Element'] : null;
+          $base = isset($row['Base']) ? $row['Base'] : null;
+          $color = isset($row['Color']) ? $row['Color'] : null;
+          $soundType = isset($row['SoundType']) ? $row['SoundType'] : null;
+          $length = isset($row['LengthInFeet']) ? $row['LengthInFeet'] : null;
+          $subclass->content_description =
+            isset($row['ContentDescription']) ? $row['ContentDescription'] : null;
+          if ($subclassType === 'AudioItem') {
+            $subclass->base = $base;
+            $subclass->size = $size;
+          } else if ($subclassType === 'FilmItem') {
+            $subclass->element = $element;
+            $subclass->base = $base;
+            $subclass->color = $color;
+            $subclass->sound_type = $soundType;
+            $subclass->length_in_feet = $length;
+          } else if ($subclassType === 'VideoItem') {
+            $subclass->element = $element;
+            $subclass->color = $color;
+          }
+          $subclass->save();
+
+          $item = new AudioVisualItem;
+          $item->call_number = $sequence->callNumber();
+          $item->subclass_type = $subclassType;
+          $item->subclass_id = $subclass->id;
+          $item->entry_date = date('Y-m-d');
+          // Required fields
+          $item->title = $row['Title'];
+          $item->collection_id = $collectionId;
+          $item->format_id = $formatId;
+          $item->accession_number = $row['AccessionNumber'];
+          // Optional fields
+          $item->container_note =
+            isset($row['ContainerNote']) ? $row['ContainerNote'] : null;
+          $item->legacy =
+            isset($row['LegacyID']) ? $row['LegacyID'] : null;
+          $item->recording_location =
+            isset($row['RecLocation']) ? $row['RecLocation'] : null;
+          $item->item_year =
+            isset($row['ItemYear']) ? $row['ItemYear'] : null;
+          $item->item_date =
+            isset($row['ItemDate']) ? $row['ItemDate'] : null;
+          $item->reel_tape_number =
+            isset($row['ReelTapeNumber']) ? $row['ReelTapeNumber'] : null;
+          $item->save();
+          $created++;
+
+          $sequence->increase();
+
+          $items[] = $item;
         }
-        $subclass->save();
-
-        $item = new AudioVisualItem;
-        $item->call_number = $sequence->callNumber();
-        $item->subclass_type = $subclassType;
-        $item->subclass_id = $subclass->id;
-        $item->entry_date = date('Y-m-d');
-        // Required fields
-        $item->title = $row['Title'];
-        $item->collection_id = $collectionId;
-        $item->format_id = $formatId;
-        $item->accession_number = $row['AccessionNumber'];
-        // Optional fields
-        $item->container_note =
-          isset($row['ContainerNote']) ? $row['ContainerNote'] : null;
-        $item->legacy = 
-          isset($row['LegacyID']) ? $row['LegacyID'] : null;
-        $item->recording_location =
-          isset($row['RecLocation']) ? $row['RecLocation'] : null;
-        $item->item_year =
-          isset($row['ItemYear']) ? $row['ItemYear'] : null;
-        $item->item_date =
-          isset($row['ItemDate']) ? $row['ItemDate'] : null;
-        $item->reel_tape_number =
-          isset($row['ReelTapeNumber']) ? $row['ReelTapeNumber'] : null;
-        $item->save();
-        $created++;
-
-        $sequence->increase();
-
-        $items[] = $item;
       } // end foreach row
 
       DB::statement('set @transaction_id = null;');      
@@ -246,15 +293,9 @@ class ItemsImport extends Import {
     return array('created' => $created);
   }
 
-
   private function formatExists($formatId)
   {
     return Format::where('id', $formatId)->exists();
-  }
-
-  private function collectionExists($archivalIdentifier)
-  {
-    return Collection::where('archival_identifier', $archivalIdentifier)->exists();
   }
 
   private function callNumberSequenceExists($archivalIdentifier, $formatId)
@@ -275,6 +316,34 @@ class ItemsImport extends Import {
   private function isValidType($type)
   {
     return $type === 'audio' || $type === 'film' || $type === 'video';
+  }
+
+  private function setSubclassAttributes($subclass, $array, $isUpdate)
+  {
+    $subclassType = $array['subclassType'];
+    $defaultSize = $isUpdate ? $subclass->size : null;
+    $defaultElement = $isUpdate ? $subclass->element : null;
+    $defaultBase = $isUpdate ? $subclass->base : null;
+    $defaultColor = $isUpdate ? $subclass->color : null;
+    $defaultSoundType = $isUpdate ? $subclass->sound_type : null;
+    $defaultLength = $isUpdate ? $subclass->length : null;
+    $defaultContentDescription = $isUpdate ? $subclass->content_description : null;
+
+    $subclass->content_description = $array['ContentDescription'] ?? $defaultContentDescription;
+    if ($subclassType === 'AudioItem') {
+      $subclass->base = $array['Base'] ?? $defaultBase;
+      $subclass->size = $array['Size'] ?? $defaultSize;
+    } else if ($subclassType === 'FilmItem') {
+      $subclass->element = $array['Element'] ?? $defaultElement;
+      $subclass->base = $array['Base'] ?? $defaultBase;
+      $subclass->color = $array['Color'] ?? $defaultColor;
+      $subclass->sound_type = $array['SoundType'] ?? $defaultSoundType;
+      $subclass->length_in_feet = $array['LengthInFeet'] ?? $defaultLength;
+    } else if ($subclassType === 'VideoItem') {
+      $subclass->element = $array['Element'] ?? $defaultElement;
+      $subclass->color = $array['Color'] ?? $defaultColor;
+    }
+    return $subclass;
   }
 
 }
