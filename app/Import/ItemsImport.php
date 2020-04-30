@@ -177,11 +177,12 @@ class ItemsImport extends Import {
       $importTransaction->save();
 
       foreach($this->data as $row) {
-        $callNumber = $row['CallNumber'];
+        $callNumber = $row['CallNumber'] ?? null;
+        $subclassType = studly_case($row['Type'] . '_item');
 
         if (isset($callNumber)) {
+          // this is an update
           $audioVisualItem = AudioVisualItem::where('call_number', $callNumber)->first();
-          $subclass = $audioVisualItem->subclass;
 
           if (!empty($row['Title'])) {
             $audioVisualItem->title = $row['Title'];
@@ -211,10 +212,10 @@ class ItemsImport extends Import {
             $audioVisualItem->reel_tape_number = $row['ReelTapeNumber'];
           }
 
-          // subclass fields
-          if (!empty($row['Size'])) {
-            $subclass->size = $row['Size'];
-          }
+          // take care of subclass changes
+          $subclass = $audioVisualItem->subclass;
+          $row['subclassType'] = $subclassType;
+          $subclass = $this->updateSubclassAttributes($subclass, $row, true);
 
           if ($audioVisualItem->isDirty()) {
             $audioVisualItem->save;
@@ -223,34 +224,15 @@ class ItemsImport extends Import {
             $subclass->save;
           }
         } else {
-          $subclassType = studly_case($row['Type'] . '_item');
-          $subclass = new $subclassType;
           $collectionId = Collection::where('archival_identifier', $row['ArchivalIdentifier'])->first()->id;
           $formatId = $row['FormatID'];
           $sequence = CallNumberSequence::next($collectionId, $formatId);
+
+          // create subclass for audio visual item
+          $subclass = new $subclassType;
+          $row['subclassType'] = $subclassType;
+          $subclass = $this->updateSubclassAttributes($subclass, $row, false);
           $subclass->call_number = $sequence->callNumber();
-          // Optional subclass fields
-          $size = isset($row['Size']) ? $row['Size'] : null;
-          $element = isset($row['Element']) ? $row['Element'] : null;
-          $base = isset($row['Base']) ? $row['Base'] : null;
-          $color = isset($row['Color']) ? $row['Color'] : null;
-          $soundType = isset($row['SoundType']) ? $row['SoundType'] : null;
-          $length = isset($row['LengthInFeet']) ? $row['LengthInFeet'] : null;
-          $subclass->content_description =
-            isset($row['ContentDescription']) ? $row['ContentDescription'] : null;
-          if ($subclassType === 'AudioItem') {
-            $subclass->base = $base;
-            $subclass->size = $size;
-          } else if ($subclassType === 'FilmItem') {
-            $subclass->element = $element;
-            $subclass->base = $base;
-            $subclass->color = $color;
-            $subclass->sound_type = $soundType;
-            $subclass->length_in_feet = $length;
-          } else if ($subclassType === 'VideoItem') {
-            $subclass->element = $element;
-            $subclass->color = $color;
-          }
           $subclass->save();
 
           $item = new AudioVisualItem;
@@ -318,9 +300,11 @@ class ItemsImport extends Import {
     return $type === 'audio' || $type === 'film' || $type === 'video';
   }
 
-  private function setSubclassAttributes($subclass, $array, $isUpdate)
+  private function updateSubclassAttributes($subclass, $array, $isUpdate)
   {
     $subclassType = $array['subclassType'];
+    // if it's an update, the default is the original value.
+    // if it's a new record, the default is null
     $defaultSize = $isUpdate ? $subclass->size : null;
     $defaultElement = $isUpdate ? $subclass->element : null;
     $defaultBase = $isUpdate ? $subclass->base : null;
@@ -329,6 +313,7 @@ class ItemsImport extends Import {
     $defaultLength = $isUpdate ? $subclass->length : null;
     $defaultContentDescription = $isUpdate ? $subclass->content_description : null;
 
+    // if the array has a value for the attribute, use it. otherwise use the default
     $subclass->content_description = $array['ContentDescription'] ?? $defaultContentDescription;
     if ($subclassType === 'AudioItem') {
       $subclass->base = $array['Base'] ?? $defaultBase;
