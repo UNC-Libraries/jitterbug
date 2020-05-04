@@ -2,7 +2,7 @@
 
 use Auth;
 use DB;
-use Log;
+use Illuminate\Support\Facades\Log;
 use Uuid;
 
 use Illuminate\Support\MessageBag;

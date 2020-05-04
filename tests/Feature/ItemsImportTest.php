@@ -26,8 +26,6 @@ class ItemsImportTest extends TestCase
     $this->user = factory(User::class)->create();
     $this->audioVisualItem1 = factory(AudioVisualItem::class)->create(['call_number' =>'FT-6708']);
     $this->audioVisualItem2 = factory(AudioVisualItem::class)->create(['call_number' =>'FT-6709']);
-    factory(AudioItem::class)->create(['size' => '7"', 'track_configuration' => '1/2 track', 'base' => 'Polyester']);
-    factory(AudioVisualItem::class)->create(['speed' => '78 rpm']);
     $this->collection1 = factory(Collection::class)->create(['archival_identifier' => '20027']);
     $this->format = factory(Format::class)->create(['id' => 28]);
     $collectionTypeId = $this->collection1->collection_type_id;
@@ -72,7 +70,7 @@ class ItemsImportTest extends TestCase
     $this->assertTrue($htmlContainsErrorMessage, 'The HTML in the response does not include the correct error notification.');
   }
 
-  public function testItemsImportUploadExecuteWithSuccess() : void
+  public function testItemsImportNewUploadExecuteWithSuccess() : void
   {
     factory(NewCallNumberSequence::class)->create([
       'prefix' => $this->prefix->label,
@@ -81,6 +79,30 @@ class ItemsImportTest extends TestCase
     ]);
     $user = $this->user;
     $filePath = base_path('tests/import-test-files/items-import/small_items_import.csv');
+
+    $response = $this->actingAs($user)
+      ->withSession(['items-import-file' => $filePath])
+      ->post('/items/batch/audio-import-execute',
+        [],
+        array('HTTP_X-Requested-With' => 'XMLHttpRequest'));
+
+    $responseArray = json_decode($response->getContent(), true);
+    $htmlContainsSuccessMessage = strpos($responseArray['html'], 'Your import was successful!') !== false;
+
+    $this->assertEquals('success', $responseArray['status'], "The JSON status should be 'success'.");
+    $this->assertTrue($htmlContainsSuccessMessage, 'The HTML in the response does not include the correct success notification.');
+  }
+
+  public function testItemsImportUpdateExecuteWithSuccess() : void
+  {
+    $this->disableExceptionHandling();
+    factory(NewCallNumberSequence::class)->create([
+      'prefix' => $this->prefix->label,
+      'collection_id' => $this->collection1->id,
+      'next' => 2
+    ]);
+    $user = $this->user;
+    $filePath = base_path('tests/import-test-files/items-import/items_import_with_call_number.csv');
 
     $response = $this->actingAs($user)
       ->withSession(['items-import-file' => $filePath])
