@@ -164,10 +164,11 @@ class ItemsImport extends Import {
     // Keep track of the items to create in Solr
     $items = array();
     $created = 0;
+    $updated = 0;
 
     // Update MySQL
     DB::transaction( function () 
-      use (&$items, &$created) {
+      use (&$items, &$created, &$updated) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
       
@@ -219,9 +220,12 @@ class ItemsImport extends Import {
 
           if ($audioVisualItem->isDirty()) {
             $audioVisualItem->save;
+            $items[] = $audioVisualItem;
+            $updated++;
           }
           if ($subclass->isDirty()) {
             $subclass->save;
+            $updated++;
           }
         } else {
           $collectionId = Collection::where('archival_identifier', $row['ArchivalIdentifier'])->first()->id;
@@ -246,18 +250,12 @@ class ItemsImport extends Import {
           $item->format_id = $formatId;
           $item->accession_number = $row['AccessionNumber'];
           // Optional fields
-          $item->container_note =
-            isset($row['ContainerNote']) ? $row['ContainerNote'] : null;
-          $item->legacy =
-            isset($row['LegacyID']) ? $row['LegacyID'] : null;
-          $item->recording_location =
-            isset($row['RecLocation']) ? $row['RecLocation'] : null;
-          $item->item_year =
-            isset($row['ItemYear']) ? $row['ItemYear'] : null;
-          $item->item_date =
-            isset($row['ItemDate']) ? $row['ItemDate'] : null;
-          $item->reel_tape_number =
-            isset($row['ReelTapeNumber']) ? $row['ReelTapeNumber'] : null;
+          $item->container_note = $row['ContainerNote'] ?? null;
+          $item->legacy = $row['LegacyID'] ?? null;
+          $item->recording_location = $row['RecLocation'] ?? null;
+          $item->item_year = $row['ItemYear'] ?? null;
+          $item->item_date = $row['ItemDate'] ?? null;
+          $item->reel_tape_number = $row['ReelTapeNumber'] ?? null;
           $item->save();
           $created++;
 
@@ -272,7 +270,7 @@ class ItemsImport extends Import {
 
     $this->solrItems->update($items);
 
-    return array('created' => $created);
+    return array('created' => $created, 'updated' => $updated);
   }
 
   private function formatExists($formatId)
