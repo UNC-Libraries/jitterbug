@@ -95,7 +95,6 @@ class ItemsImportTest extends TestCase
 
   public function testItemsImportUpdateExecuteWithSuccess() : void
   {
-    $this->disableExceptionHandling();
     factory(NewCallNumberSequence::class)->create([
       'prefix' => $this->prefix->label,
       'collection_id' => $this->collection1->id,
@@ -115,6 +114,29 @@ class ItemsImportTest extends TestCase
 
     $this->assertEquals('success', $responseArray['status'], "The JSON status should be 'success'.");
     $this->assertTrue($htmlContainsSuccessMessage, 'The HTML in the response does not include the correct success notification.');
+  }
+
+  public function testItemsImportUpdateActuallyUpdates() : void
+  {
+    $avItem = $this->audioVisualItem1;
+    $originalTitle = $avItem->title;
+    factory(NewCallNumberSequence::class)->create([
+      'prefix' => $this->prefix->label,
+      'collection_id' => $this->collection1->id,
+      'next' => 2
+    ]);
+    $user = $this->user;
+    $filePath = base_path('tests/import-test-files/items-import/items_import_with_call_number.csv');
+
+    $this->actingAs($user)
+      ->withSession(['items-import-file' => $filePath])
+      ->post('/items/batch/audio-import-execute',
+        [],
+        array('HTTP_X-Requested-With' => 'XMLHttpRequest'));
+
+    $updatedTitle = $avItem->fresh()->title;
+
+    $this->assertNotEquals($updatedTitle, $originalTitle, "The audiovisual item's title was not updated.");
   }
 
   public function testItemsImportValidationNoCallNumberSequence() : void
