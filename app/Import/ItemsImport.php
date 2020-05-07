@@ -184,7 +184,6 @@ class ItemsImport extends Import {
         if (isset($callNumber)) {
           // this is an update
           $audioVisualItem = AudioVisualItem::where('call_number', $callNumber)->first();
-
           if (!empty($row['Title'])) {
             $audioVisualItem->title = $row['Title'];
           }
@@ -212,19 +211,18 @@ class ItemsImport extends Import {
           if (!empty($row['ReelTapeNumber'])) {
             $audioVisualItem->reel_tape_number = $row['ReelTapeNumber'];
           }
-
           // take care of subclass changes
           $subclass = $audioVisualItem->subclass;
           $row['subclassType'] = $subclassType;
           $subclass = $this->updateSubclassAttributes($subclass, $row, true);
 
           if ($audioVisualItem->isDirty()) {
-            $audioVisualItem->save;
+            $audioVisualItem->save();
             $items[] = $audioVisualItem;
             $updated++;
           }
           if ($subclass->isDirty()) {
-            $subclass->save;
+            $subclass->save();
             $updated++;
           }
         } else {

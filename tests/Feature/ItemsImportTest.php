@@ -119,7 +119,6 @@ class ItemsImportTest extends TestCase
   public function testItemsImportUpdateActuallyUpdates() : void
   {
     $avItem = $this->audioVisualItem1;
-    $originalTitle = $avItem->title;
     factory(NewCallNumberSequence::class)->create([
       'prefix' => $this->prefix->label,
       'collection_id' => $this->collection1->id,
@@ -136,7 +135,7 @@ class ItemsImportTest extends TestCase
 
     $updatedTitle = $avItem->fresh()->title;
 
-    $this->assertNotEquals($updatedTitle, $originalTitle, "The audiovisual item's title was not updated.");
+    $this->assertEquals('Test open reel 1', $updatedTitle, "The audiovisual item's title was not updated.");
   }
 
   public function testItemsImportValidationNoCallNumberSequence() : void
