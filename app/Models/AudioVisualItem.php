@@ -15,11 +15,11 @@ class AudioVisualItem extends Model {
 
   const BATCH_EDIT_MAX_LIMIT = 1000;
   const IMPORT_KEYS = [
-    'Type', 'Title', 'Collection', 'ContainerNote',
+    'Type', 'Title', 'ArchivalIdentifier', 'ContainerNote',
     'AccessionNumber', 'LegacyID', 'FormatID', 'RecLocation',
     'ItemYear', 'ItemDate', 'Size', 'Element',
     'Base', 'Color', 'SoundType', 'LengthInFeet',
-    'ContentDescription', 'ReelTapeNumber'
+    'ContentDescription', 'ReelTapeNumber', 'CallNumber'
   ];
 
   protected $dates = array('deleted_at');

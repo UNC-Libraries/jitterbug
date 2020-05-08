@@ -651,8 +651,9 @@ class ItemsController extends Controller
       $messages = $import->validate($data);
       
       $response = array();
+      $tableType = 'items';
       if (Import::hasErrors($messages)) {
-        $tableType = 'items';
+
         $possibleDataKeys = AudioVisualItem::IMPORT_KEYS;
         $html = view('shared._import-errors',
                                 compact('data', 'messages', 'possibleDataKeys', 'tableType'))->render();
@@ -660,8 +661,10 @@ class ItemsController extends Controller
       } else {
         $result = $import->execute($data);
         $created = $result['created'];
-        $html = view('items._items-import-success', 
-                              compact('created'))->render();
+        $updated = $result['updated'];
+        $html = view('shared._import-success',
+          compact('created', 'updated', 'tableType'))->render();
+
         $response = array('status'=>'success', 'html'=>$html);
       }
 

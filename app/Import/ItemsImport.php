@@ -2,7 +2,7 @@
 
 use Auth;
 use DB;
-use Log;
+use Illuminate\Support\Facades\Log;
 use Uuid;
 
 use Illuminate\Support\MessageBag;
@@ -23,6 +23,7 @@ class ItemsImport extends Import {
 
   protected $requiredItemsImportKeys = array();
   protected $itemsImportKeys = array();
+  protected $mustAlreadyExistInDbKeys = array();
 
   protected $solrItems;
 
@@ -30,12 +31,16 @@ class ItemsImport extends Import {
 
   public function __construct($filePath)
   {
-    $this->requiredItemsImportKeys = array('Type', 'Title', 'Collection',
+    $this->requiredItemsImportKeys = array('Type', 'Title', 'ArchivalIdentifier',
       'AccessionNumber', 'FormatID');
     $this->itemsImportKeys = array_merge($this->requiredItemsImportKeys, 
-      array('ContainerNote', 'LegacyID', 'RecLocation', 'ItemYear', 
+      array('CallNumber', 'ContainerNote', 'LegacyID', 'RecLocation', 'ItemYear',
         'ItemDate', 'Size', 'Element', 'Base', 'Color', 'SoundType', 
         'LengthInFeet', 'ContentDescription', 'ReelTapeNumber'));
+    $this->mustAlreadyExistInDbKeys = array(
+      'CallNumber' => AudioVisualItem::class,
+      'ArchivalIdentifier' => Collection::class
+    );
 
     $this->solrItems = new SolariumProxy('jitterbug-items');
 
@@ -49,6 +54,7 @@ class ItemsImport extends Import {
     foreach($this->data as $row) {
       $bag = new MessageBag();
       $messages[] = $bag;
+      $callNumbers = array();
       foreach($this->itemsImportKeys as $key) {
         // Validate that all required fields have values
         if (in_array($key, $this->requiredItemsImportKeys) 
@@ -60,10 +66,11 @@ class ItemsImport extends Import {
           && !empty($row[$key]) && !$this->isValidType($row[$key])) {
           $bag->add($key, $key . ' is not valid. Must be \'audio\', \'film\' or \'video\'.');
         }
-        // Validate collection exists
-        if ($key==='Collection' 
-          && !empty($row[$key]) && !$this->collectionExists($row[$key])) {
-          $bag->add($key, $key . ' must already exist in the database.');
+        // Validates certain field values already exist in the DB
+        foreach($this->mustAlreadyExistInDbKeys as $dbKey => $class) {
+          if (!empty($row[$dbKey]) && !$this->valueExists($class, snake_case($dbKey), $row[$dbKey])) {
+            $bag->add($dbKey, $dbKey . ' must already exist in the database.');
+          }
         }
         // Validate format exists
         if ($key==='FormatID' 
@@ -71,9 +78,9 @@ class ItemsImport extends Import {
           $bag->add($key, $key . ' is not a recognized format.');
         }
         // Validate call number exists for Collection & Format pair
-        if ($this->collectionExists($row['Collection']) && $this->formatExists($row['FormatID']) &&
-          !$this->callNumberSequenceExists($row['Collection'], $row['FormatID'])) {
-          $bag->add('Collection', 'The Collection/Format pairing does not have a valid CallNumberSequence available.');
+        if (!empty($row['ArchivalIdentifier']) && !empty($row['FormatID']) &&
+          !$this->callNumberSequenceExists($row['ArchivalIdentifier'], $row['FormatID'])) {
+          $bag->add('ArchivalIdentifier', 'The Collection/Format pairing does not have a valid CallNumberSequence available.');
           $bag->add('FormatID', 'The Collection/Format pairing does not have a valid CallNumberSequence available.');
         }
         // Validate item date is formatted correctly
@@ -139,6 +146,14 @@ class ItemsImport extends Import {
           $bag->add($key, $key . ' is not a valid field for the specified ' 
             . 'item type.');
         }
+
+        // Validate the call number is unique amongst call number values in the rest of the file
+        if ($key === 'CallNumber'
+          && !empty($row[$key]) && in_array($row[$key], $callNumbers, true)) {
+          $bag->add($key, $key . ' has already been used in this file.');
+        } else if ($key === 'CallNumber' && !empty($row[$key])) {
+          $callNumbers[] = $row[$key];
+        }
       }
     }
     return $messages;
@@ -149,10 +164,11 @@ class ItemsImport extends Import {
     // Keep track of the items to create in Solr
     $items = array();
     $created = 0;
+    $updated = 0;
 
     // Update MySQL
     DB::transaction( function () 
-      use (&$items, &$created) {
+      use (&$items, &$created, &$updated) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
       
@@ -162,65 +178,89 @@ class ItemsImport extends Import {
       $importTransaction->save();
 
       foreach($this->data as $row) {
+        $callNumber = $row['CallNumber'] ?? null;
         $subclassType = studly_case($row['Type'] . '_item');
-        $subclass = new $subclassType;
-        $collectionId = Collection::where('archival_identifier', $row['Collection'])->first()->id;
-        $formatId = $row['FormatID'];
-        $sequence = CallNumberSequence::next($collectionId, $formatId);
-        $subclass->call_number = $sequence->callNumber();
-        // Optional subclass fields
-        $size = isset($row['Size']) ? $row['Size'] : null;
-        $element = isset($row['Element']) ? $row['Element'] : null;
-        $base = isset($row['Base']) ? $row['Base'] : null;
-        $color = isset($row['Color']) ? $row['Color'] : null;
-        $soundType = isset($row['SoundType']) ? $row['SoundType'] : null;
-        $length = isset($row['LengthInFeet']) ? $row['LengthInFeet'] : null;
-        $subclass->content_description =
-          isset($row['ContentDescription']) ? $row['ContentDescription'] : null;
-        if ($subclassType === 'AudioItem') {
-          $subclass->base = $base;
-          $subclass->size = $size;
-        } else if ($subclassType === 'FilmItem') {
-          $subclass->element = $element;
-          $subclass->base = $base;
-          $subclass->color = $color;
-          $subclass->sound_type = $soundType;
-          $subclass->length_in_feet = $length;
-        } else if ($subclassType === 'VideoItem') {
-          $subclass->element = $element;
-          $subclass->color = $color;
+
+        if (isset($callNumber)) {
+          // this is an update
+          $audioVisualItem = AudioVisualItem::where('call_number', $callNumber)->first();
+          if (!empty($row['Title'])) {
+            $audioVisualItem->title = $row['Title'];
+          }
+          if (!empty($row['ContainerNote'])) {
+            $audioVisualItem->container_note = $row['ContainerNote'];
+          }
+          if (!empty($row['AccessionNumber'])) {
+            $audioVisualItem->accession_number = $row['AccessionNumber'];
+          }
+          if (!empty($row['LegacyID'])) {
+            $audioVisualItem->legacy = $row['LegacyID'];
+          }
+          if (!empty($row['FormatID'])) {
+            $audioVisualItem->format_id = $row['FormatID'];
+          }
+          if (!empty($row['RecLocation'])) {
+            $audioVisualItem->recording_location = $row['RecLocation'];
+          }
+          if (!empty($row['ItemYear'])) {
+            $audioVisualItem->item_year = $row['ItemYear'];
+          }
+          if (!empty($row['ItemDate'])) {
+            $audioVisualItem->item_date = $row['ItemDate'];
+          }
+          if (!empty($row['ReelTapeNumber'])) {
+            $audioVisualItem->reel_tape_number = $row['ReelTapeNumber'];
+          }
+          // take care of subclass changes
+          $subclass = $audioVisualItem->subclass;
+          $row['subclassType'] = $subclassType;
+          $subclass = $this->updateSubclassAttributes($subclass, $row, true);
+
+          if ($audioVisualItem->isDirty()) {
+            $audioVisualItem->save();
+            $items[] = $audioVisualItem;
+            $updated++;
+          }
+          if ($subclass->isDirty()) {
+            $subclass->save();
+            $updated++;
+          }
+        } else {
+          $collectionId = Collection::where('archival_identifier', $row['ArchivalIdentifier'])->first()->id;
+          $formatId = $row['FormatID'];
+          $sequence = CallNumberSequence::next($collectionId, $formatId);
+
+          // create subclass for audio visual item
+          $subclass = new $subclassType;
+          $row['subclassType'] = $subclassType;
+          $subclass = $this->updateSubclassAttributes($subclass, $row, false);
+          $subclass->call_number = $sequence->callNumber();
+          $subclass->save();
+
+          $item = new AudioVisualItem;
+          $item->call_number = $sequence->callNumber();
+          $item->subclass_type = $subclassType;
+          $item->subclass_id = $subclass->id;
+          $item->entry_date = date('Y-m-d');
+          // Required fields
+          $item->title = $row['Title'];
+          $item->collection_id = $collectionId;
+          $item->format_id = $formatId;
+          $item->accession_number = $row['AccessionNumber'];
+          // Optional fields
+          $item->container_note = $row['ContainerNote'] ?? null;
+          $item->legacy = $row['LegacyID'] ?? null;
+          $item->recording_location = $row['RecLocation'] ?? null;
+          $item->item_year = $row['ItemYear'] ?? null;
+          $item->item_date = $row['ItemDate'] ?? null;
+          $item->reel_tape_number = $row['ReelTapeNumber'] ?? null;
+          $item->save();
+          $created++;
+
+          $sequence->increase();
+
+          $items[] = $item;
         }
-        $subclass->save();
-
-        $item = new AudioVisualItem;
-        $item->call_number = $sequence->callNumber();
-        $item->subclass_type = $subclassType;
-        $item->subclass_id = $subclass->id;
-        $item->entry_date = date('Y-m-d');
-        // Required fields
-        $item->title = $row['Title'];
-        $item->collection_id = $collectionId;
-        $item->format_id = $formatId;
-        $item->accession_number = $row['AccessionNumber'];
-        // Optional fields
-        $item->container_note =
-          isset($row['ContainerNote']) ? $row['ContainerNote'] : null;
-        $item->legacy = 
-          isset($row['LegacyID']) ? $row['LegacyID'] : null;
-        $item->recording_location =
-          isset($row['RecLocation']) ? $row['RecLocation'] : null;
-        $item->item_year =
-          isset($row['ItemYear']) ? $row['ItemYear'] : null;
-        $item->item_date =
-          isset($row['ItemDate']) ? $row['ItemDate'] : null;
-        $item->reel_tape_number =
-          isset($row['ReelTapeNumber']) ? $row['ReelTapeNumber'] : null;
-        $item->save();
-        $created++;
-
-        $sequence->increase();
-
-        $items[] = $item;
       } // end foreach row
 
       DB::statement('set @transaction_id = null;');      
@@ -228,24 +268,21 @@ class ItemsImport extends Import {
 
     $this->solrItems->update($items);
 
-    return array('created' => $created);
+    return array('created' => $created, 'updated' => $updated);
   }
-
 
   private function formatExists($formatId)
   {
     return Format::where('id', $formatId)->exists();
   }
 
-  private function collectionExists($archivalIdentifier)
-  {
-    return Collection::where('archival_identifier', $archivalIdentifier)->exists();
-  }
-
   private function callNumberSequenceExists($archivalIdentifier, $formatId)
   {
-    $collectionId = Collection::where('archival_identifier', $archivalIdentifier)->first()->id;
-    return CallNumberSequence::next($collectionId, $formatId) !== null;
+    $collection = Collection::where('archival_identifier', $archivalIdentifier)->first();
+    if ($collection === null) {
+      return false;
+    }
+    return CallNumberSequence::next($collection->id, $formatId) !== null;
   }
 
   private function validSoundType($soundType)
@@ -257,6 +294,37 @@ class ItemsImport extends Import {
   private function isValidType($type)
   {
     return $type === 'audio' || $type === 'film' || $type === 'video';
+  }
+
+  private function updateSubclassAttributes($subclass, $array, $isUpdate)
+  {
+    $subclassType = $array['subclassType'];
+    // if it's an update, the default is the original value.
+    // if it's a new record, the default is null
+    $defaultSize = $isUpdate ? $subclass->size : null;
+    $defaultElement = $isUpdate ? $subclass->element : null;
+    $defaultBase = $isUpdate ? $subclass->base : null;
+    $defaultColor = $isUpdate ? $subclass->color : null;
+    $defaultSoundType = $isUpdate ? $subclass->sound_type : null;
+    $defaultLength = $isUpdate ? $subclass->length : null;
+    $defaultContentDescription = $isUpdate ? $subclass->content_description : null;
+
+    // if the array has a value for the attribute, use it. otherwise use the default
+    $subclass->content_description = $array['ContentDescription'] ?? $defaultContentDescription;
+    if ($subclassType === 'AudioItem') {
+      $subclass->base = $array['Base'] ?? $defaultBase;
+      $subclass->size = $array['Size'] ?? $defaultSize;
+    } else if ($subclassType === 'FilmItem') {
+      $subclass->element = $array['Element'] ?? $defaultElement;
+      $subclass->base = $array['Base'] ?? $defaultBase;
+      $subclass->color = $array['Color'] ?? $defaultColor;
+      $subclass->sound_type = $array['SoundType'] ?? $defaultSoundType;
+      $subclass->length_in_feet = $array['LengthInFeet'] ?? $defaultLength;
+    } else if ($subclassType === 'VideoItem') {
+      $subclass->element = $array['Element'] ?? $defaultElement;
+      $subclass->color = $array['Color'] ?? $defaultColor;
+    }
+    return $subclass;
   }
 
 }
