@@ -18,7 +18,7 @@ class Transfer extends Model {
     'CallNumber', 'OriginatorReference', 'Side',
     'PlaybackMachine', 'FileSize', 'Duration',
     'OriginationDate', 'TransferNote', 'IART',
-    'OriginalPM', 'Size', 'TrackConfiguration',
+    'OriginalPm', 'Size', 'TrackConfiguration',
     'Base', 'Speed'
   ];
   const VIDEO_IMPORT_KEYS = [
