@@ -48,14 +48,13 @@ class BackfillImportActions extends Command
             ->where('transaction_id', $importTransaction->transaction_id)->get();
           // determine unique field values
           $fields = $relatedRevisions->pluck('field')->unique();
+          // if any of the fields are created_at, then it's a create, so skip
           if ($fields->contains('created_at')) {
             continue;
           }
-          // if none of the fields are 'created_at' it's an update
-          if ($fields->diff('created_at')->count() === 0) {
-            $importTransaction->import_action = 'update';
-            $importTransaction->save();
-          }
+          // otherwise set the import action to update
+          $importTransaction->import_action = 'update';
+          $importTransaction->save();
         }
         $bar->finish();
     }
