@@ -363,7 +363,11 @@ class AudioImport extends Import {
         }
 
       } // end foreach row
-
+      // if nothing was created and records were updated, the import is an update
+      if (empty($created) && !empty($updated)) {
+        $importTransaction->import_action = 'update';
+        $importTransaction->save();
+      }
       DB::statement('set @transaction_id = null;');      
     });
 
