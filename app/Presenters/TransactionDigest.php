@@ -10,6 +10,7 @@ use Venturecraft\Revisionable\Revision;
 use Jitterbug\Models\Activity;
 use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\ImportTransaction;
+use Illuminate\Support\Str;
 
 /**
  * Analyzes and summarizes a revision transaction and compiles a
@@ -63,7 +64,7 @@ class TransactionDigest
 
   /**
    * If this transaction was an import, the type of import
-   * (audio, film, or video).
+   * (items, audio, or video).
    *
    * @var string
    */
@@ -128,6 +129,13 @@ class TransactionDigest
   protected $objectTypesToIds = null;
 
   /**
+   * The ImportTransaction associated with this transaction, via transaction_id,
+   * if the transaction was an import. It may remain null.
+   * @var ImportTransaction
+   */
+  protected $associatedImportTransaction = null;
+
+  /**
    * Create a new instance.
    *
    * @return void
@@ -139,6 +147,7 @@ class TransactionDigest
     $this->revisions = Revision::where('transaction_id', $transactionId)
                                      ->orderBy('id', 'desc')
                                      ->get();
+    $this->associatedImportTransaction = ImportTransaction::where('transaction_id', $transactionId)->first();
     $this->analyzeRevisions();
     $this->generateActivities();
   }
@@ -159,9 +168,17 @@ class TransactionDigest
    */
   protected function analyzeRevisions()
   {
+    $importTransaction = $this->associatedImportTransaction;
     $this->buildObjectTypesToIds();
 
-    if ($this->wasCreate()) {
+    if ($importTransaction !== null) {
+      if ($importTransaction->import_action === 'update') {
+        $this->action = 'updated via import';
+      } else {
+        $this->action = 'created via import';
+      }
+      $this->importType = $importTransaction->import_type;
+    } else if ($this->wasCreate()) {
       $this->action = 'created';
     } else if ($this->wasUpdate()) {
       $this->action = 'updated';
@@ -169,18 +186,9 @@ class TransactionDigest
       $this->action = 'deleted';
     }
 
-    if ($this->wasAudioImport()) {
-      $this->action = 'imported';
-      $this->importType = 'audio';
-    } else if ($this->wasVideoImport()) {
-      $this->action = 'imported';
-      $this->importType = 'video';
-    } else if ($this->wasItemsImport()) {
-      $this->action = 'imported';
-      $this->importType = 'items';
-    }
-
-    if ($this->action === 'imported') {
+    // if the action includes the word import,
+    // then calculate batch size
+    if (Str::contains($this->action, 'import')) {
       $this->batch = true;
       $this->batchSize = $this->computeImportSize();
     }
