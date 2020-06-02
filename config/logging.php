@@ -43,7 +43,7 @@ return [
 
     'single' => [
       'driver' => 'single',
-      'path' => storage_path(env('LOG_CHANNEL_PATH','logs/laravel.log')),
+      'path' => env('LOG_CHANNEL_PATH',storage_path('logs/laravel.log')),
       'level' => 'debug',
     ],
 
