@@ -465,46 +465,6 @@ class TransactionDigest
   }
 
   /**
-   * Determine if this transaction was for importing audio visual items.
-   */
-  protected function wasItemsImport()
-  {
-    $importTransaction = 
-      ImportTransaction::where('transaction_id', $this->transactionId)
-                       ->where('import_type', 'items')->first();
-
-    return $importTransaction !== null;
-  }
-
-  /**
-   * Determine if this transaction was for importing audio records.
-   *
-   * @return boolean
-   */
-  protected function wasAudioImport()
-  {
-    $importTransaction = 
-      ImportTransaction::where('transaction_id', $this->transactionId)
-                       ->where('import_type', 'audio')->first();
-
-    return $importTransaction !== null;
-  }
-
-  /**
-   * Determine if this transaction was for importing video records.
-   *
-   * @return boolean
-   */
-  protected function wasVideoImport()
-  {
-    $importTransaction = 
-      ImportTransaction::where('transaction_id', $this->transactionId)
-                       ->where('import_type', 'video')->first();
-
-    return $importTransaction !== null;
-  }
-
-  /**
    * Computes the number of records that were in the batch import.
    */
   protected function computeImportSize()
