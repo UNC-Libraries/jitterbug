@@ -88,15 +88,8 @@ class Activity extends Model {
   public function object()
   {
     if (Str::contains($this->action, 'import')) {
-      if ($this->import_type === 'audio') {
-        return 'batch of ' . $this->batch_size . ' audio records';
-      } else if ($this->import_type === 'film') {
-        return 'batch of ' . $this->batch_size . ' film records';
-      } else if ($this->import_type === 'video') {
-        return 'batch of ' . $this->batch_size . ' video records';
-      } else if ($this->import_type === 'items') {
-        return 'batch of ' . $this->batch_size . ' audio visual item records';
-      }
+      $type = $this->import_type === 'items' ? 'audio visual item' : $this->import_type;
+      return 'batch of ' . $this->batch_size . ' ' . $type . ' records';
     }
 
     $objectType = $this->objectType();
