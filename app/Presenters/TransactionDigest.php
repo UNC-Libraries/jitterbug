@@ -475,19 +475,21 @@ class TransactionDigest
       $totalItems = 0;
       foreach ($this->objectTypesToIds as $key => $value) {
         if (ends_with($key, 'item')) {
-          $totalItems = $totalItems + count($value);
+          $totalItems += count($value);
         }
       }
       $this->batchSize = $totalItems;
-    } else { // This is an audio, film or video import
-      // We can just count the number of unique preservation master revisions.
-      $ids = array();
-      foreach ($this->revisions as $revision) {
-        if ($revision->revisionable_type === 'PreservationMaster') {
-          $ids[$revision->revisionable_id] = 1;
-        }
-      }
-      $this->batchSize = count($ids);
+    } else {
+      // This is an audio, film or video import
+      // We will count the unique revisions for this transaction ID
+      // by grouping the same revision types together and their revisionable IDs
+      // we are only counting revisions for PreservationMasters, AudioVisualItems, and AudioItems
+      $uniqueRevisionsCount = Revision::where('transaction_id', $this->transactionId)
+                                        ->groupBy('revisionable_type', 'revisionable_id')
+                                        ->whereIn('revisionable_type', ['PreservationMaster','AudioItem','AudioVisualItem'])
+                                        ->get()
+                                        ->count();
+      $this->batchSize = $uniqueRevisionsCount;
     }
 
     return $this->batchSize;
