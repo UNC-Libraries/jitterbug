@@ -307,6 +307,7 @@ $factory->define(Jitterbug\Models\Project::class, function (Faker\Generator $fak
 
 $factory->define(Venturecraft\Revisionable\Revision::class, function (Faker\Generator $faker) {
   return [
+    'field' => $faker->word,
     'revisionable_type' => 'AudioVisualItem',
     'revisionable_id' => function () {
       return factory(Jitterbug\Models\AudioVisualItem::class)->create()->id;
