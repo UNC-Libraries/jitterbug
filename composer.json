@@ -15,7 +15,7 @@
 		"laravel/framework": "6.0.*",
 		"laravelcollective/html": "6.0.*",
 		"solarium/solarium": "^5.1",
-		"venturecraft/revisionable": "dev-master",
+		"venturecraft/revisionable": "dev-main",
 		"davejamesmiller/laravel-breadcrumbs": "^5.0",
 		"ramsey/uuid": "^3.5",
 		"adldap2/adldap2-laravel": "6.0.*",
