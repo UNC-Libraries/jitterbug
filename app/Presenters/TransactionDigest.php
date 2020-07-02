@@ -261,7 +261,7 @@ class TransactionDigest
       }
       return;
     } else if ($this->action === 'updated' && !$this->batch) {
-      $activity->numFields = $this->revisions->count();
+      $activity->num_fields = $this->revisions->count();
     }
 
     $this->activities[] = $activity;
