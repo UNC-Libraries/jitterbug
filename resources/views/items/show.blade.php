@@ -176,6 +176,14 @@
         </div>
       </div>
       @endif
+      <div class="row">
+        <div class="col-xs-4 col-xs-offset-1 detail-label">
+          Blank?
+        </div>
+        <div class="col-xs-7 detail-value">
+          {{$item->blank_display}}
+        </div>
+      </div>
       {{-- End AudioVisualItem fields --}}
     </div>
     <div class="col-xs-6">

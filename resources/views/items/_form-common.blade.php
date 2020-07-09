@@ -221,5 +221,25 @@
           </div>
         </div>
       </div>
+      <div class="row">
+        <div class="form-group">
+          <div class="col-xs-4 col-xs-offset-1 detail-label">
+            {!! Form::label('blank', 'Blank?', array('class' => 'form-control-label')) !!}
+          </div>
+          <div class="col-xs-7 detail-value">
+            @if ($item->blank !== '<mixed>' || !$item->batch())
+              <label class="radio-inline">
+                {!! Form::radio('blank', '1') !!} Yes
+              </label>
+              <label class="radio-inline">
+                {!! Form::radio('blank', '0', true) !!} No
+              </label>
+            @else
+              {!! Form::select('blank',
+              array('1' => 'Yes', '0' => 'No', '<mixed>' => '<mixed>'), $item->blank, array('class' => 'form-control form-control-sm')) !!}
+            @endif
+          </div>
+        </div>
+      </div>
       {{-- End AudioVisualItem fields --}}
  

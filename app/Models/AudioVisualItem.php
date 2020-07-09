@@ -134,4 +134,8 @@ class AudioVisualItem extends Model {
     }
   }
 
+  public function getBlankDisplayAttribute() : string
+  {
+    return $this->blank ? 'Yes' : 'No';
+  }
 }
