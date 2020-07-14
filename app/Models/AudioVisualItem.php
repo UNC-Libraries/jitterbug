@@ -64,7 +64,7 @@ class AudioVisualItem extends Model {
     'recording_location', 'physical_location', 'access_restrictions',
     'item_year', 'item_date', 'collection_id', 'accession_number',
     'legacy', 'format_id', 'reel_tape_number', 'container_note',
-    'condition_note', 'oclc', 'entry_date', 'speed');
+    'condition_note', 'oclc', 'entry_date', 'speed', 'blank');
 
   public function __construct($attributes = [])
   {
@@ -134,4 +134,11 @@ class AudioVisualItem extends Model {
     }
   }
 
+  public function getBlankDisplayAttribute($value) : string
+  {
+    // the param $value is required for revisionable revision history
+    // it may be blank due to usage in AV items show page
+    $blank = $value ?? $this->blank;
+    return $blank ? 'Yes' : 'No';
+  }
 }

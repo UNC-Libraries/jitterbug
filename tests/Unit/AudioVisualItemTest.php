@@ -1,5 +1,6 @@
 <?php
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Jitterbug\Models\AudioVisualItem;
 
 class AudioVisualItemTest extends TestCase
 {
@@ -9,13 +10,13 @@ class AudioVisualItemTest extends TestCase
      *
      * @return void
      */
-    public function testTypeIdAttribute()
+    public function testTypeIdAttribute() : void
     {
-      $av_audio_item = factory(Jitterbug\Models\AudioVisualItem::class)->make();
-      $av_film_item = factory(Jitterbug\Models\AudioVisualItem::class)->make([
+      $av_audio_item = factory(AudioVisualItem::class)->make();
+      $av_film_item = factory(AudioVisualItem::class)->make([
         'subclass_type' => 'FilmItem',
       ]);
-      $av_video_item = factory(Jitterbug\Models\AudioVisualItem::class)->make([
+      $av_video_item = factory(AudioVisualItem::class)->make([
         'subclass_type' => 'VideoItem',
       ]);
 
@@ -23,5 +24,21 @@ class AudioVisualItemTest extends TestCase
       $this->assertSame(2, $av_film_item->getTypeIdAttribute(), 'TypeIdAttribute returned wrong ID for Film Item');
       $this->assertSame(3, $av_video_item->getTypeIdAttribute(), 'TypeIdAttribute returned wrong ID for Video Item');
 
+    }
+
+    public function testBlankDisplayAttributeWithRevisionable() : void
+    {
+      $av_item = factory(AudioVisualItem::class)->make();
+
+      $this->assertSame('Yes', $av_item->getBlankDisplayAttribute(true),
+        'BlankDisplayAttribute should return yes when revisionable passes true in');
+    }
+
+    public function testBlankDisplayAttribute() : void
+    {
+      $av_item = factory(AudioVisualItem::class)->make(['blank' => true]);
+
+      $this->assertSame('Yes', $av_item->blank_display,
+        'BlankDisplayAttribute should return yes as the display form attribute');
     }
 }
