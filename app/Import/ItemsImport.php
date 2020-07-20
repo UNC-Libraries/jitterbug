@@ -312,7 +312,7 @@ class ItemsImport extends Import {
     $defaultBase = $isUpdate ? $subclass->base : null;
     $defaultColor = $isUpdate ? $subclass->color : null;
     $defaultSoundType = $isUpdate ? $subclass->sound_type : null;
-    $defaultLength = $isUpdate ? $subclass->length : null;
+    $defaultLength = $isUpdate ? $subclass->length_in_feet : null;
     $defaultContentDescription = $isUpdate ? $subclass->content_description : null;
 
     // if the array has a value for the attribute, use it. otherwise use the default
