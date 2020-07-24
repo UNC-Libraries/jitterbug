@@ -53,8 +53,9 @@ class SetCollectionToLegacyCallNumberSequence extends Command
         ->delete();
 
       if ($invalidSequencePrefixes->count() > 0) {
-        return 'The sequences with the following prefixes were not deleted: ' . $invalidSequencePrefixes;
+        $this->info('Done! The sequences with the following prefixes were not deleted: ' . $invalidSequencePrefixes);
+      } else {
+        $this->info('All sequences for archival identifier ' . $archivalIdentifier . ' were successfully deleted.');
       }
-      return 'All sequences for archival identifier ' . $archivalIdentifier . ' were successfully deleted.';
     }
 }
