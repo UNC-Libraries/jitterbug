@@ -45,7 +45,6 @@ class SetCollectionToLegacyCallNumberSequence extends Command
       $usedSequencePrefixes = DB::table('new_call_number_sequences')
         ->where('archival_identifier', $archivalIdentifier)
         ->where('next', '>', 1)
-        ->get()
         ->pluck('prefix');
 
       // Only delete the new call number sequences that have never been used
