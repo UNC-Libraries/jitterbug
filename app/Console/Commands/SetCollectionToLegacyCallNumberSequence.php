@@ -41,12 +41,14 @@ class SetCollectionToLegacyCallNumberSequence extends Command
     {
       $archivalIdentifier = $this->argument('archival_identifier');
 
+      // Find all new call number sequences that have been used and get their associated prefix
       $invalidSequencePrefixes = DB::table('new_call_number_sequences')
         ->where('archival_identifier', $archivalIdentifier)
         ->where('next', '>', 1)
         ->get()
         ->pluck('prefix');
 
+      // Only delete the new call number sequences that have never been used
       DB::table('new_call_number_sequences')
         ->where('archival_identifier', $archivalIdentifier)
         ->where('next', '=', 1)
