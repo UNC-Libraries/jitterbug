@@ -156,7 +156,7 @@ jitterbug = {
   },
 
   toggleAdmin: function() {
-    var adminCheckboxes = $('#table-container input:checkbox');
+    var adminCheckboxes = $('.admin input:checkbox');
     adminCheckboxes.click(function(event) {
       var makeAdmin = $(this).is(':checked');
       var route = makeAdmin == true ? '/admin/make-admin'
@@ -174,7 +174,7 @@ jitterbug = {
   },
 
   toggleLegacy: function() {
-    var legacyCheckboxes = $('#table-container input:checkbox');
+    var legacyCheckboxes = $('.legacy input:checkbox');
     legacyCheckboxes.click(function(event) {
       var makeLegacy = $(this).is(':checked');
       var route = makeLegacy === true ? '/prefixes/set-legacy-status'

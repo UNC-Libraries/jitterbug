@@ -8,7 +8,8 @@
               <th width="20%">First Name</th>
               <th width="20%">Last Name</th>
               <th width="21%">Signed In</th>
-              <th width="12%">Admin</th>
+              <th width="9%">Admin</th>
+              <th width="9%">Inactive</th>
             </tr>
           </thead>
           <tbody>
@@ -19,7 +20,8 @@
               <td>{{ $record->first_name }}</td>
               <td>{{ $record->last_name }}</td>
               <td>{{ $record->updated_at }}</td>
-              <td><input role="button" data-username="{{$record->username}}" type="checkbox" @if ($record->admin === 1) checked="checked" @if (\Auth::user()->id === $record->id) disabled="disabled" @endif @endif></td>
+              <td class="admin"><input role="button" data-username="{{$record->username}}" type="checkbox" @if ($record->admin === 1) checked="checked" @if ($record->inactive === 1 || \Auth::user()->id === $record->id) disabled="disabled" @endif @endif></td>
+              <td><input role="button" data-username="{{$record->username}}" type="checkbox" @if ($record->inactive === 1) checked="checked" @if (\Auth::user()->id === $record->id) disabled="disabled" @endif @endif></td>
             </tr>
             @endforeach
           </tbody>

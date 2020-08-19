@@ -23,7 +23,7 @@
               {{ \Jitterbug\Models\CollectionType::formattedName($record->collectionType) }}
             </span>
           </td>
-          <td><input role="button" data-id="{{ $record->id }}" type="checkbox" @if ($record->legacy === 1) checked="checked" @endif></td>
+          <td class="legacy"><input role="button" data-id="{{ $record->id }}" type="checkbox" @if ($record->legacy === 1) checked="checked" @endif></td>
           <td><a href="#" role="button" class="delete" title="Delete record" style="float: right;"><i class="fa fa-times" aria-hidden="true"></i></a></td>
         </tr>
       @endforeach
