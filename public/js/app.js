@@ -134,6 +134,7 @@ jitterbug = {
         // admin checkboxes
         if (table == 'users') {
           jitterbug.toggleAdmin();
+          jitterbug.toggleInactive();
           // If this is the prefixes table, bind click handlers to
           // legacy checkboxes and set up the popovers
         } else if (table === 'prefixes') {
@@ -170,6 +171,27 @@ jitterbug = {
             : 'User ' + username + ' is no longer an admin.';
         jitterbug.displayAlert('success', message);
       });
+    });
+  },
+
+  toggleInactive: function() {
+    var inactiveCheckboxes = $('.inactive input:checkbox');
+    inactiveCheckboxes.click(function(event) {
+      var makeInactive = $(this).is(':checked');
+      var route = makeInactive == true ? '/users/inactivate'
+          : '/users/reactivate';
+      var data = {};
+      var id = $(this).closest('tr').data('id');
+      var username = $(this).data('username');
+      console.log('id is ' + id);
+      console.log('username is ' + username);
+      // data['id'] = id;
+      // $.post(route, data, function(data) {
+      //   var message = makeInactive == true
+      //       ? 'User ' + username + ' was successfully inactivated.'
+      //       : 'User ' + username + ' is now active.';
+      //   jitterbug.displayAlert('success', message);
+      // });
     });
   },
 

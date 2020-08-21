@@ -68,6 +68,8 @@ Route::post('prefixes/set-legacy-status', 'Admin\PrefixesController@setLegacySta
 Route::post('prefixes/remove-legacy-status', 'Admin\PrefixesController@removeLegacyStatus');
 Route::post('formats/detach_prefixes', 'Admin\FormatsController@detachPrefixes');
 Route::post('formats/attach_prefixes', 'Admin\FormatsController@attachPrefixes');
+Route::post('users/inactivate', 'Admin\UsersController@inactivate');
+Route::post('users/reactivate', 'Admin\UsersController@reactivate');
 
 /*
 |--------------------------------------------------------------------------
