@@ -7,9 +7,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use Illuminate\Notifications\Notifiable;
-
-use Jitterbug\Models\Mark;
+use Illuminate\Support\Arr;
 
 class User extends Model implements AuthenticatableContract,
                                     AuthorizableContract, 
@@ -87,11 +85,12 @@ class User extends Model implements AuthenticatableContract,
    * Return a list of engineer users, suitable for use in dropdown
    * menus.
    *
+   * @param $originalUserId
    * @return array
    */
-  static public function engineerList()
+  public static function engineerList($originalUserId = null) : array
   {
-    $users = User::orderBy('first_name')->get();
+    $users = self::orderBy('first_name')->get();
     $engineers = array();
     foreach ($users as $user) {
       // Filter out System user
@@ -102,7 +101,21 @@ class User extends Model implements AuthenticatableContract,
       if ($user->legacy()) {
         continue;
       }
+      // Filter out inactive users
+      if ($user->inactive === 1) {
+        continue;
+      }
       $engineers[$user->id] = $user->fullName();
+    }
+
+    // if a user ID is sent in, it is attached to an existing transfer
+    // it may be inactive and/or legacy, so we need it to show up in the list
+    // so that the original user can show up in an edit form dropdown
+    if ($originalUserId !== null && !Arr::exists($engineers, $originalUserId)) {
+      $originalUser = self::findOrFail($originalUserId);
+      // if the user is legacy, use the legacy initials. otherwise use the full name.
+      $name = $originalUser->legacy() ? $originalUser->legacy_initials : $originalUser->fullName();
+      $engineers = Arr::prepend($engineers, $name, $originalUserId);
     }
     return $engineers;
   }

@@ -2,10 +2,8 @@
 
 use Auth;
 use DB;
-use Log;
-
+use Jitterbug\Models\Mark;
 use Illuminate\Http\Request;
-
 use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Models\User;
 
@@ -29,7 +27,26 @@ class UsersController extends Controller
     }
   }
 
-  public function inactivate() {
+  public function inactivate(Request $request) {
+    if ($request->ajax()) {
+      $input = $request->all();
+      $id = $input['id'];
+      $user = User::findOrFail($id);
+      $user->inactive = 1;
+      $user->save();
 
+      // delete any existing marks made by the inactive user
+      Mark::where('user_id', $user->id)->delete();
+    }
+  }
+
+  public function reactivate(Request $request) {
+    if ($request->ajax()) {
+      $input = $request->all();
+      $id = $input['id'];
+      $user = User::findOrFail($id);
+      $user->inactive = 0;
+      $user->save();
+    }
   }
 }

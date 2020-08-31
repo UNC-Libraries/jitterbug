@@ -183,15 +183,14 @@ jitterbug = {
       var data = {};
       var id = $(this).closest('tr').data('id');
       var username = $(this).data('username');
-      console.log('id is ' + id);
-      console.log('username is ' + username);
-      // data['id'] = id;
-      // $.post(route, data, function(data) {
-      //   var message = makeInactive == true
-      //       ? 'User ' + username + ' was successfully inactivated.'
-      //       : 'User ' + username + ' is now active.';
-      //   jitterbug.displayAlert('success', message);
-      // });
+      data['id'] = id;
+      $.post(route, data, function(data) {
+        console.log(data);
+        var message = makeInactive === true
+            ? 'User ' + username + ' was successfully inactivated.'
+            : 'User ' + username + ' is now active.';
+        jitterbug.displayAlert('success', message);
+      });
     });
   },
 

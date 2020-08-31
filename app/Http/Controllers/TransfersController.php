@@ -191,13 +191,7 @@ class TransfersController extends Controller {
     $playbackMachines = ['' => 'Select a playback machine'] +
              PlaybackMachine::orderBy('name')->pluck('name', 'id')->all();
     $engineers = ['' => 'Select an engineer'] + 
-             User::engineerList();
-    if ($transfer->engineer_id !== null) {
-      $engineer = User::findOrFail($transfer->engineer_id);
-      if ($engineer->legacy()) {
-        $engineers += [$engineer->id => $engineer->legacy_initials];
-      }
-    }
+             User::engineerList($transfer->engineer_id);
     $vendors = ['' => 'Select a vendor'] + 
              Vendor::pluck('name', 'id')->all();
 
@@ -276,13 +270,7 @@ class TransfersController extends Controller {
               ['<mixed>' => '<mixed>'] + User::engineerList();
     } else {
       $engineers = ['' => 'Select an engineer'] + 
-              User::engineerList();
-    }
-    if ($transfer->engineer_id !== null && $transfer->engineer_id !== '<mixed>') {
-      $engineer = User::findOrFail($transfer->engineer_id);
-      if ($engineer->legacy()) {
-        $engineers += [$engineer->id => $engineer->legacy_initials];
-      }
+              User::engineerList($transfer->engineer_id);
     }
 
     $vendors = array();
@@ -497,7 +485,7 @@ class TransfersController extends Controller {
   }
 
   /**
-   * Update multple transfers at once.
+   * Update multiple transfers at once.
    */
   public function batchUpdate(TransferRequest $request)
   {
@@ -510,8 +498,7 @@ class TransfersController extends Controller {
     // Determine if PM has been changed
     if (isset($input['preservation_master_id'])) {
       foreach ($transfers as $transfer) {
-        if ($transfer->preservation_master_id !==
-             intval($input['preservation_master_id'])) {
+        if ($transfer->preservation_master_id !== (int) $input['preservation_master_id']) {
           $pmChanged = true;
           break;
         }
