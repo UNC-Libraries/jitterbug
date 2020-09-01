@@ -185,9 +185,9 @@ jitterbug = {
       var username = $(this).data('username');
       data['id'] = id;
       $.post(route, data, function(data) {
-        console.log(data);
+        var numberDeleted = data['marksDeleted'];
         var message = makeInactive === true
-            ? 'User ' + username + ' was successfully inactivated.'
+            ? `User ${username} was successfully inactivated. ${numberDeleted} of their marks were deleted.`
             : 'User ' + username + ' is now active.';
         jitterbug.displayAlert('success', message);
       });

@@ -36,7 +36,8 @@ class UsersController extends Controller
       $user->save();
 
       // delete any existing marks made by the inactive user
-      Mark::where('user_id', $user->id)->delete();
+      $numberOfDeletedMarks = Mark::where('user_id', $user->id)->delete();
+      return response()->json(['marksDeleted' => $numberOfDeletedMarks]);
     }
   }
 
