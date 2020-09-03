@@ -22,7 +22,9 @@ class UsersController extends Controller
 
   public function index(Request $request) {
     if ($request->ajax()) {
-      $records = User::hasLoggedIn()->get();
+      $records = User::hasLoggedIn()
+                  ->orderBy('inactive', 'ASC')
+                  ->get();
       return view('admin._users', compact('records'));
     }
   }

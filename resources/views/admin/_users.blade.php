@@ -14,7 +14,7 @@
           </thead>
           <tbody>
             @foreach ($records as $record)
-            <tr data-id="{{$record->id}}">
+            <tr data-id="{{$record->id}}" @if ($record->inactive ===1) class="inactive-row" @endif>
               <td>{{ $record->id }}</td>
               <td>{{ $record->username }}</td>
               <td>{{ $record->first_name }}</td>

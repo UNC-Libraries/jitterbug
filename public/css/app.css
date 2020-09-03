@@ -4773,6 +4773,9 @@ Admin
 .popover-submit {
   margin-left: 3px; }
 
+.inactive-row {
+  background-color: #e0e0e0; }
+
 /* -------------------------------------------
 Dashboard
 ------------------------------------------- */
