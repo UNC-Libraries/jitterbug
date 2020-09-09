@@ -7,11 +7,6 @@ use Jitterbug\Models\Mark;
 class UsersTest extends TestCase
 {
   use RefreshDatabase;
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
 
   public function testInactivateSetsInactiveToTrue() : void
   {

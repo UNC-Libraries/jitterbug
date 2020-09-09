@@ -1,15 +1,15 @@
     <div id="record-container">
-      <div id="table-container" style="height: 782px; overflow-y: scroll; margin-top: .25rem; margin-bottom: 1rem;">
+      <div id="table-container">
         <table style="margin-top: .75rem;" class="table table-sm table-hover">
           <thead>
             <tr>
-              <th width="7%">ID</th>
-              <th width="20%">Username</th>
-              <th width="20%">First Name</th>
-              <th width="20%">Last Name</th>
-              <th width="21%">Signed In</th>
-              <th width="9%">Admin</th>
-              <th width="9%">Inactive</th>
+              <th class="max-content">ID</th>
+              <th>Username</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Signed In</th>
+              <th class="max-content">Admin</th>
+              <th class="max-content">Inactive</th>
             </tr>
           </thead>
           <tbody>

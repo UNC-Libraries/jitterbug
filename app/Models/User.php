@@ -102,7 +102,7 @@ class User extends Model implements AuthenticatableContract,
         continue;
       }
       // Filter out inactive users
-      if ($user->inactive === 1) {
+      if ($user->inactive) {
         continue;
       }
       $engineers[$user->id] = $user->fullName();
