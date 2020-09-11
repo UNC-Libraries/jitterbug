@@ -169,6 +169,7 @@ jitterbug = {
         var message = makeAdmin
             ? 'User ' + username + ' was successfully made admin.'
             : 'User ' + username + ' is no longer an admin.';
+        $(window).scrollTop(0);
         jitterbug.displayAlert('success', message);
       });
     });
@@ -189,6 +190,7 @@ jitterbug = {
         var message = makeInactive
             ? `User ${username} was successfully inactivated. ${numberDeleted} of their marks were deleted.`
             : 'User ' + username + ' is now active.';
+        $(window).scrollTop(0);
         jitterbug.displayAlert('success', message);
       });
     });
