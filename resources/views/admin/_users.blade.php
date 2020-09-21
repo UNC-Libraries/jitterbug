@@ -3,13 +3,13 @@
         <table style="margin-top: .75rem;" class="table table-sm table-hover">
           <thead>
             <tr>
-              <th class="max-content">ID</th>
+              <th>ID</th>
               <th>Username</th>
               <th>First Name</th>
               <th>Last Name</th>
               <th>Signed In</th>
-              <th class="max-content">Admin</th>
-              <th class="max-content">Inactive</th>
+              <th>Admin</th>
+              <th>Inactive</th>
             </tr>
           </thead>
           <tbody>
