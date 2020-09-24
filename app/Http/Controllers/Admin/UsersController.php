@@ -35,6 +35,7 @@ class UsersController extends Controller
       $id = $input['id'];
       $user = User::findOrFail($id);
       $user->inactive = 1;
+      $user->admin = 0;
       $user->save();
 
       // delete any existing marks made by the inactive user

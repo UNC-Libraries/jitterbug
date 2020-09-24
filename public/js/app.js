@@ -182,14 +182,25 @@ jitterbug = {
       var route = makeInactive ? '/users/inactivate'
           : '/users/reactivate';
       var data = {};
-      var id = $(this).closest('tr').data('id');
+      var row = $(this).closest('tr');
+      var id = row.data('id');
       var username = $(this).data('username');
+      var adminCheckbox = row.find('.admin input:checkbox');
       data['id'] = id;
       $.post(route, data, function(data) {
         var numberDeleted = data['marksDeleted'];
-        var message = makeInactive
-            ? `User ${username} was successfully inactivated. ${numberDeleted} of their marks were deleted.`
-            : 'User ' + username + ' is now active.';
+        if (makeInactive) {
+          // when inactivating the user, uncheck and disable admin checkbox
+          adminCheckbox.prop('checked', false);
+          adminCheckbox.attr('disabled', true);
+          row.addClass('inactive-row');
+          var message = `User ${username} was successfully inactivated. 
+              ${numberDeleted} of their marks were deleted.`;
+        } else {
+          adminCheckbox.attr('disabled', false);
+          row.removeClass('inactive-row');
+          var message = 'User ' + username + ' is now active.';
+        }
         $(window).scrollTop(0);
         jitterbug.displayAlert('success', message);
       });
