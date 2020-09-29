@@ -4773,6 +4773,20 @@ Admin
 .popover-submit {
   margin-left: 3px; }
 
+.inactive-row {
+  background-color: #e0e0e0; }
+
+.max-content {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content; }
+
+.user-table {
+  height: 782px;
+  overflow-y: scroll;
+  margin-top: .25rem;
+  margin-bottom: 1rem; }
+
 /* -------------------------------------------
 Dashboard
 ------------------------------------------- */

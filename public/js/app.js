@@ -134,6 +134,7 @@ jitterbug = {
         // admin checkboxes
         if (table == 'users') {
           jitterbug.toggleAdmin();
+          jitterbug.toggleInactive();
           // If this is the prefixes table, bind click handlers to
           // legacy checkboxes and set up the popovers
         } else if (table === 'prefixes') {
@@ -156,34 +157,67 @@ jitterbug = {
   },
 
   toggleAdmin: function() {
-    var adminCheckboxes = $('#table-container input:checkbox');
+    var adminCheckboxes = $('.admin input:checkbox');
     adminCheckboxes.click(function(event) {
       var makeAdmin = $(this).is(':checked');
-      var route = makeAdmin == true ? '/admin/make-admin'
+      var route = makeAdmin ? '/admin/make-admin'
           : '/admin/remove-admin';
       var data = {};
       var username = $(this).data('username');
       data['username'] = username;
       $.post(route, data, function(data) {
-        var message = makeAdmin == true
+        var message = makeAdmin
             ? 'User ' + username + ' was successfully made admin.'
             : 'User ' + username + ' is no longer an admin.';
+        $(window).scrollTop(0);
+        jitterbug.displayAlert('success', message);
+      });
+    });
+  },
+
+  toggleInactive: function() {
+    var inactiveCheckboxes = $('.inactive input:checkbox');
+    inactiveCheckboxes.click(function(event) {
+      var makeInactive = $(this).is(':checked');
+      var route = makeInactive ? '/users/inactivate'
+          : '/users/reactivate';
+      var data = {};
+      var row = $(this).closest('tr');
+      var id = row.data('id');
+      var username = $(this).data('username');
+      var adminCheckbox = row.find('.admin input:checkbox');
+      data['id'] = id;
+      $.post(route, data, function(data) {
+        var numberDeleted = data['marksDeleted'];
+        if (makeInactive) {
+          // when inactivating the user, uncheck and disable admin checkbox
+          adminCheckbox.prop('checked', false);
+          adminCheckbox.attr('disabled', true);
+          row.addClass('inactive-row');
+          var message = `User ${username} was successfully inactivated. 
+              ${numberDeleted} of their marks were deleted.`;
+        } else {
+          adminCheckbox.attr('disabled', false);
+          row.removeClass('inactive-row');
+          var message = 'User ' + username + ' is now active.';
+        }
+        $(window).scrollTop(0);
         jitterbug.displayAlert('success', message);
       });
     });
   },
 
   toggleLegacy: function() {
-    var legacyCheckboxes = $('#table-container input:checkbox');
+    var legacyCheckboxes = $('.legacy input:checkbox');
     legacyCheckboxes.click(function(event) {
       var makeLegacy = $(this).is(':checked');
-      var route = makeLegacy === true ? '/prefixes/set-legacy-status'
+      var route = makeLegacy ? '/prefixes/set-legacy-status'
           : '/prefixes/remove-legacy-status';
       var data = {};
       var id = $(this).data('id');
       data['id'] = id;
       $.post(route, data, function(data) {
-        var message = makeLegacy === true
+        var message = makeLegacy
             ? 'That prefix was successfully made legacy.'
             : 'That prefix is no longer legacy.';
         jitterbug.displayAlert('success', message);

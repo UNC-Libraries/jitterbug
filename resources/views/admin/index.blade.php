@@ -116,7 +116,7 @@
   </div>
   <div id="record-panel" class="col-xs-9 panel">
     <div id="record-container">
-      <div id="table-container" style="height: 782px; overflow-y: scroll; margin-top: .25rem; margin-bottom: 1rem;">
+      <div id="table-container">
         {{-- Need this empty table here for initial rendering of the page to avoid a twitch --}}
         <table style="margin-top: .75rem;" class="table table-sm table-hover"></table>
       </div>
