@@ -223,9 +223,10 @@ class PreservationMaster extends Model {
     $this->duration_in_seconds = DurationFormat::toSeconds($value);
   }
   
-  public function getDurationInSecondsDisplayAttribute()
+  public function getDurationInSecondsDisplayAttribute($value = null)
   {
-    return DurationFormat::toDuration($this->duration_in_seconds);
+    $duration = $value ?? $this->duration_in_seconds;
+    return DurationFormat::toDuration($duration);
   }
 }
 
