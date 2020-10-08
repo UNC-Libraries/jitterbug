@@ -279,6 +279,8 @@ jitterbug = {
               // if it's the collection type ID column, display the name instead of the ID
               if (field === 'collection_type_id') {
                 newCellValue = data['collectionTypeName']
+              } else if (field === 'prefixes') {
+                newCellValue = "Please edit prefixes.";
               }
               $(this).html(newCellValue);
 
