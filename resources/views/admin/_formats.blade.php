@@ -27,7 +27,7 @@
                 @foreach ($record->uniquePrefixLabels() as $prefix)
                   <span>{{$prefix}}</span>,&nbsp;
                 @endforeach
-                <a class="btn btn-sm btn-secondary pull-right" href="{{route('formats.show', ['id' => $record->id])}}">Edit Prefixes</a>
+                <a class="btn btn-sm btn-secondary pull-right" href="{{route('formats.show', ['formats' => $record->id])}}">Edit Prefixes</a>
               </td>
               <td><a href="#" role="button" class="delete" title="Delete record" style="float: right;"><i class="fa fa-times" aria-hidden="true"></i></a></td>
             </tr>

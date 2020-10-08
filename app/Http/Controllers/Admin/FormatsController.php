@@ -2,7 +2,6 @@
 
 use Auth;
 use DB;
-use Log;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
