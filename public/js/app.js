@@ -280,7 +280,7 @@ jitterbug = {
               if (field === 'collection_type_id') {
                 newCellValue = data['collectionTypeName']
               } else if (field === 'prefixes') {
-                newCellValue = "Please edit prefixes.";
+                newCellValue = "Please add prefixes.";
               }
               $(this).html(newCellValue);
 

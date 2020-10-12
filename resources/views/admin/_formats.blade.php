@@ -25,8 +25,9 @@
               {{--              <td><span class="editable" data-id="{{ $record->id }}" data-field="legacyPrefix" role="button">{{ empty($record->legacyPrefix) ? "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" : $record->legacyPrefix }}</span></td> --}}{{-- This is an optional field so we need those non-breaking spaces so there is something to click on --}}
               <td>
                 <span data-field="prefixes">
+                  @if ($record->uniquePrefixLabels() === []) Please add prefixes. @endif
                   @foreach ($record->uniquePrefixLabels() as $prefix)
-                    {{$prefix}},&nbsp;
+                    {{$prefix}},
                   @endforeach
                 </span>
                 <a class="btn btn-sm btn-secondary pull-right" href="{{route('formats.show', ['formats' => $record->id])}}">Edit Prefixes</a>
