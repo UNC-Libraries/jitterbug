@@ -55,6 +55,7 @@ class ItemsImport extends Import {
       $bag = new MessageBag();
       $messages[] = $bag;
       $callNumbers = array();
+      $formatExists = $this->formatExists($row['FormatID']);
       foreach($this->itemsImportKeys as $key) {
         // Validate that all required fields have values
         if (in_array($key, $this->requiredItemsImportKeys) 
@@ -73,12 +74,11 @@ class ItemsImport extends Import {
           }
         }
         // Validate format exists
-        if ($key==='FormatID' 
-          && !empty($row[$key]) && !$this->formatExists($row[$key])) {
+        if ($key==='FormatID' && !$formatExists) {
           $bag->add($key, $key . ' is not a recognized format.');
         }
         // Validate call number exists for Collection & Format pair
-        if (!empty($row['ArchivalIdentifier']) && !empty($row['FormatID']) &&
+        if (!empty($row['ArchivalIdentifier']) && $formatExists &&
           !$this->callNumberSequenceExists($row['ArchivalIdentifier'], $row['FormatID'])) {
           $bag->add('ArchivalIdentifier', 'The Collection/Format pairing does not have a valid CallNumberSequence available.');
           $bag->add('FormatID', 'The Collection/Format pairing does not have a valid CallNumberSequence available.');
