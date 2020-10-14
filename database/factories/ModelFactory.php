@@ -186,8 +186,6 @@ $factory->define(Jitterbug\Models\FilmMaster::class, function (Faker\Generator $
 $factory->define(Jitterbug\Models\Format::class, function (Faker\Generator $faker) {
   return [
     'name' => $faker->word,
-    'prefix' => strtoupper($faker->lexify('??')),
-    'legacy_prefix' => strtoupper($faker->lexify('??')),
   ];
 });
 

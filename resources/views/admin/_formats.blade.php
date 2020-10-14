@@ -8,9 +8,6 @@
             <tr>
               <th width="8%">ID</th>
               <th width="30%">Name</th>
-              {{--  TODO APPDEV-8643 remove when unneeded columns are removed  --}}
-              {{--              <th width="15%">Prefix</th>--}}
-              {{--              <th width="15%">Legacy Prefix</th>--}}
               <th width="32%">Prefixes</th>
               <th width="5%"></th>
             </tr>
@@ -20,9 +17,6 @@
             <tr>
               <td><span data-field="id">{{ $record->id }}</td>
               <td><span class="editable" data-id="{{ $record->id }}" data-field="name" role="button">{{ $record->name }}</span></td>
-              {{--TODO APPDEV-8643 remove when columns are removed--}}
-              {{--              <td><span class="editable" data-id="{{ $record->id }}" data-field="prefix" role="button">{{ $record->prefix }}</span></td>--}}
-              {{--              <td><span class="editable" data-id="{{ $record->id }}" data-field="legacyPrefix" role="button">{{ empty($record->legacyPrefix) ? "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" : $record->legacyPrefix }}</span></td> --}}{{-- This is an optional field so we need those non-breaking spaces so there is something to click on --}}
               <td>
                 <span data-field="prefixes">
                   @if ($record->uniquePrefixLabels() === []) Please add prefixes. @endif
@@ -44,8 +38,6 @@
     <div id="new-record-form" class="hidden">
       <form class="form-inline">
         <input type="text" name="name" class="form-control form-control-sm" maxlength="255" placeholder="Name" autocomplete="off" style="width: 200px;">
-        <input type="text" name="prefix" class="form-control form-control-sm" maxlength="255" placeholder="Prefix" autocomplete="off" style="width: 110px;">
-        <input type="text" name="legacy_prefix" class="form-control form-control-sm" maxlength="255" placeholder="Legacy Prefix" autocomplete="off" style="width: 110px;">
         <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
         <button class="btn btn-sm btn-secondary cancel-new-record"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
       </form>

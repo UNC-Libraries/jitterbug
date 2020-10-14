@@ -50,8 +50,6 @@ class FormatRequest extends Request {
       'name.unique' => 'The format name has already been used.',
       'name.min' => 'The format name must be at least :min characters.',
       'name.max' => 'The format name must be less than :max characters.',
-      //TODO APPDEV-8643 remove when columns are removed
-      'legacy_prefix.max' => 'The legacy prefix name must be less than :max characters.',
     ];
   }
 

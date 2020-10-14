@@ -25,10 +25,7 @@ class CallNumberSequenceTest extends TestCase
 
   public function testNextAlwaysUsesNewCallSequenceIfPrefixInNewStyleArray()
   {
-    $format = factory(Models\Format::class)->create([
-      # TODO APPDEV-8643 remove when column is removed
-      'prefix' => $this->prefix->label,
-    ]);
+    $format = factory(Models\Format::class)->create();
 
     $sequence = Models\CallNumberSequence::next($this->collection->id, $format->id);
     $this->assertTrue(is_a($sequence,'Jitterbug\Models\NewCallNumberSequence'),
@@ -42,10 +39,7 @@ class CallNumberSequenceTest extends TestCase
       'collection_id' => $this->collection->id,
       'next' => 2
     ]);
-    $format = factory(Models\Format::class)->create([
-      # TODO APPDEV-8643 remove when column is removed
-      'prefix' => $callNumber->prefix,
-    ]);
+    $format = factory(Models\Format::class)->create();
     $format->prefixes()->attach($this->prefix->id);
 
     $sequence = Models\CallNumberSequence::next($this->collection->id, $format->id);
@@ -70,10 +64,7 @@ class CallNumberSequenceTest extends TestCase
       'prefix' => $prefix1->label,
       'next' => 2
     ]);
-    $format = factory(Models\Format::class)->create([
-      # TODO APPDEV-8643 remove when column is removed
-      'prefix' => $prefix1->label,
-    ]);
+    $format = factory(Models\Format::class)->create();
     $format->prefixes()->attach($prefix1->id);
 
     $sequence = Models\CallNumberSequence::next($this->collection->id, $format->id);
