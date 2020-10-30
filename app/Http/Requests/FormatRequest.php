@@ -33,8 +33,6 @@ class FormatRequest extends Request {
     return [
       'name' => $required . 'min:2|max:255|unique:formats,name,' .
          $this->route()->parameter('formats'),
-      'prefix' => $required . 'max:255',
-      'legacy_prefix' => 'max:255',
     ];
   }
 
