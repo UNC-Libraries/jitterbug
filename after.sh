@@ -27,12 +27,12 @@ sudo ./install_solr_service.sh solr-7.2.1.tgz
 
 # Get the MySQL connector file and unzip it if needed
 cd /vagrant
-sudo wget --no-verbose -nc http://www.mirrorservice.org/sites/ftp.mysql.com/Downloads/Connector-J/mysql-connector-java-8.0.19.zip
-sudo unzip -n mysql-connector-java-8.0.19.zip
+sudo wget --no-verbose -nc http://www.mirrorservice.org/sites/ftp.mysql.com/Downloads/Connector-J/mysql-connector-java-8.0.22.zip
+sudo unzip -n mysql-connector-java-8.0.22.zip
 
 # Copy the MySQL connector file to the right place
 cd /
-sudo cp /vagrant/mysql-connector-java-8.0.19/mysql-connector-java-8.0.19.jar /opt/solr/contrib/dataimporthandler-extras/lib/.
+sudo cp /vagrant/mysql-connector-java-8.0.19/mysql-connector-java-8.0.22.jar /opt/solr/contrib/dataimporthandler-extras/lib/.
 
 # Change users/groups/permissions of Solr home directory files
 cd /opt/solr
