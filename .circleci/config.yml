@@ -32,7 +32,7 @@ jobs:
             sudo docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/
             sudo docker-php-ext-install ldap
 
-      - run: sudo composer self-update
+      - run: sudo composer self-update --stable
       - run:
           name: Copy Circle CI version of .env.testing
           command: cp .env.testing.circleci .env.testing
