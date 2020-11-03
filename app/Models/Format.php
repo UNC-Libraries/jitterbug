@@ -15,9 +15,9 @@ class Format extends Model {
   // Filters out formats that will not be used for new items
   public function scopeWithFutureUse($query)
   {
-    return $query->where('prefix', '<>', 'D')->
-                   where('prefix', '<>', 'DDVD');
-    }
+    return $query->where('id', '<>', 25)
+                 ->where('id', '<>', 54);
+  }
 
   public function audioVisualItems()
   {
