@@ -1,7 +1,6 @@
 <?php
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Http\UploadedFile;
-use Throwable;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase {
 
