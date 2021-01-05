@@ -12,25 +12,26 @@
 		}
 	],
 	"require": {
-		"laravel/framework": "6.18.*",
-		"laravelcollective/html": "6.0.*",
+		"laravel/framework": "^7.0",
+		"laravelcollective/html": "^6.0",
 		"solarium/solarium": "^5.1",
 		"venturecraft/revisionable": "dev-main",
-		"davejamesmiller/laravel-breadcrumbs": "^5.0",
+		"diglactic/laravel-breadcrumbs": "^6.0",
 		"ramsey/uuid": "^3.5",
 		"adldap2/adldap2-laravel": "6.0.*",
 		"jimmiw/php-time-ago": "^3.1.0",
-		"laravel/tinker": "^1.0",
+		"laravel/tinker": "^2.0",
 		"doctrine/dbal": "^2.5",
-		"laravel/helpers": "^1.1"
+		"laravel/helpers": "^1.1",
+		"laravel/ui": "^2.0"
 	},
 	"require-dev": {
 		"fzaninotto/faker": "~1.7",
 		"mockery/mockery": "1.2.2",
-		"phpunit/phpunit": "^7.0",
-		"symfony/css-selector": "~3.1",
-		"symfony/dom-crawler": "~3.1",
-		"laravel/homestead": "7.*",
+		"phpunit/phpunit": "^8.5",
+		"symfony/css-selector": "5.*",
+		"symfony/dom-crawler": "5.*",
+		"laravel/homestead": "^11",
 		"filp/whoops": "~2.0"
 	},
 	"autoload": {

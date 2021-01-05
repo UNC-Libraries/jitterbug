@@ -28,10 +28,9 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
     $dummy = file_get_contents($file);
     file_put_contents(base_path('tests/' . basename($file)), $dummy);
     $path = base_path('tests/' . basename($file));
-    $size = 111;
     $error = null;
     $test = true;
-    $file = new UploadedFile($path, $original_name, $type, $size, $error, $test);
+    $file = new UploadedFile($path, $original_name, $type, $error, $test);
     return $file;
   }
 
@@ -43,11 +42,11 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase {
 class PassThroughHandler extends Jitterbug\Exceptions\Handler
 {
   public function __construct() {}
-  public function report(Exception $e)
+  public function report(Throwable $e)
   {
     // no-op
   }
-  public function render($request, Exception $e)
+  public function render($request, Throwable $e)
   {
     throw $e;
   }
