@@ -1,11 +1,15 @@
 {
   "private": true,
+  "scripts": {
+    "dev": "npm run development",
+    "development": "node node_modules/cross-env/src/bin/cross-env.js NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "npm run development -- --watch"
+  },
   "devDependencies": {
-    "gulp": "^3.8.8",
-    "laravel-elixir": "*",
     "bootstrap": "4.0.0-alpha.2",
-    "js-cookie": "~2.1.1",
+    "colresizable": "1.6.0",
     "devbridge-autocomplete": "1.2.25",
-    "colresizable": "1.6.0"
+    "js-cookie": "~2.1.1",
+    "laravel-mix": "^6.0.9"
   }
 }
