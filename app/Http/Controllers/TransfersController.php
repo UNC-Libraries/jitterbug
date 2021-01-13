@@ -295,7 +295,7 @@ class TransfersController extends Controller {
   {
     if ($request->ajax()) {
       $dataFile = $request->file('audio-import-file');
-      $fileDir = base_path() . '/storage/app/uploads';
+      $fileDir = env('STORAGE_PATH', base_path() . '/storage') . '/app/uploads';
       $fileName = Auth::user()->username . '-audio-import-' . fileTimestamp() 
         . '.' . $dataFile->getClientOriginalExtension();
       $dataFile->move($fileDir, $fileName);
@@ -357,7 +357,7 @@ class TransfersController extends Controller {
   {
     if ($request->ajax()) {
       $dataFile = $request->file('video-import-file');
-      $fileDir = base_path() . '/storage/app/uploads';
+      $fileDir = env('STORAGE_PATH', base_path() . '/storage') . '/app/uploads';
       $fileName = Auth::user()->username . '-video-import-' . fileTimestamp() 
         . '.' . $dataFile->getClientOriginalExtension();
       $dataFile->move($fileDir, $fileName);

@@ -615,7 +615,7 @@ class ItemsController extends Controller
   {
     if ($request->ajax()) {
       $dataFile = $request->file('items-import-file');
-      $fileDir = base_path() . '/storage/app/uploads';
+      $fileDir = env('STORAGE_PATH', base_path() . '/storage') . '/app/uploads';
       $fileName = Auth::user()->username . '-items-import-' . fileTimestamp() 
         . '.' . $dataFile->getClientOriginalExtension();
       $dataFile->move($fileDir, $fileName);
