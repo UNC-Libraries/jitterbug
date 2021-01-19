@@ -27,7 +27,7 @@ abstract class Export {
   public function build($selectedFields)
   {
     // Create the export file
-    $fileDir = base_path() . '/storage/app/exports';
+    $fileDir = env('STORAGE_PATH', base_path() . '/storage') . '/app/exports';
     $fileName = Auth::user()->username . '-' . 
       $this->exportClass . 's-' . fileTimestamp() . '.csv';
     $filePath = $fileDir . '/' . $fileName;
