@@ -157,6 +157,43 @@ $ vagrant ssh
 $ cd /vagrant
 $ gulp
 ```
+
+## Updating Homestead
+1. Update the version specified in `Homestead.yaml.example`
+2. Destroy the VM `vagrant destroy`
+3. Delete `Homestead.yaml` and `Vagrantfile`
+4. Use Composer to update packages and initialize Homestead.
+   ```bash
+   $ php composer.phar install
+   $ php vendor/bin/homestead make
+   ```
+5. Update the Vagrantfile to use the Solr restart script
+
+    After `aliasesPath = "aliases"`
+    ```bash
+    solrRestartScriptPath = "solr-restart.sh"
+    ```
+    After the customization script path part:
+    ```bash
+    if File.exist? customizationScriptPath then
+      config.vm.provision "shell", path: customizationScriptPath, privileged: false, keep_color: true
+    end
+    
+    if File.exist? solrRestartScriptPath then
+      config.vm.provision "shell", path: solrRestartScriptPath, run: 'always', privileged: false, keep_color: true
+    end
+    ```
+6. Archive your known_hosts file or delete the entry for `192.168.10.10`
+    ```bash
+    $ cd ~/.ssh
+    $ mv known_hosts old_known_hosts
+    ```
+6. Navigate back to your Jitterbug repo folder and start the VM
+    ```bash
+    $ cd jitterbug
+    $ vagrant up
+    ```
+7. Repopulate the DB and re-index Solr (instructions above).
    
 
 
