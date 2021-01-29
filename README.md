@@ -159,7 +159,7 @@ $ gulp
 ```
 
 ## Updating Homestead
-1. Update the version specified in `Homestead.yaml.example`
+1. Update the base box version specified in `Homestead.yaml.example`
 2. Destroy the VM `vagrant destroy`
 3. Delete `Homestead.yaml` and `Vagrantfile`
 4. Use Composer to update packages and initialize Homestead.
@@ -183,10 +183,10 @@ $ gulp
       config.vm.provision "shell", path: solrRestartScriptPath, run: 'always', privileged: false, keep_color: true
     end
     ```
-6. Archive your known_hosts file or delete the entry for `192.168.10.10`
+6. In your known_hosts file (on your host machine, not the VM) delete the entry for `192.168.10.10`
     ```bash
     $ cd ~/.ssh
-    $ mv known_hosts old_known_hosts
+    $ nano known_hosts
     ```
 6. Navigate back to your Jitterbug repo folder and start the VM
     ```bash
