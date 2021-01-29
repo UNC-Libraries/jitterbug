@@ -16,7 +16,7 @@ solrRestartScriptPath = "solr-restart.sh"
 
 require File.expand_path(confDir + '/scripts/homestead.rb')
 
-Vagrant.require_version '>= 1.9.0'
+Vagrant.require_version '>= 2.2.4'
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     if File.exist? aliasesPath then
@@ -29,7 +29,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     if File.exist? homesteadYamlPath then
         settings = YAML::load(File.read(homesteadYamlPath))
     elsif File.exist? homesteadJsonPath then
-        settings = JSON.parse(File.read(homesteadJsonPath))
+        settings = JSON::parse(File.read(homesteadJsonPath))
     else
         abort "Homestead settings file not found in " + File.dirname(__FILE__)
     end
@@ -48,7 +48,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         config.vm.provision "shell", path: solrRestartScriptPath, run: 'always', privileged: false, keep_color: true
     end
 
-    if defined? VagrantPlugins::HostsUpdater
+    if Vagrant.has_plugin?('vagrant-hostsupdater')
         config.hostsupdater.aliases = settings['sites'].map { |site| site['map'] }
+    elsif Vagrant.has_plugin?('vagrant-hostmanager')
+        config.hostmanager.enabled = true
+        config.hostmanager.manage_host = true
+        config.hostmanager.aliases = settings['sites'].map { |site| site['map'] }
     end
 end
