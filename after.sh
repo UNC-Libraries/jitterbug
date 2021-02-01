@@ -78,7 +78,7 @@ cd /vagrant
 # install jitterbug dependencies
 php /usr/local/bin/composer update
 rm -rf node_modules/*
-npm install
+yarn install
 php artisan key:generate
 gulp
 
