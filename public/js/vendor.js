@@ -1580,5 +1580,3 @@ DATA_TOGGLE:'[data-toggle="tab"], [data-toggle="pill"]',DROPDOWN_TOGGLE:".dropdo
         });
     };
 }));
-
-//# sourceMappingURL=vendor.js.map
