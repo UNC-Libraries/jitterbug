@@ -15,9 +15,9 @@ class FormatsTest extends TestCase
   protected function setUp() : void
   {
     parent::setUp();
-    $this->adminUser = factory(User::class)->create(['admin' => 1]);
-    $this->format = factory(Format::class)->create(['name' => '16mm']);
-    $this->prefix = factory(Prefix::class)->create();
+    $this->adminUser = User::factory()->make(['admin' => 1]);
+    $this->format = Format::factory()->make(['name' => '16mm']);
+    $this->prefix = Prefix::factory()->make();
   }
 
   public function testAttachPrefixes()

@@ -3,10 +3,10 @@
 use Log;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Format extends Model {
-  use NullFieldPreserver;
-  use SoftDeletes;
+  use NullFieldPreserver, SoftDeletes, HasFactory;
 
   protected $dates = array('deleted_at');
 

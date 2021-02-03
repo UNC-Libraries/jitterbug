@@ -1,5 +1,6 @@
 <?php
 
+namespace Database\Factories;
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -12,35 +13,35 @@
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(Jitterbug\Models\Activity::class, function (Faker\Generator $faker) {
-  return [
-    'transaction_id' => $faker->word,
-    'action' => $faker->word,
-    'batch' => $faker->boolean,
-    'batch_size' => $faker->randomNumber(),
-    'field' => $faker->word,
-    'import_type' => $faker->word,
-    'item_call_number' => $faker->word,
-    'item_type' => $faker->word,
-    'num_fields' => $faker->boolean,
-    'num_affected' => $faker->randomNumber(),
-    'object_types_to_ids' => $faker->text,
-    'timestamp' => $faker->dateTimeBetween(),
-    'user' => $faker->word,
-  ];
-});
+//$factory->define(Jitterbug\Models\Activity::class, function (Faker\Generator $faker) {
+//  return [
+//    'transaction_id' => $faker->word,
+//    'action' => $faker->word,
+//    'batch' => $faker->boolean,
+//    'batch_size' => $faker->randomNumber(),
+//    'field' => $faker->word,
+//    'import_type' => $faker->word,
+//    'item_call_number' => $faker->word,
+//    'item_type' => $faker->word,
+//    'num_fields' => $faker->boolean,
+//    'num_affected' => $faker->randomNumber(),
+//    'object_types_to_ids' => $faker->text,
+//    'timestamp' => $faker->dateTimeBetween(),
+//    'user' => $faker->word,
+//  ];
+//});
 
-$factory->define(Jitterbug\Models\AudioItem::class, function (Faker\Generator $faker) {
-  return [
-    'call_number' => $faker->word,
-    'listening_copy' => $faker->boolean,
-    'size' => null,
-    'track_configuration' => null,
-    'mono_stereo' => 'M',
-    'base' => $faker->word,
-    'content_description' => $faker->text,
-  ];
-});
+//$factory->define(Jitterbug\Models\AudioItem::class, function (Faker\Generator $faker) {
+//  return [
+//    'call_number' => $faker->word,
+//    'listening_copy' => $faker->boolean,
+//    'size' => null,
+//    'track_configuration' => null,
+//    'mono_stereo' => 'M',
+//    'base' => $faker->word,
+//    'content_description' => $faker->text,
+//  ];
+//});
 
 $factory->define(Jitterbug\Models\AudioMaster::class, function (Faker\Generator $faker) {
   return [
@@ -183,11 +184,11 @@ $factory->define(Jitterbug\Models\FilmMaster::class, function (Faker\Generator $
   ];
 });
 
-$factory->define(Jitterbug\Models\Format::class, function (Faker\Generator $faker) {
-  return [
-    'name' => $faker->word,
-  ];
-});
+//$factory->define(Jitterbug\Models\Format::class, function (Faker\Generator $faker) {
+//  return [
+//    'name' => $faker->word,
+//  ];
+//});
 
 $factory->define(Jitterbug\Models\ImportTransaction::class, function (Faker\Generator $faker) {
   return [
@@ -235,12 +236,12 @@ $factory->define(Jitterbug\Models\PmSpeed::class, function (Faker\Generator $fak
   ];
 });
 
-$factory->define(Jitterbug\Models\Prefix::class, function (Faker\Generator $faker) {
-  return [
-    'label' => strtoupper($faker->lexify('??')),
-    'collection_type_id' => $faker->randomNumber(),
-  ];
-});
+//$factory->define(Jitterbug\Models\Prefix::class, function (Faker\Generator $faker) {
+//  return [
+//    'label' => strtoupper($faker->lexify('??')),
+//    'collection_type_id' => $faker->randomNumber(),
+//  ];
+//});
 
 $factory->define(Jitterbug\Models\PreservationMaster::class, function (Faker\Generator $faker) {
   return [
@@ -380,19 +381,19 @@ $factory->define(Jitterbug\Models\TransferType::class, function (Faker\Generator
   ];
 });
 
-$factory->define(Jitterbug\Models\User::class, function (Faker\Generator $faker) {
-  return [
-    'first_name' => $faker->firstName,
-    'middle_name' => $faker->word,
-    'last_name' => $faker->lastName,
-    'email' => $faker->safeEmail,
-    'username' => $faker->userName,
-    'password' => bcrypt($faker->password),
-    'admin' => $faker->boolean,
-    'remember_token' => str_random(10),
-    'legacy_initials' => $faker->word,
-  ];
-});
+//$factory->define(Jitterbug\Models\User::class, function (Faker\Generator $faker) {
+//  return [
+//    'first_name' => $faker->firstName,
+//    'middle_name' => $faker->word,
+//    'last_name' => $faker->lastName,
+//    'email' => $faker->safeEmail,
+//    'username' => $faker->userName,
+//    'password' => bcrypt($faker->password),
+//    'admin' => $faker->boolean,
+//    'remember_token' => str_random(10),
+//    'legacy_initials' => $faker->word,
+//  ];
+//});
 
 $factory->define(Jitterbug\Models\Vendor::class, function (Faker\Generator $faker) {
   return [
