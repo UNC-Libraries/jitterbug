@@ -1,6 +1,6 @@
 <?php namespace Jitterbug\Models;
 
-use Log;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -10,6 +10,7 @@ class AudioItem extends Model {
   use NullFieldPreserver;
   use RevisionableTrait;
   use SoftDeletes;
+  use HasFactory;
 
   protected $dates = array('deleted_at');
 

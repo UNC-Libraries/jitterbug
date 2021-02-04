@@ -2,13 +2,14 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class AudioTransfer extends Model {
   use NullFieldPreserver;
   use RevisionableTrait;
   use SoftDeletes;
+  use HasFactory;
 
   protected $dates = ['deleted_at'];
 

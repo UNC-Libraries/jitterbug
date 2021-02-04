@@ -19,8 +19,8 @@ class CollectionTypesTest extends TestCase
   protected function setUp() : void
   {
     parent::setUp();
-    $this->adminUser = factory(User::class)->create(['admin' => 1]);
-    $this->user = factory(User::class)->create(['admin' => 0]);
+    $this->adminUser = User::factory()->create(['admin' => 1]);
+    $this->user = User::factory()->create(['admin' => 0]);
   }
 
   public function testIndexRedirectsNonAdminUser()
@@ -58,7 +58,7 @@ class CollectionTypesTest extends TestCase
 
   public function testUpdateEditsCollectionType()
   {
-    $collectionType = factory(CollectionType::class)->create(['name' => 'SFC Collection']);
+    $collectionType = CollectionType::factory()->create(['name' => 'SFC Collection']);
     $newName = 'Amazing SFC Collection';
     $adminUser = $this->adminUser;
 
@@ -74,8 +74,8 @@ class CollectionTypesTest extends TestCase
 
   public function testDeleteDoesNotWorkOnCollectionTypeInUse()
   {
-    $collectionType = factory(CollectionType::class)->create();
-    factory(Collection::class)->create(['collection_type_id' => $collectionType->id]);
+    $collectionType = CollectionType::factory()->create();
+    Collection::factory()->create(['collection_type_id' => $collectionType->id]);
     $adminUser = $this->adminUser;
     $this->assertNotNull(CollectionType::find($collectionType->id));
 
@@ -93,7 +93,7 @@ class CollectionTypesTest extends TestCase
 
   public function testDeleteRemovesUnusedCollectionType()
   {
-    $collectionType = factory(CollectionType::class)->create(['deleted_at' => null]);
+    $collectionType = CollectionType::factory()->create(['deleted_at' => null]);
     $adminUser = $this->adminUser;
 
     $this->be($adminUser);

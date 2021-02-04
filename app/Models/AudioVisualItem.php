@@ -1,9 +1,8 @@
 <?php namespace Jitterbug\Models;
 
-use Log;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class AudioVisualItem extends Model {
@@ -12,6 +11,7 @@ class AudioVisualItem extends Model {
   use CompositeHistory;
   use SoftDeletes;
   use Markable;
+  use HasFactory;
 
   const BATCH_EDIT_MAX_LIMIT = 1000;
   const IMPORT_KEYS = [

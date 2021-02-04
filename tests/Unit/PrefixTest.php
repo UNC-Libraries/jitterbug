@@ -16,14 +16,14 @@ class PrefixTest extends TestCase
   protected function setUp() : void
   {
     parent::setUp();
-    $this->prefix1 = factory(Prefix::class)->create(['deleted_at' => null, 'collection_type_id' => 3]);
-    $this->prefix2 = factory(Prefix::class)->create(['deleted_at' => null, 'collection_type_id' => 4]);
-    $this->format = factory(Format::class)->create();
+    $this->prefix1 = Prefix::factory()->create(['deleted_at' => null, 'collection_type_id' => 3]);
+    $this->prefix2 = Prefix::factory()->create(['deleted_at' => null, 'collection_type_id' => 4]);
+    $this->format = Format::factory()->create();
   }
 
   public function testFindPrefixLabelFindsLabelSuccessfully()
   {
-    $collection = factory(Collection::class)->create(['collection_type_id' => 3]);
+    $collection = Collection::factory()->create(['collection_type_id' => 3]);
 
     // attach the formats to the prefix
     $this->format->prefixes()->attach([$this->prefix1->id, $this->prefix2->id]);

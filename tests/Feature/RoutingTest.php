@@ -1,5 +1,7 @@
 <?php
 
+use Jitterbug\Models\User;
+
 class RoutingTest extends TestCase {
 
 	/**
@@ -16,7 +18,7 @@ class RoutingTest extends TestCase {
 
 	public function testTransfersIndexResponse()
   {
-    $user = factory(Jitterbug\Models\User::class)->create();
+    $user = User::factory()->create();
     $this->be($user);
     $response = $this->call('GET', '/transfers');
 
