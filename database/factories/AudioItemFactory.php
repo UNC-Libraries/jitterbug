@@ -22,7 +22,7 @@ class AudioItemFactory extends Factory
     public function definition()
     {
         return [
-          'call_number' => $this->faker->word,
+          'call_number' => 'FS-'.$this->faker->randomNumber(4),
           'listening_copy' => $this->faker->boolean,
           'size' => null,
           'track_configuration' => null,
