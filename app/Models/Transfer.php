@@ -84,19 +84,7 @@ class Transfer extends Model {
 
   public function getEngineerNameAttribute()
   {
-    $name = null;
-    if ($this->engineer !== null) {
-      $firstName = $this->engineer->first_name;
-      $lastName = $this->engineer->last_name;
-    } else {
-      return null;
-    }
-    if ($firstName===null || $lastName===null) {
-      $name = $this->engineer->legacy_initials;
-    } else {
-      $name = $firstName . ' ' . $lastName;
-    }
-    return $name;
+    return $this->engineer->fullName();
   }
 
   public function playbackMachine()
