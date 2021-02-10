@@ -79,7 +79,7 @@ class User extends Model implements AuthenticatableContract,
    */
   public function identifiableName()
   {
-    return $this->username;
+    return $this->fullName();
   }
 
   /**
