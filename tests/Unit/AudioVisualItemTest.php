@@ -12,11 +12,11 @@ class AudioVisualItemTest extends TestCase
      */
     public function testTypeIdAttribute() : void
     {
-      $av_audio_item = factory(AudioVisualItem::class)->make();
-      $av_film_item = factory(AudioVisualItem::class)->make([
+      $av_audio_item = AudioVisualItem::factory()->make();
+      $av_film_item = AudioVisualItem::factory()->make([
         'subclass_type' => 'FilmItem',
       ]);
-      $av_video_item = factory(AudioVisualItem::class)->make([
+      $av_video_item = AudioVisualItem::factory()->make([
         'subclass_type' => 'VideoItem',
       ]);
 
@@ -28,7 +28,7 @@ class AudioVisualItemTest extends TestCase
 
     public function testBlankDisplayAttributeWithRevisionable() : void
     {
-      $av_item = factory(AudioVisualItem::class)->make();
+      $av_item = AudioVisualItem::factory()->make();
 
       $this->assertSame('Yes', $av_item->getBlankDisplayAttribute(true),
         'BlankDisplayAttribute should return yes when revisionable passes true in');
@@ -36,7 +36,7 @@ class AudioVisualItemTest extends TestCase
 
     public function testBlankDisplayAttribute() : void
     {
-      $av_item = factory(AudioVisualItem::class)->make(['blank' => true]);
+      $av_item = AudioVisualItem::factory()->make(['blank' => true]);
 
       $this->assertSame('Yes', $av_item->blank_display,
         'BlankDisplayAttribute should return yes as the display form attribute');

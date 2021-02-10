@@ -21,9 +21,9 @@ class PrefixesTest extends TestCase
   protected function setUp() : void
   {
     parent::setUp();
-    $this->adminUser = factory(User::class)->create(['admin' => 1]);
-    $this->user = factory(User::class)->create(['admin' => 0]);
-    $this->collectionType = factory(CollectionType::class)->create(['name' => 'SFC Collection']);
+    $this->adminUser = User::factory()->create(['admin' => 1]);
+    $this->user = User::factory()->create(['admin' => 0]);
+    $this->collectionType = CollectionType::factory()->create(['name' => 'SFC Collection']);
   }
 
   public function testIndexRedirectsNonAdminUser()
@@ -64,7 +64,7 @@ class PrefixesTest extends TestCase
   public function testUpdateEditsPrefix()
   {
     $collectionType = $this->collectionType;
-    $prefix = factory(Prefix::class)->create(['label' => 'SFC', 'collection_type_id' => $collectionType->id]);
+    $prefix = Prefix::factory()->create(['label' => 'SFC', 'collection_type_id' => $collectionType->id]);
     $newLabel = 'FFS';
     $adminUser = $this->adminUser;
 
@@ -82,9 +82,9 @@ class PrefixesTest extends TestCase
 
   public function testDeleteRemovesPrefixAndConnectionsToFormats()
   {
-    $prefix = factory(Prefix::class)->create(['deleted_at' => null]);
-    $format1 = factory(Format::class)->create();
-    $format2 = factory(Format::class)->create();
+    $prefix = Prefix::factory()->create(['deleted_at' => null]);
+    $format1 = Format::factory()->create();
+    $format2 = Format::factory()->create();
     $adminUser = $this->adminUser;
     // attach the formats to the prefix
     $prefix->formats()->attach([$format1->id, $format2->id]);

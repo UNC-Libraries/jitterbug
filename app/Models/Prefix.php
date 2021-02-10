@@ -6,11 +6,12 @@ namespace Jitterbug\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
-use Log;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Prefix extends Model
 {
   use SoftDeletes;
+  use HasFactory;
 
   protected $fillable = array('label', 'legacy', 'collection_type_id');
 
@@ -39,7 +40,6 @@ class Prefix extends Model
 
     if ($collectionTypeIdQuery === null) {
       $message = 'Collection does not have a collection type ID.';
-      Log::error($message);
       abort(404, $message);
     }
 

@@ -23,13 +23,13 @@ class ItemsImportTest extends TestCase
   protected function setUp() : void
   {
     parent::setUp();
-    $this->user = factory(User::class)->create();
-    $this->audioVisualItem1 = factory(AudioVisualItem::class)->create(['call_number' =>'FT-6708']);
-    $this->audioVisualItem2 = factory(AudioVisualItem::class)->create(['call_number' =>'FT-6709']);
-    $this->collection1 = factory(Collection::class)->create(['archival_identifier' => '20027']);
-    $this->format = factory(Format::class)->create(['id' => 28]);
+    $this->user = User::factory()->create();
+    $this->audioVisualItem1 = AudioVisualItem::factory()->create(['call_number' =>'FT-6708']);
+    $this->audioVisualItem2 = AudioVisualItem::factory()->create(['call_number' =>'FT-6709']);
+    $this->collection1 = Collection::factory()->create(['archival_identifier' => '20027']);
+    $this->format = Format::factory()->create(['id' => 28]);
     $collectionTypeId = $this->collection1->collection_type_id;
-    $this->prefix = factory(Prefix::class)->create(['deleted_at' => null, 'collection_type_id' => $collectionTypeId]);
+    $this->prefix = Prefix::factory()->create(['deleted_at' => null, 'collection_type_id' => $collectionTypeId]);
     $this->format->prefixes()->attach([$this->prefix->id]);
   }
 
@@ -72,7 +72,7 @@ class ItemsImportTest extends TestCase
 
   public function testItemsImportNewUploadExecuteWithSuccess() : void
   {
-    factory(NewCallNumberSequence::class)->create([
+    NewCallNumberSequence::factory()->create([
       'prefix' => $this->prefix->label,
       'collection_id' => $this->collection1->id,
       'next' => 2
@@ -95,7 +95,7 @@ class ItemsImportTest extends TestCase
 
   public function testItemsImportUpdateExecuteWithSuccess() : void
   {
-    factory(NewCallNumberSequence::class)->create([
+    NewCallNumberSequence::factory()->create([
       'prefix' => $this->prefix->label,
       'collection_id' => $this->collection1->id,
       'next' => 2
@@ -119,7 +119,7 @@ class ItemsImportTest extends TestCase
   public function testItemsImportUpdateActuallyUpdates() : void
   {
     $avItem = $this->audioVisualItem1;
-    factory(NewCallNumberSequence::class)->create([
+    NewCallNumberSequence::factory()->create([
       'prefix' => $this->prefix->label,
       'collection_id' => $this->collection1->id,
       'next' => 2

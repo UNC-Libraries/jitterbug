@@ -10,8 +10,8 @@ class NewCallNumberSequenceTest extends TestCase
 
   public function testCallNumberUsesArchivalIdentifierInsteadOfCollectionId()
   {
-    $prefix = factory(Prefix::class)->create(['label' => 'TR']);
-    $sequence = factory(NewCallNumberSequence::class)->create([
+    $prefix = Prefix::factory()->create(['label' => 'TR']);
+    $sequence = NewCallNumberSequence::factory()->create([
       'prefix' => $prefix->label,
       'collection_id' => 1,
       'archival_identifier' => '20013B',

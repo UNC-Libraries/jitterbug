@@ -4,6 +4,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models\ImportTransaction;
 use Jitterbug\Presenters\TransactionDigest;
 use Venturecraft\Revisionable\Revision;
+use Jitterbug\Models\AudioVisualItem;
+use Jitterbug\Models\User;
 
 class TransactionDigestTest extends TestCase
 {
@@ -16,7 +18,13 @@ class TransactionDigestTest extends TestCase
   {
     parent::setUp();
     $this->transactionId = '12dh56kw345';
-    $this->revision = factory(Revision::class)->create(['transaction_id' => $this->transactionId]);
+    // unable to use a factory for Revision as it's a model in a separate package
+    $this->revision = new Revision;
+    $this->revision->transaction_id = $this->transactionId;
+    $this->revision->revisionable_type = 'AudioVisualItem';
+    $this->revision->revisionable_id = AudioVisualItem::factory()->create()->id;
+    $this->revision->user_id = User::factory()->create()->id;
+    $this->revision->save();
   }
   /**
    * A basic unit test example.
@@ -25,7 +33,7 @@ class TransactionDigestTest extends TestCase
    */
   public function testAnalyzeRevisionsWithUpdateImport() : void
   {
-    $this->importTransaction = factory(ImportTransaction::class)->create([
+    $this->importTransaction = ImportTransaction::factory()->create([
       'transaction_id' => $this->transactionId,
       'import_action' => 'update'
     ]);
@@ -36,7 +44,7 @@ class TransactionDigestTest extends TestCase
 
   public function testAnalyzeRevisionsWithCreateImport() : void
   {
-    $this->importTransaction = factory(ImportTransaction::class)->create([
+    $this->importTransaction = ImportTransaction::factory()->create([
       'transaction_id' => $this->transactionId,
       'import_action' => 'create'
     ]);

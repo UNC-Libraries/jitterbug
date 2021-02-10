@@ -10,8 +10,8 @@ class UsersTest extends TestCase
 
   public function testInactivateSetsInactiveToTrue() : void
   {
-    $user = factory(User::class)->create(['inactive' => 0]);
-    $adminUser = factory(User::class)->create(['admin' => 1]);
+    $user = User::factory()->create(['inactive' => 0]);
+    $adminUser = User::factory()->create(['admin' => 1]);
 
     $this->be($adminUser);
     $response = $this->post('/users/inactivate',
@@ -25,10 +25,10 @@ class UsersTest extends TestCase
 
   public function testInactivateDeletesUserMarks() : void
   {
-    $user = factory(User::class)->create(['inactive' => 0]);
-    $adminUser = factory(User::class)->create(['admin' => 1]);
-    factory(Mark::class)->create(['user_id' => $user->id]);
-    factory(Mark::class)->create(['user_id' => $user->id]);
+    $user = User::factory()->create(['inactive' => 0]);
+    $adminUser = User::factory()->create(['admin' => 1]);
+    Mark::factory()->create(['user_id' => $user->id]);
+    Mark::factory()->create(['user_id' => $user->id]);
     $this->assertCount(2, $user->marks);
 
     $this->be($adminUser);
@@ -44,8 +44,8 @@ class UsersTest extends TestCase
 
   public function testReactivateSetsInactiveToFalse() : void
   {
-    $user = factory(User::class)->create(['inactive' => 1]);
-    $adminUser = factory(User::class)->create(['admin' => 1]);
+    $user = User::factory()->create(['inactive' => 1]);
+    $adminUser = User::factory()->create(['admin' => 1]);
 
     $this->be($adminUser);
     $response = $this->post('/users/reactivate',

@@ -10,3 +10,4 @@ README.html
 .idea/
 .vagrant/
 Homestead.yaml
+.phpunit.result.cache

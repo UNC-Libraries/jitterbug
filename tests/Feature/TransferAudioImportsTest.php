@@ -2,6 +2,10 @@
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models\AudioVisualItem;
+use Jitterbug\Models\User;
+use Jitterbug\Models\Department;
+use Jitterbug\Models\AudioItem;
+use Jitterbug\Models\PlaybackMachine;
 
 class TransferAudioImportsTest extends TestCase
 {
@@ -20,13 +24,13 @@ class TransferAudioImportsTest extends TestCase
     protected function setUp() : void
     {
       parent::setUp();
-      $this->user = factory(Jitterbug\Models\User::class)->create();
-      $this->department = factory(Jitterbug\Models\Department::class)->create(['name' => 'SFC']);
-      $this->audioVisualItem1 = factory(Jitterbug\Models\AudioVisualItem::class)->create(['call_number' =>'FT-6708']);
-      $this->audioVisualItem2 = factory(Jitterbug\Models\AudioVisualItem::class)->create(['call_number' =>'FT-6709']);
-      $this->playbackMachine = factory(Jitterbug\Models\PlaybackMachine::class)->create(['name' => 'Otari 19462235 D']);
-      factory(Jitterbug\Models\AudioItem::class)->create(['size' => '7"', 'track_configuration' => '1/2 track', 'base' => 'Polyester']);
-      factory(Jitterbug\Models\AudioVisualItem::class)->create(['speed' => '78 rpm']);
+      $this->user = User::factory()->create();
+      $this->department = Department::factory()->create(['name' => 'SFC']);
+      $this->audioVisualItem1 = AudioVisualItem::factory()->create(['call_number' =>'FT-6708']);
+      $this->audioVisualItem2 = AudioVisualItem::factory()->create(['call_number' =>'FT-6709']);
+      $this->playbackMachine = PlaybackMachine::factory()->create(['name' => 'Otari 19462235 D']);
+      AudioItem::factory()->create(['size' => '7"', 'track_configuration' => '1/2 track', 'base' => 'Polyester']);
+      AudioVisualItem::factory()->create(['speed' => '78 rpm']);
     }
 
     public function testAudioImportUpload()
