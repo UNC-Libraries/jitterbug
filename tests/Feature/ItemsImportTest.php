@@ -156,4 +156,23 @@ class ItemsImportTest extends TestCase
     $this->assertEquals('error', $responseArray['status'], "The JSON status should be 'error'.");
     $this->assertTrue($htmlContainsErrorMessage, 'The HTML in the response does not include the correct error notification.');
   }
+
+  public function testItemsImportValidationMustAlreadyExistInDatabase() : void
+  {
+    $user = $this->user;
+    $filePath = base_path('tests/import-test-files/items-import/sample_items_import_mixed_errors.csv');
+
+    $response = $this->actingAs($user)
+      ->withSession(['items-import-file' => $filePath])
+      ->post('/items/batch/audio-import-execute',
+        [],
+        array('HTTP_X-Requested-With' => 'XMLHttpRequest'));
+
+    $responseArray = json_decode($response->getContent(), true);
+    $htmlContainsErrorMessage = strpos($responseArray['html'],
+        'AccessRestrictions must already exist in the database.')!== false;
+
+    $this->assertEquals('error', $responseArray['status'], "The JSON status should be 'error'.");
+    $this->assertTrue($htmlContainsErrorMessage, 'The HTML in the response does not include the correct error notification.');
+  }
 }
