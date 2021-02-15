@@ -19,7 +19,7 @@ class AudioVisualItem extends Model {
     'AccessionNumber', 'LegacyID', 'FormatID', 'RecLocation',
     'ItemYear', 'ItemDate', 'Size', 'Element',
     'Base', 'Color', 'SoundType', 'LengthInFeet',
-    'ContentDescription', 'ReelTapeNumber', 'CallNumber'
+    'ContentDescription', 'ReelTapeNumber', 'CallNumber', 'AccessRestrictions'
   ];
 
   protected $dates = array('deleted_at');
