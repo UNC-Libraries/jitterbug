@@ -255,7 +255,7 @@ class ItemsImport extends Import {
           $item->item_date = $row['ItemDate'] ?? null;
           $item->reel_tape_number = $row['ReelTapeNumber'] ?? null;
           // if access restrictions exist in the CSV, save in the DB in Title Case
-          $item->access_restrictions = isset($row['AccessRestrictions']) ? Str::title($row['AccessRestrictions']) : null;
+          $item->access_restrictions = !empty($row['AccessRestrictions']) ? Str::title($row['AccessRestrictions']) : null;
           $item->save();
           $created++;
 
