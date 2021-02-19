@@ -2,19 +2,15 @@
 
 use Auth;
 use DB;
-use Illuminate\Support\Facades\Log;
 use Uuid;
-
+use Illuminate\Support\Str;
 use Illuminate\Support\MessageBag;
 
 use Jitterbug\Models\AudioVisualItem;
-use Jitterbug\Models\AudioItem;
 use Jitterbug\Models\CallNumberSequence;
 use Jitterbug\Models\Collection;
-use Jitterbug\Models\FilmItem;
 use Jitterbug\Models\Format;
 use Jitterbug\Models\ImportTransaction;
-use Jitterbug\Models\VideoItem;
 use Jitterbug\Util\CsvReader;
 use Jitterbug\Support\SolariumProxy;
 
@@ -36,10 +32,11 @@ class ItemsImport extends Import {
     $this->itemsImportKeys = array_merge($this->requiredItemsImportKeys, 
       array('CallNumber', 'ContainerNote', 'LegacyID', 'RecLocation', 'ItemYear',
         'ItemDate', 'Size', 'Element', 'Base', 'Color', 'SoundType', 
-        'LengthInFeet', 'ContentDescription', 'ReelTapeNumber'));
+        'LengthInFeet', 'ContentDescription', 'ReelTapeNumber', 'AccessRestrictions'));
     $this->mustAlreadyExistInDbKeys = array(
       'CallNumber' => AudioVisualItem::class,
-      'ArchivalIdentifier' => Collection::class
+      'ArchivalIdentifier' => Collection::class,
+      'AccessRestrictions' => AudioVisualItem::class
     );
 
     $this->solrItems = new SolariumProxy('jitterbug-items');
@@ -211,6 +208,9 @@ class ItemsImport extends Import {
           if (!empty($row['ReelTapeNumber'])) {
             $audioVisualItem->reel_tape_number = $row['ReelTapeNumber'];
           }
+          if (!empty($row['AccessRestrictions'])) {
+            $audioVisualItem->access_restrictions = Str::title($row['AccessRestrictions']);
+          }
           // take care of subclass changes
           $subclass = $audioVisualItem->subclass;
           $row['subclassType'] = $subclassType;
@@ -254,6 +254,8 @@ class ItemsImport extends Import {
           $item->item_year = $row['ItemYear'] ?? null;
           $item->item_date = $row['ItemDate'] ?? null;
           $item->reel_tape_number = $row['ReelTapeNumber'] ?? null;
+          // if access restrictions exist in the CSV, save in the DB in Title Case
+          $item->access_restrictions = !empty($row['AccessRestrictions']) ? Str::title($row['AccessRestrictions']) : null;
           $item->save();
           $created++;
 

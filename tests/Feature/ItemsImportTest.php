@@ -25,7 +25,7 @@ class ItemsImportTest extends TestCase
     parent::setUp();
     $this->user = User::factory()->create();
     $this->audioVisualItem1 = AudioVisualItem::factory()->create(['call_number' =>'FT-6708']);
-    $this->audioVisualItem2 = AudioVisualItem::factory()->create(['call_number' =>'FT-6709']);
+    $this->audioVisualItem2 = AudioVisualItem::factory()->create(['call_number' =>'FT-6709', 'access_restrictions' => 'Campus']);
     $this->collection1 = Collection::factory()->create(['archival_identifier' => '20027']);
     $this->format = Format::factory()->create(['id' => 28]);
     $collectionTypeId = $this->collection1->collection_type_id;
@@ -155,5 +155,47 @@ class ItemsImportTest extends TestCase
 
     $this->assertEquals('error', $responseArray['status'], "The JSON status should be 'error'.");
     $this->assertTrue($htmlContainsErrorMessage, 'The HTML in the response does not include the correct error notification.');
+  }
+
+  public function testItemsImportValidationMustAlreadyExistInDatabase() : void
+  {
+    $user = $this->user;
+    $filePath = base_path('tests/import-test-files/items-import/sample_items_import_mixed_errors.csv');
+
+    $response = $this->actingAs($user)
+      ->withSession(['items-import-file' => $filePath])
+      ->post('/items/batch/audio-import-execute',
+        [],
+        array('HTTP_X-Requested-With' => 'XMLHttpRequest'));
+
+    $responseArray = json_decode($response->getContent(), true);
+    $htmlContainsErrorMessage = strpos($responseArray['html'],
+        'AccessRestrictions must already exist in the database.')!== false;
+
+    $this->assertEquals('error', $responseArray['status'], "The JSON status should be 'error'.");
+    $this->assertTrue($htmlContainsErrorMessage, 'The HTML in the response does not include the correct error notification.');
+  }
+
+  public function testItemsImportUpdateSetsAccessRestrictionInTitleCase() : void
+  {
+    $avItem = $this->audioVisualItem1;
+    NewCallNumberSequence::factory()->create([
+      'prefix' => $this->prefix->label,
+      'collection_id' => $this->collection1->id,
+      'next' => 2
+    ]);
+    $user = $this->user;
+    $filePath = base_path('tests/import-test-files/items-import/items_import_with_call_number.csv');
+
+    $this->actingAs($user)
+      ->withSession(['items-import-file' => $filePath])
+      ->post('/items/batch/audio-import-execute',
+        [],
+        array('HTTP_X-Requested-With' => 'XMLHttpRequest'));
+
+    $updatedAccessRestriction = $avItem->fresh()->access_restrictions;
+
+    $this->assertEquals('Campus', $updatedAccessRestriction,
+      "The audiovisual item's access restriction was not updated in Title Case.");
   }
 }
