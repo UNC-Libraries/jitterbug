@@ -1,6 +1,6 @@
     <div id="record-container">
       <div id="table-container">
-        <table style="margin-top: .75rem;" class="table table-sm table-hover">
+        <table id="user-table" style="margin-top: .75rem;" class="table table-sm table-hover">
           <thead>
             <tr>
               <th>ID</th>
@@ -28,3 +28,14 @@
         </table>
       </div>
     </div>
+
+    <script>
+      $(document).ready( function () {
+        $('#user-table').DataTable({
+          columnDefs: [
+            // the last two columns are not orderable: admin & inactive checkboxes
+            { orderable: false, targets: [-2, -1] }
+          ]
+        });
+      } );
+    </script>
