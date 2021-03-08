@@ -1580,6 +1580,12 @@ jitterbug = {
     }
     jitterbug.tableSelection = tableSelection;
 
+    var sortParams = new jitterbug.SortParams({
+      resource: resourceName,
+      selector: '#header-row'
+    });
+    sortParams.init();
+
     var queryManager = new jitterbug.QueryManager(searchField, filterPanel, 
                                 tableParams, tableSelection, resourceName);
     jitterbug.tableSelection.setQueryManager(queryManager);
@@ -1699,6 +1705,24 @@ jitterbug = {
       init: init,
       executeQuery: executeQuery,
       queryString: queryString
+    };
+  },
+
+  SortParams: function(params) {
+    let selector = params.selector;
+    let init = function() {
+        $(selector).click(function (e) {
+          e.preventDefault();
+          selector.add('alert');
+          // var search_column = $(this).attr('id');
+          // var old_search = searchField.val();
+          // searchField.val(olds_search + '&sort_by='search_column);
+          $.publish('sortChanged');
+        });
+      };
+    return {
+      init
+     // toString:toString
     };
   },
 
