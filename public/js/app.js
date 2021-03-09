@@ -1619,6 +1619,7 @@ jitterbug = {
     init = function() {
       $.subscribe('filterPanelChanged', handleFilterPanelChanged);
       $.subscribe('searchSubmitted', handleSearchSubmitted);
+      $.subscribe('sortChanged', handleSortChanged);
     },
 
     handleFilterPanelChanged = function(event) {
@@ -1628,6 +1629,12 @@ jitterbug = {
     },
 
     handleSearchSubmitted = function(event) {
+      tableSelection.clear();
+      tableParams.setPage(1);
+      executeQuery();
+    },
+
+    handleSortChanged = function(event) {
       tableSelection.clear();
       tableParams.setPage(1);
       executeQuery();
@@ -1713,15 +1720,24 @@ jitterbug = {
     let init = function() {
         $(selector).click(function (e) {
           e.preventDefault();
-          selector.add('alert');
+          const column = e.target.closest('th');
+          toggleSort(column);
           // var search_column = $(this).attr('id');
           // var old_search = searchField.val();
           // searchField.val(olds_search + '&sort_by='search_column);
           $.publish('sortChanged');
         });
       };
+    let toggleSort = function(column) {
+      // find the current sort and then toggle it when column is clicked
+      const currentSort = column.data('sort');
+      const toggleSort = (currentSort === "asc") ? "desc" : "asc";
+      $(column).data("sort", toggleSort);
+      return toggleSort;
+    };
     return {
-      init
+      init: init,
+      sort: toggleSort
      // toString:toString
     };
   },
