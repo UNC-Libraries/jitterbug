@@ -1580,12 +1580,6 @@ jitterbug = {
     }
     jitterbug.tableSelection = tableSelection;
 
-    var sortParams = new jitterbug.SortParams({
-      resource: resourceName,
-      selector: '#header-row'
-    });
-    sortParams.init();
-
     var queryManager = new jitterbug.QueryManager(searchField, filterPanel, 
                                 tableParams, tableSelection, resourceName);
     jitterbug.tableSelection.setQueryManager(queryManager);
@@ -1619,7 +1613,6 @@ jitterbug = {
     init = function() {
       $.subscribe('filterPanelChanged', handleFilterPanelChanged);
       $.subscribe('searchSubmitted', handleSearchSubmitted);
-      $.subscribe('sortChanged', handleSortChanged);
     },
 
     handleFilterPanelChanged = function(event) {
@@ -1634,12 +1627,6 @@ jitterbug = {
       executeQuery();
     },
 
-    handleSortChanged = function(event) {
-      tableSelection.clear();
-      tableParams.setPage(1);
-      executeQuery();
-    },
-
     queryString = function() {
       var query = {};
       query['search'] = searchField.elementValue();
@@ -1647,11 +1634,13 @@ jitterbug = {
       return JSON.stringify(query);
     },
     
-    executeQuery = function() {
+    executeQuery = function(sortColumn = 'updated_at', sortDirection = 'desc') {
       var query = {};
       query['q'] = encodeURIComponent(queryString());
       query['page'] = tableParams.getPage();
       query['perPage'] = tableParams.getPerPage();
+      query['sortColumn'] = sortColumn;
+      query['sortDirection'] = sortDirection;
 
       $.get('/' + resource, query, function(data) {
         $('#data-container').replaceWith(data);
@@ -1672,6 +1661,18 @@ jitterbug = {
           tableSelection.clear();
           tableSelection.render();
           window.location.href='/' + resource + '/' + $(this).data('id');
+        });
+
+        $('#header-row').click(function(e) {
+          e.preventDefault();
+          const column = e.target;
+          const columnName = column.getAttribute('data-name');
+          const currentSort = column.getAttribute('data-sort');
+          const toggleSort = (currentSort === "asc") ? "desc" : "asc";
+          column.setAttribute('data-sort', toggleSort);
+          tableSelection.clear();
+          tableParams.setPage(1);
+          executeQuery(columnName, toggleSort);
         });
 
         // Bind click handlers to all data pagination links
@@ -1712,33 +1713,6 @@ jitterbug = {
       init: init,
       executeQuery: executeQuery,
       queryString: queryString
-    };
-  },
-
-  SortParams: function(params) {
-    let selector = params.selector;
-    let init = function() {
-        $(selector).click(function (e) {
-          e.preventDefault();
-          const column = e.target.closest('th');
-          toggleSort(column);
-          // var search_column = $(this).attr('id');
-          // var old_search = searchField.val();
-          // searchField.val(olds_search + '&sort_by='search_column);
-          $.publish('sortChanged');
-        });
-      };
-    let toggleSort = function(column) {
-      // find the current sort and then toggle it when column is clicked
-      const currentSort = column.data('sort');
-      const toggleSort = (currentSort === "asc") ? "desc" : "asc";
-      $(column).data("sort", toggleSort);
-      return toggleSort;
-    };
-    return {
-      init: init,
-      sort: toggleSort
-     // toString:toString
     };
   },
 

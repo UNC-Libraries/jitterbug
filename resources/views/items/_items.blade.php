@@ -2,10 +2,10 @@
   {{-- The ID of this table needs to be unique across Jitterbug (i.e. different than the data table in masters or transfers) so that the colResizable plugin stores and loads unique column widths (set by the user) to localStorage. --}}
   <table id="items-data" class="table table-sm table-hover">
     <thead>
-      <tr id="header-row">
-        <th width="12%">Call Number</th>
-        <th width="20%">Title</th>
-        <th width="30%">Container Note</th>
+      <tr id="header-row" role="rowheader">
+        <th data-sort="asc" data-name="call_number" width="12%">Call Number</th>
+        <th data-sort="asc" data-name="title" width="20%">Title</th>
+        <th data-sort="asc" data-name="container_note" width="30%">Container Note</th>
         <th width="15%">Collection</th>
         <th width="16%">Format</th>
         <th width="7%">Type</th>
