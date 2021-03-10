@@ -1,14 +1,14 @@
 <div id="data-container">
   <table id="transfers-data" class="table table-sm table-hover">
     <thead>
-      <tr>
-        <th width="12%">Call Number</th>
-        <th width="13%">Date</th>
-        <th width="17%">Engineer</th>
-        <th width="15%">Vendor</th>
-        <th width="20%">Collection</th>
-        <th width="16%">Format</th>
-        <th width="7%">Type</th>
+      <tr id="header-row">
+        <th data-sort="{{$sortColumn === 'callNumber' ? $sortDirection : 'asc'}}" data-name="callNumber">Call Number&nbsp;<span class="fa fa-sort"></span></th>
+        <th>Date</th>
+        <th>Engineer</th>
+        <th>Vendor</th>
+        <th>Collection</th>
+        <th>Format</th>
+        <th>Type</th>
       </tr>
     </thead>
     <tbody>

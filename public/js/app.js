@@ -1634,7 +1634,7 @@ jitterbug = {
       return JSON.stringify(query);
     },
     
-    executeQuery = function(sortColumn = 'updated_at', sortDirection = 'desc') {
+    executeQuery = function(sortColumn = 'updatedAt', sortDirection = 'desc') {
       var query = {};
       query['q'] = encodeURIComponent(queryString());
       query['page'] = tableParams.getPage();
@@ -1668,11 +1668,13 @@ jitterbug = {
           const column = e.target;
           const columnName = column.getAttribute('data-name');
           const currentSort = column.getAttribute('data-sort');
-          const toggleSort = (currentSort === "asc") ? "desc" : "asc";
-          column.setAttribute('data-sort', toggleSort);
-          tableSelection.clear();
-          tableParams.setPage(1);
-          executeQuery(columnName, toggleSort);
+          if (columnName !== null && currentSort !== null) {
+            const toggleSort = (currentSort === "asc") ? "desc" : "asc";
+            column.setAttribute('data-sort', toggleSort);
+            tableSelection.clear();
+            tableParams.setPage(1);
+            executeQuery(columnName, toggleSort);
+          }
         });
 
         // Bind click handlers to all data pagination links
@@ -1688,19 +1690,19 @@ jitterbug = {
                 $(this).click(function(event){
                   event.preventDefault();
                   tableParams.setPage(currentPage - 1);
-                  executeQuery();
+                  executeQuery(sortColumn, sortDirection);
                 });
               } else if ($(this).hasClass('next-page')) {
                 $(this).click(function(event){
                   event.preventDefault();
                   tableParams.setPage(currentPage + 1);
-                  executeQuery();
+                  executeQuery(sortColumn, sortDirection);
                 });
               } else {
                 $(this).click(function(event){
                   event.preventDefault();
                   tableParams.setPage($(this).text().trim());
-                  executeQuery();
+                  executeQuery(sortColumn, sortDirection);
                 });
               }
             })

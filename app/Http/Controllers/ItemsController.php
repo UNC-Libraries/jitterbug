@@ -81,7 +81,8 @@ class ItemsController extends Controller
                    ->where('user_id', Auth::user()->id)
                    ->get()->pluck('markable_id');
 
-      return view('items._items', compact('items', 'marks', 'start'));
+      return view('items._items',
+        compact('items', 'marks', 'start', 'sortColumn', 'sortDirection'));
     }
 
     $types = AudioVisualItemType::all();
