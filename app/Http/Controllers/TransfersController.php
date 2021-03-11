@@ -2,6 +2,7 @@
 
 use Illuminate\Support\MessageBag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 use Auth;
@@ -77,6 +78,7 @@ class TransfersController extends Controller {
 
       $resultSet = $this->solrTransfers->query($queryParams, $start, $perPage, $sortColumn, $sortDirection);
       $transfers = new SolariumPaginator($resultSet, $page, $perPage);
+      $totalRecordCount = $transfers->total() . ' ' . Str::plural('record', $transfers->total());
 
       $transferIds = array();
       foreach ($transfers as $transfer) {
@@ -88,7 +90,7 @@ class TransfersController extends Controller {
             ->get()->pluck('markable_id');
 
       return view('transfers._transfers',
-        compact('transfers', 'marks', 'start', 'sortColumn', 'sortDirection'));
+        compact('transfers', 'marks', 'start', 'sortColumn', 'sortDirection', 'totalRecordCount'));
     }
 
     $types = TransferType::all();

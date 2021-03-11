@@ -29,7 +29,7 @@
   </table>
   <div class="data-footer">
     <div class="record-count">
-      {{ $masters->total() }} {{$masters->total()==1 ? "record" : "records"}} <span class="selection-count label label-default" style="margin-left: 5px;"></span>
+      {{ $totalRecordCount}} <span class="selection-count label label-default" style="margin-left: 5px;"></span>
     </div>
     <div style="float: right;">
       <nav>
