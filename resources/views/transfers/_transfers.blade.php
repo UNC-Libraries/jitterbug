@@ -2,7 +2,9 @@
   <table id="transfers-data" class="table table-sm table-hover">
     <thead>
       <tr id="header-row">
-        <th data-sort="{{$sortColumn === 'callNumber' ? $sortDirection : 'asc'}}" data-name="callNumber">Call Number&nbsp;<span class="fa fa-sort"></span></th>
+        <th data-sort="{{$sortColumn === 'callNumber' ? $sortDirection : 'asc'}}" data-name="callNumber">
+          Call Number&nbsp;<span class="fa fa-sort"></span>
+        </th>
         <th>Date</th>
         <th>Engineer</th>
         <th>Vendor</th>

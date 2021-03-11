@@ -4,9 +4,15 @@
     <thead>
       <tr id="header-row" role="rowheader">
         {{-- data name is camelCase for solr query purposes, see SolariumProxy--}}
-        <th data-sort="{{$sortColumn === 'callNumber' ? $sortDirection : 'asc'}}" data-name="callNumber">Call #&nbsp;<span class="fa fa-sort"></span></th>
-        <th data-sort="{{$sortColumn === 'title' ? $sortDirection : 'asc'}}" data-name="title">Title&nbsp;<span class="fa fa-sort"></span></th>
-        <th data-sort="{{$sortColumn === 'containerNote' ? $sortDirection : 'asc'}}" data-name="containerNote">Container Note&nbsp;<span class="fa fa-sort"></span></th>
+        <th data-sort="{{$sortColumn === 'callNumber' ? $sortDirection : 'asc'}}" data-name="callNumber">
+          Call #&nbsp;<span class="fa fa-sort"></span>
+        </th>
+        <th data-sort="{{$sortColumn === 'title' ? $sortDirection : 'asc'}}" data-name="title">
+          Title&nbsp;<span class="fa fa-sort"></span>
+        </th>
+        <th data-sort="{{$sortColumn === 'containerNote' ? $sortDirection : 'asc'}}" data-name="containerNote">
+          Container Note&nbsp;<span class="fa fa-sort"></span>
+        </th>
         <th>Collection</th>
         <th>Format</th>
         <th>Type</th>

@@ -69,7 +69,6 @@ class SolariumProxy {
     $solariumQuery->setStart($start);
     $solariumQuery->setRows($rows);
     $solariumQuery->addSort($sortColumn, $sortDirection);
-    //$solariumQuery->addSort('updatedAt', $solariumQuery::SORT_DESC);
 
     $resultSet = $this->client->execute($solariumQuery);
 

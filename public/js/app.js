@@ -1633,7 +1633,7 @@ jitterbug = {
       query = $.extend(query, filterPanel.selectedFilters());
       return JSON.stringify(query);
     },
-    
+      // default sort is updatedAt column, descending
     executeQuery = function(sortColumn = 'updatedAt', sortDirection = 'desc') {
       var query = {};
       query['q'] = encodeURIComponent(queryString());
@@ -1663,6 +1663,7 @@ jitterbug = {
           window.location.href='/' + resource + '/' + $(this).data('id');
         });
 
+        // Bind click handler to header row for sortable columns
         $('#header-row').click(function(e) {
           e.preventDefault();
           const column = e.target;
@@ -1670,7 +1671,6 @@ jitterbug = {
           const currentSort = column.getAttribute('data-sort');
           if (columnName !== null && currentSort !== null) {
             const toggleSort = (currentSort === "asc") ? "desc" : "asc";
-            column.setAttribute('data-sort', toggleSort);
             tableSelection.clear();
             tableParams.setPage(1);
             executeQuery(columnName, toggleSort);

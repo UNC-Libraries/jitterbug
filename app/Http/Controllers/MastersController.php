@@ -73,7 +73,7 @@ class MastersController extends Controller {
       $sortColumn = $request->query('sortColumn');
       $sortDirection = $request->query('sortDirection');
 
-      $resultSet = $this->solrMasters->query($queryParams, $start, $perPage,$sortColumn, $sortDirection);
+      $resultSet = $this->solrMasters->query($queryParams, $start, $perPage, $sortColumn, $sortDirection);
       $masters = new SolariumPaginator($resultSet,$page,$perPage);
 
       $masterIds = array();

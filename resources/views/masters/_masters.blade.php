@@ -2,8 +2,10 @@
   <table id="masters-data" class="table table-sm table-hover">
     <thead>
       <tr id="header-row">
-        <th data-sort="{{$sortColumn === 'callNumber' ? $sortDirection : 'asc'}}" data-name="callNumber">Call Number&nbsp;<span class="fa fa-sort"></span></th>
-        <th>File Name</th>
+        <th data-sort="{{$sortColumn === 'callNumber' ? $sortDirection : 'asc'}}" data-name="callNumber">
+          Call Number&nbsp;<span class="fa fa-sort"></span>
+        </th>
+        <th data-sort="{{$sortColumn === 'fileName' ? $sortDirection : 'asc'}}" data-name="fileName">File Name#&nbsp;<span class="fa fa-sort"></span></th>
         <th>Collection</th>
         <th>Format</th>
         <th>Department</th>
