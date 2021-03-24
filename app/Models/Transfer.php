@@ -84,7 +84,12 @@ class Transfer extends Model {
 
   public function getEngineerNameAttribute()
   {
-    return $this->engineer->fullName();
+    $engineer = $this->engineer;
+    // video transfers are done by a vendor so there is no related engineer
+    if ($engineer === null) {
+      return null;
+    }
+    return $engineer->fullName();
   }
 
   public function playbackMachine()
