@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Transfer extends Model {
@@ -11,6 +11,7 @@ class Transfer extends Model {
   use CompositeHistory;
   use SoftDeletes;
   use Markable;
+  use HasFactory;
 
   const BATCH_EDIT_MAX_LIMIT = 1000;
   const BATCH_IMPORT_KEY =  'OriginalPm';

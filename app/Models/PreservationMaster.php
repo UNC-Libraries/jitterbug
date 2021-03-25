@@ -3,10 +3,9 @@
 use Log;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
 use Venturecraft\Revisionable\RevisionableTrait;
-
 use Jitterbug\Util\DurationFormat;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PreservationMaster extends Model {
   use NullFieldPreserver;
@@ -14,6 +13,7 @@ class PreservationMaster extends Model {
   use CompositeHistory;
   use SoftDeletes;
   use Markable;
+  use HasFactory;
 
   const BATCH_EDIT_MAX_LIMIT = 1000;
 

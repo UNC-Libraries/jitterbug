@@ -30,7 +30,7 @@ class UserFactory extends Factory
           'password' => bcrypt($this->faker->password),
           'admin' => $this->faker->boolean,
           'remember_token' => str_random(10),
-          'legacy_initials' => $this->faker->word,
+          'legacy_initials' => null,
         ];
     }
 }
