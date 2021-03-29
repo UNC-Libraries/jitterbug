@@ -66,9 +66,12 @@ class ItemsController extends Controller
       $page = $request->query('page');
       $perPage = $request->query('perPage');
       $start = $perPage * ($page - 1);
+      $sortColumn = $request->query('sortColumn');
+      $sortDirection = $request->query('sortDirection');
 
-      $resultSet = $this->solrItems->query($queryParams, $start, $perPage);
+      $resultSet = $this->solrItems->query($queryParams, $start, $perPage, $sortColumn, $sortDirection);
       $items = new SolariumPaginator($resultSet, $page, $perPage);
+      $totalRecordCount = $items->total() . ' ' . Str::plural('record', $items->total());
 
       $itemIds = array();
       foreach ($items as $item) {
@@ -79,7 +82,8 @@ class ItemsController extends Controller
                    ->where('user_id', Auth::user()->id)
                    ->get()->pluck('markable_id');
 
-      return view('items._items', compact('items', 'marks', 'start'));
+      return view('items._items',
+        compact('items', 'marks', 'start', 'sortColumn', 'sortDirection', 'totalRecordCount'));
     }
 
     $types = AudioVisualItemType::all();

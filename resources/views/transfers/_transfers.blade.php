@@ -1,14 +1,18 @@
 <div id="data-container">
   <table id="transfers-data" class="table table-sm table-hover">
     <thead>
-      <tr>
-        <th width="12%">Call Number</th>
-        <th width="13%">Date</th>
-        <th width="17%">Engineer</th>
-        <th width="15%">Vendor</th>
-        <th width="20%">Collection</th>
-        <th width="16%">Format</th>
-        <th width="7%">Type</th>
+      <tr id="header-row">
+        <th data-sort="{{$sortColumn === 'callNumber' ? $sortDirection : 'asc'}}" data-name="callNumber">
+          Call Number&nbsp;<span class="fa fa-sort"></span>
+        </th>
+        <th>Date</th>
+        <th data-sort="{{$sortColumn === 'engineerLastName' ? $sortDirection : 'asc'}}" data-name="engineerLastName">
+          Engineer&nbsp;<span class="fa fa-sort"></span>
+        </th>
+        <th>Vendor</th>
+        <th>Collection</th>
+        <th>Format</th>
+        <th>Type</th>
       </tr>
     </thead>
     <tbody>
@@ -29,7 +33,7 @@
   </table>
   <div class="data-footer">
     <div class="record-count">
-      {{ $transfers->total() }} {{$transfers->total()==1 ? "record" : "records"}} <span class="selection-count label label-default" style="margin-left: 5px;"></span>
+      {{ $totalRecordCount }} <span class="selection-count label label-default" style="margin-left: 5px;"></span>
     </div>
     <div style="float: right;">
       <nav>

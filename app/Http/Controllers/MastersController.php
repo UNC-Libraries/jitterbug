@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Auth;
 use DB;
 use Exception;
+use Illuminate\Support\Str;
 use Log;
 use Session;
 use Solarium;
@@ -70,9 +71,12 @@ class MastersController extends Controller {
       $page = $request->query('page');
       $perPage = $request->query('perPage');
       $start = $perPage * ($page - 1);
+      $sortColumn = $request->query('sortColumn');
+      $sortDirection = $request->query('sortDirection');
 
-      $resultSet = $this->solrMasters->query($queryParams,$start,$perPage);
+      $resultSet = $this->solrMasters->query($queryParams, $start, $perPage, $sortColumn, $sortDirection);
       $masters = new SolariumPaginator($resultSet,$page,$perPage);
+      $totalRecordCount = $masters->total() . ' ' . Str::plural('record', $masters->total());
 
       $masterIds = array();
       foreach ($masters as $master) {
@@ -83,7 +87,8 @@ class MastersController extends Controller {
             ->where('user_id', Auth::user()->id)
             ->get()->pluck('markable_id');
 
-      return view('masters._masters', compact('masters', 'marks', 'start'));
+      return view('masters._masters',
+        compact('masters', 'marks', 'start', 'sortColumn', 'sortDirection', 'totalRecordCount'));
     }
 
     $types = PreservationMasterType::all();

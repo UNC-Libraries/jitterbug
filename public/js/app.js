@@ -1633,12 +1633,14 @@ jitterbug = {
       query = $.extend(query, filterPanel.selectedFilters());
       return JSON.stringify(query);
     },
-    
-    executeQuery = function() {
+      // default sort is updatedAt column, descending
+    executeQuery = function(sortColumn = 'updatedAt', sortDirection = 'desc') {
       var query = {};
       query['q'] = encodeURIComponent(queryString());
       query['page'] = tableParams.getPage();
       query['perPage'] = tableParams.getPerPage();
+      query['sortColumn'] = sortColumn;
+      query['sortDirection'] = sortDirection;
 
       $.get('/' + resource, query, function(data) {
         $('#data-container').replaceWith(data);
@@ -1661,6 +1663,20 @@ jitterbug = {
           window.location.href='/' + resource + '/' + $(this).data('id');
         });
 
+        // Bind click handler to header row for sortable columns
+        $('#header-row').click(function(e) {
+          e.preventDefault();
+          const column = e.target;
+          const columnName = column.getAttribute('data-name');
+          const currentSort = column.getAttribute('data-sort');
+          if (columnName !== null && currentSort !== null) {
+            const toggleSort = (currentSort === "asc") ? "desc" : "asc";
+            tableSelection.clear();
+            tableParams.setPage(1);
+            executeQuery(columnName, toggleSort);
+          }
+        });
+
         // Bind click handlers to all data pagination links
         if ($('.pagination').length) {
           var currentPage = parseInt($('.page-item.active').text().trim());
@@ -1674,19 +1690,19 @@ jitterbug = {
                 $(this).click(function(event){
                   event.preventDefault();
                   tableParams.setPage(currentPage - 1);
-                  executeQuery();
+                  executeQuery(sortColumn, sortDirection);
                 });
               } else if ($(this).hasClass('next-page')) {
                 $(this).click(function(event){
                   event.preventDefault();
                   tableParams.setPage(currentPage + 1);
-                  executeQuery();
+                  executeQuery(sortColumn, sortDirection);
                 });
               } else {
                 $(this).click(function(event){
                   event.preventDefault();
                   tableParams.setPage($(this).text().trim());
-                  executeQuery();
+                  executeQuery(sortColumn, sortDirection);
                 });
               }
             })

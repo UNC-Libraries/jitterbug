@@ -7,6 +7,7 @@
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:300' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic,600italic' rel='stylesheet' type='text/css'>
+  <link href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
   <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" >
 
   <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />

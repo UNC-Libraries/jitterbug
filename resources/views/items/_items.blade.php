@@ -2,13 +2,20 @@
   {{-- The ID of this table needs to be unique across Jitterbug (i.e. different than the data table in masters or transfers) so that the colResizable plugin stores and loads unique column widths (set by the user) to localStorage. --}}
   <table id="items-data" class="table table-sm table-hover">
     <thead>
-      <tr>
-        <th width="12%">Call Number</th>
-        <th width="20%">Title</th>
-        <th width="30%">Container Note</th>
-        <th width="15%">Collection</th>
-        <th width="16%">Format</th>
-        <th width="7%">Type</th>
+      <tr id="header-row" role="rowheader">
+        {{-- data name is camelCase for solr query purposes, see SolariumProxy--}}
+        <th data-sort="{{$sortColumn === 'callNumber' ? $sortDirection : 'asc'}}" data-name="callNumber">
+          Call #&nbsp;<span class="fa fa-sort"></span>
+        </th>
+        <th data-sort="{{$sortColumn === 'title' ? $sortDirection : 'asc'}}" data-name="title">
+          Title&nbsp;<span class="fa fa-sort"></span>
+        </th>
+        <th data-sort="{{$sortColumn === 'containerNote' ? $sortDirection : 'asc'}}" data-name="containerNote">
+          Container Note&nbsp;<span class="fa fa-sort"></span>
+        </th>
+        <th>Collection</th>
+        <th>Format</th>
+        <th>Type</th>
       </tr>
     </thead>
     <tbody>
@@ -28,7 +35,7 @@
   </table>
   <div class="data-footer">
     <div class="record-count">
-      {{ $items->total() }} {{$items->total()==1 ? "record" : "records"}} <span class="selection-count label label-default" style="margin-left: 5px;"></span>
+      {{ $totalRecordCount }} <span class="selection-count label label-default" style="margin-left: 5px;"></span>
     </div>
     <div style="float: right;">
       <nav>
