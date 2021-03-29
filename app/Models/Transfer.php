@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Transfer extends Model {
@@ -11,6 +11,7 @@ class Transfer extends Model {
   use CompositeHistory;
   use SoftDeletes;
   use Markable;
+  use HasFactory;
 
   const BATCH_EDIT_MAX_LIMIT = 1000;
   const BATCH_IMPORT_KEY =  'OriginalPm';
@@ -84,7 +85,12 @@ class Transfer extends Model {
 
   public function getEngineerNameAttribute()
   {
-    return $this->engineer->fullName();
+    $engineer = $this->engineer;
+    // video transfers are done by a vendor so there is no related engineer
+    if ($engineer === null) {
+      return null;
+    }
+    return $engineer->fullName();
   }
 
   public function playbackMachine()
