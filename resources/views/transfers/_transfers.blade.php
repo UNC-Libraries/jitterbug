@@ -7,7 +7,7 @@
         </th>
         <th>Date</th>
         <th data-sort="{{$sortColumn === 'engineerLastName' ? $sortDirection : 'asc'}}" data-name="engineerLastName">
-          Engineer <span class="fa fa-sort"></span>
+          Engineer&nbsp;<span class="fa fa-sort"></span>
         </th>
         <th>Vendor</th>
         <th>Collection</th>
