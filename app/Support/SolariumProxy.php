@@ -36,7 +36,7 @@ class SolariumProxy {
     return new Solarium\Client($config);
   }
 
-  public function query($queryParams, $start, $rows, $sortColumn, $sortDirection)
+  public function query($queryParams, $start, $rows, $sortColumn = 'updatedAt', $sortDirection = 'desc')
   {
     $solariumQuery = $this->client->createSelect();
 
