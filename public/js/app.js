@@ -2190,9 +2190,9 @@ jitterbug = {
         // The id of the record at the index
         var id = $(this).data('id');
         // column by which table is being sorted. may be null
-        const sortColumn = $(this).data('sort-column');
+        const sortColumn = $(this).closest('table').data('sort-column');
         // direction of sort, if there is one in use
-        const sortDirection = $(this).data('sort-direction');
+        const sortDirection = $(this).closest('table').data('sort-direction');
 
         // If user is "shift-clicking" a row (i.e. selecting a range of rows)
         if (event.shiftKey) {

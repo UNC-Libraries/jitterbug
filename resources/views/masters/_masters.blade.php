@@ -1,5 +1,5 @@
 <div id="data-container">
-  <table id="masters-data" class="table table-sm table-hover">
+  <table id="masters-data" class="table table-sm table-hover" data-sort-column="{{$sortColumn}}" data-sort-direction="{{$sortDirection}}">
     <thead>
       <tr id="header-row">
         <th data-sort-direction="{{$sortColumn === 'callNumber' ? $sortDirection : 'asc'}}" data-sort-column="callNumber">
@@ -15,7 +15,7 @@
     <tbody>
       <?php $index = 0; ?>
       @foreach ($masters as $master)
-      <tr role="button" class="@if ($marks->contains($master->id)) marked @endif" data-id="{{ $master->id }}" data-index="{{ $start + $index }}" data-sort-column="{{$sortColumn}}" data-sort-direction="{{$sortDirection}}">
+      <tr role="button" class="@if ($marks->contains($master->id)) marked @endif" data-id="{{ $master->id }}" data-index="{{ $start + $index }}">
         <td>{{ $master->callNumber }}</td>
         <td>{{ $master->fileName }}</td>
         <td title="{{ $master->collectionName}}">{{ $master->collectionName }}</td>

@@ -1,6 +1,6 @@
 <div id="data-container">
   {{-- The ID of this table needs to be unique across Jitterbug (i.e. different than the data table in masters or transfers) so that the colResizable plugin stores and loads unique column widths (set by the user) to localStorage. --}}
-  <table id="items-data" class="table table-sm table-hover">
+  <table id="items-data" class="table table-sm table-hover" data-sort-column="{{$sortColumn}}" data-sort-direction="{{$sortDirection}}">
     <thead>
       <tr id="header-row" role="rowheader">
         {{-- data name is camelCase for solr query purposes, see SolariumProxy--}}
@@ -21,7 +21,7 @@
     <tbody>
       <?php $index = 0; ?>
       @foreach ($items as $item)
-      <tr role="button" class="@if ($marks->contains($item->id)) marked @endif" data-id="{{ $item->id }}" data-index="{{ $start + $index }}" data-sort-column="{{$sortColumn}}" data-sort-direction="{{$sortDirection}}">
+      <tr role="button" class="@if ($marks->contains($item->id)) marked @endif" data-id="{{ $item->id }}" data-index="{{ $start + $index }}">
         <td>{{ $item->callNumber }}</td>
         <td title="{{ $item->title }}">{{ $item->title }}</td>
         <td title="{{ $item->containerNote }}">{{ $item->containerNote }}</td>
