@@ -1,16 +1,16 @@
 <div id="data-container">
   {{-- The ID of this table needs to be unique across Jitterbug (i.e. different than the data table in masters or transfers) so that the colResizable plugin stores and loads unique column widths (set by the user) to localStorage. --}}
-  <table id="items-data" class="table table-sm table-hover">
+  <table id="items-data" class="table table-sm table-hover" data-sort-column="{{$sortColumn}}" data-sort-direction="{{$sortDirection}}">
     <thead>
       <tr id="header-row" role="rowheader">
         {{-- data name is camelCase for solr query purposes, see SolariumProxy--}}
-        <th data-sort="{{$sortColumn === 'callNumber' ? $sortDirection : 'asc'}}" data-name="callNumber">
+        <th data-sort-direction="{{$sortColumn === 'callNumber' ? $sortDirection : 'asc'}}" data-sort-column="callNumber">
           Call #&nbsp;<span class="fa fa-sort"></span>
         </th>
-        <th data-sort="{{$sortColumn === 'title' ? $sortDirection : 'asc'}}" data-name="title">
+        <th data-sort-direction="{{$sortColumn === 'title' ? $sortDirection : 'asc'}}" data-sort-column="title">
           Title&nbsp;<span class="fa fa-sort"></span>
         </th>
-        <th data-sort="{{$sortColumn === 'containerNote' ? $sortDirection : 'asc'}}" data-name="containerNote">
+        <th data-sort-direction="{{$sortColumn === 'containerNote' ? $sortDirection : 'asc'}}" data-sort-column="containerNote">
           Container Note&nbsp;<span class="fa fa-sort"></span>
         </th>
         <th>Collection</th>

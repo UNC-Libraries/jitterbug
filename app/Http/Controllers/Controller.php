@@ -27,14 +27,16 @@ abstract class Controller extends BaseController {
     $queryParams = json_decode(urldecode($request->query('q')));
     $range = json_decode(urldecode($request->query('r')));
     $beginIndex = $range->beginIndex;
-    $beginId = isset($range->beginId) ? $range->beginId : null;
+    $beginId = $range->beginId ?? null;
     $endIndex = $range->endIndex;
-    $endId = isset($range->endId) ? $range->endId : null;
+    $endId = $range->endId ?? null;
     $firstIndex = min($beginIndex, $endIndex);
     $lastIndex = max($beginIndex, $endIndex);
     $start = $firstIndex;
     $rows = $lastIndex - $firstIndex + 1;
-    $resultSet = $proxy->query($queryParams,$start,$rows);
+    $sortColumn = $request->query('sortColumn');
+    $sortDirection = $request->query('sortDirection');
+    $resultSet = $proxy->query($queryParams, $start, $rows, $sortColumn, $sortDirection);
 
     $itemIds = array();
     $index = $start;

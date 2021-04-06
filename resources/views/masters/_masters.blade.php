@@ -1,8 +1,8 @@
 <div id="data-container">
-  <table id="masters-data" class="table table-sm table-hover">
+  <table id="masters-data" class="table table-sm table-hover" data-sort-column="{{$sortColumn}}" data-sort-direction="{{$sortDirection}}">
     <thead>
       <tr id="header-row">
-        <th data-sort="{{$sortColumn === 'callNumber' ? $sortDirection : 'asc'}}" data-name="callNumber">
+        <th data-sort-direction="{{$sortColumn === 'callNumber' ? $sortDirection : 'asc'}}" data-sort-column="callNumber">
           Call Number&nbsp;<span class="fa fa-sort"></span>
         </th>
         <th>File Name</th>

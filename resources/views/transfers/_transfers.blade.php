@@ -1,12 +1,12 @@
 <div id="data-container">
-  <table id="transfers-data" class="table table-sm table-hover">
+  <table id="transfers-data" class="table table-sm table-hover" data-sort-column="{{$sortColumn}}" data-sort-direction="{{$sortDirection}}">
     <thead>
       <tr id="header-row">
-        <th data-sort="{{$sortColumn === 'callNumber' ? $sortDirection : 'asc'}}" data-name="callNumber">
+        <th data-sort-direction="{{$sortColumn === 'callNumber' ? $sortDirection : 'asc'}}" data-sort-column="callNumber">
           Call Number&nbsp;<span class="fa fa-sort"></span>
         </th>
         <th>Date</th>
-        <th data-sort="{{$sortColumn === 'engineerLastName' ? $sortDirection : 'asc'}}" data-name="engineerLastName">
+        <th data-sort-direction="{{$sortColumn === 'engineerLastName' ? $sortDirection : 'asc'}}" data-sort-column="engineerLastName">
           Engineer&nbsp;<span class="fa fa-sort"></span>
         </th>
         <th>Vendor</th>

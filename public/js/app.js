@@ -1667,8 +1667,8 @@ jitterbug = {
         $('#header-row').click(function(e) {
           e.preventDefault();
           const column = e.target;
-          const columnName = column.getAttribute('data-name');
-          const currentSort = column.getAttribute('data-sort');
+          const columnName = column.getAttribute('data-sort-column');
+          const currentSort = column.getAttribute('data-sort-direction');
           if (columnName !== null && currentSort !== null) {
             const toggleSort = (currentSort === "asc") ? "desc" : "asc";
             tableSelection.clear();
@@ -2189,10 +2189,14 @@ jitterbug = {
         var index = $(this).data('index');
         // The id of the record at the index
         var id = $(this).data('id');
+        // column by which table is being sorted. may be null
+        const sortColumn = $(this).closest('table').data('sort-column');
+        // direction of sort, if there is one in use
+        const sortDirection = $(this).closest('table').data('sort-direction');
 
         // If user is "shift-clicking" a row (i.e. selecting a range of rows)
         if (event.shiftKey) {
-          resolveRange(index, id);
+          resolveRange(index, id, sortColumn, sortDirection);
           finalizeEvent(event);
           return;
         }
@@ -2259,7 +2263,7 @@ jitterbug = {
     },
 
     // Resolve a range selection to an array of ids
-    resolveRange = function(endIndex, endId) {
+    resolveRange = function(endIndex, endId, sortColumn, sortDirection) {
       if (beginIndex == null && beginId == null) {
         beginIndex = endIndex;
         beginId = endId;
@@ -2284,6 +2288,8 @@ jitterbug = {
             var range = JSON.stringify({beginIndex: beginIndex, 
               beginId: beginId, endIndex: endIndex, endId: endId});
             query['r'] = encodeURIComponent(range);
+            query['sortColumn'] = sortColumn;
+            query['sortDirection'] = sortDirection;
 
             $.ajax({
               url: '/' + resource + '/resolve-range',
