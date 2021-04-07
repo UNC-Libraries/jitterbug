@@ -114,11 +114,11 @@
 
    <!-- Jitterbug specific fields -->
    <field name="callNumber" type="text_general" indexed="true" stored="true" required="false" />
-   <field name="callNumberSortable" type="lowercase" indexed="true" stored="true" required="false" />
+   <field name="callNumberSortable" type="lowercase" indexed="true" stored="false" required="false" />
    <field name="title" type="text_general" indexed="true" stored="true" required="false" />
-   <field name="titleSortable" type="lowercase" indexed="true" stored="true" required="false" />
+   <field name="titleSortable" type="lowercase" indexed="true" stored="false" required="false" />
    <field name="containerNote" type="text_general" indexed="true" stored="true" required="false" />
-   <field name="containerNoteSortable" type="lowercase" indexed="true" stored="true" required="false" />
+   <field name="containerNoteSortable" type="lowercase" indexed="true" stored="false" required="false" />
    <field name="recordingLocation" type="text_general" indexed="true" stored="true" required="false" />
    <field name="itemDate" type="date" indexed="true" stored="true" required="false" />
    <field name="accessionNumber" type="string" indexed="true" stored="true" required="false" />

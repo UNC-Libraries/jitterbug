@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Jitterbug\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UsersTableSeeder extends Seeder
 {
@@ -13,7 +14,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        if(env('APP_ENV') != 'production')
+        if(env('APP_ENV') !== 'production')
         {
           $password = Hash::make(env('ADMIN_USER_PASSWORD'));
           $users[] = [

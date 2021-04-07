@@ -114,7 +114,7 @@
 
    <!-- Jitterbug specific fields -->
    <field name="callNumber" type="text_general" indexed="true" stored="true" required="false" />
-   <field name="callNumberSortable" type="lowercase" indexed="true" stored="true" required="false" />
+   <field name="callNumberSortable" type="lowercase" indexed="true" stored="false" required="false" />
    <field name="fileName" type="text_general" indexed="true" stored="true" required="false" />
    <field name="durationInSeconds" type="string" indexed="false" stored="true" required="false" />
    <field name="departmentId" type="string" indexed="true" stored="true" required="false" />
