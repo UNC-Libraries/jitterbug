@@ -114,6 +114,7 @@
 
    <!-- Jitterbug specific fields -->
    <field name="callNumber" type="text_general" indexed="true" stored="true" required="false" />
+   <field name="callNumberSortable" type="lowercase" indexed="true" stored="false" required="false" />
    <field name="fileName" type="text_general" indexed="true" stored="true" required="false" />
    <field name="durationInSeconds" type="string" indexed="false" stored="true" required="false" />
    <field name="departmentId" type="string" indexed="true" stored="true" required="false" />
@@ -191,10 +192,7 @@
         is added to the index.  It's used either to index the same field differently,
         or to add multiple fields to the same field for easier/faster searching.  -->
 
-  <!--
-   <copyField source="title" dest="text"/>
-   <copyField source="body" dest="text"/>
-  -->
+   <copyField source="callNumber" dest="callNumberSortable"/>
   
     <!-- field type definitions. The "name" attribute is
        just a label to be used by field definitions.  The "class"

@@ -66,6 +66,12 @@ class SolariumProxy {
 
     $this->createFilterQueries($solariumQuery,$queryParams);
 
+    // use Sortable version of solr field if it's not the default updatedAt field
+    // ex. callNumber => callNumberSortable
+    if ($sortColumn !== 'updatedAt') {
+      $sortColumn .= 'Sortable';
+    }
+
     $solariumQuery->setStart($start);
     $solariumQuery->setRows($rows);
     $solariumQuery->addSort($sortColumn, $sortDirection);
