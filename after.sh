@@ -88,3 +88,8 @@ php artisan migrate --env=testing
 
 # seed the Db with the non LDAP admin user
 php artisan db:seed --class=UsersTableSeeder
+
+# install chromium browser for Laravel Dusk browser tests
+# and install ChromeDriver
+sudo apt-get install chromium-browser
+php artisan dusk:chrome-driver
