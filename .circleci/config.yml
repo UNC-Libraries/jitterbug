@@ -122,7 +122,7 @@ jobs:
       - run:
           name: Install Chromium browswer for Dusk Browser tests
           command:
-            sudo apt-get install chromium-browser
+            sudo apt-get install chromium
       - run:
           name: Run Tests
           command: ./vendor/bin/phpunit
