@@ -119,7 +119,6 @@ jobs:
           name: Install latest version of ChromeDriver for Dusk Browser tests
           command:
             php artisan dusk:chrome-driver
-            chmod -R 0755 vendor/laravel/dusk/bin/.
       - run:
           name: Run Tests
           command: ./vendor/bin/phpunit
