@@ -116,13 +116,13 @@ jobs:
           name: Wait for Solr
           command: dockerize -wait tcp://127.0.0.1:8983 -timeout 120s
       - run:
-          name: Install latest version of ChromeDriver for Dusk Browser tests
-          command:
-            php artisan dusk:chrome-driver
-      - run:
           name: Install Chromium browswer for Dusk Browser tests
           command:
             sudo apt-get install chromium
+      - run:
+          name: Install latest version of ChromeDriver for Dusk Browser tests
+          command:
+            php artisan dusk:chrome-driver --detect
       - run:
           name: Run Tests
           command: ./vendor/bin/phpunit
