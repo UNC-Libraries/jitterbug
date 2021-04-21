@@ -126,6 +126,9 @@ jobs:
       - run:
           name: Run Tests
           command: ./vendor/bin/phpunit
+      - run:
+          name: Run Browser tests
+          command: php artisan dusk
 
 
 workflows:
