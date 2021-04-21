@@ -116,6 +116,11 @@ jobs:
           name: Wait for Solr
           command: dockerize -wait tcp://127.0.0.1:8983 -timeout 120s
       - run:
+          name: Install latest version of ChromeDriver for Dusk Browser tests
+          command:
+            php artisan dusk:chrome-driver
+            chmod -R 0755 vendor/laravel/dusk/bin/.
+      - run:
           name: Run Tests
           command: ./vendor/bin/phpunit
 
