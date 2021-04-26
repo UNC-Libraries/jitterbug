@@ -125,7 +125,6 @@ jobs:
           name: Install JS packages
           command: |
             yarn install
-            npm run production
       - run:
           name: Install Chromium browswer for Dusk Browser tests
           command:
