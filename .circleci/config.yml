@@ -127,6 +127,10 @@ jobs:
           name: Run Tests
           command: ./vendor/bin/phpunit
       - run:
+          name: Start Chrome Driver
+          command: ./vendor/laravel/dusk/bin/chromedriver-linux
+          background: true
+      - run:
           name: Run Laravel Server
           command: php artisan serve
           background: true
