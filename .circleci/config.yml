@@ -127,10 +127,18 @@ jobs:
           name: Run Tests
           command: ./vendor/bin/phpunit
       - run:
+          name: Run Laravel Server
+          command: php artisan serve
+          background: true
+      - run:
           name: Run Browser tests
           command: php artisan dusk
       - store_artifacts:
-          path: ~/jitterbug/tests/Browser/screenshots
+          path: tests/Browser/screenshots
+      - store_artifacts:
+          path: tests/Browser/console
+      - store_artifacts:
+          path: storage/logs
 
 
 workflows:
