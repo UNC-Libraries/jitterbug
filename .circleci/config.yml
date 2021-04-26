@@ -129,6 +129,8 @@ jobs:
       - run:
           name: Run Browser tests
           command: php artisan dusk
+      - store_artifacts:
+          path: ~/jitterbug/tests/Browser/screenshots
 
 
 workflows:
