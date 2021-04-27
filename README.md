@@ -148,14 +148,14 @@ $('#speed').autocomplete({
 ```
 
 ## Compiling Assets
-Jitterbug uses [Laravel Elixir](https://laravel.com/docs/5.3/elixir) to compile its assets, including Sass for its css.
-Add your css to `resources/assets/sass/app.scss` and then run `gulp` in the application terminal to compile the new changes.
+Jitterbug uses [Laravel Mix](https://laravel.com/docs/8.x/mix) to compile its assets, including Sass for its css.
+Add your css to `resources/assets/sass/app.scss` and then run `npm run dev` in the application terminal to compile the new changes.
 
 For example, in the VM:
 ```bash
 $ vagrant ssh
 $ cd /vagrant
-$ gulp
+$ npm run dev
 ```
 
 ## Updating Homestead
@@ -195,5 +195,19 @@ $ gulp
     ```
 7. Repopulate the DB and re-index Solr (instructions above).
    
-
+## Running [Laravel Dusk](https://laravel.com/docs/8.x/dusk) tests (VM only)
+1. Start up the vm and ssh into the VM
+    ```bash
+    vagrant up
+    vagrant ssh
+    ```
+2. Navigate to the Jitterbug repo folder
+    ```bash
+    cd /vagrant
+    ```
+3. Run the Laravel Dusk tests
+    ```bash
+    php artisan dusk
+    ```
+4. Check screenshots folder when there's a failure in `tests/Browser/screenshots`
 
