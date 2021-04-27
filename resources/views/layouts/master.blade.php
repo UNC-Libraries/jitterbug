@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-error_reporting(E_ALL);
-ini_set('error_reporting', E_ALL);
-ini_set("display_errors", 1);
+
 <head>
   @include('shared._head', ['title' => $title])
 </head>

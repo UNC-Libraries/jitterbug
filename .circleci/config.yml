@@ -9,24 +9,11 @@ jobs:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_ROOT_PASSWORD: ''
           MYSQL_DATABASE: jitterbug_testing
-          MYSQL_USER: user
-          MYSQL_PASSWORD: passw0rd
 
     working_directory: ~/jitterbug
 
     steps:
       - checkout
-      - run:
-          # Our primary container isn't MYSQL so run a sleep command until it's ready.
-          name: Waiting for MySQL to be ready
-          command: |
-            for i in `seq 1 10`;
-            do
-              nc -z 127.0.0.1 3306 && echo Success && exit 0
-              echo -n .
-              sleep 1
-            done
-            echo Failed waiting for MySQL && exit 1
       - run:
           name: install dockerize
           command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
@@ -48,9 +35,6 @@ jobs:
       - run:
           name: Copy Circle CI version of .env.testing
           command: cp .env.testing.circleci .env.testing
-      - run:
-          name: Copy Circle CI version of Dusk-specific .env file
-          command: cp .env.dusk.testing .env
       - run:
           name: Install Java
           command: |
@@ -134,39 +118,6 @@ jobs:
       - run:
           name: Run Tests
           command: ./vendor/bin/phpunit
-      - run:
-          name: Clear config cache
-          command: php artisan config:clear
-      - run:
-          name: Install JS packages
-          command: |
-            yarn install
-      - run:
-          name: Install Chromium browswer for Dusk Browser tests
-          command:
-            sudo apt-get install chromium
-      - run:
-          name: Install latest version of ChromeDriver for Dusk Browser tests
-          command:
-            php artisan dusk:chrome-driver --detect
-      - run:
-          name: Start Chrome Driver
-          command: ./vendor/laravel/dusk/bin/chromedriver-linux
-          background: true
-      - run:
-          name: Run Laravel Server
-          command: php artisan serve
-          background: true
-      - run:
-          name: Run Browser tests
-          command: php artisan dusk
-      - store_artifacts:
-          path: tests/Browser/screenshots
-      - store_artifacts:
-          path: tests/Browser/console
-      - store_artifacts:
-          path: storage/logs
-
 
 workflows:
   version: 2
