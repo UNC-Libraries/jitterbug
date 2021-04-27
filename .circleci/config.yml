@@ -122,6 +122,9 @@ jobs:
           name: Run Tests
           command: ./vendor/bin/phpunit
       - run:
+          name: Clear config cache
+          command: php artisan config:clear
+      - run:
           name: Install JS packages
           command: |
             yarn install
