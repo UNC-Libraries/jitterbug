@@ -43,7 +43,7 @@ abstract class Controller extends BaseController {
     $validateRange = $beginId !== null && $endId !== null;
     foreach ($resultSet as $item) {
       if ($validateRange) {
-        if ($index == $beginIndex && $item->id != $beginId) {   
+        if ($index == $beginIndex && $item->id != $beginId) {
           $this->invalidRange();
         }
         if ($index == $endIndex && $item->id != $endId) {
