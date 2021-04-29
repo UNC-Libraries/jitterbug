@@ -32,7 +32,8 @@
 		"symfony/css-selector": "5.*",
 		"symfony/dom-crawler": "5.*",
 		"laravel/homestead": "^11",
-		"filp/whoops": "~2.0"
+		"filp/whoops": "~2.0",
+		"laravel/dusk": "^6.15"
 	},
 	"autoload": {
 		"psr-4": {
