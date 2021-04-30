@@ -66,9 +66,14 @@ class SolariumProxy {
 
     $this->createFilterQueries($solariumQuery,$queryParams);
 
-    // use Sortable version of solr field if it's not the default updatedAt field
-    // ex. callNumber => callNumberSortable
-    if ($sortColumn !== 'updatedAt') {
+    if ($sortColumn === null && $sortDirection === null) {
+      // sometimes null values are specifically sent in for sorts
+      // like when a user does select all, so default values must be assigned
+      $sortColumn = 'updatedAt';
+      $sortDirection = 'desc';
+    } else if ($sortColumn !== 'updatedAt') {
+      // use Sortable version of solr field if it's not the updatedAt field
+      // ex. callNumber => callNumberSortable
       $sortColumn .= 'Sortable';
     }
 
