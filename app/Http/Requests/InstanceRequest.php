@@ -32,9 +32,9 @@ class MasterRequest extends Request {
       'required|min:4|max:30|exists:audio_visual_items,call_number,deleted_at,NULL');
     // If this is a batch create or update, don't require a file name since it
     // needs to be unique across every master.
-    if (!$this->input('batch') && $this->route()->getName()!=='masters.batch.update') {
+    if (!$this->input('batch') && $this->route()->getName()!=='instances.batch.update') {
       $this->addRuleIfNotMixed($rules, 'file_name',
-        'required|max:60|unique:preservation_masters,file_name,'. 
+        'required|max:60|unique:preservation_instances,file_name,'.
           $this->input('id').',id,deleted_at,NULL' 
         );
     }
@@ -55,13 +55,13 @@ class MasterRequest extends Request {
       $this->addRuleIfNotMixed($rules, 'subclass.sampling_rate_id', 'required');
       $this->addRuleIfNotMixed($rules, 'subclass.test_tones', 'max:255');
     // Add rules for film masters
-    } else if ($subclassType === 'FilmMaster') {
+    } else if ($subclassType === 'FilmInstance') {
       $this->addRuleIfNotMixed($rules, 'film_file_format', 'required|max:60');
       $this->addRuleIfNotMixed($rules, 'film_file_codec', 'required|max:60');
       $this->addRuleIfNotMixed($rules, 'subclass.film_frame_size', 'max:30');
       $this->addRuleIfNotMixed($rules, 'subclass.film_aspect_ratio', 'max:30');
     // Add rules for video masters
-    } else if ($subclassType === 'VideoMaster') {
+    } else if ($subclassType === 'VideoInstance') {
       $this->addRuleIfNotMixed($rules, 'video_file_format', 'required|max:60');
       $this->addRuleIfNotMixed($rules, 'video_file_codec', 'required|max:60');
       $this->addRuleIfNotMixed($rules, 'subclass.video_frame_size', 'max:30');
@@ -127,7 +127,7 @@ class MasterRequest extends Request {
 
     $validator->after(function($validator) {
       if ($this->typeMismatch()) {
-        $validator->errors()->add('call_number', 'The call number type must match the master type.');
+        $validator->errors()->add('call_number', 'The call number type must match the instance type.');
       }
     });
 

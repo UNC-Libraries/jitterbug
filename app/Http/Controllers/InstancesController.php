@@ -13,7 +13,7 @@ use Uuid;
 
 use Jitterbug\Export\MastersExport;
 use Jitterbug\Http\Controllers\Controller;
-use Jitterbug\Http\Requests\MasterRequest;
+use Jitterbug\Http\Requests\InstanceRequest;
 use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\AudioInstance;
 use Jitterbug\Models\BatchPreservationInstance;
@@ -150,7 +150,7 @@ class MastersController extends Controller {
   /**
    * Save the details of a new master and its subclass, then update solr.
    */
-  public function store(MasterRequest $request)
+  public function store(InstanceRequest $request)
   {
     $input = $request->all();
     $batch = isset($input['batch']) ? true : false;
@@ -363,7 +363,7 @@ class MastersController extends Controller {
   	return parent::rangeFor($request, $this->solrMasters);
   }
 
-  public function update($id, MasterRequest $request)
+  public function update($id, InstanceRequest $request)
   {
     $input = $request->all();
     $instance = PreservationInstance::findOrFail($id);
@@ -426,7 +426,7 @@ class MastersController extends Controller {
   /**
    * Update multiple masters at once.
    */
-  public function batchUpdate(MasterRequest $request)
+  public function batchUpdate(InstanceRequest $request)
   {
     $input = $request->allWithoutMixed();
     $instanceIds = explode(',', $input['ids']);
