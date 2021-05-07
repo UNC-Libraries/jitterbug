@@ -2,15 +2,15 @@
 
 use Log;
 
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Util\DurationFormat;
 
-class BatchPreservationMaster extends PreservationMaster {
+class BatchPreservationInstance extends PreservationInstance {
   use MergeableAttributes;
 
-  protected $masters;
+  protected $instances;
   protected $subclasses;
-  protected $aggregateMaster;
+  protected $aggregateInstance;
   protected $aggregateSubclass;
 
   protected $batchGuarded = ['id', 'subclass_type', 'subclass_id', 'created_at',
@@ -18,21 +18,21 @@ class BatchPreservationMaster extends PreservationMaster {
 
   protected $attributes;
 
-  public function __construct($masters, $subclasses)
+  public function __construct($instances, $subclasses)
   {
     parent::__construct();
 
-    $this->masters = $masters;
+    $this->instances = $instances;
     $this->subclasses = $subclasses;
 
-    $this->aggregateMaster = new PreservationMaster;
-    $subclassType = $this->masters->first()->subclass_type;
-    $this->aggregateMaster->subclass_type = $subclassType;
+    $this->aggregateInstance = new PreservationInstance;
+    $subclassType = $this->instances->first()->subclass_type;
+    $this->aggregateInstance->subclass_type = $subclassType;
     $this->aggregateSubclass = new $subclassType;
-    $this->mergeAttributes($masters, $this->aggregateMaster);
+    $this->mergeAttributes($instances, $this->aggregateInstance);
     $this->mergeAttributes($subclasses, $this->aggregateSubclass);
 
-    $this->attributes = $this->aggregateMaster->attributes;
+    $this->attributes = $this->aggregateInstance->attributes;
   }
 
   public function batch()
@@ -52,8 +52,8 @@ class BatchPreservationMaster extends PreservationMaster {
   public function getIdsAttribute()
   {
     $ids = array();
-    foreach($this->masters as $master) {
-      $ids[] = $master->id;
+    foreach($this->instances as $instance) {
+      $ids[] = $instance->id;
     }
     return implode(',', $ids);
   }
@@ -70,14 +70,14 @@ class BatchPreservationMaster extends PreservationMaster {
 
   public function getTypeAttribute()
   {
-    $fullType = $this->masters->first()->getAttribute('subclass_type');
-    $type = substr($fullType,0,strlen($fullType) - strlen('Master'));
+    $fullType = $this->instances->first()->getAttribute('subclass_type');
+    $type = substr($fullType,0,strlen($fullType) - strlen('Instance'));
     return $type;
   }
 
   public function count()
   {
-    return $this->masters->count();
+    return $this->instances->count();
   }
 
 }

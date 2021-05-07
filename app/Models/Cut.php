@@ -22,14 +22,14 @@ class Cut extends Model {
 
   protected $revisionFormattedFieldNames = array(
     'call_number' => 'call number',
-    'preservation_master_id' => 'preservation master',
+    'preservation_instance_id' => 'preservation instance',
     'cut_number' => 'cut number',
     'performer_composer' => 'performer composer',
     'pm_start_time' => 'PM start time',
   );
 
   protected $fillable = array('call_number',
-    'preservation_master_id', 'transfer_id', 'side', 'cut_number',
+    'preservation_instance_id', 'transfer_id', 'side', 'cut_number',
     'side', 'title', 'performer_composer', 'pm_start_time');
 
   protected $revisionCreationsEnabled = true;
@@ -39,9 +39,9 @@ class Cut extends Model {
     return $this->belongsTo('Jitterbug\Models\AudioVisualItem', 'call_number', 'call_number');
   }
   
-  public function preservationMaster()
+  public function preservationInstance()
   {
-    return $this->belongsTo('Jitterbug\Models\PreservationMaster');
+    return $this->belongsTo('Jitterbug\Models\PreservationInstance');
   }
 
   public function transfer()

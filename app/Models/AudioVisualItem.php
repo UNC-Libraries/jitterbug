@@ -88,9 +88,9 @@ class AudioVisualItem extends Model {
     return $this->belongsTo('Jitterbug\Models\Format');
   }
 
-  public function preservationMasters()
+  public function preservationInstances()
   {
-    return $this->hasMany('Jitterbug\Models\PreservationMaster', 
+    return $this->hasMany('Jitterbug\Models\PreservationInstance',
       'call_number', 'call_number');
   }
 

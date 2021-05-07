@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Venturecraft\Revisionable\RevisionableTrait;
 
-class VideoMaster extends Model {
+class VideoInstance extends Model {
   use NullFieldPreserver;
   use RevisionableTrait;
   use SoftDeletes;

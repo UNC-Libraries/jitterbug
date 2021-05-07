@@ -44,7 +44,7 @@ class Transfer extends Model {
 
   protected $revisionFormattedFieldNames = array(
     'call_number' => 'call number',
-    'preservation_master_id' => 'preservation master',
+    'preservation_instance_id' => 'preservation instance',
     'transfer_date' => 'transfer date',
     'transfer_note' => 'transfer note',
     'condition_note' => 'condition note',
@@ -54,7 +54,7 @@ class Transfer extends Model {
   );
 
   protected $fillable = array('call_number',
-    'preservation_master_id', 'transfer_date',
+    'preservation_instance_id', 'transfer_date',
     'playback_machine_id', 'engineer_id', 'vendor_id',
     'condition_note', 'transfer_note');
 
@@ -98,9 +98,9 @@ class Transfer extends Model {
     return $this->belongsTo('Jitterbug\Models\PlaybackMachine');
   }
 
-  public function preservationMaster()
+  public function preservationMInstance()
   {
-    return $this->belongsTo('Jitterbug\Models\PreservationMaster');
+    return $this->belongsTo('Jitterbug\Models\PreservationInstance');
   }
 
   public function vendor()

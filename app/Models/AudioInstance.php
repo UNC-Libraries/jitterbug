@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Venturecraft\Revisionable\RevisionableTrait;
 
-class AudioMaster extends Model {
+class AudioInstance extends Model {
   use NullFieldPreserver;
   use RevisionableTrait;
   use SoftDeletes;
@@ -34,7 +34,7 @@ class AudioMaster extends Model {
 
   public function superclass()
   {
-    return $this->morphOne('PreservationMaster', 'subclass')->withTrashed();
+    return $this->morphOne('PreservationInstance', 'subclass')->withTrashed();
   }
 
   public function tapeBrand()

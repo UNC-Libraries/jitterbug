@@ -2,6 +2,6 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class PreservationMasterCollection extends Model {
+class PreservationInstanceCollection extends Model {
 
 }

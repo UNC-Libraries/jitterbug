@@ -2,6 +2,6 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class PreservationMasterFormat extends Model {
+class PreservationInstanceFormat extends Model {
 
 }

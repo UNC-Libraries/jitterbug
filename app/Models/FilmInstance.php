@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Venturecraft\Revisionable\RevisionableTrait;
 
-class FilmMaster extends Model {
+class FilmInstance extends Model {
   use NullFieldPreserver;
   use RevisionableTrait;
   use SoftDeletes;
@@ -28,7 +28,7 @@ class FilmMaster extends Model {
 
   public function superclass()
   {
-    return $this->morphOne('PreservationMaster', 'subclass')->withTrashed();
+    return $this->morphOne('PreservationInstance', 'subclass')->withTrashed();
   }
   
   public function getFilmFrameSizeAttribute($value)
