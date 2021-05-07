@@ -10,7 +10,7 @@ use Illuminate\Support\MessageBag;
 use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Http\Requests\ReproductionMachineRequest;
 use Jitterbug\Models\ReproductionMachine;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Support\SolariumProxy;
 
 /**
@@ -64,9 +64,9 @@ class ReproductionMachinesController extends Controller
         });
 
         // Update Solr
-        $affectedMasters = 
-          PreservationMaster::where('reproduction_machine_id', $id)->get();
-        $this->solrMasters->update($affectedMasters);
+        $affectedInstances =
+          PreservationInstance::where('reproduction_machine_id', $id)->get();
+        $this->solrMasters->update($affectedInstances);
       }
     }
   }
@@ -74,7 +74,7 @@ class ReproductionMachinesController extends Controller
   public function destroy($id, Request $request) {
     if ($request->ajax()) {
       $count = 
-        PreservationMaster::where('reproduction_machine_id', $id)->count();
+        PreservationInstance::where('reproduction_machine_id', $id)->count();
       if ($count === 0) {
         $reproductionMachine = ReproductionMachine::findOrFail($id);
         $reproductionMachine->delete();

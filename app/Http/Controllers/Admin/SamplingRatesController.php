@@ -10,7 +10,7 @@ use Illuminate\Support\MessageBag;
 use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Http\Requests\SamplingRateRequest;
 use Jitterbug\Models\SamplingRate;
-use Jitterbug\Models\AudioMaster;
+use Jitterbug\Models\AudioInstance;
 
 /**
  * Controller for the management of sampling rates in the Admin area.
@@ -64,7 +64,7 @@ class SamplingRatesController extends Controller
 
   public function destroy($id, Request $request) {
     if ($request->ajax()) {
-      $count = AudioMaster::where('sampling_rate_id', $id)->count();
+      $count = AudioInstance::where('sampling_rate_id', $id)->count();
       if ($count === 0) {
         $samplingRate = SamplingRate::findOrFail($id);
         $samplingRate->delete();
@@ -74,7 +74,7 @@ class SamplingRatesController extends Controller
         $bag = new MessageBag();
         $bag->add('status', 'Looks like that sampling rate is currently ' .
           'in use. Change the sampling rate of the related preservation ' .
-          'masters before deleting.');
+          'instances before deleting.');
         $response = $bag;
         return response()->json($bag, 422);
       }

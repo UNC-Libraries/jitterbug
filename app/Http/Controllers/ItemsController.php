@@ -25,7 +25,7 @@ use Jitterbug\Models\Collection;
 use Jitterbug\Models\Cut;
 use Jitterbug\Models\Format;
 use Jitterbug\Models\Mark;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Models\Transfer;
 use Jitterbug\Http\Requests\ItemRequest;
 use Jitterbug\Support\SolariumProxy;
@@ -102,7 +102,7 @@ class ItemsController extends Controller
   {
     $item = AudioVisualItem::findOrFail($id);
     $cuts = Cut::where('call_number', $item->call_number)
-               ->orderBy('preservation_master_id', 'asc')
+               ->orderBy('preservation_instance_id', 'asc')
                ->orderBy('cut_number', 'asc')
                ->get();
     return view('items.show', compact('item', 'cuts'));
@@ -203,7 +203,7 @@ class ItemsController extends Controller
   {
     $item = AudioVisualItem::findOrFail($id);
     $cuts = Cut::where('call_number', $item->call_number)
-               ->orderBy('preservation_master_id', 'asc')
+               ->orderBy('preservation_instance_id', 'asc')
                ->orderBy('cut_number', 'asc')
                ->get();
     $collections = ['' => 
@@ -334,10 +334,10 @@ class ItemsController extends Controller
     $item->fill($input);
     $subclass->fill($input['subclass']);
 
-    $updateSolrMastersAndTransfers = false;
+    $updateSolrInstancesAndTransfers = false;
     if ($item->isDirty('call_number') || $item->isDirty('collection_id') ||
                                          $item->isDirty('format_id')) {
-      $updateSolrMastersAndTransfers = true;
+      $updateSolrInstancesAndTransfers = true;
     }  
 
     // Update MySQL
@@ -358,10 +358,10 @@ class ItemsController extends Controller
         // calling save. Unfortunately, the batch update 
         // syntax doesn't fire model events, which we need for 
         // auditing.
-        $masters = PreservationMaster::where('call_number', $origCall)->get();
-        foreach ($masters as $master) {
-          $master->call_number = $newCall;
-          $master->save();
+        $instances = PreservationInstance::where('call_number', $origCall)->get();
+        foreach ($instances as $instance) {
+          $instance->call_number = $newCall;
+          $instance->save();
         }
 
         $cuts = Cut::where('call_number', $origCall)->get();
@@ -386,11 +386,11 @@ class ItemsController extends Controller
 
     // Update Solr
     $this->solrItems->update($item);
-    if ($updateSolrMastersAndTransfers) {
-      $masters = PreservationMaster::where('call_number', 
+    if ($updateSolrInstancesAndTransfers) {
+      $instances = PreservationInstance::where('call_number',
                                                   $item->call_number)->get();
-      if ($masters->count() > 0) {
-        $this->solrMasters->update($masters);
+      if ($instances->count() > 0) {
+        $this->solrMasters->update($instances);
       }
 
       $transfers = Transfer::where('call_number', $item->call_number)->get();
@@ -449,10 +449,10 @@ class ItemsController extends Controller
     // Update Solr
     $this->solrItems->update($items);
     foreach ($collectionOrFormatUpdated as $item) {
-      $masters = 
-        PreservationMaster::where('call_number', $item->call_number)->get();
-      if ($masters->count() > 0) {
-        $this->solrMasters->update($masters);
+      $instances =
+        PreservationInstance::where('call_number', $item->call_number)->get();
+      if ($instances->count() > 0) {
+        $this->solrMasters->update($instances);
       }
       $transfers = 
         Transfer::where('call_number', $item->call_number)->get();
@@ -479,23 +479,23 @@ class ItemsController extends Controller
 
     $command = $request->deleteCommand;
 
-    $masters;
+    $instances;
     $transfers;
 
     // Update MySQL
     DB::transaction(function () use ($command, $item, $subclass, 
-                                                   &$masters, &$transfers) {
+                                                   &$instances, &$transfers) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
       
       $callNumber = $item->call_number;
       if ($command==='all') {
-        $masters = 
-          PreservationMaster::where('call_number', $callNumber)->get();
-        foreach ($masters as $master) {
-          $master->removeAllMarks();
-          $master->subclass->delete();
-          $master->delete();
+        $instances =
+          PreservationInstance::where('call_number', $callNumber)->get();
+        foreach ($instances as $instance) {
+          $instance->removeAllMarks();
+          $instance->subclass->delete();
+          $instance->delete();
         }
 
         $cuts = Cut::where('call_number', $callNumber)->get();
@@ -521,8 +521,8 @@ class ItemsController extends Controller
     // Update Solr
     $this->solrItems->delete($item);
     if ($command==='all') {
-      if ($masters !== null) {
-        $this->solrMasters->delete($masters);
+      if ($instances !== null) {
+        $this->solrMasters->delete($instances);
       }
       if ($transfers !== null) {
         $this->solrTransfers->delete($transfers);
@@ -553,23 +553,23 @@ class ItemsController extends Controller
     }
 
     $command = $request->deleteCommand;
-    $masters = $transfers = null;
+    $instances = $transfers = null;
 
     // Update MySQL
     DB::transaction(function () use ($command, $items,
-                                                  &$masters, &$transfers) {
+                                                  &$instances, &$transfers) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
         
       $callNumbers = $items->pluck('call_number')->all();
 
       if ($command==='all') {
-        $masters = 
-          PreservationMaster::whereIn('call_number', $callNumbers)->get();
-        foreach ($masters as $master) {
-          $master->subclass->delete();
-          $master->removeAllMarks();
-          $master->delete();
+        $instances =
+          PreservationInstance::whereIn('call_number', $callNumbers)->get();
+        foreach ($instances as $instance) {
+          $instance->subclass->delete();
+          $instance->removeAllMarks();
+          $instance->delete();
         }
 
         $transfers = Transfer::whereIn('call_number', $callNumbers)->get();
@@ -597,8 +597,8 @@ class ItemsController extends Controller
     // Update Solr
     $this->solrItems->delete($items);
     if ($command==='all') {
-      if ($masters !== null) {
-        $this->solrMasters->delete($masters);
+      if ($instances !== null) {
+        $this->solrMasters->delete($instances);
       }
       if ($transfers !== null) {
         $this->solrTransfers->delete($transfers);

@@ -10,7 +10,7 @@ use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Http\Requests\FormatRequest;
 use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\Format;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Models\Transfer;
 use Jitterbug\Models\Prefix;
 use Jitterbug\Support\SolariumProxy;
@@ -84,7 +84,7 @@ class FormatsController extends Controller
         // Update Solr
         $callNumbers = $affectedItems->pluck('call_number');
         $affectedMasters = 
-          PreservationMaster::whereIn('call_number', $callNumbers)->get();
+          PreservationInstance::whereIn('call_number', $callNumbers)->get();
         $affectedTransfers =
           Transfer::whereIn('call_number', $callNumbers)->get();
         // We have to update all 3 cores because format information 

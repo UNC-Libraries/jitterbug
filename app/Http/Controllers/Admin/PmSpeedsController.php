@@ -10,7 +10,7 @@ use Illuminate\Support\MessageBag;
 use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Http\Requests\PmSpeedRequest;
 use Jitterbug\Models\PmSpeed;
-use Jitterbug\Models\AudioMaster;
+use Jitterbug\Models\AudioInstance;
 
 /**
  * Controller for the management of PM speeds in the Admin area.
@@ -64,7 +64,7 @@ class PmSpeedsController extends Controller
 
   public function destroy($id, Request $request) {
     if ($request->ajax()) {
-      $count = AudioMaster::where('sampling_rate_id', $id)->count();
+      $count = AudioInstance::where('sampling_rate_id', $id)->count();
       if ($count === 0) {
         $pmSpeed = PmSpeed::findOrFail($id);
         $pmSpeed->delete();

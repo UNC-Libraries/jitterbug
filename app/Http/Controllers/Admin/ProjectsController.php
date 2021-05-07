@@ -10,7 +10,7 @@ use Illuminate\Support\MessageBag;
 use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Http\Requests\ProjectRequest;
 use Jitterbug\Models\Project;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Support\SolariumProxy;
 
 /**
@@ -65,7 +65,7 @@ class ProjectsController extends Controller
 
         // Update Solr
         $affectedMasters = 
-          PreservationMaster::where('project_id', $id)->get();
+          PreservationInstance::where('project_id', $id)->get();
         $this->solrMasters->update($affectedMasters);
       }
     }
@@ -73,7 +73,7 @@ class ProjectsController extends Controller
 
   public function destroy($id, Request $request) {
     if ($request->ajax()) {
-      $count = PreservationMaster::where('project_id', $id)->count();
+      $count = PreservationInstance::where('project_id', $id)->count();
       if ($count === 0) {
         $project = Project::findOrFail($id);
         $project->delete();

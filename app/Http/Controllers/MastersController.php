@@ -15,24 +15,24 @@ use Jitterbug\Export\MastersExport;
 use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Http\Requests\MasterRequest;
 use Jitterbug\Models\AudioVisualItem;
-use Jitterbug\Models\AudioMaster;
-use Jitterbug\Models\BatchPreservationMaster;
+use Jitterbug\Models\AudioInstance;
+use Jitterbug\Models\BatchPreservationInstance;
 use Jitterbug\Models\Cut;
 use Jitterbug\Models\Department;
-use Jitterbug\Models\FilmMaster;
+use Jitterbug\Models\FilmInstance;
 use Jitterbug\Models\Mark;
 use Jitterbug\Models\PmSpeed;
-use Jitterbug\Models\PreservationMaster;
-use Jitterbug\Models\PreservationMasterType;
-use Jitterbug\Models\PreservationMasterCollection;
-use Jitterbug\Models\PreservationMasterFormat;
-use Jitterbug\Models\PreservationMasterDepartment;
+use Jitterbug\Models\PreservationInstance;
+use Jitterbug\Models\PreservationInstanceType;
+use Jitterbug\Models\PreservationInstanceCollection;
+use Jitterbug\Models\PreservationInstanceFormat;
+use Jitterbug\Models\PreservationInstanceDepartment;
 use Jitterbug\Models\Project;
 use Jitterbug\Models\ReproductionMachine;
 use Jitterbug\Models\SamplingRate;
 use Jitterbug\Models\TapeBrand;
 use Jitterbug\Models\Transfer;
-use Jitterbug\Models\VideoMaster;
+use Jitterbug\Models\VideoInstance;
 use Jitterbug\Support\SolariumProxy;
 use Jitterbug\Support\SolariumPaginator;
 
@@ -75,29 +75,29 @@ class MastersController extends Controller {
       $sortDirection = $request->query('sortDirection');
 
       $resultSet = $this->solrMasters->query($queryParams, $start, $perPage, $sortColumn, $sortDirection);
-      $masters = new SolariumPaginator($resultSet,$page,$perPage);
-      $totalRecordCount = $masters->total() . ' ' . Str::plural('record', $masters->total());
+      $instances = new SolariumPaginator($resultSet,$page,$perPage);
+      $totalRecordCount = $instances->total() . ' ' . Str::plural('record', $instances->total());
 
-      $masterIds = array();
-      foreach ($masters as $master) {
-        $masterIds[] = $master->id;
+      $instanceIds = array();
+      foreach ($instances as $instance) {
+        $instanceIds[] = $instance->id;
       }
-      $marks = Mark::whereIn('markable_id', $masterIds)
+      $marks = Mark::whereIn('markable_id', $instanceIds)
             ->where('markable_type', 'PreservationMaster')
             ->where('user_id', Auth::user()->id)
             ->get()->pluck('markable_id');
 
       return view('masters._masters',
-        compact('masters', 'marks', 'start', 'sortColumn', 'sortDirection', 'totalRecordCount'));
+        compact('instances', 'marks', 'start', 'sortColumn', 'sortDirection', 'totalRecordCount'));
     }
 
-    $types = PreservationMasterType::all();
-    $collections = PreservationMasterCollection::all();
-    $formats = PreservationMasterFormat::all();
-    $departments = PreservationMasterDepartment::all();
-    $maxEditLimit = PreservationMaster::BATCH_EDIT_MAX_LIMIT;
+    $types = PreservationInstanceType::all();
+    $collections = PreservationInstanceCollection::all();
+    $formats = PreservationInstanceFormat::all();
+    $departments = PreservationInstancerDepartment::all();
+    $maxEditLimit = PreservationInstance::BATCH_EDIT_MAX_LIMIT;
 
-    return view('masters.index', 
+    return view('instances.index',
         compact('types', 'collections', 'formats', 'departments', 'maxEditLimit'));
   }
 
@@ -106,10 +106,10 @@ class MastersController extends Controller {
    */
   public function show($id)
   {
-    $master = PreservationMaster::findOrFail($id);
-    $transfers = $master->transfers()->get();
-    $cuts = $master->cuts()->get();
-    return view('masters.show', compact('master', 'transfers', 'cuts'));
+    $instance = PreservationInstance::findOrFail($id);
+    $transfers = $instance->transfers()->get();
+    $cuts = $instance->cuts()->get();
+    return view('masters.show', compact('instance', 'transfers', 'cuts'));
   }
 
   /**
@@ -123,11 +123,11 @@ class MastersController extends Controller {
       $item = AudioVisualItem::findOrFail($itemId);
     }
 
-    $master = new PreservationMaster;
+    $instance = new PreservationInstance;
     $linked = false;
     if($item !== null) {
-      $master->call_number = $item->call_number;
-      $master->subclass_type = $item->type . 'Master';
+      $instance->call_number = $item->call_number;
+      $instance->subclass_type = $item->type . 'Instance';
       $linked = true;
     }
 
@@ -157,13 +157,13 @@ class MastersController extends Controller {
     $batchSize = $input['batch_size'];
     $mark = isset($input['mark']) ? true : false;
 
-    $masterId = null;
-    $masters = array();
+    $instanceId = null;
+    $instances = array();
 
     // Update MySQL
     DB::transaction(
       function () use ($request, $input, $batch, $batchSize, $mark,
-                                                   &$masterId, &$masters) {
+                                                   &$instanceId, &$instances) {
       // The transaction id will be used by the 'revisionable' package
       // when a model event is fired. We are passing it down via a connection
       // variable.
@@ -176,17 +176,17 @@ class MastersController extends Controller {
         $subclass = new $request->subclass_type;
         $subclass->fill($input['subclass']);
 
-        $master = new PreservationMaster;
-        $master->subclass_type = $input['subclass_type'];
-        $master->fill($input);
+        $instance = new PreservationInstance;
+        $instance->subclass_type = $input['subclass_type'];
+        $instance->fill($input);
 
         $subclass->save();
-        $master->subclass_id = $subclass->id;
-        $master->save();
-        if ($mark) $master->addMark();
+        $instance->subclass_id = $subclass->id;
+        $instance->save();
+        if ($mark) $instance->addMark();
 
-        $masterId = $master->id;
-        $masters[] = $master;
+        $instanceId = $instance->id;
+        $instances[] = $instance;
 
       } while ($batch && ++$batchIndex < $batchSize);
 
@@ -194,20 +194,20 @@ class MastersController extends Controller {
     });
 
     // Update Solr
-    $this->solrMasters->update($masters);
+    $this->solrMasters->update($instances);
 
     if ($batch) {
       $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>Woot!</strong> ' . 
-        'Preservation masters were successfully created.'));
+        'Preservation instances were successfully created.'));
 
       return redirect()->route('masters.index');
     } else {
       $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>Woot!</strong> ' . 
-        'Preservation master was successfully created.'));
+        'Preservation instance was successfully created.'));
 
-      return redirect()->route('masters.show', [$masterId]);
+      return redirect()->route('masters.show', [$instanceId]);
     }
   }
 
@@ -216,9 +216,9 @@ class MastersController extends Controller {
    */
   public function edit($id)
   {
-    $master = PreservationMaster::findOrFail($id);
-    $transfers = $master->transfers()->get();
-    $cuts = $master->cuts()->get();
+    $instance = PreservationInstance::findOrFail($id);
+    $transfers = $instance->transfers()->get();
+    $cuts = $instance->cuts()->get();
 
     $departments = ['' => 'Select a department'] + 
              Department::pluck('name', 'id')->all();
@@ -233,7 +233,7 @@ class MastersController extends Controller {
     $pmSpeeds = ['' => 'Select a speed'] +
              PmSpeed::pluck('name', 'id')->all();
     return view('masters.edit', 
-      compact('master', 'transfers', 'cuts', 'departments', 'projects',
+      compact('instance', 'transfers', 'cuts', 'departments', 'projects',
         'reproductionMachines', 'tapeBrands', 'samplingRates', 'pmSpeeds'));
   }
 
@@ -242,17 +242,17 @@ class MastersController extends Controller {
    */
   public function batchEdit(Request $request)
   {
-    $max = PreservationMaster::BATCH_EDIT_MAX_LIMIT;
+    $max = PreservationInstance::BATCH_EDIT_MAX_LIMIT;
 
-    $masterIds = explode(',', $request->input('ids'));
+    $instanceIds = explode(',', $request->input('ids'));
     // See similar in ItemsController.php for comments on the below
     if ($request->method()==='POST') {
-      $request->session()->put('batchMasterIds', $masterIds);
+      $request->session()->put('batchMasterIds', $instanceIds);
     } else if ($request->method()==='GET') {
-      $masterIds = $request->session()->get('batchMasterIds');
+      $instanceIds = $request->session()->get('batchMasterIds');
     }
     
-    if ($masterIds === null) {
+    if ($instanceIds === null) {
       $request->session()->put('alert', array('type' => 'warning', 'message' =>
         '<strong>Hmm, something\'s up.</strong> ' . 
         'That batch edit form is no longer valid. Please make a ' .
@@ -260,9 +260,9 @@ class MastersController extends Controller {
       return redirect()->route('masters.index');
     }
 
-    $masterIdsCount = count($masterIds);
+    $instanceIdsCount = count($instanceIds);
 
-    if ($masterIdsCount > $max) {
+    if ($instanceIdsCount > $max) {
       $request->session()->put('alert', array('type' => 'danger', 'message' =>
         '<strong>Hold on there.</strong> ' . 
         'Batch editing is limited to ' . $max . ' masters. Please narrow ' .
@@ -270,30 +270,30 @@ class MastersController extends Controller {
       return redirect()->route('masters.index');
     }
     
-    $first = PreservationMaster::find($masterIds[0]);
+    $first = PreservationInstance::find($instanceIds[0]);
     $subclassType = $first->subclass_type;
 
-    $masters = PreservationMaster::whereIn('id', $masterIds)
+    $instances = PreservationInstance::whereIn('id', $instanceIds)
                             ->where('subclass_type', $subclassType)->get();
-    if ($masterIdsCount!==$masters->count()) {
+    if ($instanceIdsCount!==$instances->count()) {
       $request->session()->put('alert', array('type' => 'danger', 'message' => 
         '<strong>Oops! There\'s a problem.</strong> ' . 
-        'Batch editing can only be done with masters of the same type. ' .
+        'Batch editing can only be done with instances of the same type. ' .
         'Please change your selection.'));
       return redirect()->route('masters.index');
     }
 
     $subclassIds = array();
-    foreach ($masters as $master) {
-      $subclassIds[] = $master->subclass->id;
+    foreach ($instances as $instance) {
+      $subclassIds[] = $instance->subclass->id;
     }
     $subclasses = $subclassType::whereIn('id', $subclassIds)->get();
 
-    $master = new BatchPreservationMaster($masters, $subclasses);
+    $instance = new BatchPreservationInstance($instances, $subclasses);
 
     // Build select lists
     $departments = array();
-    if ($master->department_id === '<mixed>') {
+    if ($instance->department_id === '<mixed>') {
       $departments = ['' => 'Select a department'] + 
                      ['<mixed>' => '<mixed>'] +
                      Department::pluck('name', 'id')->all();
@@ -303,7 +303,7 @@ class MastersController extends Controller {
     }
 
     $projects = array();
-    if ($master->project_id === '<mixed>') {
+    if ($instance->project_id === '<mixed>') {
       $projects = ['' => 'Select a project'] + 
                      ['<mixed>' => '<mixed>'] +
                      Project::orderBy('name')->pluck('name', 'id')->all();
@@ -313,7 +313,7 @@ class MastersController extends Controller {
     }
 
     $reproductionMachines = array();
-    if ($master->reproduction_machine_id === '<mixed>') {
+    if ($instance->reproduction_machine_id === '<mixed>') {
       $reproductionMachines = ['' => 'Select a reproduction machine'] + 
                      ['<mixed>' => '<mixed>'] +
                      ReproductionMachine::pluck('name', 'id')->all();
@@ -323,7 +323,7 @@ class MastersController extends Controller {
     }
 
     $tapeBrands = array();
-    if ($master->tape_brand_id === '<mixed>') {
+    if ($instance->tape_brand_id === '<mixed>') {
       $tapeBrands = ['' => 'Select a tape brand'] + 
                      ['<mixed>' => '<mixed>'] +
                      TapeBrand::pluck('name', 'id')->all();
@@ -333,7 +333,7 @@ class MastersController extends Controller {
     }
 
     $samplingRates = array();
-    if ($master->sampling_rate_id === '<mixed>') {
+    if ($instance->sampling_rate_id === '<mixed>') {
       $samplingRates = ['' => 'Select a sampling rate'] + 
                      ['<mixed>' => '<mixed>'] +
                      SamplingRate::pluck('name', 'id')->all();
@@ -343,7 +343,7 @@ class MastersController extends Controller {
     }
 
     $pmSpeeds = array();
-    if ($master->pm_speed_id === '<mixed>') {
+    if ($instance->pm_speed_id === '<mixed>') {
       $pmSpeeds = ['' => 'Select a speed'] + 
                      ['<mixed>' => '<mixed>'] +
                      PmSpeed::pluck('name', 'id')->all();
@@ -353,7 +353,7 @@ class MastersController extends Controller {
     }
 
     return view('masters.edit', 
-      compact('master', 'departments', 'projects', 'reproductionMachines',
+      compact('instance', 'departments', 'projects', 'reproductionMachines',
         'tapeBrands', 'samplingRates', 'pmSpeeds'));
 
   }
@@ -366,38 +366,38 @@ class MastersController extends Controller {
   public function update($id, MasterRequest $request)
   {
     $input = $request->all();
-    $master = PreservationMaster::findOrFail($id);
-    $subclass = $master->subclass;
+    $instance = PreservationInstance::findOrFail($id);
+    $subclass = $instance->subclass;
 
-    $originalCallNumber = $master->call_number;
+    $originalCallNumber = $instance->call_number;
 
-    $master->fill($input);
+    $instance->fill($input);
     $subclass->fill($input['subclass']);
 
     // This will be uncommon
-    $callNumberChanged = $master->isDirty('call_number');
+    $callNumberChanged = $instance->isDirty('call_number');
 
     // Update MySQL
-    DB::transaction(function () use ($master, $subclass, $callNumberChanged) {
+    DB::transaction(function () use ($instance, $subclass, $callNumberChanged) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
 
       if ($callNumberChanged) {
-        $transfers = $master->transfers;
+        $transfers = $instance->transfers;
         foreach ($transfers as $transfer) {
-          $transfer->call_number = $master->call_number;
+          $transfer->call_number = $instance->call_number;
           $transfer->save();
         }
-        $cuts = $master->cuts;
+        $cuts = $instance->cuts;
         foreach ($cuts as $cut) {
-          $cut->call_number = $master->call_number;
+          $cut->call_number = $instance->call_number;
           $cut->save();
         }
       }
 
       $subclass->save();
-      $master->touch(); // Touch in case not dirty and subclass is dirty
-      $master->save();
+      $instance->touch(); // Touch in case not dirty and subclass is dirty
+      $instance->save();
 
       DB::statement('set @transaction_id = null;');      
     });
@@ -409,16 +409,16 @@ class MastersController extends Controller {
       $originalItem = 
         AudioVisualItem::where('call_number', $originalCallNumber)->first();
       $newItem = 
-        AudioVisualItem::where('call_number', $master->call_number)->first();
+        AudioVisualItem::where('call_number', $instance->call_number)->first();
       $this->solrItems->update(array($originalItem, $newItem));
       // Need to update transfers since the call number has changed.
-      $this->solrTransfers->update($master->transfers);
+      $this->solrTransfers->update($instance->transfers);
     }
-    $this->solrMasters->update($master);
+    $this->solrMasters->update($instance);
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>Yep.</strong> ' . 
-        'Preservation master was successfully updated.'));
+        'Preservation instance was successfully updated.'));
 
     return redirect()->route('masters.show', [$id]);
   }
@@ -429,15 +429,15 @@ class MastersController extends Controller {
   public function batchUpdate(MasterRequest $request)
   {
     $input = $request->allWithoutMixed();
-    $masterIds = explode(',', $input['ids']);
+    $instanceIds = explode(',', $input['ids']);
     unset($input['ids']);
-    $masters = PreservationMaster::whereIn('id', $masterIds)->get();
+    $instances = PreservationInstance::whereIn('id', $instanceIds)->get();
 
     $callNumberChanged = false;
     // Determine if the call number has changed, which will be uncommon
     if (isset($input['callNumber'])) {
-      foreach ($masters as $master) {
-        if ($master->call_number !== $input['callNumber']) {
+      foreach ($instances as $instance) {
+        if ($instance->call_number !== $input['callNumber']) {
           $callNumberChanged = true;
           break;
         }
@@ -447,35 +447,35 @@ class MastersController extends Controller {
     $originalCallNumbers = array();
     $transfersToUpdateInSolr = array();
     // Update MySQL
-    DB::transaction(function () use ($masters, $callNumberChanged, $input,
+    DB::transaction(function () use ($instances, $callNumberChanged, $input,
                               &$originalCallNumbers, &$transfersToUpdateInSolr) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
       
-      foreach ($masters as $master) {
-        $originalCallNumbers[] = $master->call_number;
+      foreach ($instances as $instance) {
+        $originalCallNumbers[] = $instance->call_number;
 
-        $master->fill($input);
-        $subclass = $master->subclass;
+        $instance->fill($input);
+        $subclass = $instance->subclass;
         $subclass->fill($input['subclass']);
 
         if ($callNumberChanged) {
-          $transfers = $master->transfers;
+          $transfers = $instance->transfers;
           foreach ($transfers as $transfer) {
-            $transfer->call_number = $master->call_number;
+            $transfer->call_number = $instance->call_number;
             $transfer->save();
             $transfersToUpdateInSolr[] = $transfer;
           }
-          $cuts = $master->cuts;
+          $cuts = $instance->cuts;
           foreach ($cuts as $cut) {
-            $cut->call_number = $master->call_number;
+            $cut->call_number = $instance->call_number;
             $cut->save();
           }
         }
 
         $subclass->save();
-        $master->touch(); // Touch in case not dirty and subclass is dirty
-        $master->save();
+        $instance->touch(); // Touch in case not dirty and subclass is dirty
+        $instance->save();
       }
 
       DB::statement('set @transaction_id = null;');
@@ -494,21 +494,21 @@ class MastersController extends Controller {
       // Need to update transfers since the call number has changed.
       $this->solrTransfers->update($transfersToUpdateInSolr);
     }
-    $this->solrMasters->update($masters);
+    $this->solrMasters->update($instances);
 
     $request->session()->forget('batchMasterIds');
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>Woohoo!</strong> ' . 
-        'Preservation masters were successfully updated.'));
+        'Preservation instances were successfully updated.'));
 
     return redirect()->route('masters.index');
   }
 
   public function destroy($id, Request $request)
   {
-    $master = PreservationMaster::findOrFail($id);
-    $subclass = $master->subclass;
+    $instance = PreservationInstance::findOrFail($id);
+    $subclass = $instance->subclass;
 
     $command = $request->deleteCommand;
 
@@ -516,34 +516,34 @@ class MastersController extends Controller {
     $cuts = null;
 
     // Update MySQL
-    DB::transaction(function () use ($command, $master, $subclass, 
+    DB::transaction(function () use ($command, $instance, $subclass,
                                                    &$transfers, &$cuts) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
       
       if ($command==='all') {
-        $transfers = $master->transfers;
+        $transfers = $instance->transfers;
         foreach ($transfers as $transfer) {
           $transfer->subclass->delete();
           $transfer->removeAllMarks();
           $transfer->delete();
         }
 
-        $cuts = $master->cuts;
+        $cuts = $instance->cuts;
         foreach ($cuts as $cut) {
           $cut->delete();
         }
       }
 
-      $master->removeAllMarks();
-      $master->delete();
+      $instance->removeAllMarks();
+      $instance->delete();
       $subclass->delete();
 
       DB::statement('set @transaction_id = null;');      
     });
 
     // Update Solr
-    $this->solrMasters->delete($master);
+    $this->solrMasters->delete($instance);
     if ($command==='all') {
       if ($transfers !== null) {
         $this->solrTransfers->delete($transfers);
@@ -552,7 +552,7 @@ class MastersController extends Controller {
         // Since cuts were deleted, we need to get the audio visual item
         // and update it in Solr to remove the cuts from the index.
         $item = 
-          AudioVisualItem::where('call_number', $master->call_number)->first();
+          AudioVisualItem::where('call_number', $instance->call_number)->first();
         if ($item !== null) {
           $this->solrItems->update($item);
         }
@@ -562,7 +562,7 @@ class MastersController extends Controller {
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>It\'s done!</strong> ' . 
-        "Preservation master was successfully deleted."));
+        "Preservation instance was successfully deleted."));
 
     return redirect()->route('masters.index');
   }
@@ -572,10 +572,10 @@ class MastersController extends Controller {
   {
     $max = 100;
 
-    $masterIds = explode(',', $request->ids);
-    $masters = PreservationMaster::whereIn('id', $masterIds)->get();
+    $instanceIds = explode(',', $request->ids);
+    $instances = PreservationInstance::whereIn('id', $instanceIds)->get();
 
-    if ($masters->count() > $max) {
+    if ($instances->count() > $max) {
       $request->session()->put('alert', array('type' => 'danger', 'message' =>
         '<strong>Whoa there!</strong> ' . 
         'Batch deleting is limited to ' . $max . ' masters. Please narrow ' .
@@ -587,37 +587,37 @@ class MastersController extends Controller {
     $transfers = $cuts = null;
 
     // Update MySQL
-    DB::transaction(function () use ($command, $masterIds, $masters,
+    DB::transaction(function () use ($command, $instanceIds, $instances,
                                                    &$transfers, &$cuts) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
 
       if ($command==='all') {
         $transfers = 
-          Transfer::whereIn('preservation_master_id', $masterIds)->get();
+          Transfer::whereIn('preservation_instance_id', $instanceIds)->get();
         foreach ($transfers as $transfer) {
           $transfer->subclass->delete();
           $transfer->removeAllMarks();
           $transfer->delete();
         }
 
-        $cuts = Cut::whereIn('preservation_master_id', $masterIds)->get();
+        $cuts = Cut::whereIn('preservation_instance_id', $instanceIds)->get();
         foreach ($cuts as $cut) {
           $cut->delete();
         }
       }
 
-      foreach ($masters as $master) {
-        $master->subclass->delete();
-        $master->removeAllMarks();
-        $master->delete();
+      foreach ($instances as $instance) {
+        $instance->subclass->delete();
+        $instance->removeAllMarks();
+        $instance->delete();
       }
 
       DB::statement('set @transaction_id = null;');      
     });
 
     // Update Solr
-    $this->solrMasters->delete($masters);
+    $this->solrMasters->delete($instances);
     if ($command==='all') {
       if ($transfers !== null) {
         $this->solrTransfers->delete($transfers);
@@ -636,7 +636,7 @@ class MastersController extends Controller {
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>It\'s done!</strong> ' . 
-        "Preservation masters were successfully deleted."));
+        "Preservation instances were successfully deleted."));
 
     return redirect()->route('masters.index');
   }
@@ -647,8 +647,8 @@ class MastersController extends Controller {
   public function batchExportFields(Request $request)
   {
     if ($request->ajax()) {
-      $masterIds = explode(',', $request->ids);
-      $export = new MastersExport($masterIds);
+      $instanceIds = explode(',', $request->ids);
+      $export = new MastersExport($instanceIds);
       $fields = $export->exportableFields();
       return view('shared._data-export-fields', compact('fields'));
     }
@@ -657,9 +657,9 @@ class MastersController extends Controller {
   public function batchExportBuild(Request $request)
   {
     if ($request->ajax()) {
-      $masterIds = explode(',', $request->ids);
+      $instanceIds = explode(',', $request->ids);
       $fields = $request->fields;
-      $export = new MastersExport($masterIds);
+      $export = new MastersExport($instanceIds);
       $filePath = $export->build($fields);
       $request->session()->put('exportFilePath', $filePath);
       $response = array('status'=>'success', 'file'=>$filePath);

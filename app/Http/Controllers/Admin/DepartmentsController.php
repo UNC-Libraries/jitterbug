@@ -10,7 +10,7 @@ use Illuminate\Support\MessageBag;
 use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Http\Requests\DepartmentRequest;
 use Jitterbug\Models\Department;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Support\SolariumProxy;
 
 /**
@@ -65,7 +65,7 @@ class DepartmentsController extends Controller
 
         // Update Solr
         $affectedMasters = 
-          PreservationMaster::where('department_id', $id)->get();
+          PreservationInstance::where('department_id', $id)->get();
         $this->solrMasters->update($affectedMasters);
       }
     }
@@ -73,7 +73,7 @@ class DepartmentsController extends Controller
 
   public function destroy($id, Request $request) {
     if ($request->ajax()) {
-      $count = PreservationMaster::where('department_id', $id)->count();
+      $count = PreservationInstance::where('department_id', $id)->count();
       if ($count === 0) {
         $department = Department::findOrFail($id);
         $department->delete();

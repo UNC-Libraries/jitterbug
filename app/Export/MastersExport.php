@@ -4,7 +4,7 @@ use DB;
 use Log;
 
 use Jitterbug\Export\Export;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 
 /**
  * Class for exporting PreservationMasters. See 
@@ -12,7 +12,7 @@ use Jitterbug\Models\PreservationMaster;
  */
 class MastersExport extends Export {
 
-  protected $exportClass = 'PreservationMaster';
+  protected $exportClass = 'PreservationInstance';
 
   protected $commonExportFields = array(
     'PM Number' => 'id',
@@ -64,8 +64,8 @@ class MastersExport extends Export {
     // We only want to return fields that are relevant to the specific
     // record types. For example, if all the records are AudioItems, we
     // don't want to return fields that are specific to film.
-    $types = DB::table('preservation_masters')
-      ->select(DB::raw('TRIM(TRAILING "Master" FROM subclass_type) AS type'))
+    $types = DB::table('preservation_instances')
+      ->select(DB::raw('TRIM(TRAILING "Instance" FROM subclass_type) AS type'))
       ->whereIn('id', $this->ids)->distinct()->get()->pluck('type');
     $fields = array();
     // Fields at index 0 are intended to be rendered on the left in the

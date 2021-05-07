@@ -13,7 +13,7 @@ use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\Collection;
 use Jitterbug\Models\CollectionType;
 use Jitterbug\Models\NewCallNumberSequence;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Models\Transfer;
 use Jitterbug\Support\SolariumProxy;
 
@@ -108,7 +108,7 @@ class CollectionsController extends Controller
         // Update Solr
         $callNumbers = $affectedItems->pluck('call_number');
         $affectedMasters = 
-          PreservationMaster::whereIn('call_number', $callNumbers)->get();
+          PreservationInstance::whereIn('call_number', $callNumbers)->get();
         $affectedTransfers =
           Transfer::whereIn('call_number', $callNumbers)->get();
         // We have to update all 3 cores because collection information 

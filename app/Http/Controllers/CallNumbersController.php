@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use Jitterbug\Http\Requests;
 use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Models\CallNumberSequence;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 
 /**
  * Controller for operations related to call numbers.
@@ -33,11 +33,11 @@ class CallNumbersController extends Controller {
     return response()->json($response);
   }
 
-  public function forPreservationMaster(Request $request)
+  public function forPreservationInstance(Request $request)
   {
-    $preservationMasterId = $request->query('preservation-master-id');
-    $master = PreservationMaster::where('id', $preservationMasterId)->first();
-    $response = array('callNumber' => $master === null ? '' : $master->call_number);
+    $preservationInstanceId = $request->query('preservation-instance-id');
+    $instance = PreservationInstance::where('id', $preservationInstanceId)->first();
+    $response = array('callNumber' => $instance === null ? '' : $instance->call_number);
     return response()->json($response);
   }
 

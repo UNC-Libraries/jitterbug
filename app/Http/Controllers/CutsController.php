@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Jitterbug\Http\Requests\CutRequest;
 use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\Cut;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Models\Transfer;
 use Jitterbug\Support\SolariumProxy;
 
@@ -40,12 +40,12 @@ class CutsController extends Controller
   /**
    * Display the details of a cut.
    */
-  public function show(Request $request, $masterId, $cutId)
+  public function show(Request $request, $instanceId, $cutId)
   {
-    $master = PreservationMaster::findOrFail($masterId);
+    $instance = PreservationInstance::findOrFail($instanceId);
     $cut = Cut::findOrFail($cutId);
     $transfer = $cut->transfer;
-    return view('masters.cuts.show', compact('master', 'cut', 'transfer'));
+    return view('masters.cuts.show', compact('instance', 'cut', 'transfer'));
   }
 
   /**
@@ -54,13 +54,13 @@ class CutsController extends Controller
   public function create(Request $request)
   {
     $transfer = Transfer::findOrFail($request->transfer_id);
-    $master = $transfer->preservation_master;
+    $instance = $transfer->preservation_instance;
     $cut = new Cut;
     $cut->call_number = $transfer->call_number;
-    $cut->preservation_master_id = $transfer->preservation_master_id;
+    $cut->preservation_instance_id = $transfer->preservation_instance_id;
     $cut->transfer_id = $transfer->id;
 
-    return view('masters.cuts.create', compact('cut', 'master', 'transfer'));
+    return view('masters.cuts.create', compact('cut', 'instance', 'transfer'));
   }
 
   /**
@@ -99,18 +99,18 @@ class CutsController extends Controller
   /**
    * Display the form for editing a cut.
    */
-  public function edit(Request $request, $masterId, $cutId)
+  public function edit(Request $request, $instanceId, $cutId)
   {
-    $master = PreservationMaster::findOrFail($masterId);
+    $instance = PreservationInstance::findOrFail($instanceId);
     $cut = Cut::findOrFail($cutId);
     $transfer = $cut->transfer;
-    return view('masters.cuts.edit', compact('master', 'cut', 'transfer'));
+    return view('masters.cuts.edit', compact('instance', 'cut', 'transfer'));
   }
 
   /**
    * Update the details of a cut.
    */
-  public function update(CutRequest $request, $masterId, $cutId)
+  public function update(CutRequest $request, $instanceId, $cutId)
   {
     $input = $request->all();
     $cut = Cut::findOrFail($cutId);
@@ -142,14 +142,14 @@ class CutsController extends Controller
     $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>Got it!</strong> Your cut was successfully updated.'));
 
-    return redirect()->route('masters.cuts.show', [$masterId, $cutId]);
+    return redirect()->route('masters.cuts.show', [$instanceId, $cutId]);
 
   }
 
   /**
    * Delete a cut and potentially a transfer.
    */
-  public function destroy(Request $request, $masterid, $cutId)
+  public function destroy(Request $request, $instanceId, $cutId)
   {
     $cut = Cut::findOrFail($cutId);
 
@@ -198,7 +198,7 @@ class CutsController extends Controller
   {
     $cut = Cut::findOrFail($cutId);
     return redirect()->route('masters.cuts.show', 
-        [$cut->preservation_master_id, $cut->id]);
+        [$cut->preservation_instance_id, $cut->id]);
   }
 
 }
