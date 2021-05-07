@@ -37,7 +37,7 @@ use Jitterbug\Support\SolariumProxy;
 use Jitterbug\Support\SolariumPaginator;
 
 
-class MastersController extends Controller {
+class InstancesController extends Controller {
 
   protected $solrItems;
   protected $solrMasters;

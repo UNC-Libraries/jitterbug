@@ -6,7 +6,7 @@ use Jitterbug\Http\Requests\Request;
 use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Util\DurationFormat;
 
-class MasterRequest extends Request {
+class InstanceRequest extends Request {
 
   /**
    * Determine if the user is authorized to make this request.

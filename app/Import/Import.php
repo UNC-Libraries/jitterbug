@@ -5,7 +5,7 @@ use Illuminate\Support\MessageBag;
 use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\Department;
 use Jitterbug\Models\PlaybackMachine;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Models\Vendor;
 
 abstract class Import {
@@ -31,7 +31,7 @@ abstract class Import {
 
   protected function pmExists($pmId)
   {
-    return PreservationMaster::find($pmId) !== null;
+    return PreservationInstance::find($pmId) !== null;
   }
 
   protected function isValidDate($date)
