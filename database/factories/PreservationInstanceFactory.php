@@ -5,18 +5,18 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\Department;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Models\Project;
 use Jitterbug\Models\ReproductionMachine;
 
-class PreservationMasterFactory extends Factory
+class PreservationInstanceFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = PreservationMaster::class;
+    protected $model = PreservationInstance::class;
 
     /**
      * Define the model's default state.
