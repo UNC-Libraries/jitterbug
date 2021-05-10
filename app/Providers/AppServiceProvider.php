@@ -10,10 +10,10 @@ use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\AudioItem;
 use Jitterbug\Models\FilmItem;
 use Jitterbug\Models\VideoItem;
-use Jitterbug\Models\PreservationMaster;
-use Jitterbug\Models\AudioMaster;
-use Jitterbug\Models\FilmMaster;
-use Jitterbug\Models\VideoMaster;
+use Jitterbug\Models\PreservationInstance;
+use Jitterbug\Models\AudioInstance;
+use Jitterbug\Models\FilmInstance;
+use Jitterbug\Models\VideoInstance;
 use Jitterbug\Models\Cut;
 use Jitterbug\Models\Transfer;
 use Jitterbug\Models\AudioTransfer;
@@ -55,10 +55,10 @@ class AppServiceProvider extends ServiceProvider {
       'FilmItem' => FilmItem::class,
       'VideoItem' => VideoItem::class,
 
-      'PreservationMaster' => PreservationMaster::class,
-      'AudioMaster' => AudioMaster::class,
-      'FilmMaster' => FilmMaster::class,
-      'VideoMaster' => VideoMaster::class,
+      'PreservationInstance' => PreservationInstance::class,
+      'AudioInstance' => AudioInstance::class,
+      'FilmInstance' => FilmInstance::class,
+      'VideoInstance' => VideoInstance::class,
       'Cut' => Cut::class,
 
       'Transfer' => Transfer::class,
