@@ -52,12 +52,12 @@ class InstancesController extends Controller {
   {
     $this->middleware('auth');
     $this->solrItems = new SolariumProxy('jitterbug-items');
-    $this->solrMasters = new SolariumProxy('jitterbug-masters');
+    $this->solrMasters = new SolariumProxy('jitterbug-instances');
     $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
   }
 
   /**
-   * Show the list of preservation masters and a search interface for
+   * Show the list of preservation instances and a search interface for
    * filtering and searching.
    */
   public function index(Request $request)
@@ -87,14 +87,14 @@ class InstancesController extends Controller {
             ->where('user_id', Auth::user()->id)
             ->get()->pluck('markable_id');
 
-      return view('masters._masters',
+      return view('instances._instances',
         compact('instances', 'marks', 'start', 'sortColumn', 'sortDirection', 'totalRecordCount'));
     }
 
     $types = PreservationInstanceType::all();
     $collections = PreservationInstanceCollection::all();
     $formats = PreservationInstanceFormat::all();
-    $departments = PreservationInstancerDepartment::all();
+    $departments = PreservationInstanceDepartment::all();
     $maxEditLimit = PreservationInstance::BATCH_EDIT_MAX_LIMIT;
 
     return view('instances.index',
@@ -102,18 +102,18 @@ class InstancesController extends Controller {
   }
 
   /**
-   * Display the details of a master.
+   * Display the details of a instance.
    */
   public function show($id)
   {
     $instance = PreservationInstance::findOrFail($id);
     $transfers = $instance->transfers()->get();
     $cuts = $instance->cuts()->get();
-    return view('masters.show', compact('instance', 'transfers', 'cuts'));
+    return view('instances.show', compact('instance', 'transfers', 'cuts'));
   }
 
   /**
-   * Display the form for creating a new audio, video, or film master.
+   * Display the form for creating a new audio, video, or film instance.
    */
   public function create(Request $request)
   {
@@ -142,13 +142,13 @@ class InstancesController extends Controller {
     $samplingRates = ['' => 
              'Select a sampling rate'] +
              SamplingRate::pluck('name', 'id')->all();
-    return view('masters.create', 
-      compact('master', 'item', 'linked', 'reproductionMachines', 
+    return view('instances.create',
+      compact('instance', 'item', 'linked', 'reproductionMachines',
         'departments', 'projects', 'samplingRates'));
   }
 
   /**
-   * Save the details of a new master and its subclass, then update solr.
+   * Save the details of a new instance and its subclass, then update solr.
    */
   public function store(InstanceRequest $request)
   {
@@ -201,18 +201,18 @@ class InstancesController extends Controller {
         '<strong>Woot!</strong> ' . 
         'Preservation instances were successfully created.'));
 
-      return redirect()->route('masters.index');
+      return redirect()->route('instances.index');
     } else {
       $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>Woot!</strong> ' . 
         'Preservation instance was successfully created.'));
 
-      return redirect()->route('masters.show', [$instanceId]);
+      return redirect()->route('instances.show', [$instanceId]);
     }
   }
 
   /**
-   * Display the form for editing a master.
+   * Display the form for editing a instance.
    */
   public function edit($id)
   {
@@ -232,13 +232,13 @@ class InstancesController extends Controller {
              SamplingRate::pluck('name', 'id')->all();
     $pmSpeeds = ['' => 'Select a speed'] +
              PmSpeed::pluck('name', 'id')->all();
-    return view('masters.edit', 
+    return view('instances.edit',
       compact('instance', 'transfers', 'cuts', 'departments', 'projects',
         'reproductionMachines', 'tapeBrands', 'samplingRates', 'pmSpeeds'));
   }
 
   /**
-   * Display the form for editing multiple masters at a time.
+   * Display the form for editing multiple instances at a time.
    */
   public function batchEdit(Request $request)
   {
@@ -257,7 +257,7 @@ class InstancesController extends Controller {
         '<strong>Hmm, something\'s up.</strong> ' . 
         'That batch edit form is no longer valid. Please make a ' .
         'new selection and try batch editing again.'));
-      return redirect()->route('masters.index');
+      return redirect()->route('instances.index');
     }
 
     $instanceIdsCount = count($instanceIds);
@@ -265,9 +265,9 @@ class InstancesController extends Controller {
     if ($instanceIdsCount > $max) {
       $request->session()->put('alert', array('type' => 'danger', 'message' =>
         '<strong>Hold on there.</strong> ' . 
-        'Batch editing is limited to ' . $max . ' masters. Please narrow ' .
+        'Batch editing is limited to ' . $max . ' instances. Please narrow ' .
         'your selection.'));
-      return redirect()->route('masters.index');
+      return redirect()->route('instances.index');
     }
     
     $first = PreservationInstance::find($instanceIds[0]);
@@ -280,7 +280,7 @@ class InstancesController extends Controller {
         '<strong>Oops! There\'s a problem.</strong> ' . 
         'Batch editing can only be done with instances of the same type. ' .
         'Please change your selection.'));
-      return redirect()->route('masters.index');
+      return redirect()->route('instances.index');
     }
 
     $subclassIds = array();
@@ -352,7 +352,7 @@ class InstancesController extends Controller {
                      PmSpeed::pluck('name', 'id')->all();
     }
 
-    return view('masters.edit', 
+    return view('instances.edit',
       compact('instance', 'departments', 'projects', 'reproductionMachines',
         'tapeBrands', 'samplingRates', 'pmSpeeds'));
 
@@ -420,11 +420,11 @@ class InstancesController extends Controller {
         '<strong>Yep.</strong> ' . 
         'Preservation instance was successfully updated.'));
 
-    return redirect()->route('masters.show', [$id]);
+    return redirect()->route('instances.show', [$id]);
   }
 
   /**
-   * Update multiple masters at once.
+   * Update multiple instances at once.
    */
   public function batchUpdate(InstanceRequest $request)
   {
@@ -502,7 +502,7 @@ class InstancesController extends Controller {
         '<strong>Woohoo!</strong> ' . 
         'Preservation instances were successfully updated.'));
 
-    return redirect()->route('masters.index');
+    return redirect()->route('instances.index');
   }
 
   public function destroy($id, Request $request)
@@ -564,7 +564,7 @@ class InstancesController extends Controller {
         '<strong>It\'s done!</strong> ' . 
         "Preservation instance was successfully deleted."));
 
-    return redirect()->route('masters.index');
+    return redirect()->route('instances.index');
   }
 
 
@@ -578,9 +578,9 @@ class InstancesController extends Controller {
     if ($instances->count() > $max) {
       $request->session()->put('alert', array('type' => 'danger', 'message' =>
         '<strong>Whoa there!</strong> ' . 
-        'Batch deleting is limited to ' . $max . ' masters. Please narrow ' .
+        'Batch deleting is limited to ' . $max . ' instances. Please narrow ' .
         'your selection.'));
-      return redirect()->route('masters.index');
+      return redirect()->route('instances.index');
     }
 
     $command = $request->deleteCommand;
@@ -638,11 +638,11 @@ class InstancesController extends Controller {
         '<strong>It\'s done!</strong> ' . 
         "Preservation instances were successfully deleted."));
 
-    return redirect()->route('masters.index');
+    return redirect()->route('instances.index');
   }
 
   /**
-   * Return the fields that are exportable for the given selection of masters.
+   * Return the fields that are exportable for the given selection of instances.
    */
   public function batchExportFields(Request $request)
   {

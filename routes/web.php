@@ -96,7 +96,7 @@ Route::delete('marks', 'MarksController@destroy')->name('marks.destroy');
 */
 
 Route::get('call-numbers/generate', 'CallNumbersController@generate');
-Route::get('call-numbers/for-pm', 'CallNumbersController@forPreservationMaster');
+Route::get('call-numbers/for-pm', 'CallNumbersController@forPreservationInstance');
 Route::get('items/resolve-range', 'ItemsController@resolveRange');
 Route::match(['post', 'get'], 'items/batch/edit',
   'ItemsController@batchEdit')->name('items.batch.edit');
@@ -119,25 +119,25 @@ Route::get('cuts/{id}', 'CutsController@get');
 
 /*
 |--------------------------------------------------------------------------
-| Preservation Masters
+| Preservation Instances
 |--------------------------------------------------------------------------
 */
 
-Route::get('masters/resolve-range', 'MastersController@resolveRange');
-Route::match(['post', 'get'], 'masters/batch/edit',
-  'MastersController@batchEdit')->name('masters.batch.edit');
-Route::put('masters/batch',
-  'MastersController@batchUpdate')->name('masters.batch.update');
-Route::delete('masters/batch', 
-  'MastersController@batchDestroy')->name('masters.batch.destroy');
-Route::post('masters/batch/export-fields', 
-  'MastersController@batchExportFields')->name('masters.batch.export.fields');
-Route::post('masters/batch/export-build', 
-  'MastersController@batchExportBuild')->name('masters.batch.export.build');
-Route::post('masters/batch/export-download',
-  'MastersController@batchExportDownload')->name('masters.batch.export.download'); 
-Route::resource('masters', 'MastersController');
-Route::resource('masters.cuts', 'CutsController', ['except' => ['index']]);
+Route::get('instance/resolve-range', 'InstancesController@resolveRange');
+Route::match(['post', 'get'], 'instance/batch/edit',
+  'InstancesController@batchEdit')->name('instance.batch.edit');
+Route::put('instance/batch',
+  'InstancesController@batchUpdate')->name('instance.batch.update');
+Route::delete('instance/batch',
+  'InstancesController@batchDestroy')->name('instance.batch.destroy');
+Route::post('instance/batch/export-fields',
+  'InstancesController@batchExportFields')->name('instance.batch.export.fields');
+Route::post('instance/batch/export-build',
+  'InstancesController@batchExportBuild')->name('instance.batch.export.build');
+Route::post('instance/batch/export-download',
+  'InstancesController@batchExportDownload')->name('instance.batch.export.download');
+Route::resource('instance', 'InstancesController');
+Route::resource('instance.cuts', 'CutsController', ['except' => ['index']]);
 
 /*
 |--------------------------------------------------------------------------

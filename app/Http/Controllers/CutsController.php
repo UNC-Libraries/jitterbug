@@ -33,7 +33,7 @@ class CutsController extends Controller
     $this->middleware('auth');
 
     $this->solrItems = new SolariumProxy('jitterbug-items');
-    $this->solrMasters = new SolariumProxy('jitterbug-masters');
+    $this->solrMasters = new SolariumProxy('jitterbug-instances');
     $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
   }
 
@@ -45,7 +45,7 @@ class CutsController extends Controller
     $instance = PreservationInstance::findOrFail($instanceId);
     $cut = Cut::findOrFail($cutId);
     $transfer = $cut->transfer;
-    return view('masters.cuts.show', compact('instance', 'cut', 'transfer'));
+    return view('instances.cuts.show', compact('instance', 'cut', 'transfer'));
   }
 
   /**
@@ -60,7 +60,7 @@ class CutsController extends Controller
     $cut->preservation_instance_id = $transfer->preservation_instance_id;
     $cut->transfer_id = $transfer->id;
 
-    return view('masters.cuts.create', compact('cut', 'instance', 'transfer'));
+    return view('instances.cuts.create', compact('cut', 'instance', 'transfer'));
   }
 
   /**
@@ -104,7 +104,7 @@ class CutsController extends Controller
     $instance = PreservationInstance::findOrFail($instanceId);
     $cut = Cut::findOrFail($cutId);
     $transfer = $cut->transfer;
-    return view('masters.cuts.edit', compact('instance', 'cut', 'transfer'));
+    return view('instances.cuts.edit', compact('instance', 'cut', 'transfer'));
   }
 
   /**
@@ -142,7 +142,7 @@ class CutsController extends Controller
     $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>Got it!</strong> Your cut was successfully updated.'));
 
-    return redirect()->route('masters.cuts.show', [$instanceId, $cutId]);
+    return redirect()->route('instances.cuts.show', [$instanceId, $cutId]);
 
   }
 
@@ -182,7 +182,7 @@ class CutsController extends Controller
         '<strong>Gone!</strong> Cut was successfully deleted.'));
 
     if ($command === 'all') {
-      return redirect()->route('masters.show', $cut->preservationMaster);
+      return redirect()->route('instances.show', $cut->preservation_instance);
     } else {
       return redirect()->route('transfers.show', $cut->transfer);
     }
@@ -191,13 +191,13 @@ class CutsController extends Controller
   /**
    * Display the details of a cut, coming from the dashboard. This
    * is somewhat of a hack to get around the fact that on the dashboard
-   * we don't have the associated preservation master id, so we have
+   * we don't have the associated preservation instance id, so we have
    * this special direct route.
    */
   public function get($cutId)
   {
     $cut = Cut::findOrFail($cutId);
-    return redirect()->route('masters.cuts.show', 
+    return redirect()->route('instances.cuts.show',
         [$cut->preservation_instance_id, $cut->id]);
   }
 
