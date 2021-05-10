@@ -70,12 +70,12 @@ This will take about 25 minutes for all cores.
 ---
 ## Revisionable
 A key feature of Jitterbug is how it maintains a detailed paper trail of all changes to the 
-four object types (items, masters, cuts, and transfers). Jitterbug leverages 
+four object types (items, instances, cuts, and transfers). Jitterbug leverages 
 [a fork](https://github.com/UNC-Libraries/revisionable-1) of a 3rd party package for Laravel, 
 called Revisionable, that hooks into the lifecycle of Eloquent models to maintain revision histories. 
 Revisionable preserves the fields that are modified, what their old value was, and what their new 
 value is. Revisionable writes to a single table, “revisions” which implements 
-[Laravel poloymorphic relations](https://laravel.com/docs/5.2/eloquent-relationships#polymorphic-relations). 
+[Laravel polymorphic relations](https://laravel.com/docs/8.x/eloquent-relationships#polymorphic-relations). 
 By merely adding a single trait (RevisionableTrait) to your model class, revision histories can be 
 tracked and will be saved to the revisions table.
 
@@ -98,13 +98,13 @@ An IP address field was added to track user locations. Support for soft deleted 
 to storing only the base class name.
 
 ## Recent Activity
-The Recenty Activity module in the Dashboard uses transactional information in the revisions table to 
+The Recent Activity module in the Dashboard uses transactional information in the revisions table to 
 generate a representation of recent activity in the system. A simple cron job, which runs every minute, 
 is used to generate the activity stream when new revisionable transactions have occurred. You can run 
 this job yourself on demand by navigating to the root of your Jitterbug repository and running `php artisan schedule:run`, 
 which is precisely what the cron job does every minute. This command instructs Laravel to run any pending 
-jobs defined in the ```schedule()``` method of [```Jitterbug\Console\Kernel```](https://github.com/UNC-Libraries/jitterbug/blob/master/app/Console/Kernel.php). 
-More information about Laravel task scheduling can be found in the [documentation](https://laravel.com/docs/5.2/scheduling).
+jobs defined in the ```schedule()``` method of [```Jitterbug\Console\Kernel```](https://github.com/UNC-Libraries/jitterbug/blob/main/app/Console/Kernel.php). 
+More information about Laravel task scheduling can be found in the [documentation](https://laravel.com/docs/8.x/scheduling).
 
 The scheduled job in turn calls ```Junebug\Presenters\ActivityStream->generate()``` which generates the 
 stream if new transactions have occurred. The ActivityStream class instantiates 
@@ -118,12 +118,12 @@ import transaction begins. Some import types proved impossible to distinguish fr
 import_transactions table was added to record at the time of import what kind of import it was and the 
 related transaction id.
 
-## Adding an Items, Masters, or Transfers Field
-1. Determine what object type the field is related to (audio visual items, preservation masters, or transfers).
+## Adding an Items, Instances, or Transfers Field
+1. Determine what object type the field is related to (audio visual items, preservation instances, or transfers).
 2. Determine if the field is specific to a certain media type (i.e. audio only) or if it is common to all media types for the object type.
 3. Create a migration to add the field to the appropriate database table. For example, if the field is common to all types of audio visual items, the field would go on the audio_visual_items table. If the field is specific to film items only, it would go on the film_items table. Do not name the column with a trailing ‘_id’ unless it’s actually a foreign key.
 5. Run the migration.
-6. Add the field to the show page corresponding to the object type (items, masters, or transfers). Ask the project director in what order it should be placed (before or after a certain field).
+6. Add the field to the show page corresponding to the object type (items, instances, or transfers). Ask the project director in what order it should be placed (before or after a certain field).
 7. Add the field to the form partial corresponding to the object and media type (e.g. _form-audio.blade.php).
 8. Add validation rules and messages to the form request class corresponding to the object type.
 9. In the model that corresponds to the object and media type (e.g. AudioTransfer, or just Transfer if the field is common to all transfer types) add an appropriate element to the $revisionFormattedFields array. This array is used by the ‘revisionable’ package to determine how to format field values in revision histories. For more information on the syntax, see 
