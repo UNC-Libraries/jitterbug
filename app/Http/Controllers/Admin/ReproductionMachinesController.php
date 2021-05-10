@@ -84,7 +84,7 @@ class ReproductionMachinesController extends Controller
         $bag = new MessageBag();
         $bag->add('status', 'Looks like that reproduction machine is ' .
           'currently in use. Change the reproduction machine of the ' .
-          'related preservation masters before deleting.');
+          'related preservation instances before deleting.');
         $response = $bag;
         return response()->json($bag, 422);
       }

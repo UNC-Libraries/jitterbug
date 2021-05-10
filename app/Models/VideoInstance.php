@@ -28,7 +28,7 @@ class VideoInstance extends Model {
 
   public function superclass()
   {
-    return $this->morphOne('PreservationMaster', 'subclass')->withTrashed();
+    return $this->morphOne('PreservationInstance', 'subclass')->withTrashed();
   }
   
   public function getVideoFrameSizeAttribute($value)

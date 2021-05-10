@@ -74,7 +74,7 @@ class TapeBrandsController extends Controller
         $bag = new MessageBag();
         $bag->add('status', 'Looks like that tape brand is currently ' .
           'in use. Change the tape brand of the related preservation ' .
-          'masters before deleting.');
+          'instances before deleting.');
         $response = $bag;
         return response()->json($bag, 422);
       }

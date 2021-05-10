@@ -82,7 +82,7 @@ class ProjectsController extends Controller
       } else {
         $bag = new MessageBag();
         $bag->add('status', 'Looks like that project is currently in use. ' . 
-          'Change the project of the related preservation masters before ' .
+          'Change the project of the related preservation instances before ' .
           'deleting.');
         $response = $bag;
         return response()->json($bag, 422);

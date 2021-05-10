@@ -25,13 +25,13 @@ class InstanceRequest extends Request {
    */
   public function rules()
   {
-    // Add rules for base preservation masters
+    // Add rules for base preservation instances
     $rules = array();
     $rules['batch_size'] = 'required_if:batch,1|integer|between:2,100';
     $this->addRuleIfNotMixed($rules, 'call_number',
       'required|min:4|max:30|exists:audio_visual_items,call_number,deleted_at,NULL');
     // If this is a batch create or update, don't require a file name since it
-    // needs to be unique across every master.
+    // needs to be unique across every instance.
     if (!$this->input('batch') && $this->route()->getName()!=='instances.batch.update') {
       $this->addRuleIfNotMixed($rules, 'file_name',
         'required|max:60|unique:preservation_instances,file_name,'.
@@ -48,8 +48,8 @@ class InstanceRequest extends Request {
     $this->addRuleIfNotMixed($rules, 'department_id', 'required');
 
     $subclassType = $this->input('subclassType');
-    // Add rules for audio masters
-    if($subclassType === 'AudioMaster') {
+    // Add rules for audio instances
+    if($subclassType === 'AudioInstance') {
       $this->addRuleIfNotMixed($rules, 'audio_file_format', 'required|max:60');
       $this->addRuleIfNotMixed($rules, 'audio_file_codec', 'required|max:60');
       $this->addRuleIfNotMixed($rules, 'subclass.sampling_rate_id', 'required');
@@ -79,7 +79,7 @@ class InstanceRequest extends Request {
   public function messages()
   {
     return [
-      // Messages for preservation master fields
+      // Messages for preservation instance fields
       'call_number.exists' => 'The given call number does not exist.',
       'call_number.max' => 'The call number must be less than :max characters.',
       'file_name.unique' => 'The file name is already in use.',
@@ -91,7 +91,7 @@ class InstanceRequest extends Request {
       'duration.regex' => 'The duration field must be in the format of HH:MM:SS.',
       'department_id.required' => 'The department field is required.',
 
-      // Messages for audio master fields
+      // Messages for audio instance fields
       'subclass.sampling_rate_id.required' => 'The sampling rate field is required.',
       'subclass.test_tones.max' => 'The test tones field must be less than :max characters.',
       'audio_file_format.required' => 'The file format field is required.',
@@ -99,7 +99,7 @@ class InstanceRequest extends Request {
       'audio_file_format.max' => 'The file format must be less than :max characters.',
       'audio_file_codec.max' => 'The file codec must be less than :max characters.',
 
-      // Messages for film master fields
+      // Messages for film instance fields
       'film_file_format.required' => 'The file format field is required.',
       'film_file_format.max' => 'The file format must be less than :max characters.',
       'film_file_codec.required' => 'The file codec field is required.',
@@ -107,7 +107,7 @@ class InstanceRequest extends Request {
       'subclass.film_frame_size.max' => 'The frame size must be less than :max characters.',
       'subclass.film_aspect_ratio.max' => 'The aspect ratio must be less than :max characters.',
 
-      // Messages for video master fields
+      // Messages for video instance fields
       'video_file_format.required' => 'The file format field is required.',
       'video_file_codec.required' => 'The file codec field is required.',
       'video_file_format.max' => 'The file format must be less than :max characters.',
@@ -137,7 +137,7 @@ class InstanceRequest extends Request {
   private function typeMismatch()
   {
     $inputType = $this->input('subclass_type');
-    $type = substr($inputType, 0, strlen($inputType) - strlen('Master'));
+    $type = substr($inputType, 0, strlen($inputType) - strlen('Instance'));
     $item = AudioVisualItem::where('call_number', $this->input('call_number'))->first();
     return $item !== null && $type !== $item->type;
   }
