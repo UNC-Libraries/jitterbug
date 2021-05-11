@@ -19,8 +19,8 @@
         </thead>
         <tbody>
           @foreach ($transfers as $transfer)
-          <tr role="button" data-master="{{$transfer->preservation_master_id}}" data-id="{{$transfer->id}}">
-            <td>{{$transfer->preservation_master_id}}</td>
+          <tr role="button" data-instance="{{$transfer->preservation_instance_id}}" data-id="{{$transfer->id}}">
+            <td>{{$transfer->preservation_instance_id}}</td>
             <td>{{$transfer->transfer_date}}</td>
             <td>@if ($transfer->playbackMachine != null){{$transfer->playbackMachine->name}}@endif</td>
             <td>{{$transfer->engineer_name}}</td>
@@ -55,8 +55,8 @@
         </thead>
         <tbody>
           @foreach ($cuts as $cut)
-          <tr role="button" data-master="{{$cut->preservation_master_id}}" data-id="{{$cut->id}}">
-            <td>{{$cut->preservation_master_id}}</td>
+          <tr role="button" data-instance="{{$cut->preservation_instance_id}}" data-id="{{$cut->id}}">
+            <td>{{$cut->preservation_instance_id}}</td>
             <td>{{$cut->cut_number}}</td>
             <td>{{$cut->side}}</td>
             <td>{{$cut->title}}</td>

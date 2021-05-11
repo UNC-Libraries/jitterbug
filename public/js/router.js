@@ -59,7 +59,7 @@ JITTERBUG = {
     show: function() {
       jitterbug.initMarkRibbon();
       jitterbug.initRevisionHistory();
-      jitterbug.initRelatedPreservationMasters();
+      jitterbug.initRelatedPreservationInstances();
       jitterbug.initRelatedCuts();
     },
 
@@ -75,7 +75,7 @@ JITTERBUG = {
       jitterbug.initDatepicker();
       jitterbug.initItemSuggestions();
       jitterbug.initRevisionHistory();
-      jitterbug.initRelatedPreservationMasters();
+      jitterbug.initRelatedPreservationInstances();
       jitterbug.initRelatedCuts();
       jitterbug.initSubmitButton();
     },
@@ -88,17 +88,17 @@ JITTERBUG = {
     }
   },
 
-  masters: {
+  instances: {
     init: function() {
       // controller-wide code 
     },
 
     index: function() {
-      jitterbug.initMastersIndex();
+      jitterbug.initInstancesIndex();
       // jitterbug.renderMarks();
       jitterbug.initTableKeyboardShortcuts();
-      jitterbug.initMastersNewButton();
-      jitterbug.initMastersBatchMenu();
+      jitterbug.initInstancesNewButton();
+      jitterbug.initInstancesBatchMenu();
       jitterbug.initBatchDeleteForm();
     },
 
@@ -110,8 +110,8 @@ JITTERBUG = {
     },
 
     create: function() {
-      jitterbug.initMasterTypeControls();
-      jitterbug.initMasterBatchCheckbox();
+      jitterbug.initInstanceTypeControls();
+      jitterbug.initInstanceBatchCheckbox();
       jitterbug.initSubmitButton();
     },
 
