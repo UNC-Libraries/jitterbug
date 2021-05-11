@@ -428,7 +428,7 @@ class TransfersController extends Controller {
     $transfer = Transfer::findOrFail($id);
     $subclass = $transfer->subclass;
 
-    $originalInstance = $transfer->preservation_instance;
+    $originalInstance = $transfer->preservationInstance;
     $originalCallNumber = $transfer->call_number;
 
     $transfer->fill($input);
@@ -532,7 +532,7 @@ class TransfersController extends Controller {
       DB::statement("set @transaction_id = '$transactionId';");
       
       foreach ($transfers as $transfer) {
-        $originalInstance = $transfer->preservation_instance;
+        $originalInstance = $transfer->preservationInstance;
         $originalCallNumber = $transfer->call_number;
 
         $transfer->fill($input);
@@ -614,7 +614,7 @@ class TransfersController extends Controller {
       if ($item !== null) {
         $this->solrItems->update($item);
       }
-      $instance = $transfer->preservation_instance;
+      $instance = $transfer->preservationInstance;
       if ($instance !== null) {
         $this->solrMasters->update($instance);
       }

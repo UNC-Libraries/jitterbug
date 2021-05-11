@@ -74,7 +74,7 @@ class PmSpeedsController extends Controller
         $bag = new MessageBag();
         $bag->add('status', 'Looks like that PM speed is currently ' .
           'in use. Change the PM speed of the related preservation ' .
-          'masters before deleting.');
+          'instances before deleting.');
         $response = $bag;
         return response()->json($bag, 422);
       }

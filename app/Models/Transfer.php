@@ -98,7 +98,7 @@ class Transfer extends Model {
     return $this->belongsTo('Jitterbug\Models\PlaybackMachine');
   }
 
-  public function preservationMInstance()
+  public function preservationInstance()
   {
     return $this->belongsTo('Jitterbug\Models\PreservationInstance');
   }

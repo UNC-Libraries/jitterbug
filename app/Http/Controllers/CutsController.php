@@ -54,7 +54,7 @@ class CutsController extends Controller
   public function create(Request $request)
   {
     $transfer = Transfer::findOrFail($request->transfer_id);
-    $instance = $transfer->preservation_instance;
+    $instance = $transfer->preservationInstance;
     $cut = new Cut;
     $cut->call_number = $transfer->call_number;
     $cut->preservation_instance_id = $transfer->preservation_instance_id;
@@ -87,7 +87,7 @@ class CutsController extends Controller
     // Update Solr
     $item = AudioVisualItem::where('call_number', $cut->call_number)->first();
     $this->solrItems->update($item);
-    $this->solrMasters->update($cut->preservationMaster);
+    $this->solrMasters->update($cut->preservationInstance);
     $this->solrTransfers->update($cut->transfer);
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
@@ -135,7 +135,7 @@ class CutsController extends Controller
     if ($updateSolr) {
       $item = AudioVisualItem::where('call_number', $cut->callNumber)->first();
       $this->solrItems->update($item);
-      $this->solrMasters->update($cut->preservationMaster);
+      $this->solrMasters->update($cut->preservationInstance);
       $this->solrTransfers->update($cut->transfer);
     }
 
@@ -171,7 +171,7 @@ class CutsController extends Controller
     // Update Solr
     $item = AudioVisualItem::where('call_number', $cut->call_number)->first();
     $this->solrItems->update($item);
-    $this->solrMasters->update($cut->preservationMaster);
+    $this->solrMasters->update($cut->preservationInstance);
     if ($command !== 'all') {
       $this->solrTransfers->update($cut->transfer);
     } else {
@@ -182,7 +182,7 @@ class CutsController extends Controller
         '<strong>Gone!</strong> Cut was successfully deleted.'));
 
     if ($command === 'all') {
-      return redirect()->route('instances.show', $cut->preservation_instance);
+      return redirect()->route('instances.show', $cut->preservationInstance);
     } else {
       return redirect()->route('transfers.show', $cut->transfer);
     }

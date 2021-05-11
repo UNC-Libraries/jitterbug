@@ -417,7 +417,7 @@ class ItemsController extends Controller
     $items = AudioVisualItem::whereIn('id',$itemIds)->get();
 
     // Here we will track items that have had their collection or format
-    // updated. Their related preservation masters and transfers will also
+    // updated. Their related preservation instances and transfers will also
     // need to be updated in Solr, since collection and format details are
     // in those cores as well.
     $collectionOrFormatUpdated = array();

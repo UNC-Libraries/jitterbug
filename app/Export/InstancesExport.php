@@ -7,10 +7,10 @@ use Jitterbug\Export\Export;
 use Jitterbug\Models\PreservationInstance;
 
 /**
- * Class for exporting PreservationMasters. See 
+ * Class for exporting PreservationInstances. See
  * superclass for documentation.
  */
-class MastersExport extends Export {
+class InstancesExport extends Export {
 
   protected $exportClass = 'PreservationInstance';
 

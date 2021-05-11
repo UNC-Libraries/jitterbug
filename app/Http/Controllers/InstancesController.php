@@ -11,7 +11,7 @@ use Session;
 use Solarium;
 use Uuid;
 
-use Jitterbug\Export\MastersExport;
+use Jitterbug\Export\InstancesExport;
 use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Http\Requests\InstanceRequest;
 use Jitterbug\Models\AudioVisualItem;
@@ -648,7 +648,7 @@ class InstancesController extends Controller {
   {
     if ($request->ajax()) {
       $instanceIds = explode(',', $request->ids);
-      $export = new MastersExport($instanceIds);
+      $export = new InstancesExport($instanceIds);
       $fields = $export->exportableFields();
       return view('shared._data-export-fields', compact('fields'));
     }
@@ -659,7 +659,7 @@ class InstancesController extends Controller {
     if ($request->ajax()) {
       $instanceIds = explode(',', $request->ids);
       $fields = $request->fields;
-      $export = new MastersExport($instanceIds);
+      $export = new InstancesExport($instanceIds);
       $filePath = $export->build($fields);
       $request->session()->put('exportFilePath', $filePath);
       $response = array('status'=>'success', 'file'=>$filePath);
