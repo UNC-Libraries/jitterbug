@@ -1,5 +1,5 @@
 <div id="data-container">
-  <table id="masters-data" class="table table-sm table-hover" data-sort-column="{{$sortColumn}}" data-sort-direction="{{$sortDirection}}">
+  <table id="instances-data" class="table table-sm table-hover" data-sort-column="{{$sortColumn}}" data-sort-direction="{{$sortDirection}}">
     <thead>
       <tr id="header-row">
         <th data-sort-direction="{{$sortColumn === 'callNumber' ? $sortDirection : 'asc'}}" data-sort-column="callNumber">
@@ -14,14 +14,14 @@
     </thead>
     <tbody>
       <?php $index = 0; ?>
-      @foreach ($masters as $master)
-      <tr role="button" class="@if ($marks->contains($master->id)) marked @endif" data-id="{{ $master->id }}" data-index="{{ $start + $index }}">
-        <td>{{ $master->callNumber }}</td>
-        <td>{{ $master->fileName }}</td>
-        <td title="{{ $master->collectionName}}">{{ $master->collectionName }}</td>
-        <td>{{ $master->formatName }}</td>
-        <td>{{ $master->departmentName }}</td>
-        <td>{{ $master->typeName }}</td>
+      @foreach ($instances as $instance)
+      <tr role="button" class="@if ($marks->contains($instance->id)) marked @endif" data-id="{{ $instance->id }}" data-index="{{ $start + $index }}">
+        <td>{{ $instance->callNumber }}</td>
+        <td>{{ $instance->fileName }}</td>
+        <td title="{{ $instance->collectionName}}">{{ $instance->collectionName }}</td>
+        <td>{{ $instance->formatName }}</td>
+        <td>{{ $instance->departmentName }}</td>
+        <td>{{ $instance->typeName }}</td>
       </tr>
       <?php $index++; ?>
       @endforeach                          
@@ -33,7 +33,7 @@
     </div>
     <div style="float: right;">
       <nav>
-        @include('shared._pagination', ['paginator' => $masters])
+        @include('shared._pagination', ['paginator' => $instances])
       </nav>
     </div>
   </div>

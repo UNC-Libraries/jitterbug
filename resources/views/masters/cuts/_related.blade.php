@@ -18,8 +18,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr role="button" data-master="{{$transfer->preservation_master_id}}" data-id="{{$transfer->id}}">
-            <td>{{$transfer->preservation_master_id}}</td>
+          <tr role="button" data-instance="{{$transfer->preservation_instance_id}}" data-id="{{$transfer->id}}">
+            <td>{{$transfer->preservation_instance_id}}</td>
             <td>{{$transfer->transfer_date}}</td>
             <td>@if ($transfer->playbackMachine){{$transfer->playbackMachine->name}}@endif</td>
             <td>{{$transfer->engineer_name}}</td>

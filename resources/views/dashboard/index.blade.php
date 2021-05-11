@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title' => 'Dashboard', 'section' => 'dashboard'])
+@extends('layouts.main', ['title' => 'Dashboard', 'section' => 'dashboard'])
 
 @section('content')
 <div id="dashboard">
@@ -16,9 +16,9 @@
           <p>Audio Visual Items</p>
         </div>
         <div class="col-xs-4 centered">
-          <div id="master-chart" class="chart" data-counts="{{$masterCounts->counts()}}"></div>
-          <h1>{{$masterCounts->total()}}</h1>
-          <p>Preservation Masters</p>
+          <div id="instance-chart" class="chart" data-counts="{{$instanceCounts->counts()}}"></div>
+          <h1>{{$instanceCounts->total()}}</h1>
+          <p>Preservation Instances</p>
         </div>
         <div class="col-xs-4 centered">
           <div id="transfer-chart" class="chart" data-counts="{{$transferCounts->counts()}}"></div>
@@ -76,8 +76,8 @@
               <label class="btn btn-sm btn-secondary" data-filter='item' title="Show item marks">
                 <input type="radio" name="marks-filter" value="item"><i class="fa fa-headphones fa-fw" aria-hidden="true"></i>
               </label>
-              <label class="btn btn-sm btn-secondary" data-filter='master' title="Show master marks">
-                <input type="radio" name="marks-filter" value="master"><i class="fa fa-database fa-fw" aria-hidden="true"></i>
+              <label class="btn btn-sm btn-secondary" data-filter='instance' title="Show instance marks">
+                <input type="radio" name="marks-filter" value="instance"><i class="fa fa-database fa-fw" aria-hidden="true"></i>
               </label>
               <label class="btn btn-sm btn-secondary" data-filter='transfer' title="Show transfer marks">
                 <input type="radio" name="marks-filter" value="transfer"><i class="fa fa-exchange fa-fw" aria-hidden="true"></i>
