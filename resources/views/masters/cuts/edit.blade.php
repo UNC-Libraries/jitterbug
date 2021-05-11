@@ -1,10 +1,9 @@
-@extends('layouts.master', ['title' => 'Edit Cut', 'section' => 'masters'])
 
 @section('content')
 <div id="detail">
   <div class="row">
     <div class="col-xs-12">
-      {!! Breadcrumbs::render('masters.cuts.edit', $master, $cut) !!}
+      {!! Breadcrumbs::render('instances.cuts.edit', $instance, $cut) !!}
     </div>
   </div>
   <div class="row">
@@ -13,16 +12,16 @@
     </div>
   </div>
 
-  {!! Form::model($cut, array('route' => array('masters.cuts.update', $master->id, $cut->id), 'method' => 'put')) !!}
+  {!! Form::model($cut, array('route' => array('instances.cuts.update', $instance->id, $cut->id), 'method' => 'put')) !!}
 
   <div class="row first detail-container">
     {{-- Left Column --}}
     <div class="col-xs-6">
-      @include('masters.cuts._form-left')
+      @include('instances.cuts._form-left')
     </div>
     {{-- Right Column --}}
     <div class="col-xs-6">
-      @include('masters.cuts._form-right')
+      @include('instances.cuts._form-right')
       <div class="row">
         <div class="col-xs-4 detail-label">
           Created On
@@ -52,13 +51,13 @@
   <div class="row last">
     <div class="col-xs-12 actions">
       <button class="btn btn-sm btn-primary" type="submit" style="outline: none;"><i class="fa fa-save" aria-hidden="true"></i> Save</button>
-      <a class="" href="{{ route('masters.cuts.show', array($master->id, $cut->id)) }}">or Cancel</a>
+      <a class="" href="{{ route('instances.cuts.show', array($instance->id, $cut->id)) }}">or Cancel</a>
     </div>
   </div>
 
   {!! Form::close() !!}
 
-  @include('masters.cuts._related')
+  @include('instances.cuts._related')
 
 </div>
 @stop

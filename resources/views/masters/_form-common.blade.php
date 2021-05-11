@@ -1,4 +1,4 @@
-      {{-- PreservationMaster fields --}}
+      {{-- PreservationInstance fields --}}
       <div class="row">
         <div class="form-group @if ($errors->has('call_number')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
@@ -22,7 +22,7 @@
             {!! Form::label('file_name', 'File Name', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            @if (routeName()==='masters.batch.edit' || old('batch'))
+            @if (routeName()==='instances.batch.edit' || old('batch'))
               {!! Form::text('file_name', null, array('id' => 'fileName', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. FT6708_1_PM', 'readonly' => 'readonly')) !!}
             @else
               {!! Form::text('file_name', null, array('id' => 'fileName', 'class' => 'form-control form-control-sm', 'placeholder' => 'e.g. FT6708_1_PM')) !!}
@@ -104,7 +104,7 @@
             {!! Form::label('reproduction_machine_id', 'Repro Machine', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::select('reproduction_machine_id', $reproductionMachines, $master->reproduction_machine_id, array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::select('reproduction_machine_id', $reproductionMachines, $instance->reproduction_machine_id, array('class' => 'form-control form-control-sm')) !!}
             @if ($errors->has('reproduction_machine_id'))
               <div class="form-control-label"><small>{!! $errors->first('reproduction_machine_id') !!}</small></div>
             @endif
@@ -117,7 +117,7 @@
             {!! Form::label('project_id', 'Project', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::select('project_id', $projects, $master->project_id, array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::select('project_id', $projects, $instance->project_id, array('class' => 'form-control form-control-sm')) !!}
             @if ($errors->has('project_id'))
               <div class="form-control-label"><small>{!! $errors->first('project_id') !!}</small></div>
             @endif
@@ -130,12 +130,12 @@
             {!! Form::label('department_id', 'Department', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::select('department_id', $departments, $master->department_id, array('class' => 'form-control form-control-sm')) !!}
+            {!! Form::select('department_id', $departments, $instance->department_id, array('class' => 'form-control form-control-sm')) !!}
             @if ($errors->has('department_id'))
               <div class="form-control-label"><small>{!! $errors->first('department_id') !!}</small></div>
             @endif
           </div>
         </div>
       </div>
-      {{-- End PreservationMaster fields --}}
+      {{-- End PreservationInstance fields --}}
  

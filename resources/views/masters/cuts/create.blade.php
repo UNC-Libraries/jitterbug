@@ -1,10 +1,10 @@
-@extends('layouts.master', ['title' => 'Create Cut', 'section' => 'masters'])
+@extends('layouts.main', ['title' => 'Create Cut', 'section' => 'instances'])
 
 @section('content')
 <div id="detail">
   <div class="row">
     <div class="col-xs-12">
-      {!! Breadcrumbs::render('masters.cuts.create', $master) !!}
+      {!! Breadcrumbs::render('instances.cuts.create', $instance) !!}
     </div>
   </div>
   <div class="row">
@@ -13,16 +13,16 @@
     </div>
   </div>
 
-  {!! Form::model($cut, array('route' => array('masters.cuts.store', $master->id), 'method' => 'post')) !!}
+  {!! Form::model($cut, array('route' => array('instances.cuts.store', $instance->id), 'method' => 'post')) !!}
   {!! Form::hidden('transferId') !!}
 
   <div class="row first detail-container">
     <div class="row">
       <div class="col-xs-6">
-        @include('masters.cuts._form-left')
+        @include('instances.cuts._form-left')
       </div>
       <div class="col-xs-6">
-        @include('masters.cuts._form-right')
+        @include('instances.cuts._form-right')
       </div>
     </div>
   </div>

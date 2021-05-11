@@ -1,10 +1,10 @@
-@extends('layouts.master', ['title' => 'Cut', 'section' => 'masters'])
+@extends('layouts.main', ['title' => 'Cut', 'section' => 'instances'])
 
 @section('content')
 <div id="detail">
   <div class="row">
     <div class="col-xs-12"> 
-      {!! Breadcrumbs::render('masters.cuts.show', $master, $cut) !!}
+      {!! Breadcrumbs::render('instances.cuts.show', $instance, $cut) !!}
     </div>
   </div>
   <div class="row">
@@ -20,10 +20,10 @@
           PM #
         </div>
         <div class="col-xs-7 detail-value">
-          @if ($cut->preservationMaster)
-            <a href="{{route('masters.show', $cut->preservationMaster->id)}}" class="detail-link">{{$cut->preservation_master_id}}</a>
+          @if ($cut->preservationInstance)
+            <a href="{{route('instances.show', $cut->preservationInstance->id)}}" class="detail-link">{{$cut->preservation_instance_id}}</a>
           @else
-            <span class="text-danger" title="Missing preservation master">{{$cut->preservation_master_id}}&nbsp;<i class="fa fa-question" aria-hidden="true"></i></span>
+            <span class="text-danger" title="Missing preservation instance">{{$cut->preservation_instance_id}}&nbsp;<i class="fa fa-question" aria-hidden="true"></i></span>
           @endif
         </div>
       </div>
@@ -120,10 +120,10 @@
   </div>
   <div class="row last">
     <div class="col-xs-12 actions">
-      <a class="btn btn-sm btn-secondary" role="button" href="{{ route('masters.cuts.edit', array($master->id, $cut->id)) }}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+      <a class="btn btn-sm btn-secondary" role="button" href="{{ route('instances.cuts.edit', array($instance->id, $cut->id)) }}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
       <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target=".confirm-delete-modal" style="outline: none; float: right;"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></button>
 
-      {!! Form::open(array('route' => array('masters.cuts.destroy', $master->id, $cut->id), 'method' => 'delete', 'style' => 'display: inline;')) !!}
+      {!! Form::open(array('route' => array('instances.cuts.destroy', $instance->id, $cut->id), 'method' => 'delete', 'style' => 'display: inline;')) !!}
       <div class="modal fade confirm-delete-modal" tabindex="-1" role="dialog" aria-labelledby="confirmDelete" aria-hidden="true">
         <div class="modal-dialog modal-sm">
           <div class="modal-content">
@@ -150,7 +150,7 @@
     </div>
   </div>
 
-  @include('masters.cuts._related')
+  @include('instances.cuts._related')
 
 </div>
 @stop

@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title' => 'Preservation Masters', 'section' => 'masters'])
+@extends('layouts.main', ['title' => 'Preservation Instances', 'section' => 'instances'])
 
 @section('content')
 <div class="row">
@@ -11,22 +11,22 @@
   <div id="data-panel" class="col-xs-9 panel">
     <div class="top-controls">
       <div style="float: left;">
-        <a id="masters-new" class="btn btn-sm btn-secondary" style="margin-right: 5px;" href="{{ route('masters.create') }}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
+        <a id="instances-new" class="btn btn-sm btn-secondary" style="margin-right: 5px;" href="{{ route('instances.create') }}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
         <div class="btn-group">
           <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cubes" data-toggle="dropdown" aria-hidden="true"></i> Batch</button>
           <div class="dropdown-menu">
-            <a id="masters-batch-edit" class="dropdown-item" href="#" data-max-edit-limit="{{$maxEditLimit}}">Edit</a>
-            <a id="masters-batch-export" class="dropdown-item" href="#">Export</a>
-            <a id="masters-batch-mark" class="dropdown-item" href="#">Mark</a>
-            <a id="masters-batch-unmark" class="dropdown-item" href="#">Unmark</a>
-            <a id="masters-batch-delete" class="dropdown-item" href="#">Delete</a>
+            <a id="instances-batch-edit" class="dropdown-item" href="#" data-max-edit-limit="{{$maxEditLimit}}">Edit</a>
+            <a id="instances-batch-export" class="dropdown-item" href="#">Export</a>
+            <a id="instances-batch-mark" class="dropdown-item" href="#">Mark</a>
+            <a id="instances-batch-unmark" class="dropdown-item" href="#">Unmark</a>
+            <a id="instances-batch-delete" class="dropdown-item" href="#">Delete</a>
           </div>
         </div>
       </div>
 
-      @include('shared._data-export-modal', ['route' => 'masters.batch.export.build', 'title' => 'Export Preservation Masters'])
+      @include('shared._data-export-modal', ['route' => 'instances.batch.export.build', 'title' => 'Export Preservation Instances'])
 
-      {!! Form::open(array('route' => array('masters.batch.destroy'), 'method' => 'delete', 'id' => 'batch-delete-form', 'style' => 'display: inline;')) !!}
+      {!! Form::open(array('route' => array('instances.batch.destroy'), 'method' => 'delete', 'id' => 'batch-delete-form', 'style' => 'display: inline;')) !!}
       <div id="confirm-batch-delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirmDelete" aria-hidden="true">
         <div class="modal-dialog modal-sm">
           <div class="modal-content">
@@ -39,13 +39,13 @@
             </div>
             <div class="modal-body">
               <strong>Be careful!</strong>
-              You are about to delete multiple masters at once. You may choose to delete only the selected masters or delete the selected masters and all associated transfers and cuts. This cannot be undone.
+              You are about to delete multiple preservation instances at once. You may choose to delete only the selected preservation instances or delete the selected preservation instances and all associated transfers and cuts. This cannot be undone.
             </div>
             <div class="modal-footer">
               {!! Form::hidden('ids') !!}
               {!! Form::hidden('deleteCommand') !!}
               <button name="deleteCommand" value="all" type="submit" class="btn btn-sm btn-danger" style="outline: none;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Delete All</button>
-              <button name="deleteCommand" value="master" type="submit" class="btn btn-sm btn-warning" style="outline: none;"><i class="fa fa-trash" aria-hidden="true"></i> Delete Masters Only</button>
+              <button name="deleteCommand" value="instance" type="submit" class="btn btn-sm btn-warning" style="outline: none;"><i class="fa fa-trash" aria-hidden="true"></i> Delete Preservation Instances Only</button>
             </div>
 
           </div>

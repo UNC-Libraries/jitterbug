@@ -1,47 +1,47 @@
-@extends('layouts.master', ['title' => 'Create Preservation Master', 'section' => 'masters'])
+@extends('layouts.main', ['title' => 'Create Preservation Instance', 'section' => 'instances'])
 
 @section('content')
 <div id="detail">
   <div class="row">
     <div class="col-xs-12">
-      {!! Breadcrumbs::render('masters.create') !!}
+      {!! Breadcrumbs::render('instances.create') !!}
     </div>
   </div>
   <div class="row">
     <div class="col-xs-12">
-      <h6>Create Preservation Master</h6>
+      <h6>Create Preservation Instance</h6>
     </div>
   </div>
 
-  {!! Form::model($master, array('route' => array('masters.store'), 'method' => 'post')) !!}
+  {!! Form::model($instance, array('route' => array('instances.store'), 'method' => 'post')) !!}
 
   <div class="row first detail-container">
     <div class="row">
       <div class="col-xs-12 preform">
-        <span id="master-type-controls">
+        <span id="instance-type-controls">
           <span style="margin-right: .75rem">
-            {!! Form::label('subclass_type', 'Master Type: ', array('class' => 'form-control-label')) !!}
+            {!! Form::label('subclass_type', 'Instance Type: ', array('class' => 'form-control-label')) !!}
           </span>
           @if ($linked)
             {!! Form::hidden('subclass_type') !!}
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'AudioMaster', null, array('disabled' => 'disabled')) !!} Audio
+              {!! Form::radio('subclass_type', 'AudioInstance', null, array('disabled' => 'disabled')) !!} Audio
             </label>
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'FilmMaster', null, array('disabled' => 'disabled')) !!} Film
+              {!! Form::radio('subclass_type', 'FilmInstance', null, array('disabled' => 'disabled')) !!} Film
             </label>
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'VideoMaster', null, array('disabled' => 'disabled')) !!} Video
+              {!! Form::radio('subclass_type', 'VideoInstance', null, array('disabled' => 'disabled')) !!} Video
             </label>
           @else
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'AudioMaster') !!} Audio
+              {!! Form::radio('subclass_type', 'AudioInstance') !!} Audio
             </label>
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'FilmMaster') !!} Film
+              {!! Form::radio('subclass_type', 'FilmInstance') !!} Film
             </label>
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'VideoMaster') !!} Video
+              {!! Form::radio('subclass_type', 'VideoInstance') !!} Video
             </label>
           @endif
         </span>
@@ -76,18 +76,18 @@
     
     <div class="row">
       <div class="col-xs-6">
-        @include('masters._form-common')
+        @include('instances._form-common')
       </div>
       <div class="col-xs-6">
         {{-- Begin subclass fields --}}
-        <div id="audio-form" @if (($linked && $master->subclass_type !== 'AudioMaster') || old('subclass_type') !== null && old('subclass_type') !== 'AudioMaster') style="display: none" @endif>
-          @include('masters._form-audio')
+        <div id="audio-form" @if (($linked && $instance->subclass_type !== 'AudioInstance') || old('subclass_type') !== null && old('subclass_type') !== 'AudioInstance') style="display: none" @endif>
+          @include('instances._form-audio')
         </div>
-        <div id="film-form" @if ($master->subclass_type !== 'FilmMaster' && old('subclass_type') !== 'FilmMaster') style="display: none" @endif>
-          @include('masters._form-film')
+        <div id="film-form" @if ($instance->subclass_type !== 'FilmInstance' && old('subclass_type') !== 'FilmInstance') style="display: none" @endif>
+          @include('instances._form-film')
         </div>
-        <div id="video-form" @if ($master->subclass_type !== 'VideoMaster' && old('subclass_type') !== 'VideoMaster') style="display: none" @endif>
-          @include('masters._form-video')
+        <div id="video-form" @if ($instance->subclass_type !== 'VideoInstance' && old('subclass_type') !== 'VideoInstance') style="display: none" @endif>
+          @include('instances._form-video')
         </div>
         {{-- End subclass fields --}}
       </div>
@@ -105,7 +105,7 @@
       @if ($linked)
       <a class="" href="{{ route('items.show', $item->id) }}">or Cancel</a>
       @else
-      <a class="" href="{{ route('masters.index') }}">or Cancel</a>
+      <a class="" href="{{ route('instances.index') }}">or Cancel</a>
       @endif
     </div>
   </div>

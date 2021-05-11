@@ -1,28 +1,28 @@
-@extends('layouts.master', ['title' => 'Edit Preservation Master', 'section' => 'masters'])
+@extends('layouts.main', ['title' => 'Edit Preservation Instance', 'section' => 'instances'])
 
 @section('content')
 <div id="detail">
   <div class="row">
     <div class="col-xs-12">
-      {!! Breadcrumbs::render('masters.edit', $master) !!}
+      {!! Breadcrumbs::render('instances.edit', $instance) !!}
     </div>
   </div>
   <div class="row">
     <div class="col-xs-12">
-      @if ($master->batch())
-        <h6>{{$master->type}} Master Details (editing {{$master->count()}} masters)</h6>
+      @if ($instance->batch())
+        <h6>{{$instance->type}} Preservation Instance Details (editing {{$instance->count()}} instances)</h6>
       @else
-        <h6>{{$master->type}} Master Details</h6>
+        <h6>{{$instance->type}} Preservation Instance Details</h6>
       @endif
     </div>
   </div>
 
-  @if ($master->batch())
-    {!! Form::model($master, array('route' => array('masters.batch.update'), 'method' => 'put')) !!}
+  @if ($instance->batch())
+    {!! Form::model($instance, array('route' => array('instances.batch.update'), 'method' => 'put')) !!}
     {!! Form::hidden('ids') !!}
     {!! Form::hidden('subclass_type') !!}
   @else
-    {!! Form::model($master, array('route' => array('masters.update', $master->id), 'method' => 'put')) !!}
+    {!! Form::model($instance, array('route' => array('instances.update', $instance->id), 'method' => 'put')) !!}
     {!! Form::hidden('id') !!}
     {!! Form::hidden('subclass_type') !!}
     {!! Form::hidden('subclass_id') !!}
@@ -30,27 +30,27 @@
 
   <div class="row first detail-container">
     <div class="col-xs-6">
-      @include('masters._form-common')
+      @include('instances._form-common')
     </div>
     <div class="col-xs-6">
       {{-- Begin subclass fields --}}
-      @if (get_class($master->subclass) === 'Jitterbug\Models\AudioMaster')
-        @include('masters._form-audio')
+      @if (get_class($instance->subclass) === 'Jitterbug\Models\AudioInstance')
+        @include('instances._form-audio')
       @endif
-      @if (get_class($master->subclass) === 'Jitterbug\Models\FilmMaster')
-        @include('masters._form-film')
+      @if (get_class($instance->subclass) === 'Jitterbug\Models\FilmInstance')
+        @include('instances._form-film')
       @endif
-      @if (get_class($master->subclass) === 'Jitterbug\Models\VideoMaster')
-        @include('masters._form-video')
+      @if (get_class($instance->subclass) === 'Jitterbug\Models\VideoInstance')
+        @include('instances._form-video')
       @endif
       {{-- End subclass fields --}}
-      @if (!$master->batch())
+      @if (!$instance->batch())
       <div class="row">
         <div class="col-xs-4 detail-label">
           Created On
         </div>
         <div class="col-xs-8 detail-value">
-          {{$master->createdOnDisplay}}
+          {{$instance->createdOnDisplay}}
         </div>
       </div>
       <div class="row">
@@ -58,15 +58,15 @@
           Updated On
         </div>
         <div class="col-xs-8 detail-value">
-          {{$master->updatedOnDisplay}}
+          {{$instance->updatedOnDisplay}}
         </div>
       </div>
       @endif
     </div>
   </div>
   
-  @if (!$master->batch())
-    @include('shared._revisions', ['revisionable' => $master])
+  @if (!$instance->batch())
+    @include('shared._revisions', ['revisionable' => $instance])
   @endif
 
   <div class="row">
@@ -77,18 +77,18 @@
   <div class="row last">
     <div class="col-xs-12 actions">
       <button class="btn btn-sm btn-primary" type="submit" style="outline: none;"><i class="fa fa-save" aria-hidden="true"></i> Save</button>
-      @if (!$master->batch())
-        <a class="" href="{{ route('masters.show', $master->id) }}">or Cancel</a>
+      @if (!$instance->batch())
+        <a class="" href="{{ route('instances.show', $instance->id) }}">or Cancel</a>
       @else
-        <a class="" href="{{ route('masters.index') }}">or Cancel</a>
+        <a class="" href="{{ route('instances.index') }}">or Cancel</a>
       @endif
     </div>
   </div>
 
   {!! Form::close() !!}
 
-  @if (!$master->batch())
-    @include('masters._related')
+  @if (!$instance->batch())
+    @include('instances._related')
   @endif
 
 </div>
