@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title' => 'Audio Visual Items', 'section' => 'items'])
+@extends('layouts.main', ['title' => 'Audio Visual Items', 'section' => 'items'])
 
 @section('content')
 <div class="row">
@@ -40,7 +40,7 @@
             </div>
             <div class="modal-body">
               <strong>Be careful!</strong>
-              You are about to delete multiple items at once. You may choose to delete only the selected items or delete the selected items and all associated preservation masters and transfers. This cannot be undone.
+              You are about to delete multiple items at once. You may choose to delete only the selected items or delete the selected items and all associated preservation instances and transfers. This cannot be undone.
             </div>
             <div class="modal-footer">
               {!! Form::hidden('ids') !!}

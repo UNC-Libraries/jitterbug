@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title' => 'Audio Visual Item', 'section' => 'items'])
+@extends('layouts.main', ['title' => 'Audio Visual Item', 'section' => 'items'])
 
 @section('content')
 <div id="detail">
@@ -442,7 +442,7 @@
   <div class="row last">
     <div class="col-xs-12 actions">
       <a class="btn btn-sm btn-secondary" role="button" href="{{ route('items.edit', $item->id) }}" style="margin-right: .3rem;"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
-      <a class="btn btn-sm btn-secondary" role="button" href="{{ route('masters.create', array('itemId' => $item->id)) }}"><i class="fa fa-plus" aria-hidden="true"></i> Add Master</a>
+      <a class="btn btn-sm btn-secondary" role="button" href="{{ route('instances.create', array('itemId' => $item->id)) }}"><i class="fa fa-plus" aria-hidden="true"></i> Add Preservation Instance</a>
       <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target=".confirm-delete-modal" style="outline: none; float: right;"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></button>
 
       {!! Form::open(array('route' => array('items.destroy', $item->id), 'method' => 'delete', 'style' => 'display: inline;')) !!}
@@ -458,10 +458,10 @@
             </div>
             <div class="modal-body">
               <strong>Yikes! Are you sure?</strong>
-              @if (count($item->preservationMasters) > 0 && count($item->cuts) > 0)
-                This item has related preservation masters and cuts.
-              @elseif (count($item->preservationMasters) > 0) 
-                This item has related preservation masters.
+              @if (count($item->preservation_instances) > 0 && count($item->cuts) > 0)
+                This item has related preservation instances and cuts.
+              @elseif (count($item->preservation_instances) > 0)
+                This item has related preservation instances.
               @endif
               Do you want to delete just this item, or do you want to delete this item <strong>and all</strong> associated records? This cannot be undone.
             </div>

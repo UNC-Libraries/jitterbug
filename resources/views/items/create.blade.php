@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title' => 'Create Audio Visual Item', 'section' => 'items'])
+@extends('layouts.main', ['title' => 'Create Audio Visual Item', 'section' => 'items'])
 
 @section('content')
 <div id="detail">

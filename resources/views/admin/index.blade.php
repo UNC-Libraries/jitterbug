@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title' => 'Admin', 'section' => 'admin'])
+@extends('layouts.main', ['title' => 'Admin', 'section' => 'admin'])
 
 @section('content')
 <div class="row">

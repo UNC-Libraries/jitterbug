@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title' => 'Transfers', 'section' => 'transfers'])
+@extends('layouts.main', ['title' => 'Transfers', 'section' => 'transfers'])
 
 @section('content')
 <div class="row">

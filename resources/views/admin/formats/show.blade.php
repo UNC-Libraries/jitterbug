@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title' => 'Format', 'section' => 'formats'])
+@extends('layouts.main', ['title' => 'Format', 'section' => 'formats'])
 
 @section('content')
   <div id="data-panel">

@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title' => 'Edit Transfer', 'section' => 'transfers'])
+@extends('layouts.main', ['title' => 'Edit Transfer', 'section' => 'transfers'])
 
 @section('content')
 <div id="detail">
