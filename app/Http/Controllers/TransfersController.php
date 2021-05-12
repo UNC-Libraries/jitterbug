@@ -41,7 +41,7 @@ class TransfersController extends Controller {
   protected $audioImportKeys = array();
 
   protected $solrItems;
-  protected $solrMasters;
+  protected $solrIntances;
   protected $solrTransfers;
 
   /**
@@ -54,7 +54,7 @@ class TransfersController extends Controller {
     $this->middleware('auth');
 
     $this->solrItems = new SolariumProxy('jitterbug-items');
-    $this->solrMasters = new SolariumProxy('jitterbug-masters');
+    $this->solrIntances = new SolariumProxy('jitterbug-instances');
     $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
   }
 
@@ -479,7 +479,7 @@ class TransfersController extends Controller {
       $newItem = 
         AudioVisualItem::where('call_number', $newInstance->call_number)->first();
       $this->solrItems->update(array($originalItem, $newItem));
-      $this->solrMasters->update(array($originalInstance, $newInstance));
+      $this->solrIntances->update(array($originalInstance, $newInstance));
     }
     $this->solrTransfers->update($transfer);
 
@@ -566,8 +566,8 @@ class TransfersController extends Controller {
     if ($pmChanged) {
       $this->solrItems->update($originalItems);
       $this->solrItems->update($newItem);
-      $this->solrMasters->update($originalInstances);
-      $this->solrMasters->update($newInstance);
+      $this->solrIntances->update($originalInstances);
+      $this->solrIntances->update($newInstance);
     }
     $this->solrTransfers->update($transfers);
 
@@ -616,7 +616,7 @@ class TransfersController extends Controller {
       }
       $instance = $transfer->preservationInstance;
       if ($instance !== null) {
-        $this->solrMasters->update($instance);
+        $this->solrIntances->update($instance);
       }
     }
 
@@ -679,7 +679,7 @@ class TransfersController extends Controller {
       $instances =
         PreservationInstance::whereIn('call_number', $cutCallNumbers)->get();
       if ($instances !== null) {
-        $this->solrMasters->update($instances);
+        $this->solrIntances->update($instances);
       }
     }
 

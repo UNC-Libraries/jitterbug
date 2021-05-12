@@ -19,7 +19,7 @@ use Jitterbug\Support\SolariumProxy;
 class ProjectsController extends Controller
 {
 
-  protected $solrMasters;
+  protected $solrInstances;
 
   /**
    * Create a new controller instance.
@@ -29,7 +29,7 @@ class ProjectsController extends Controller
   public function __construct()
   {
     $this->middleware(['auth', 'admin']);
-    $this->solrMasters = new SolariumProxy('jitterbug-masters');
+    $this->solrInstances = new SolariumProxy('jitterbug-instances');
   }
 
   public function index(Request $request) {
@@ -64,9 +64,9 @@ class ProjectsController extends Controller
         });
 
         // Update Solr
-        $affectedMasters = 
+        $affectedInstances =
           PreservationInstance::where('project_id', $id)->get();
-        $this->solrMasters->update($affectedMasters);
+        $this->solrInstances->update($affectedInstances);
       }
     }
   }

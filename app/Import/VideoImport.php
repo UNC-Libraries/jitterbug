@@ -29,7 +29,7 @@ class VideoImport extends Import {
   protected $videoImportKeys = array();
 
   protected $solrItems;
-  protected $solrMasters;
+  protected $solrInstances;
   protected $solrTransfers;
 
   protected $data = null;
@@ -44,7 +44,7 @@ class VideoImport extends Import {
         'Format'));
 
     $this->solrItems = new SolariumProxy('jitterbug-items');
-    $this->solrMasters = new SolariumProxy('jitterbug-masters');
+    $this->solrInstances = new SolariumProxy('jitterbug-instances');
     $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
 
     $reader = new CsvReader($filePath);
@@ -276,7 +276,7 @@ class VideoImport extends Import {
     });
 
     $this->solrItems->update($items);
-    $this->solrMasters->update($instances);
+    $this->solrInstances->update($instances);
     $this->solrTransfers->update($transfers);
 
     return array('created' => $created, 'updated' => $updated);

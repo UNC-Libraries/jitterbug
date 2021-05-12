@@ -20,7 +20,7 @@ class CutsController extends Controller
 {
 
   protected $solrItems;
-  protected $solrMasters;
+  protected $solrInstances;
   protected $solrTransfers;
 
   /**
@@ -33,7 +33,7 @@ class CutsController extends Controller
     $this->middleware('auth');
 
     $this->solrItems = new SolariumProxy('jitterbug-items');
-    $this->solrMasters = new SolariumProxy('jitterbug-instances');
+    $this->solrInstances = new SolariumProxy('jitterbug-instances');
     $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
   }
 
@@ -87,7 +87,7 @@ class CutsController extends Controller
     // Update Solr
     $item = AudioVisualItem::where('call_number', $cut->call_number)->first();
     $this->solrItems->update($item);
-    $this->solrMasters->update($cut->preservationInstance);
+    $this->solrInstances->update($cut->preservationInstance);
     $this->solrTransfers->update($cut->transfer);
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
@@ -135,7 +135,7 @@ class CutsController extends Controller
     if ($updateSolr) {
       $item = AudioVisualItem::where('call_number', $cut->callNumber)->first();
       $this->solrItems->update($item);
-      $this->solrMasters->update($cut->preservationInstance);
+      $this->solrInstances->update($cut->preservationInstance);
       $this->solrTransfers->update($cut->transfer);
     }
 
@@ -171,7 +171,7 @@ class CutsController extends Controller
     // Update Solr
     $item = AudioVisualItem::where('call_number', $cut->call_number)->first();
     $this->solrItems->update($item);
-    $this->solrMasters->update($cut->preservationInstance);
+    $this->solrInstances->update($cut->preservationInstance);
     if ($command !== 'all') {
       $this->solrTransfers->update($cut->transfer);
     } else {

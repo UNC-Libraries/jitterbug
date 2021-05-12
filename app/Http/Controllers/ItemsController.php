@@ -35,7 +35,7 @@ class ItemsController extends Controller
 {
   
   protected $solrItems;
-  protected $solrMasters;
+  protected $solrIntances;
   protected $solrTransfers;
 
   /**
@@ -47,7 +47,7 @@ class ItemsController extends Controller
   {
     $this->middleware('auth');
     $this->solrItems = new SolariumProxy('jitterbug-items');
-    $this->solrMasters = new SolariumProxy('jitterbug-masters');
+    $this->solrIntances = new SolariumProxy('jitterbug-instances');
     $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
   }
   
@@ -390,7 +390,7 @@ class ItemsController extends Controller
       $instances = PreservationInstance::where('call_number',
                                                   $item->call_number)->get();
       if ($instances->count() > 0) {
-        $this->solrMasters->update($instances);
+        $this->solrIntances->update($instances);
       }
 
       $transfers = Transfer::where('call_number', $item->call_number)->get();
@@ -452,7 +452,7 @@ class ItemsController extends Controller
       $instances =
         PreservationInstance::where('call_number', $item->call_number)->get();
       if ($instances->count() > 0) {
-        $this->solrMasters->update($instances);
+        $this->solrIntances->update($instances);
       }
       $transfers = 
         Transfer::where('call_number', $item->call_number)->get();
@@ -522,7 +522,7 @@ class ItemsController extends Controller
     $this->solrItems->delete($item);
     if ($command==='all') {
       if ($instances !== null) {
-        $this->solrMasters->delete($instances);
+        $this->solrIntances->delete($instances);
       }
       if ($transfers !== null) {
         $this->solrTransfers->delete($transfers);
@@ -598,7 +598,7 @@ class ItemsController extends Controller
     $this->solrItems->delete($items);
     if ($command==='all') {
       if ($instances !== null) {
-        $this->solrMasters->delete($instances);
+        $this->solrIntances->delete($instances);
       }
       if ($transfers !== null) {
         $this->solrTransfers->delete($transfers);

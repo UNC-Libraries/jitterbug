@@ -28,7 +28,7 @@ class AudioImport extends Import {
   protected $audioImportKeys = array();
   protected $mustAlreadyExistInDbKeys = array();
 
-  protected $solrMasters;
+  protected $solrInstances;
   protected $solrTransfers;
 
   protected $data = null;
@@ -47,7 +47,7 @@ class AudioImport extends Import {
       'Speed' => AudioVisualItem::class
     );
 
-    $this->solrMasters = new SolariumProxy('jitterbug-masters');
+    $this->solrInstances = new SolariumProxy('jitterbug-instances');
     $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
 
     $reader = new CsvReader($filePath);
@@ -82,13 +82,13 @@ class AudioImport extends Import {
           && !empty($row[$key]) && !$this->valueExists(PlaybackMachine::class, 'name', $row[$key])) {
           $bag->add($key, $key . ' is not a recognized playback machine.');
         }
-        // Validate originator reference (preservation_master.file_name) 
+        // Validate originator reference (preservation_instance.file_name)
         // doesn't exist
         if ($key === 'OriginatorReference'
           && !empty($row[$key]) && $this->valueExists(PreservationInstance::class,'file_name', $row[$key])) {
           $bag->add($key, $key . ' already exists in the database.');
         }
-        // Validate originator reference (preservation_master.file_name) 
+        // Validate originator reference (preservation_instance.file_name)
         // is unique amongst values in the rest of the file
         if ($key === 'OriginatorReference'
           && !empty($row[$key]) && in_array($row[$key], $originatorReferences)) {
@@ -295,7 +295,7 @@ class AudioImport extends Import {
           $instance->file_format = 'BWF';
           $instance->file_codec = 'Uncompressed PCM';
 
-          $instance->subclass_type = 'AudioMaster';
+          $instance->subclass_type = 'AudioInstance';
           $instance->subclass_id = $audioInstance->id;
           $instance->save();
           $instances[] = $instance;
@@ -310,7 +310,7 @@ class AudioImport extends Import {
           // Create the transfer
           $transfer = new Transfer;
           $transfer->call_number = $callNumber;
-          $transfer->preservation_master_id = $instance->id;
+          $transfer->preservation_instance_id = $instance->id;
           $transfer->playback_machine_id = $playbackMachine->id;
           // Right now we will assume the person importing is the
           // engineer, but that might change in the future.
@@ -371,7 +371,7 @@ class AudioImport extends Import {
       DB::statement('set @transaction_id = null;');      
     });
 
-    $this->solrMasters->update($instances);
+    $this->solrInstances->update($instances);
     $this->solrTransfers->update($transfers);
 
     return array('created' => $created, 'updated' => $updated);

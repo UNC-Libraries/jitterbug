@@ -40,7 +40,7 @@ use Jitterbug\Support\SolariumPaginator;
 class InstancesController extends Controller {
 
   protected $solrItems;
-  protected $solrMasters;
+  protected $solrInstances;
   protected $solrTransfers;
 
   /**
@@ -52,7 +52,7 @@ class InstancesController extends Controller {
   {
     $this->middleware('auth');
     $this->solrItems = new SolariumProxy('jitterbug-items');
-    $this->solrMasters = new SolariumProxy('jitterbug-instances');
+    $this->solrInstances = new SolariumProxy('jitterbug-instances');
     $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
   }
 
@@ -74,7 +74,7 @@ class InstancesController extends Controller {
       $sortColumn = $request->query('sortColumn');
       $sortDirection = $request->query('sortDirection');
 
-      $resultSet = $this->solrMasters->query($queryParams, $start, $perPage, $sortColumn, $sortDirection);
+      $resultSet = $this->solrInstances->query($queryParams, $start, $perPage, $sortColumn, $sortDirection);
       $instances = new SolariumPaginator($resultSet,$page,$perPage);
       $totalRecordCount = $instances->total() . ' ' . Str::plural('record', $instances->total());
 
@@ -194,7 +194,7 @@ class InstancesController extends Controller {
     });
 
     // Update Solr
-    $this->solrMasters->update($instances);
+    $this->solrInstances->update($instances);
 
     if ($batch) {
       $request->session()->put('alert', array('type' => 'success', 'message' => 
@@ -247,9 +247,9 @@ class InstancesController extends Controller {
     $instanceIds = explode(',', $request->input('ids'));
     // See similar in ItemsController.php for comments on the below
     if ($request->method()==='POST') {
-      $request->session()->put('batchMasterIds', $instanceIds);
+      $request->session()->put('batchInstanceIds', $instanceIds);
     } else if ($request->method()==='GET') {
-      $instanceIds = $request->session()->get('batchMasterIds');
+      $instanceIds = $request->session()->get('batchInstanceIds');
     }
     
     if ($instanceIds === null) {
@@ -360,7 +360,7 @@ class InstancesController extends Controller {
 
   public function resolveRange(Request $request)
   {
-  	return parent::rangeFor($request, $this->solrMasters);
+  	return parent::rangeFor($request, $this->solrInstances);
   }
 
   public function update($id, InstanceRequest $request)
@@ -414,7 +414,7 @@ class InstancesController extends Controller {
       // Need to update transfers since the call number has changed.
       $this->solrTransfers->update($instance->transfers);
     }
-    $this->solrMasters->update($instance);
+    $this->solrInstances->update($instance);
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>Yep.</strong> ' . 
@@ -494,9 +494,9 @@ class InstancesController extends Controller {
       // Need to update transfers since the call number has changed.
       $this->solrTransfers->update($transfersToUpdateInSolr);
     }
-    $this->solrMasters->update($instances);
+    $this->solrInstances->update($instances);
 
-    $request->session()->forget('batchMasterIds');
+    $request->session()->forget('batchInstanceIds');
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>Woohoo!</strong> ' . 
@@ -543,7 +543,7 @@ class InstancesController extends Controller {
     });
 
     // Update Solr
-    $this->solrMasters->delete($instance);
+    $this->solrInstances->delete($instance);
     if ($command==='all') {
       if ($transfers !== null) {
         $this->solrTransfers->delete($transfers);
@@ -617,7 +617,7 @@ class InstancesController extends Controller {
     });
 
     // Update Solr
-    $this->solrMasters->delete($instances);
+    $this->solrInstances->delete($instances);
     if ($command==='all') {
       if ($transfers !== null) {
         $this->solrTransfers->delete($transfers);
