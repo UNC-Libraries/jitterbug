@@ -73,15 +73,15 @@ jobs:
             sudo chmod -R g+w .
             cd server/solr
             mkdir jitterbug-items
-            mkdir jitterbug-masters
+            mkdir jitterbug-instances
             mkdir jitterbug-transfers
             cd jitterbug-items
             cat ~/jitterbug/dev_files/jitterbug-items.core.properties.example > core.properties
             ln -s ~/jitterbug/solrconfig/jitterbug-items/conf conf
             cd ..
-            cd jitterbug-masters
-            cat ~/jitterbug/dev_files/jitterbug-masters.core.properties.example > core.properties
-            ln -s ~/jitterbug/solrconfig/jitterbug-masters/conf conf
+            cd jitterbug-instances
+            cat ~/jitterbug/dev_files/jitterbug-instances.core.properties.example > core.properties
+            ln -s ~/jitterbug/solrconfig/jitterbug-instances/conf conf
             cd ..
             cd jitterbug-transfers
             cat ~/jitterbug/dev_files/jitterbug-transfers.core.properties.example > core.properties

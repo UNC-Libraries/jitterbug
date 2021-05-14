@@ -9,7 +9,7 @@
                 transfers.id AS id,
                 transfers.call_number AS call_number,
                 transfers.transfer_date AS transfer_date,
-                transfers.preservation_master_id AS preservation_master_id,
+                transfers.preservation_instance_id AS preservation_instance_id,
                 transfers.vendor_id AS vendor_id,
                 vendors.name AS vendor_name,
                 transfers.engineer_id AS engineer_id,
@@ -50,7 +50,7 @@
             <field column="id" name="id" />
             <field column="call_number" name="callNumber" />
             <field column="transfer_date" name="transferDate" />
-            <field column="preservation_master_id" name="preservationMasterId" />
+            <field column="preservation_instance_id" name="preservationInstanceId" />
             <field column="vendor_id" name="vendorId" />
             <field column="vendor_name" name="vendorName" />
             <field column="engineer_id" name="engineerId" />

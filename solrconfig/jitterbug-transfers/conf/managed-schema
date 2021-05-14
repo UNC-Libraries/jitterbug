@@ -116,7 +116,7 @@
    <field name="callNumber" type="text_general" indexed="true" stored="true" required="false" />
    <field name="callNumberSortable" type="lowercase" indexed="true" stored="false" required="false" />
    <field name="transferDate" type="string" indexed="true" stored="true" required="false" />
-   <field name="preservationMasterId" type="string" indexed="true" stored="true" required="false" />
+   <field name="preservationInstanceId" type="string" indexed="true" stored="true" required="false" />
    <field name="vendorId" type="string" indexed="true" stored="true" required="false" />
    <field name="vendorName" type="text_general" indexed="true" stored="true" required="false" />
    <field name="engineerId" type="string" indexed="true" stored="true" required="false" />

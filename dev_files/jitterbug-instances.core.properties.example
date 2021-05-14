@@ -1,4 +1,4 @@
-name=jitterbug-masters
+name=jitterbug-instances
 config=solrconfig.xml
 schema=managed-schema
 dataDir=data
