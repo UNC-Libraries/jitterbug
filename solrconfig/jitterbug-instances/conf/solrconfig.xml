@@ -332,8 +332,8 @@
          background concurrently.  An error is returned if this limit
          is exceeded.
 
-         Recommend values of 1-2 for read-only slaves, higher for
-         masters w/o cache warming.
+         Recommend values of 1-2 for read-only replicas, higher for
+         primaries w/o cache warming.
       -->
     <maxWarmingSearchers>2</maxWarmingSearchers>
 
