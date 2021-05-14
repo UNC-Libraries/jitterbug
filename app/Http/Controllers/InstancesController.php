@@ -83,7 +83,7 @@ class InstancesController extends Controller {
         $instanceIds[] = $instance->id;
       }
       $marks = Mark::whereIn('markable_id', $instanceIds)
-            ->where('markable_type', 'PreservationMaster')
+            ->where('markable_type', 'PreservationInstance')
             ->where('user_id', Auth::user()->id)
             ->get()->pluck('markable_id');
 

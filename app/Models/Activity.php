@@ -30,7 +30,7 @@ class Activity extends Model {
   // update transactions.
   // numAffected: the number of records that were affected by the activity.
   // objectTypesToIds: the types of objects that were affected (audio item, video item, 
-  // audio master, etc) mapped to the base object ids that were affected. the array
+  // audio instance, etc) mapped to the base object ids that were affected. the array
   // is stored serialized in the database.
   // each type. stored as a serialized array in the database.
   // timestamp: the time that the activity occurred.
@@ -76,7 +76,7 @@ class Activity extends Model {
   /**
    * Return a formatted string representation of the original object this 
    * activity relates to. For example, if a user chooses to delete an audio 
-   * visual item along with its preservation masters and transfers, the 
+   * visual item along with its preservation instances and transfers, the
    * original object would be the audio visual item.
    *
    * Returned string is like: 'audio item' OR 'audio and film item' OR 'audio, 
@@ -93,8 +93,8 @@ class Activity extends Model {
     }
 
     $objectType = $this->objectType();
-    if ($objectType === 'master' && !$this->batch) {
-      return 'preservation master';
+    if ($objectType === 'instance' && !$this->batch) {
+      return 'preservation instance';
     } else if ($objectType === 'transfer' && !$this->batch) {
       return 'transfer';
     }
@@ -148,7 +148,7 @@ class Activity extends Model {
   }
 
   /**
-   * Return the object type (item, master, transfer or cut) of the 
+   * Return the object type (item, instance, transfer or cut) of the
    * original object.
    *
    * @return string
@@ -171,14 +171,14 @@ class Activity extends Model {
     // e.g. will explode 'audio item' to ['audio', 'item']
     $explodedKey = explode(' ', $objectKey);
     // This will get the last element of the array, which is the object type 
-    // (item, master or transfer)
+    // (item, instance or transfer)
     $objectType = $explodedKey[1];
 
     return $objectType;
   }
 
   /**
-   * Return the object id (item, master, transfer or cut) of the 
+   * Return the object id (item, instance, transfer or cut) of the
    * original object.
    *
    * @return int
