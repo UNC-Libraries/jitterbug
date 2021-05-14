@@ -458,9 +458,9 @@
             </div>
             <div class="modal-body">
               <strong>Yikes! Are you sure?</strong>
-              @if (count($item->preservation_instances) > 0 && count($item->cuts) > 0)
+              @if (count($item->preservationInstances) > 0 && count($item->cuts) > 0)
                 This item has related preservation instances and cuts.
-              @elseif (count($item->preservation_instances) > 0)
+              @elseif (count($item->preservationInstances) > 0)
                 This item has related preservation instances.
               @endif
               Do you want to delete just this item, or do you want to delete this item <strong>and all</strong> associated records? This cannot be undone.

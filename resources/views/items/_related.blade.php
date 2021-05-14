@@ -1,12 +1,12 @@
-  @if (count($item->preservationMasters) > 0 )
+  @if (count($item->preservationInstances) > 0 )
   <div class="row">
     <div class="col-xs-12">
-      <h6>Related Preservation Masters</h6>
+      <h6>Related Preservation Instances</h6>
     </div>
   </div>
   <div class="row related-container">
     <div class="col-xs-12">
-      <table id="related-masters" class="table table-sm table-hover">
+      <table id="related-instances" class="table table-sm table-hover">
         <thead>
           <tr>
             <th width="12%">PM #</th>
@@ -18,14 +18,14 @@
           </tr>
         </thead>
         <tbody>
-          @foreach ($item->preservationMasters as $master)
-          <tr role="button" data-id="{{$master->id}}">
-            <td>{{$master->id}}</td>
-            <td>{{$master->file_name}}</td>
-            <td>{{$master->file_location}}</td>
-            <td>{{$master->department->name ?? ''}}</td>
-            <td>{{$master->duration}}</td>
-            <td>{{$master->type}}</td>
+          @foreach ($item->preservationInstances as $instance)
+          <tr role="button" data-id="{{$instance->id}}">
+            <td>{{$instance->id}}</td>
+            <td>{{$instance->file_name}}</td>
+            <td>{{$instance->file_location}}</td>
+            <td>{{$instance->department->name ?? ''}}</td>
+            <td>{{$instance->duration}}</td>
+            <td>{{$instance->type}}</td>
           </tr>
           @endforeach
         </tbody>
@@ -55,8 +55,8 @@
         </thead>
         <tbody>
           @foreach ($cuts as $cut)
-          <tr role="button" data-master="{{$cut->preservation_master_id}}" data-id="{{$cut->id}}">
-            <td>{{$cut->preservation_master_id}}</td>
+          <tr role="button" data-instance="{{$cut->preservation_instance_id}}" data-id="{{$cut->id}}">
+            <td>{{$cut->preservation_instance_id}}</td>
             <td>{{$cut->cut_number}}</td>
             <td>{{$cut->side}}</td>
             <td>{{$cut->title}}</td>
