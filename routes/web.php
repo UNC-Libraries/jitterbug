@@ -125,18 +125,18 @@ Route::get('cuts/{id}', 'CutsController@get');
 
 Route::get('instance/resolve-range', 'InstancesController@resolveRange');
 Route::match(['post', 'get'], 'instance/batch/edit',
-  'InstancesController@batchEdit')->name('instance.batch.edit');
+  'InstancesController@batchEdit')->name('instances.batch.edit');
 Route::put('instance/batch',
-  'InstancesController@batchUpdate')->name('instance.batch.update');
+  'InstancesController@batchUpdate')->name('instances.batch.update');
 Route::delete('instance/batch',
-  'InstancesController@batchDestroy')->name('instance.batch.destroy');
+  'InstancesController@batchDestroy')->name('instances.batch.destroy');
 Route::post('instance/batch/export-fields',
-  'InstancesController@batchExportFields')->name('instance.batch.export.fields');
+  'InstancesController@batchExportFields')->name('instances.batch.export.fields');
 Route::post('instance/batch/export-build',
-  'InstancesController@batchExportBuild')->name('instance.batch.export.build');
+  'InstancesController@batchExportBuild')->name('instances.batch.export.build');
 Route::post('instance/batch/export-download',
-  'InstancesController@batchExportDownload')->name('instance.batch.export.download');
-Route::resource('instance', 'InstancesController');
+  'InstancesController@batchExportDownload')->name('instances.batch.export.download');
+Route::resource('instances', 'InstancesController');
 Route::resource('instance.cuts', 'CutsController', ['except' => ['index']]);
 
 /*
