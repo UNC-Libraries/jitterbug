@@ -29,12 +29,12 @@ class ChangePreservationMasterTableToPreservationInstance extends Migration
         CREATE OR REPLACE VIEW preservation_instance_types AS
           SELECT
             media_types.id,
-            TRIM(TRAILING 'instance' FROM preservation_instances.subclass_type) AS name,
+            media_types.name AS name,
             COUNT(preservation_instances.subclass_type) AS count
           FROM
             preservation_instances, media_types
           WHERE
-            TRIM(TRAILING 'instance' FROM preservation_instances.subclass_type) = media_types.name
+            TRIM(TRAILING 'Instance' FROM preservation_instances.subclass_type) = media_types.name
           AND
             preservation_instances.deleted_at is null
           GROUP BY media_types.name;
