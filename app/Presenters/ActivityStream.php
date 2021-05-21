@@ -1,8 +1,6 @@
 <?php namespace Jitterbug\Presenters;
 
 use DB;
-use Log;
-
 use Jitterbug\Models\Activity;
 
 /**
@@ -70,17 +68,14 @@ class ActivityStream
     return Activity::all();
   }
 
-  private function hasNewTransactions()
+  private function hasNewTransactions() : bool
   {
-    // Fetch last transaction in the revisions table. This is not
-    // pretty, but it's the fastest way to get the last transaction.
-    $results = DB::select("select transaction_id 
-                          from revisions 
-                          where id = (
-                            select auto_increment 
-                            from information_schema.tables 
-                            where table_schema = 'jitterbug'
-                            and table_name = 'revisions') - 1");
+    // Fetch last transaction in the revisions table
+    $results = DB::table('revisions')->select('transaction_id')
+                                     ->orderBy('id')
+                                     ->limit(1)
+                                     ->get()->all();
+
     $lastRevisionTransactionId = $results[0]->transaction_id;
 
     // Fetch last transaction in the activities table

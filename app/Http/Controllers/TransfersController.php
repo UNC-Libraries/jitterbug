@@ -41,7 +41,7 @@ class TransfersController extends Controller {
   protected $audioImportKeys = array();
 
   protected $solrItems;
-  protected $solrIntances;
+  protected $solrInstances;
   protected $solrTransfers;
 
   /**
@@ -54,7 +54,7 @@ class TransfersController extends Controller {
     $this->middleware('auth');
 
     $this->solrItems = new SolariumProxy('jitterbug-items');
-    $this->solrIntances = new SolariumProxy('jitterbug-instances');
+    $this->solrInstances = new SolariumProxy('jitterbug-instances');
     $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
   }
 
@@ -479,7 +479,7 @@ class TransfersController extends Controller {
       $newItem = 
         AudioVisualItem::where('call_number', $newInstance->call_number)->first();
       $this->solrItems->update(array($originalItem, $newItem));
-      $this->solrIntances->update(array($originalInstance, $newInstance));
+      $this->solrInstances->update(array($originalInstance, $newInstance));
     }
     $this->solrTransfers->update($transfer);
 
@@ -566,8 +566,8 @@ class TransfersController extends Controller {
     if ($pmChanged) {
       $this->solrItems->update($originalItems);
       $this->solrItems->update($newItem);
-      $this->solrIntances->update($originalInstances);
-      $this->solrIntances->update($newInstance);
+      $this->solrInstances->update($originalInstances);
+      $this->solrInstances->update($newInstance);
     }
     $this->solrTransfers->update($transfers);
 
@@ -616,7 +616,7 @@ class TransfersController extends Controller {
       }
       $instance = $transfer->preservationInstance;
       if ($instance !== null) {
-        $this->solrIntances->update($instance);
+        $this->solrInstances->update($instance);
       }
     }
 
@@ -679,7 +679,7 @@ class TransfersController extends Controller {
       $instances =
         PreservationInstance::whereIn('call_number', $cutCallNumbers)->get();
       if ($instances !== null) {
-        $this->solrIntances->update($instances);
+        $this->solrInstances->update($instances);
       }
     }
 
