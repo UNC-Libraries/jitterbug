@@ -9,7 +9,7 @@
   </div>
   <div class="row">
     <div class="col-xs-12">
-      <h6>{{$instance->type}} Instance Details</h6>
+      <h6>{{$instance->type}} Preservation Instance Details</h6>
     </div>
   </div>
   {{-- PreservationInstance fields --}}

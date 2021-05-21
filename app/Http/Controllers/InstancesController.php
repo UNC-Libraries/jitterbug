@@ -278,7 +278,7 @@ class InstancesController extends Controller {
     if ($instanceIdsCount!==$instances->count()) {
       $request->session()->put('alert', array('type' => 'danger', 'message' => 
         '<strong>Oops! There\'s a problem.</strong> ' . 
-        'Batch editing can only be done with instances of the same type. ' .
+        'Batch editing can only be done with preservation instances of the same type. ' .
         'Please change your selection.'));
       return redirect()->route('instances.index');
     }

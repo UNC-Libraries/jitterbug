@@ -381,7 +381,7 @@ class AudioImport extends Import {
   { // TODO can reduce to 1 query by querying preservation instances directly
     $item = AudioVisualItem::where('call_number', $callNumber)->first();
     if ($item !== null) {
-      $instances = $item->preservation_instances;
+      $instances = $item->preservationInstances;
       foreach ($instances as $instance) {
         if ($instance->id == $pmId) {
           return true;
