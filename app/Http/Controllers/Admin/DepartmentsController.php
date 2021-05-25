@@ -10,7 +10,7 @@ use Illuminate\Support\MessageBag;
 use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Http\Requests\DepartmentRequest;
 use Jitterbug\Models\Department;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Support\SolariumProxy;
 
 /**
@@ -19,7 +19,7 @@ use Jitterbug\Support\SolariumProxy;
 class DepartmentsController extends Controller
 {
 
-  protected $solrMasters;
+  protected $solrInstances;
 
   /**
    * Create a new controller instance.
@@ -29,7 +29,7 @@ class DepartmentsController extends Controller
   public function __construct()
   {
     $this->middleware(['auth', 'admin']);
-    $this->solrMasters = new SolariumProxy('jitterbug-masters');
+    $this->solrInstances = new SolariumProxy('jitterbug-instances');
   }
 
   public function index(Request $request) {
@@ -64,16 +64,16 @@ class DepartmentsController extends Controller
         });
 
         // Update Solr
-        $affectedMasters = 
-          PreservationMaster::where('department_id', $id)->get();
-        $this->solrMasters->update($affectedMasters);
+        $affectedInstances =
+          PreservationInstance::where('department_id', $id)->get();
+        $this->solrInstances->update($affectedInstances);
       }
     }
   }
 
   public function destroy($id, Request $request) {
     if ($request->ajax()) {
-      $count = PreservationMaster::where('department_id', $id)->count();
+      $count = PreservationInstance::where('department_id', $id)->count();
       if ($count === 0) {
         $department = Department::findOrFail($id);
         $department->delete();
@@ -82,7 +82,7 @@ class DepartmentsController extends Controller
       } else {
         $bag = new MessageBag();
         $bag->add('status', 'Looks like that department is currently in use. ' . 
-          'Change the department of the related preservation masters before ' .
+          'Change the department of the related preservation instances before ' .
           'deleting.');
         $response = $bag;
         return response()->json($bag, 422);

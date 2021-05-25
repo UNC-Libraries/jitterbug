@@ -1,5 +1,5 @@
 <div id="data-container">
-  {{-- The ID of this table needs to be unique across Jitterbug (i.e. different than the data table in masters or transfers) so that the colResizable plugin stores and loads unique column widths (set by the user) to localStorage. --}}
+  {{-- The ID of this table needs to be unique across Jitterbug (i.e. different than the data table in instances or transfers) so that the colResizable plugin stores and loads unique column widths (set by the user) to localStorage. --}}
   <table id="items-data" class="table table-sm table-hover" data-sort-column="{{$sortColumn}}" data-sort-direction="{{$sortDirection}}">
     <thead>
       <tr id="header-row" role="rowheader">

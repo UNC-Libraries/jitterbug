@@ -35,56 +35,56 @@ Breadcrumbs::for('items.create', function($trail)
 
 /*
 |--------------------------------------------------------------------------
-| Preservation Masters
+| Preservation Instances
 |--------------------------------------------------------------------------
 */
 
-// Masters
-Breadcrumbs::for('masters.index', function($trail)
+// Instances
+Breadcrumbs::for('instances.index', function($trail)
 {
-  $trail->push('Masters', route('masters.index'));
+  $trail->push('Instances', route('instances.index'));
 });
 
-// Masters / View Master
-Breadcrumbs::for('masters.show', function($trail, $master)
+// Instances / View Instance
+Breadcrumbs::for('instances.show', function($trail, $instance)
 {
-  $trail->parent('masters.index');
-  $trail->push('View Master', route('masters.show', $master->id));
+  $trail->parent('instances.index');
+  $trail->push('View Preservation Instance', route('instances.show', $instance->id));
 });
 
-// Masters / Edit Master
-Breadcrumbs::for('masters.edit', function($trail, $master)
+// Instances / Edit Instance
+Breadcrumbs::for('instances.edit', function($trail, $instance)
 {
-  $trail->parent('masters.index');
-  $trail->push('Edit Master', route('masters.edit', getParam($master->id)));
+  $trail->parent('instances.index');
+  $trail->push('Edit Preservation Instance', route('instances.edit', getParam($instance->id)));
 });
 
-// Masters / View Master / View Cut
-Breadcrumbs::for('masters.cuts.show', function($trail, $master, $cut)
+// Instances / View Instance / View Cut
+Breadcrumbs::for('instances.cuts.show', function($trail, $instance, $cut)
 {
-  $trail->parent('masters.show', $master);
-  $trail->push('View Cut', route('masters.cuts.show', [$master->id, $cut->id]));
+  $trail->parent('instances.show', $instance);
+  $trail->push('View Cut', route('instances.cuts.show', [$instance->id, $cut->id]));
 });
 
-// Masters / View Master / Edit Cut
-Breadcrumbs::for('masters.cuts.edit', function($trail, $master, $cut)
+// Instances / View Instance / Edit Cut
+Breadcrumbs::for('instances.cuts.edit', function($trail, $instance, $cut)
 {
-  $trail->parent('masters.show', $master);
-  $trail->push('Edit Cut', route('masters.cuts.edit', [$master->id, $cut->id]));
+  $trail->parent('instances.show', $instance);
+  $trail->push('Edit Cut', route('instances.cuts.edit', [$instance->id, $cut->id]));
 });
 
-// Masters / View Master / Create Cut
-Breadcrumbs::for('masters.cuts.create', function($trail, $master)
+// Instances / View Instance / Create Cut
+Breadcrumbs::for('instances.cuts.create', function($trail, $instance)
 {
-  $trail->parent('masters.show', $master);
-  $trail->push('Create Cut', route('masters.cuts.create', $master->id));
+  $trail->parent('instances.show', $instance);
+  $trail->push('Create Cut', route('instances.cuts.create', $instance->id));
 });
 
-// Masters / Create Master
-Breadcrumbs::for('masters.create', function($trail)
+// Instances / Create Instance
+Breadcrumbs::for('instances.create', function($trail)
 {
-  $trail->parent('masters.index');
-  $trail->push('Create Master', route('masters.create'));
+  $trail->parent('instances.index');
+  $trail->push('Create Preservation Instance', route('instances.create'));
 });
 
 /*

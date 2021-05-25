@@ -28,7 +28,7 @@ class TransactionDigest
    * @var array
    */
   protected $baseClasses = array('AudioVisualItem' => 1,
-                                 'PreservationMaster' => 1,
+                                 'PreservationInstance' => 1,
                                  'Transfer' => 1,
                                  'Cut' => 1);
 
@@ -121,7 +121,7 @@ class TransactionDigest
   protected $associatedItemType = null;
 
   /**
-   * The types of objects (audio item, film item, video item, audio master, 
+   * The types of objects (audio item, film item, video item, audio instance,
    * etc.) affected by the transaction mapped to ids of objects affected.
    *
    * @var array
@@ -284,7 +284,7 @@ class TransactionDigest
    * If this is an update where the call number was updated, this function
    * filters out revisions and object types that aren't for the original
    * object type. We use call numbers as foreign keys on preservation
-   * masters, transfers, and cuts, so those need to change if a call number 
+   * instances, transfers, and cuts, so those need to change if a call number
    * on an original object changes (such as an audio visual item), but 
    * the user probably doesn't need to know that.
    */
@@ -301,15 +301,15 @@ class TransactionDigest
         // e.g. will explode 'audio item' to ['audio', 'item']
         $explodedKey = explode(' ', $objectKey);
         // This will get the last element of the array, which is the object type 
-        // (item, master or transfer)
+        // (item, instance or transfer)
         $objectType = $explodedKey[1];
       }
 
       $revisionableType = null;
       if ($objectType === 'item') {
         $revisionableType = 'AudioVisualItem';
-      } else if ($objectType === 'master') {
-        $revisionableType = 'PreservationMaster';
+      } else if ($objectType === 'instance') {
+        $revisionableType = 'PreservationInstance';
       } else if ($objectType === 'transfer') {
         $revisionableType = 'Transfer';
       } else if ($objectType === 'cut') {
@@ -321,10 +321,10 @@ class TransactionDigest
           && $revision->revisionable_type !== $revisionableType) {
           $this->revisions->forget($key);
         }
-        // The preservation master id of a cut changes only
+        // The preservation instance id of a cut changes only
         // if the call number changes on the associated transfer, 
         // so we will filter this out too.
-        if ($revision->field === 'preservation_master_id' 
+        if ($revision->field === 'preservation_instance_id'
           && $revision->revisionable_type === 'Cut') {
           $this->revisions->forget($key);
         }
@@ -399,7 +399,7 @@ class TransactionDigest
   }
 
   /**
-   * Get the call number from the referenced object (item, master, transfer
+   * Get the call number from the referenced object (item, instance, transfer
    * or cut) in the first revision.
    *
    * @return string
@@ -483,10 +483,10 @@ class TransactionDigest
       // This is an audio, film or video import
       // We will count the unique revisions for this transaction ID
       // by grouping the same revision types together and their revisionable IDs
-      // we are only counting revisions for PreservationMasters, AudioVisualItems, and AudioItems
+      // we are only counting revisions for PreservationInstances, AudioVisualItems, and AudioItems
       $uniqueRevisionsCount = Revision::where('transaction_id', $this->transactionId)
                                         ->groupBy('revisionable_type', 'revisionable_id')
-                                        ->whereIn('revisionable_type', ['PreservationMaster','AudioItem','AudioVisualItem'])
+                                        ->whereIn('revisionable_type', ['PreservationInstance','AudioItem','AudioVisualItem'])
                                         ->get()
                                         ->count();
       $this->batchSize = $uniqueRevisionsCount;
@@ -504,7 +504,7 @@ class TransactionDigest
   protected function wasBatch()
   {
     $totalItems = 0;
-    $totalMasters = 0;
+    $totalInstances = 0;
     $totalTransfers = 0;
     
     // Total up the number of ids affected for each object type.
@@ -512,14 +512,14 @@ class TransactionDigest
     // the batch operation originated from. For exampple, if 
     // there are items in the array, the transaction originated
     // from items, and if multiple items were involved, then it
-    // was batch. Likewise, if there are masters in the map but 
-    // no items, the operation originated from masters. If there
-    // was more than one master involved, it was batch, and so on.
+    // was batch. Likewise, if there are instances in the map but
+    // no items, the operation originated from instances. If there
+    // was more than one instance involved, it was batch, and so on.
     foreach ($this->objectTypesToIds as $key => $value) {
       if (ends_with($key, 'item')) {
         $totalItems = $totalItems + count($value);
-      } else if (ends_with($key, 'master')) {
-        $totalMasters = $totalMasters + count($value);
+      } else if (ends_with($key, 'instance')) {
+        $totalInstances = $totalInstances + count($value);
       } else if (ends_with($key, 'transfer')) {
         $totalTransfers = $totalTransfers + count($value);
       }
@@ -528,10 +528,10 @@ class TransactionDigest
     if ($totalItems > 1) {
       $this->batchSize = $totalItems;
       return true;
-    } else if ($totalMasters > 1 && $totalItems === 0) {
-      $this->batchSize = $totalMasters;
+    } else if ($totalInstances > 1 && $totalItems === 0) {
+      $this->batchSize = $totalInstances;
       return true;
-    } else if ($totalTransfers > 1 && $totalMasters === 0) {
+    } else if ($totalTransfers > 1 && $totalInstances === 0) {
       $this->batchSize = $totalTransfers;
       return true;
     }
@@ -585,7 +585,7 @@ class TransactionDigest
   }
 
   /**
-   * Get the number of records (items, masters or transfers) involved in
+   * Get the number of records (items, instances or transfers) involved in
    * this transaction.
    *
    * @return int

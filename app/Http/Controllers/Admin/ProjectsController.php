@@ -10,7 +10,7 @@ use Illuminate\Support\MessageBag;
 use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Http\Requests\ProjectRequest;
 use Jitterbug\Models\Project;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Support\SolariumProxy;
 
 /**
@@ -19,7 +19,7 @@ use Jitterbug\Support\SolariumProxy;
 class ProjectsController extends Controller
 {
 
-  protected $solrMasters;
+  protected $solrInstances;
 
   /**
    * Create a new controller instance.
@@ -29,7 +29,7 @@ class ProjectsController extends Controller
   public function __construct()
   {
     $this->middleware(['auth', 'admin']);
-    $this->solrMasters = new SolariumProxy('jitterbug-masters');
+    $this->solrInstances = new SolariumProxy('jitterbug-instances');
   }
 
   public function index(Request $request) {
@@ -64,16 +64,16 @@ class ProjectsController extends Controller
         });
 
         // Update Solr
-        $affectedMasters = 
-          PreservationMaster::where('project_id', $id)->get();
-        $this->solrMasters->update($affectedMasters);
+        $affectedInstances =
+          PreservationInstance::where('project_id', $id)->get();
+        $this->solrInstances->update($affectedInstances);
       }
     }
   }
 
   public function destroy($id, Request $request) {
     if ($request->ajax()) {
-      $count = PreservationMaster::where('project_id', $id)->count();
+      $count = PreservationInstance::where('project_id', $id)->count();
       if ($count === 0) {
         $project = Project::findOrFail($id);
         $project->delete();
@@ -82,7 +82,7 @@ class ProjectsController extends Controller
       } else {
         $bag = new MessageBag();
         $bag->add('status', 'Looks like that project is currently in use. ' . 
-          'Change the project of the related preservation masters before ' .
+          'Change the project of the related preservation instances before ' .
           'deleting.');
         $response = $bag;
         return response()->json($bag, 422);

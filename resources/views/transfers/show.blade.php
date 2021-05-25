@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title' => 'Transfer', 'section' => 'transfers'])
+@extends('layouts.main', ['title' => 'Transfer', 'section' => 'transfers'])
 
 @section('content')
 <div id="detail">
@@ -23,16 +23,16 @@
         words they were not linked to an AudioVisualItem. So we will check to
         make sure there is a call number.
        --}}
-      @if ($transfer->preservation_master_id)
+      @if ($transfer->preservation_instance_id)
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1 detail-label">
           PM #
         </div>
         <div class="col-xs-7 detail-value">
-          @if ($transfer->preservationMaster)
-            <a href="{{route('masters.show', $transfer->preservationMaster->id)}}" class="detail-link">{{$transfer->preservation_master_id}}</a>
+          @if ($transfer->preservationInstance)
+            <a href="{{route('instances.show', $transfer->preservationInstance->id)}}" class="detail-link">{{$transfer->preservation_instance_id}}</a>
           @else
-            <span class="text-danger" title="Missing preservation master">{{$transfer->preservation_master_id}}&nbsp;<i class="fa fa-question" aria-hidden="true"></i></span>
+            <span class="text-danger" title="Missing preservation instance">{{$transfer->preservation_instance_id}}&nbsp;<i class="fa fa-question" aria-hidden="true"></i></span>
           @endif
         </div>
       </div>
@@ -204,7 +204,7 @@
     <div class="col-xs-12 actions">
       <a class="btn btn-sm btn-secondary" role="button" href="{{ route('transfers.edit', $transfer->id) }}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
       @if ($transfer->cut === null && $transfer->type === 'Audio') 
-      <a class="btn btn-sm btn-secondary" role="button" href="{{ route('masters.cuts.create', array('masters' => $transfer->preservationMaster->id, 'transferId' => $transfer->id)) }}"><i class="fa fa-plus" aria-hidden="true"></i> Add Cut</a>
+      <a class="btn btn-sm btn-secondary" role="button" href="{{ route('instances.cuts.create', array('instances' => $transfer->preservationInstance->id, 'transferId' => $transfer->id)) }}"><i class="fa fa-plus" aria-hidden="true"></i> Add Cut</a>
       @endif
       <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target=".confirm-delete-modal" style="outline: none; float: right;"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></button>
 

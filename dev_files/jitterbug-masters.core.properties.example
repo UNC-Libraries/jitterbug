@@ -1,7 +1,0 @@
-name=jitterbug-masters
-config=solrconfig.xml
-schema=managed-schema
-dataDir=data
-importDataSourceUrl=jdbc:mysql://localhost:3306/jitterbug
-importDataSourceUser=homestead
-importDataSourcePassword=secret

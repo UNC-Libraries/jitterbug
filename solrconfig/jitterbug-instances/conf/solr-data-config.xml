@@ -1,0 +1,82 @@
+<dataConfig>
+    <dataSource driver="com.mysql.jdbc.Driver" type="JdbcDataSource"
+        url="${importDataSourceUrl}" user="${importDataSourceUser}" password="${importDataSourcePassword}" />
+    <document>
+        <!-- this entity is the 'root' entity. -->
+        <entity name="preservation_instance" query="
+
+            SELECT 
+                instances.id AS id,
+                instances.call_number AS call_number,
+                instances.file_name AS file_name,
+                instances.duration_in_seconds AS duration_in_seconds,
+                instances.department_id AS department_id,
+                instances.project_id AS project_id,
+                items.collection_id AS collection_id,
+                collections.name AS collection_name,
+                items.format_id AS format_id,
+                formats.name AS format_name,
+                departments.name AS department_name,
+                projects.name AS project_name,
+                types.id AS type_id,
+                TRIM(TRAILING 'Instance' FROM instances.subclass_type) AS type_name,
+                instances.created_at AS created_at,
+                instances.updated_at AS updated_at
+            FROM
+                preservation_instances AS instances
+            LEFT JOIN audio_visual_items AS items ON
+                instances.call_number = items.call_number
+            LEFT JOIN collections ON
+                items.collection_id = collections.id
+            LEFT JOIN formats ON
+                items.format_id = formats.id
+            LEFT JOIN departments ON
+                instances.department_id = departments.id
+            LEFT JOIN projects ON
+                instances.project_id = projects.id
+            LEFT JOIN media_types AS types ON
+                TRIM(TRAILING 'Instance' FROM instances.subclass_type) = types.name
+            WHERE
+                instances.deleted_at is null;
+
+        ">
+
+            <field column="id" name="id" />
+            <field column="call_number" name="callNumber" />
+            <field column="file_name" name="fileName" />
+            <field column="duration_in_seconds" name="durationInSeconds" />
+            <field column="department_id" name="departmentId" />
+            <field column="department_name" name="departmentName" />
+            <field column="project_id" name="projectId" />
+            <field column="project_name" name="projectName" />
+            <field column="collection_id" name="collectionId" />
+            <field column="collection_name" name="collectionName" />
+            <field column="format_id" name="formatId" />
+            <field column="format_name" name="formatName" />
+            <field column="type_id" name="typeId" />
+            <field column="type_name" name="typeName" />
+            <field column="created_at" name="createdAt" />
+            <field column="updated_at" name="updatedAt" />
+
+            <entity name="cut" query="
+
+                SELECT
+                    id,
+                    performer_composer,
+                    title
+                FROM
+                    cuts
+                WHERE
+                    preservation_instance_id='${preservation_instance.id}'
+                ORDER BY
+                    id ">
+
+                <field column="id" name="cutIds" />
+                <field column="performer_composer" name="cutPerformerComposers" />
+                <field column="title" name="cutTitles" />
+
+            </entity>
+
+        </entity>
+    </document>
+</dataConfig>

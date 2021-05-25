@@ -46,7 +46,7 @@ sudo chmod -R g+w .
 #make folders for each of the cores needed for jitterbug
 cd server/solr
 mkdir jitterbug-items
-mkdir jitterbug-masters
+mkdir jitterbug-instances
 mkdir jitterbug-transfers
 
 # configure the core properties and symlink the
@@ -58,10 +58,10 @@ cat /vagrant/dev_files/jitterbug-items.core.properties.example > core.properties
 ln -s /vagrant/solrconfig/jitterbug-items/conf conf
 cd ..
 
-# jitterbug-masters
-cd jitterbug-masters
-cat /vagrant/dev_files/jitterbug-masters.core.properties.example > core.properties
-ln -s /vagrant/solrconfig/jitterbug-masters/conf conf
+# jitterbug-instances
+cd jitterbug-instances
+cat /vagrant/dev_files/jitterbug-instances.core.properties.example > core.properties
+ln -s /vagrant/solrconfig/jitterbug-instances/conf conf
 cd ..
 
 # jitterbug-transfers

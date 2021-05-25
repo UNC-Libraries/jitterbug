@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Jitterbug\Http\Requests\CutRequest;
 use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\Cut;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Models\Transfer;
 use Jitterbug\Support\SolariumProxy;
 
@@ -20,7 +20,7 @@ class CutsController extends Controller
 {
 
   protected $solrItems;
-  protected $solrMasters;
+  protected $solrInstances;
   protected $solrTransfers;
 
   /**
@@ -33,19 +33,19 @@ class CutsController extends Controller
     $this->middleware('auth');
 
     $this->solrItems = new SolariumProxy('jitterbug-items');
-    $this->solrMasters = new SolariumProxy('jitterbug-masters');
+    $this->solrInstances = new SolariumProxy('jitterbug-instances');
     $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
   }
 
   /**
    * Display the details of a cut.
    */
-  public function show(Request $request, $masterId, $cutId)
+  public function show(Request $request, $instanceId, $cutId)
   {
-    $master = PreservationMaster::findOrFail($masterId);
+    $instance = PreservationInstance::findOrFail($instanceId);
     $cut = Cut::findOrFail($cutId);
     $transfer = $cut->transfer;
-    return view('masters.cuts.show', compact('master', 'cut', 'transfer'));
+    return view('instances.cuts.show', compact('instance', 'cut', 'transfer'));
   }
 
   /**
@@ -54,13 +54,13 @@ class CutsController extends Controller
   public function create(Request $request)
   {
     $transfer = Transfer::findOrFail($request->transfer_id);
-    $master = $transfer->preservation_master;
+    $instance = $transfer->preservationInstance;
     $cut = new Cut;
     $cut->call_number = $transfer->call_number;
-    $cut->preservation_master_id = $transfer->preservation_master_id;
+    $cut->preservation_instance_id = $transfer->preservation_instance_id;
     $cut->transfer_id = $transfer->id;
 
-    return view('masters.cuts.create', compact('cut', 'master', 'transfer'));
+    return view('instances.cuts.create', compact('cut', 'instance', 'transfer'));
   }
 
   /**
@@ -87,7 +87,7 @@ class CutsController extends Controller
     // Update Solr
     $item = AudioVisualItem::where('call_number', $cut->call_number)->first();
     $this->solrItems->update($item);
-    $this->solrMasters->update($cut->preservationMaster);
+    $this->solrInstances->update($cut->preservationInstance);
     $this->solrTransfers->update($cut->transfer);
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
@@ -99,18 +99,18 @@ class CutsController extends Controller
   /**
    * Display the form for editing a cut.
    */
-  public function edit(Request $request, $masterId, $cutId)
+  public function edit(Request $request, $instanceId, $cutId)
   {
-    $master = PreservationMaster::findOrFail($masterId);
+    $instance = PreservationInstance::findOrFail($instanceId);
     $cut = Cut::findOrFail($cutId);
     $transfer = $cut->transfer;
-    return view('masters.cuts.edit', compact('master', 'cut', 'transfer'));
+    return view('instances.cuts.edit', compact('instance', 'cut', 'transfer'));
   }
 
   /**
    * Update the details of a cut.
    */
-  public function update(CutRequest $request, $masterId, $cutId)
+  public function update(CutRequest $request, $instanceId, $cutId)
   {
     $input = $request->all();
     $cut = Cut::findOrFail($cutId);
@@ -135,21 +135,21 @@ class CutsController extends Controller
     if ($updateSolr) {
       $item = AudioVisualItem::where('call_number', $cut->callNumber)->first();
       $this->solrItems->update($item);
-      $this->solrMasters->update($cut->preservationMaster);
+      $this->solrInstances->update($cut->preservationInstance);
       $this->solrTransfers->update($cut->transfer);
     }
 
     $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>Got it!</strong> Your cut was successfully updated.'));
 
-    return redirect()->route('masters.cuts.show', [$masterId, $cutId]);
+    return redirect()->route('instances.cuts.show', [$instanceId, $cutId]);
 
   }
 
   /**
    * Delete a cut and potentially a transfer.
    */
-  public function destroy(Request $request, $masterid, $cutId)
+  public function destroy(Request $request, $instanceId, $cutId)
   {
     $cut = Cut::findOrFail($cutId);
 
@@ -171,7 +171,7 @@ class CutsController extends Controller
     // Update Solr
     $item = AudioVisualItem::where('call_number', $cut->call_number)->first();
     $this->solrItems->update($item);
-    $this->solrMasters->update($cut->preservationMaster);
+    $this->solrInstances->update($cut->preservationInstance);
     if ($command !== 'all') {
       $this->solrTransfers->update($cut->transfer);
     } else {
@@ -182,7 +182,7 @@ class CutsController extends Controller
         '<strong>Gone!</strong> Cut was successfully deleted.'));
 
     if ($command === 'all') {
-      return redirect()->route('masters.show', $cut->preservationMaster);
+      return redirect()->route('instances.show', $cut->preservationInstance);
     } else {
       return redirect()->route('transfers.show', $cut->transfer);
     }
@@ -191,14 +191,14 @@ class CutsController extends Controller
   /**
    * Display the details of a cut, coming from the dashboard. This
    * is somewhat of a hack to get around the fact that on the dashboard
-   * we don't have the associated preservation master id, so we have
+   * we don't have the associated preservation instance id, so we have
    * this special direct route.
    */
   public function get($cutId)
   {
     $cut = Cut::findOrFail($cutId);
-    return redirect()->route('masters.cuts.show', 
-        [$cut->preservation_master_id, $cut->id]);
+    return redirect()->route('instances.cuts.show',
+        [$cut->preservation_instance_id, $cut->id]);
   }
 
 }

@@ -13,9 +13,9 @@ class Department extends Model {
   
   protected $fillable = array('name');
 
-  public function preservationMasters()
+  public function preservationInstances()
   {
-     return $this->hasMany('Jitterbug\Models\PreservationMaster');
+     return $this->hasMany('Jitterbug\Models\PreservationInstance');
   }
 
   /**

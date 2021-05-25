@@ -10,7 +10,7 @@ use Illuminate\Support\MessageBag;
 use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Http\Requests\TapeBrandRequest;
 use Jitterbug\Models\TapeBrand;
-use Jitterbug\Models\AudioMaster;
+use Jitterbug\Models\AudioInstance;
 
 /**
  * Controller for the management of tape brands in the Admin area.
@@ -64,7 +64,7 @@ class TapeBrandsController extends Controller
 
   public function destroy($id, Request $request) {
     if ($request->ajax()) {
-      $count = AudioMaster::where('sampling_rate_id', $id)->count();
+      $count = AudioInstance::where('sampling_rate_id', $id)->count();
       if ($count === 0) {
         $tapeBrand = TapeBrand::findOrFail($id);
         $tapeBrand->delete();
@@ -74,7 +74,7 @@ class TapeBrandsController extends Controller
         $bag = new MessageBag();
         $bag->add('status', 'Looks like that tape brand is currently ' .
           'in use. Change the tape brand of the related preservation ' .
-          'masters before deleting.');
+          'instances before deleting.');
         $response = $bag;
         return response()->json($bag, 422);
       }

@@ -19,8 +19,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr role="button" data-master="{{$cut->preservation_master_id}}" data-id="{{$cut->id}}">
-            <td>{{$cut->preservation_master_id}}</td>
+          <tr role="button" data-instance="{{$cut->preservation_instance_id}}" data-id="{{$cut->id}}">
+            <td>{{$cut->preservation_instance_id}}</td>
             <td>{{$cut->cut_number}}</td>
             <td>{{$cut->side}}</td>
             <td>{{$cut->title}}</td>

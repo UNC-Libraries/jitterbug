@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Jitterbug\Models\PlaybackMachine;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Models\Transfer;
 use Jitterbug\Models\User;
 use Jitterbug\Models\Vendor;
@@ -26,9 +26,9 @@ class TransferFactory extends Factory
     public function definition()
     {
         return [
-          'preservation_master_id' => PreservationMaster::factory(),
+          'preservation_instance_id' => PreservationInstance::factory(),
           'call_number' => function (array $attributes) {
-            return PreservationMaster::find($attributes['preservation_master_id'])->call_number;
+            return PreservationInstance::find($attributes['preservation_instance_id'])->call_number;
           },
           'transfer_date' => $this->faker->date(),
           'playback_machine_id' => PlaybackMachine::factory(),

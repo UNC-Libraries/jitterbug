@@ -10,7 +10,7 @@ use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Http\Requests\FormatRequest;
 use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\Format;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Models\Transfer;
 use Jitterbug\Models\Prefix;
 use Jitterbug\Support\SolariumProxy;
@@ -22,7 +22,7 @@ class FormatsController extends Controller
 {
 
   protected $solrItems;
-  protected $solrMasters;
+  protected $solrInstances;
   protected $solrTransfers;
 
   /**
@@ -34,7 +34,7 @@ class FormatsController extends Controller
   {
     $this->middleware(['auth', 'admin']);
     $this->solrItems = new SolariumProxy('jitterbug-items');
-    $this->solrMasters = new SolariumProxy('jitterbug-masters');
+    $this->solrInstances = new SolariumProxy('jitterbug-instances');
     $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
   }
 
@@ -83,14 +83,14 @@ class FormatsController extends Controller
 
         // Update Solr
         $callNumbers = $affectedItems->pluck('call_number');
-        $affectedMasters = 
-          PreservationMaster::whereIn('call_number', $callNumbers)->get();
+        $affectedInstances =
+          PreservationInstance::whereIn('call_number', $callNumbers)->get();
         $affectedTransfers =
           Transfer::whereIn('call_number', $callNumbers)->get();
         // We have to update all 3 cores because format information 
         // is stored in each core
         $this->solrItems->update($affectedItems);
-        $this->solrMasters->update($affectedMasters);
+        $this->solrInstances->update($affectedInstances);
         $this->solrTransfers->update($affectedTransfers);
       }
     }

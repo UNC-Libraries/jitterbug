@@ -6,7 +6,7 @@ use Solarium;
 
 use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\Cut;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Models\Transfer;
 
 /**
@@ -53,13 +53,13 @@ class SolariumProxy {
       'collectionId containerNote^2 cutTitles cutPerformerComposers ' .
       'formatName accessionNumber filmElement videoElement');
 
-    } else if ($this->core==='jitterbug-masters') {
+    } else if ($this->core==='jitterbug-instances') {
       $dismax->setQueryFields('id callNumber^5 fileName^4 collectionName^3 ' .
       'collectionId cutTitles cutPerformerComposers formatName ' . 
       'departmentName projectName');
 
     } else if ($this->core==='jitterbug-transfers') {
-      $dismax->setQueryFields('preservationMasterId callNumber^5 ' . 
+      $dismax->setQueryFields('preservationInstanceId callNumber^5 ' .
       'engineerFirstName^4 engineerLastName^4 collectionName^3 collectionId ' . 
       'cutTitle cutPerformerComposer formatName departmentName');
     }
@@ -107,9 +107,9 @@ class SolariumProxy {
       foreach ($modelOrModels as $item) {
         $this->addItemDocument($item, $update);
       }
-    } else if ($this->core==='jitterbug-masters') {
-      foreach ($modelOrModels as $master) {
-        $this->addMasterDocument($master, $update);
+    } else if ($this->core==='jitterbug-instances') {
+      foreach ($modelOrModels as $instance) {
+        $this->addInstanceDocument($instance, $update);
       }
     } else if ($this->core==='jitterbug-transfers') {
       foreach ($modelOrModels as $transfer) {
@@ -164,38 +164,38 @@ class SolariumProxy {
   }
 
   /**
-   * Add a master document to the given update query.
+   * Add a instance document to the given update query.
    *
-   * @param PreservationMaster $master
+   * @param PreservationInstance $instance
    * @param Query $update
    */
-  protected function addMasterDocument($master, &$update)
+  protected function addInstanceDocument($instance, &$update)
   {
-    if ($master === null) return;
+    if ($instance === null) return;
 
     $doc = $update->createDocument();
 
-    $doc->setKey('id', $master->id);
-    $doc->setField('callNumber', $master->call_number, null, 'set');
-    $doc->setField('fileName', $master->file_name, null, 'set');
-    $doc->setField('durationInSeconds', $master->duration_in_seconds, null, 'set');
+    $doc->setKey('id', $instance->id);
+    $doc->setField('callNumber', $instance->call_number, null, 'set');
+    $doc->setField('fileName', $instance->file_name, null, 'set');
+    $doc->setField('durationInSeconds', $instance->duration_in_seconds, null, 'set');
     $doc->setField('departmentId', 
-      $master->department ? $master->department->id : null, null, 'set');
+      $instance->department ? $instance->department->id : null, null, 'set');
     $doc->setField('departmentName', 
-      $master->department ? $master->department->name : null, null, 'set');
+      $instance->department ? $instance->department->name : null, null, 'set');
     $doc->setField('projectId', 
-      $master->project ? $master->project->id : null, null, 'set');
+      $instance->project ? $instance->project->id : null, null, 'set');
     $doc->setField('projectName', 
-      $master->project ? $master->project->name : null, null, 'set');
-    $doc->setField('typeName', $master->type, null, 'set');
-    $doc->setField('typeId', $master->type_id, null, 'set');
-    $doc->setField('createdAt', $master->created_at, null, 'set');
-    $doc->setField('updatedAt', $master->updated_at, null, 'set');
+      $instance->project ? $instance->project->name : null, null, 'set');
+    $doc->setField('typeName', $instance->type, null, 'set');
+    $doc->setField('typeId', $instance->type_id, null, 'set');
+    $doc->setField('createdAt', $instance->created_at, null, 'set');
+    $doc->setField('updatedAt', $instance->updated_at, null, 'set');
     
     // Get other fields from the associated audio visual item since that's where
-    // they reside, not on the master
-    $this->appendCollectionAndFormat($master->call_number, $doc);
-    $this->appendCutsForMaster($master->id, $doc);
+    // they reside, not on the instance
+    $this->appendCollectionAndFormat($instance->call_number, $doc);
+    $this->appendCutsForInstance($instance->id, $doc);
 
     $update->addDocument($doc);
   }
@@ -215,8 +215,8 @@ class SolariumProxy {
     $doc->setKey('id', $transfer->id);
     $doc->setField('callNumber', $transfer->call_number, null, 'set');
     $doc->setField('transferDate', $transfer->transfer_date, null, 'set');
-    $doc->setField('preservationMasterId',
-      $transfer->preservation_master_id, null, 'set');
+    $doc->setField('preservationInstanceId',
+      $transfer->preservation_instance_id, null, 'set');
     $doc->setField('vendorId', 
       $transfer->vendor != null ? $transfer->vendor->id : null, null, 'set');
     $doc->setField('vendorName', 
@@ -295,9 +295,9 @@ class SolariumProxy {
     $this->appendCuts($cuts, $doc);
   }
 
-  private function appendCutsForMaster($preservationMasterId, &$doc)
+  private function appendCutsForInstance($preservationInstanceId, &$doc)
   {
-    $cuts = Cut::where('preservation_master_id', $preservationMasterId)->get();
+    $cuts = Cut::where('preservation_instance_id', $preservationInstanceId)->get();
     $this->appendCuts($cuts, $doc);
   }
 

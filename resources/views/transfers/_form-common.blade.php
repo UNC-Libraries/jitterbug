@@ -1,17 +1,17 @@
       {{-- Transfer fields --}}
       <div class="row">
-        <div class="form-group @if ($errors->has('preservation_master_id')) has-danger @endif">
+        <div class="form-group @if ($errors->has('preservation_instance_id')) has-danger @endif">
           <div class="col-xs-4 col-xs-offset-1 detail-label">
-            {!! Form::label('preservation_master_id', 'PM #', array('class' => 'form-control-label')) !!}
+            {!! Form::label('preservation_instance_id', 'PM #', array('class' => 'form-control-label')) !!}
           </div>
           <div class="col-xs-7 detail-value">
             @if (isset($linked) && $linked)
-              {!! Form::text('preservation_master_id', null, array('id' => 'preservation-master-id', 'class' => 'form-control form-control-sm', 'readonly' => 'readonly')) !!}
+              {!! Form::text('preservation_instance_id', null, array('id' => 'preservation-instance-id', 'class' => 'form-control form-control-sm', 'readonly' => 'readonly')) !!}
             @else
-              {!! Form::text('preservation_master_id', null, array('id' => 'preservation-master-id', 'class' => 'form-control form-control-sm')) !!}
+              {!! Form::text('preservation_instance_id', null, array('id' => 'preservation-instance-id', 'class' => 'form-control form-control-sm')) !!}
             @endif
-            @if ($errors->has('preservation_master_id'))
-              <div class="form-control-label"><small>{!! $errors->first('preservation_master_id') !!}</small></div>
+            @if ($errors->has('preservation_instance_id'))
+              <div class="form-control-label"><small>{!! $errors->first('preservation_instance_id') !!}</small></div>
             @endif
           </div>
         </div>

@@ -9,7 +9,7 @@ use Log;
 class TypeCounts {
   
   /**
-   * Collection of AudioVisualItemType, PreservationMasterType, 
+   * Collection of AudioVisualItemType, PreservationInstanceType,
    * or TransferType.
    *
    * @var \Illuminate\Support\Collection
@@ -18,11 +18,11 @@ class TypeCounts {
 
   /**
    * Create a new instance. Requires a collection of
-   * AudioVisualItemType, PreservationMasterType or
+   * AudioVisualItemType, PreservationInstanceType or
    * TransferType.
    * 
    * @param \Illuminate\Support\Collection $types Collection of
-   * AudioVisualItemType, PreservationMasterType, or TransferType.
+   * AudioVisualItemType, PreservationInstanceType, or TransferType.
    */
   public function __construct($types)
   {

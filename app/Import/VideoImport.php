@@ -11,12 +11,12 @@ use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\Department;
 use Jitterbug\Models\ImportTransaction;
 use Jitterbug\Models\PlaybackMachine;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Models\Transfer;
 use Jitterbug\Models\User;
 use Jitterbug\Models\Vendor;
 use Jitterbug\Models\VideoItem;
-use Jitterbug\Models\VideoMaster;
+use Jitterbug\Models\VideoInstance;
 use Jitterbug\Models\VideoTransfer;
 use Jitterbug\Util\CsvReader;
 use Jitterbug\Util\DurationFormat;
@@ -29,7 +29,7 @@ class VideoImport extends Import {
   protected $videoImportKeys = array();
 
   protected $solrItems;
-  protected $solrMasters;
+  protected $solrInstances;
   protected $solrTransfers;
 
   protected $data = null;
@@ -44,7 +44,7 @@ class VideoImport extends Import {
         'Format'));
 
     $this->solrItems = new SolariumProxy('jitterbug-items');
-    $this->solrMasters = new SolariumProxy('jitterbug-masters');
+    $this->solrInstances = new SolariumProxy('jitterbug-instances');
     $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
 
     $reader = new CsvReader($filePath);
@@ -74,12 +74,12 @@ class VideoImport extends Import {
           && !empty($row[$key]) && !$this->isVideo($row[$key])) {
           $bag->add($key, $key . ' is not a video item.');
         }
-        // Validate file name (preservation_master.file_name) doesn't exist
+        // Validate file name (preservation_instance.file_name) doesn't exist
         if ($key==='FileName' 
-          && !empty($row[$key]) && $this->valueExists(PreservationMaster::class,'file_name', $row[$key])) {
+          && !empty($row[$key]) && $this->valueExists(PreservationInstance::class,'file_name', $row[$key])) {
           $bag->add($key, $key . ' already exists in the database.');
         }
-        // Validate file name (preservation_master.file_name) is unqiue 
+        // Validate file name (preservation_instance.file_name) is unqiue
         // amongst values in the rest of the file
         if ($key==='FileName' 
           && !empty($row[$key]) && in_array($row[$key], $fileNames)) {
@@ -132,15 +132,15 @@ class VideoImport extends Import {
 
   public function execute()
   {
-    // Keep track of which items, masters and transfers to update in Solr
+    // Keep track of which items, instances and transfers to update in Solr
     $items = array();
-    $masters = array();
+    $instances = array();
     $transfers = array();
     $created = $updated = 0;
 
     // Update MySQL
     DB::transaction( function () 
-      use (&$items, &$masters, &$transfers, &$created, &$updated) {
+      use (&$items, &$instances, &$transfers, &$created, &$updated) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
 
@@ -206,29 +206,29 @@ class VideoImport extends Import {
           $departmentCache[$departmentName] = $department;
         }
 
-        // Create the video master which we need for the PM.
-        $videoMaster = new VideoMaster;
-        $videoMaster->aspect_ratio =
+        // Create the video instance which we need for the PM.
+        $videoInstance = new VideoInstance;
+        $videoInstance->aspect_ratio =
           isset($row['AspectRatio']) ? $row['AspectRatio'] : null;
-        $videoMaster->save();
+        $videoInstance->save();
         $created++;
 
         // Create the PM
-        $master = new PreservationMaster;
-        $master->call_number = $callNumber;
-        $master->file_name = $row['FileName'];
-        $master->file_size_in_bytes = isset($row['FileSize']) ? $row['FileSize'] : null;
-        $master->checksum = 
+        $instance = new PreservationInstance;
+        $instance->call_number = $callNumber;
+        $instance->file_name = $row['FileName'];
+        $instance->file_size_in_bytes = isset($row['FileSize']) ? $row['FileSize'] : null;
+        $instance->checksum =
           isset($row['PreservationChecksum']) ? $row['PreservationChecksum'] : null;
-        $master->duration_in_seconds =
+        $instance->duration_in_seconds =
           isset($row['Duration']) ? DurationFormat::toSeconds($row['Duration']) : null;
-        $master->file_format = isset($row['Format']) ? $row['Format'] : null;
-        $master->file_codec = isset($row['Codec']) ? $row['Codec'] : null;
-        $master->department_id = $department->id;
-        $master->subclass_type = 'VideoMaster';
-        $master->subclass_id = $videoMaster->id;
-        $master->save();
-        $masters[] = $master;
+        $instance->file_format = isset($row['Format']) ? $row['Format'] : null;
+        $instance->file_codec = isset($row['Codec']) ? $row['Codec'] : null;
+        $instance->department_id = $department->id;
+        $instance->subclass_type = 'VideoInstance';
+        $instance->subclass_id = $videoInstance->id;
+        $instance->save();
+        $instances[] = $instance;
         $created++;
 
         // Create the video transfer
@@ -243,7 +243,7 @@ class VideoImport extends Import {
         // Create the transfer
         $transfer = new Transfer;
         $transfer->call_number = $callNumber;
-        $transfer->preservation_master_id = $master->id;
+        $transfer->preservation_instance_id = $instance->id;
         $transfer->playback_machine_id =
           ($playbackMachine !== null) ? $playbackMachine->id : null;
         $transfer->vendor_id = ($vendor !== null) ? $vendor->id : null;
@@ -276,7 +276,7 @@ class VideoImport extends Import {
     });
 
     $this->solrItems->update($items);
-    $this->solrMasters->update($masters);
+    $this->solrInstances->update($instances);
     $this->solrTransfers->update($transfers);
 
     return array('created' => $created, 'updated' => $updated);

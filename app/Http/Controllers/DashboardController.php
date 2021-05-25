@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 use Jitterbug\Models\AudioVisualItemType;
 use Jitterbug\Models\Mark;
-use Jitterbug\Models\PreservationMasterType;
+use Jitterbug\Models\PreservationInstanceType;
 use Jitterbug\Models\TransferType;
 use Jitterbug\Models\User;
 use Jitterbug\Presenters\ActivityStream;
@@ -31,7 +31,7 @@ class DashboardController extends Controller
   {
     // Overview counts
     $itemCounts = new TypeCounts(AudioVisualItemType::all());
-    $masterCounts = new TypeCounts(PreservationMasterType::all());
+    $instanceCounts = new TypeCounts(PreservationInstanceType::all());
     $transferCounts = new TypeCounts(TransferType::all());
 
     // Recent activity module
@@ -50,7 +50,7 @@ class DashboardController extends Controller
     $marks = DashboardMark::fromMarks(
       $currentUser->marks()->orderBy('updated_at', 'desc')->get());
 
-    return view('dashboard.index', compact('itemCounts', 'masterCounts', 
+    return view('dashboard.index', compact('itemCounts', 'instanceCounts',
       'transferCounts', 'activities', 'marksUsers', 'currentUser', 'marks'));
   }
 

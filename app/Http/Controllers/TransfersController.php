@@ -17,13 +17,13 @@ use Jitterbug\Import\AudioImport;
 use Jitterbug\Import\Import;
 use Jitterbug\Import\VideoImport;
 use Jitterbug\Models\AudioVisualItem;
-use Jitterbug\Models\AudioMaster;
+use Jitterbug\Models\AudioInstance;
 use Jitterbug\Models\AudioTransfer;
 use Jitterbug\Models\BatchTransfer;
 use Jitterbug\Models\Cut;
 use Jitterbug\Models\Mark;
 use Jitterbug\Models\PlaybackMachine;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Models\Transfer;
 use Jitterbug\Models\TransferType;
 use Jitterbug\Models\TransferCollection;
@@ -41,7 +41,7 @@ class TransfersController extends Controller {
   protected $audioImportKeys = array();
 
   protected $solrItems;
-  protected $solrMasters;
+  protected $solrInstances;
   protected $solrTransfers;
 
   /**
@@ -54,7 +54,7 @@ class TransfersController extends Controller {
     $this->middleware('auth');
 
     $this->solrItems = new SolariumProxy('jitterbug-items');
-    $this->solrMasters = new SolariumProxy('jitterbug-masters');
+    $this->solrInstances = new SolariumProxy('jitterbug-instances');
     $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
   }
 
@@ -111,22 +111,22 @@ class TransfersController extends Controller {
   }
 
   /**
-   * Display the form for creating a new audio, video, or film master.
+   * Display the form for creating a new audio, video, or film instance.
    */
   public function create(Request $request)
   {
-    $masterId = $request->masterId;
-    $master = null;
-    if ($masterId !== null) {
-      $master = PreservationMaster::findOrFail($masterId);
+    $instanceId = $request->instanceId;
+    $instance = null;
+    if ($instanceId !== null) {
+      $instance = PreservationInstance::findOrFail($instanceId);
     }
 
     $transfer = new Transfer;
     $linked = false;
-    if($master !== null) {
-      $transfer->preservation_master_id = $master->id;
-      $transfer->call_number = $master->call_number;
-      $transfer->subclass_type = $master->type . 'Transfer';
+    if($instance !== null) {
+      $transfer->preservation_instance_id = $instance->id;
+      $transfer->call_number = $instance->call_number;
+      $transfer->subclass_type = $instance->type . 'Transfer';
       $linked = true;
     }
 
@@ -137,7 +137,7 @@ class TransfersController extends Controller {
     $vendors = ['' => 'Select a vendor'] + 
              Vendor::pluck('name', 'id')->all();
     return view('transfers.create', 
-      compact('transfer', 'master', 'linked', 'playbackMachines', 
+      compact('transfer', 'instance', 'linked', 'playbackMachines',
         'engineers', 'vendors'));
   }
 
@@ -162,9 +162,9 @@ class TransfersController extends Controller {
 
       $transfer = new Transfer;
       $transfer->subclass_type = $input['subclass_type'];
-      $master = 
-        PreservationMaster::where('id', $input['preservation_master_id'])->first();
-      $transfer->call_number = $master->call_number;
+      $instance =
+        PreservationInstance::where('id', $input['preservation_instance_id'])->first();
+      $transfer->call_number = $instance->call_number;
       $transfer->fill($input);
 
       $subclass->save();
@@ -187,7 +187,7 @@ class TransfersController extends Controller {
   }
 
   /**
-   * Display the form for editing a master.
+   * Display the form for editing a transfer.
    */
   public function edit($id)
   {
@@ -428,28 +428,28 @@ class TransfersController extends Controller {
     $transfer = Transfer::findOrFail($id);
     $subclass = $transfer->subclass;
 
-    $originalMaster = $transfer->preservationMaster;
+    $originalInstance = $transfer->preservationInstance;
     $originalCallNumber = $transfer->call_number;
 
     $transfer->fill($input);
     $subclass->fill($input['subclass']);
 
-    $pmChanged = $transfer->isDirty('preservation_master_id');
+    $pmChanged = $transfer->isDirty('preservation_instance_id');
 
-    // If the preservation master id has been updated, the call number may
+    // If the preservation instance id has been updated, the call number may
     // have changed also, so we need to update the call number and the 
     // associated cut call number.
     $cut = null;
-    $newMaster = null;
+    $newInstance = null;
     if ($pmChanged) {
-      // Get the new preservation master
-      $newMaster = PreservationMaster::findOrFail($transfer->preservation_master_id);
-      $transfer->call_number = $newMaster->call_number;
+      // Get the new preservation instance
+      $newInstance = PreservationInstance::findOrFail($transfer->preservation_instance_id);
+      $transfer->call_number = $newInstance->call_number;
 
       $cut = $transfer->cut;
       if ($cut !== null) {
-        $cut->call_number = $newMaster->call_number;
-        $cut->preservation_master_id = $newMaster->id;
+        $cut->call_number = $newInstance->call_number;
+        $cut->preservation_instance_id = $newInstance->id;
       }
     }
 
@@ -458,7 +458,7 @@ class TransfersController extends Controller {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
 
-      // Preservation master has changed
+      // Preservation instance has changed
       if ($cut !== null) $cut->save();
 
       $subclass->save();
@@ -470,16 +470,16 @@ class TransfersController extends Controller {
 
     // Update Solr
     if ($pmChanged) {
-      // Since cut information is a part of both items and masters Solr
-      // cores, we need to update the original item and master to reflect
+      // Since cut information is a part of both items and instances Solr
+      // cores, we need to update the original item and instance to reflect
       // the fact that the cut is no longer on them. And we need to update
-      // the new item and master to add the cut.
+      // the new item and instance to add the cut.
       $originalItem = 
         AudioVisualItem::where('call_number', $originalCallNumber)->first();
       $newItem = 
-        AudioVisualItem::where('call_number', $newMaster->call_number)->first();
+        AudioVisualItem::where('call_number', $newInstance->call_number)->first();
       $this->solrItems->update(array($originalItem, $newItem));
-      $this->solrMasters->update(array($originalMaster, $newMaster));
+      $this->solrInstances->update(array($originalInstance, $newInstance));
     }
     $this->solrTransfers->update($transfer);
 
@@ -501,9 +501,9 @@ class TransfersController extends Controller {
 
     $pmChanged = false;
     // Determine if PM has been changed
-    if (isset($input['preservation_master_id'])) {
+    if (isset($input['preservation_instance_id'])) {
       foreach ($transfers as $transfer) {
-        if ($transfer->preservation_master_id !== (int) $input['preservation_master_id']) {
+        if ($transfer->preservation_instance_id !== (int) $input['preservation_instance_id']) {
           $pmChanged = true;
           break;
         }
@@ -514,25 +514,25 @@ class TransfersController extends Controller {
     // related audio visual item, because it might have changed as a
     // result.
     $newItem = null;
-    $newMaster = null;
+    $newInstance = null;
     if ($pmChanged) {
-      $newMaster = 
-        PreservationMaster::findOrFail($input['preservation_master_id']);
+      $newInstance =
+        PreservationInstance::findOrFail($input['preservation_instance_id']);
       $newItem = 
-        AudioVisualItem::where('call_number', $newMaster->call_number)->first();
+        AudioVisualItem::where('call_number', $newInstance->call_number)->first();
     }
 
-    $originaItems = array();
-    $originalMasters = array();
+    $originalItems = array();
+    $originalInstances = array();
     // Update MySQL
     DB::transaction(function () 
-      use ($transfers, $pmChanged, $newMaster, $input, &$originaItems, 
-        &$originalMasters) {
+      use ($transfers, $pmChanged, $newInstance, $input, &$originalItems,
+        &$originalInstances) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
       
       foreach ($transfers as $transfer) {
-        $originalMaster = $transfer->preservationMaster;
+        $originalInstance = $transfer->preservationInstance;
         $originalCallNumber = $transfer->call_number;
 
         $transfer->fill($input);
@@ -540,18 +540,18 @@ class TransfersController extends Controller {
         $subclass->fill($input['subclass']);
 
         if ($pmChanged) {
-          $transfer->call_number = $newMaster->call_number;
+          $transfer->call_number = $newInstance->call_number;
           $cut = $transfer->cut;
           if ($cut !== null) {
-            $cut->preservation_master_id = $newMaster->id;
-            $cut->call_number = $newMaster->call_number;
+            $cut->preservation_instance_id = $newInstance->id;
+            $cut->call_number = $newInstance->call_number;
             $cut->save();
           }
 
           $originalItem = 
             AudioVisualItem::where('call_number', $originalCallNumber)->first();
-          $originalMasters[] = $originalMaster;
-          $originaItems[] = $originalItem;
+          $originalInstances[] = $originalInstance;
+          $originalItems[] = $originalItem;
         }
 
         $subclass->save();
@@ -564,10 +564,10 @@ class TransfersController extends Controller {
 
     // Update Solr
     if ($pmChanged) {
-      $this->solrItems->update($originaItems);
+      $this->solrItems->update($originalItems);
       $this->solrItems->update($newItem);
-      $this->solrMasters->update($originalMasters);
-      $this->solrMasters->update($newMaster);
+      $this->solrInstances->update($originalInstances);
+      $this->solrInstances->update($newInstance);
     }
     $this->solrTransfers->update($transfers);
 
@@ -607,16 +607,16 @@ class TransfersController extends Controller {
     // Update Solr
     $this->solrTransfers->delete($transfer);
     if ($cut !== null) {
-      // Since a cut was deleted, we need to get the related master and audio
+      // Since a cut was deleted, we need to get the related instance and audio
       // visual item and update them in Solr to remove the cut from the index.
       $item = 
         AudioVisualItem::where('call_number', $transfer->call_number)->first();
       if ($item !== null) {
         $this->solrItems->update($item);
       }
-      $master = $transfer->preservationMaster;
-      if ($master !== null) {
-        $this->solrMasters->update($master);
+      $instance = $transfer->preservationInstance;
+      if ($instance !== null) {
+        $this->solrInstances->update($instance);
       }
     }
 
@@ -669,17 +669,17 @@ class TransfersController extends Controller {
 
     if ($cuts !== null) {
       // Since cuts where deleted, we need to get the audio visual items
-      // and masters and update them in Solr to remove the cuts from the index.
+      // and instances and update them in Solr to remove the cuts from the index.
       $cutCallNumbers = $cuts->pluck('call_number')->unique()->all();
       $items = 
         AudioVisualItem::whereIn('call_number', $cutCallNumbers)->get();
       if ($items !== null) {
         $this->solrItems->update($items);
       }
-      $masters =
-        PreservationMaster::whereIn('call_number', $cutCallNumbers)->get();
-      if ($masters !== null) {
-        $this->solrMasters->update($masters);
+      $instances =
+        PreservationInstance::whereIn('call_number', $cutCallNumbers)->get();
+      if ($instances !== null) {
+        $this->solrInstances->update($instances);
       }
     }
 

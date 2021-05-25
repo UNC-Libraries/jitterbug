@@ -7,11 +7,11 @@ jitterbug = {
     localStorage.removeItem('itemsFilterPanel');
     sessionStorage.removeItem('itemsTableSelection');
     localStorage.removeItem('itemsTableParams');
-    // clear masters state
-    localStorage.removeItem('mastersSearchField');
-    localStorage.removeItem('mastersFilterPanel');
-    sessionStorage.removeItem('mastersTableSelection');
-    localStorage.removeItem('mastersTableParams');
+    // clear instances state
+    localStorage.removeItem('instancesSearchField');
+    localStorage.removeItem('instancesFilterPanel');
+    sessionStorage.removeItem('instancesTableSelection');
+    localStorage.removeItem('instancesTableParams');
     // clear transfers state
     localStorage.removeItem('transfersSearchField');
     localStorage.removeItem('transfersFilterPanel');
@@ -612,15 +612,15 @@ jitterbug = {
       ['Video', itemCounts[2]],
     ]);
 
-    var masterChart = $('#master-chart');
-    var masterCounts = masterChart.data('counts').split(',').map(Number);
-    var masterData = new google.visualization.DataTable();
-    masterData.addColumn('string', 'Type');
-    masterData.addColumn('number', 'Count');
-    masterData.addRows([
-      ['Audio', masterCounts[0]],
-      ['Film', masterCounts[1]],
-      ['Video', masterCounts[2]],
+    var instanceChart = $('#instance-chart');
+    var instanceCounts = instanceChart.data('counts').split(',').map(Number);
+    var instanceData = new google.visualization.DataTable();
+    instanceData.addColumn('string', 'Type');
+    instanceData.addColumn('number', 'Count');
+    instanceData.addRows([
+      ['Audio', instanceCounts[0]],
+      ['Film', instanceCounts[1]],
+      ['Video', instanceCounts[2]],
     ]);
 
     var transferChart = $('#transfer-chart');
@@ -647,8 +647,8 @@ jitterbug = {
     itemChart = new google.visualization.PieChart(itemChart[0]);
     itemChart.draw(itemData, options);
 
-    masterChart = new google.visualization.PieChart(masterChart[0]);
-    masterChart.draw(masterData, options);
+    instanceChart = new google.visualization.PieChart(instanceChart[0]);
+    instanceChart.draw(instanceData, options);
 
     transferChart = new google.visualization.PieChart(transferChart[0]);
     transferChart.draw(transferData, options);
@@ -682,7 +682,7 @@ jitterbug = {
 
   /* 
    * These properties are set to deserialized instances for each
-   * index page (items, masters, and transfers). They aren't used
+   * index page (items, instances, and transfers). They aren't used
    * for other pages.
    */
   searchField: null,
@@ -841,48 +841,48 @@ jitterbug = {
     });
   },
 
-  initMastersNewButton: function() {
-    $('#masters-new').click(function(event) {
+  initInstancesNewButton: function() {
+    $('#instances-new').click(function(event) {
       jitterbug.tableSelection.clear();
     });
   },
 
-  initMastersBatchMenu: function() {
-    $('#masters-batch-edit').click(function(event) {
+  initInstancesBatchMenu: function() {
+    $('#instances-batch-edit').click(function(event) {
       var tableSelection = jitterbug.tableSelection;
       var maxEditLimit = $(this).data('max-edit-limit');
       if (!jitterbug.validateBatchSelection(tableSelection, 'editing', maxEditLimit)) {
         return;
       }
-      jitterbug.submitBatchEditForm('masters', tableSelection);
+      jitterbug.submitBatchEditForm('instances', tableSelection);
     });
 
-    jitterbug.initDataExportModal('masters');
-    $('#masters-batch-export').click(function(event) {
+    jitterbug.initDataExportModal('instances');
+    $('#instances-batch-export').click(function(event) {
       var tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'exporting')) {
         return;
       }
-      jitterbug.openDataExportModal('masters', tableSelection);
+      jitterbug.openDataExportModal('instances', tableSelection);
     });
 
-    $('#masters-batch-mark').click(function(event) {
+    $('#instances-batch-mark').click(function(event) {
       var tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'marking', 100)) {
         return;
       }
-      jitterbug.batchMark('masters', 'PreservationMaster', tableSelection);
+      jitterbug.batchMark('instances', 'PreservationInstance', tableSelection);
     });
 
-    $('#masters-batch-unmark').click(function(event) {
+    $('#instances-batch-unmark').click(function(event) {
       var tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'unmarking', 500)) {
         return;
       }
-      jitterbug.batchUnmark('masters', 'PreservationMaster', tableSelection);
+      jitterbug.batchUnmark('instances', 'PreservationInstance', tableSelection);
     });
 
-    $('#masters-batch-delete').click(function(event) {
+    $('#instances-batch-delete').click(function(event) {
       var tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'deleting', 100)) {
         return;
@@ -893,17 +893,17 @@ jitterbug = {
     });
   },
 
-  initMasterTypeControls: function() {
-    $('#detail #master-type-controls :radio').click(function(event) {
-      if ($(this).val()=='AudioMaster') {
+  initInstanceTypeControls: function() {
+    $('#detail #instance-type-controls :radio').click(function(event) {
+      if ($(this).val()=='AudioInstance') {
         $('#audio-form').show();
         $('#film-form').hide();
         $('#video-form').hide();
-      } else if ($(this).val()=='FilmMaster') {
+      } else if ($(this).val()=='FilmInstance') {
         $('#audio-form').hide();
         $('#film-form').show();
         $('#video-form').hide();
-      } else if ($(this).val()=='VideoMaster') {
+      } else if ($(this).val()=='VideoInstance') {
         $('#audio-form').hide();
         $('#film-form').hide();
         $('#video-form').show();
@@ -911,7 +911,7 @@ jitterbug = {
     });
   },
 
-  initMasterBatchCheckbox: function() {
+  initInstanceBatchCheckbox: function() {
     $('#batch-checkbox').change(function(event) {
       $('#fileName').attr('readonly', $(this).is(':checked'));
       $('#fileName').val('');
@@ -996,11 +996,11 @@ jitterbug = {
   },
 
   initTransferCallNumberQuery: function() {
-    $('#preservation-master-id').change(function() {
-      var preservationMasterId = $('#preservation-master-id').val();
-      if (preservationMasterId.length) {
+    $('#preservation-instance-id').change(function() {
+      var preservationInstanceId = $('#preservation-instance-id').val();
+      if (preservationInstanceId.length) {
         query = {};
-        query['preservation-master-id'] = preservationMasterId;
+        query['preservation-instance-id'] = preservationInstanceId;
         $.get('/call-numbers/for-pm', query, function(data) {
           $('#call-number').val(data['callNumber']);
         }).fail(function() {
@@ -1510,15 +1510,15 @@ jitterbug = {
     });
   },
 
-  initRelatedPreservationMasters: function() {
-    $('#related-masters tr[role="button"]').click(function(event) {
-      window.location.href='/masters/' + $(this).data('id');
+  initRelatedPreservationInstances: function() {
+    $('#related-instances tr[role="button"]').click(function(event) {
+      window.location.href='/instances/' + $(this).data('id');
     });
   },
 
   initRelatedCuts: function() {
     $('#related-cuts tr[role="button"]').click(function(event) {
-      window.location.href='/masters/' + $(this).data('master') + 
+      window.location.href='/instances/' + $(this).data('instance') +
       '/cuts/' + $(this).data('id');
     });
   },
@@ -1594,8 +1594,8 @@ jitterbug = {
     jitterbug.initIndexPage('items');
   },
 
-  initMastersIndex: function() {
-    jitterbug.initIndexPage('masters');
+  initInstancesIndex: function() {
+    jitterbug.initIndexPage('instances');
   },
 
   initTransfersIndex: function() {
@@ -2590,8 +2590,8 @@ jitterbug = {
         // reformat names correctly
         if (key == 'item') {
           var markableType = 'AudioVisualItem';
-        } else if (key == 'master') {
-          var markableType = 'PreservationMaster';
+        } else if (key == 'instance') {
+          var markableType = 'PreservationInstance';
         } else if (key == 'transfer') {
           var markableType = 'Transfer';
         }
@@ -2665,8 +2665,8 @@ jitterbug = {
           case 'item':
             $(noMarksSelector).text('No audio visual items are currently marked.');
             break;
-          case 'master':
-            $(noMarksSelector).text('No preservation masters are currently marked.');
+          case 'instance':
+            $(noMarksSelector).text('No preservation instances are currently marked.');
             break;
           case 'transfer':
             $(noMarksSelector).text('No transfers are currently marked.');

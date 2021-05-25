@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title' => 'Create Transfer', 'section' => 'transfers'])
+@extends('layouts.main', ['title' => 'Create Transfer', 'section' => 'transfers'])
 
 @section('content')
 <div id="detail">
@@ -90,7 +90,7 @@
     <div class="col-xs-12 actions">
       <button class="btn btn-sm btn-primary" type="submit" style="outline: none;"><i class="fa fa-save" aria-hidden="true"></i> Save</button>
       @if ($linked)
-      <a class="" href="{{ route('masters.show', $master->id) }}">or Cancel</a>
+      <a class="" href="{{ route('instances.show', $instance->id) }}">or Cancel</a>
       @else
       <a class="" href="{{ route('transfers.index') }}">or Cancel</a>
       @endif

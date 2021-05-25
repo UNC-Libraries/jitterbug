@@ -9,13 +9,13 @@ use Illuminate\Support\MessageBag;
 
 use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\AudioItem;
-use Jitterbug\Models\AudioMaster;
+use Jitterbug\Models\AudioInstance;
 use Jitterbug\Models\AudioTransfer;
 use Jitterbug\Models\Cut;
 use Jitterbug\Models\Department;
 use Jitterbug\Models\ImportTransaction;
 use Jitterbug\Models\PlaybackMachine;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Models\Transfer;
 use Jitterbug\Util\CsvReader;
 use Jitterbug\Util\DurationFormat;
@@ -28,7 +28,7 @@ class AudioImport extends Import {
   protected $audioImportKeys = array();
   protected $mustAlreadyExistInDbKeys = array();
 
-  protected $solrMasters;
+  protected $solrInstances;
   protected $solrTransfers;
 
   protected $data = null;
@@ -47,7 +47,7 @@ class AudioImport extends Import {
       'Speed' => AudioVisualItem::class
     );
 
-    $this->solrMasters = new SolariumProxy('jitterbug-masters');
+    $this->solrInstances = new SolariumProxy('jitterbug-instances');
     $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
 
     $reader = new CsvReader($filePath);
@@ -82,13 +82,13 @@ class AudioImport extends Import {
           && !empty($row[$key]) && !$this->valueExists(PlaybackMachine::class, 'name', $row[$key])) {
           $bag->add($key, $key . ' is not a recognized playback machine.');
         }
-        // Validate originator reference (preservation_master.file_name) 
+        // Validate originator reference (preservation_instance.file_name)
         // doesn't exist
         if ($key === 'OriginatorReference'
-          && !empty($row[$key]) && $this->valueExists(PreservationMaster::class,'file_name', $row[$key])) {
+          && !empty($row[$key]) && $this->valueExists(PreservationInstance::class,'file_name', $row[$key])) {
           $bag->add($key, $key . ' already exists in the database.');
         }
-        // Validate originator reference (preservation_master.file_name) 
+        // Validate originator reference (preservation_instance.file_name)
         // is unique amongst values in the rest of the file
         if ($key === 'OriginatorReference'
           && !empty($row[$key]) && in_array($row[$key], $originatorReferences)) {
@@ -157,14 +157,14 @@ class AudioImport extends Import {
 
   public function execute()
   {
-    // Keep track of which masters and transfers to update in Solr
-    $masters = array();
+    // Keep track of which instances and transfers to update in Solr
+    $instances = array();
     $transfers = array();
     $created = $updated = 0;
 
     // Update MySQL
     DB::transaction( function () 
-      use (&$masters, &$transfers, &$created, &$updated) {
+      use (&$instances, &$transfers, &$created, &$updated) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
 
@@ -221,33 +221,33 @@ class AudioImport extends Import {
         
         if (!empty($originalPm)) { 
           // Original PM not empty so this is an update
-          $masterUpdated = false;
-          $master = PreservationMaster::find($originalPm);
+          $instanceUpdated = false;
+          $instance = PreservationInstance::find($originalPm);
           if (!empty($row['OriginatorReference'])) {
-            $master->file_name = $row['OriginatorReference'];
-            $masterUpdated = true;
+            $instance->file_name = $row['OriginatorReference'];
+            $instanceUpdated = true;
           }
           if (!empty($row['FileSize'])) {
-            $master->file_size_in_bytes = $row['FileSize'];
-            $masterUpdated = true;
+            $instance->file_size_in_bytes = $row['FileSize'];
+            $instanceUpdated = true;
           }
           if (isset($duration)) {
-            $master->duration_in_seconds = $duration;
-            $masterUpdated = true;
+            $instance->duration_in_seconds = $duration;
+            $instanceUpdated = true;
           }
           if (isset($department)) {
-            $master->department_id = $department->id;
-            $masterUpdated = true;
+            $instance->department_id = $department->id;
+            $instanceUpdated = true;
           }
-          if ($masterUpdated === true) {
-            $master->save();
-            $masters[] = $master;
+          if ($instanceUpdated === true) {
+            $instance->save();
+            $instances[] = $instance;
             $updated++;
           }
 
           // Update related transfers if specified, which should exist
           if (isset($playbackMachine) || !empty($row['OriginationDate']) || !empty($row['TransferNote'])) {
-            $relatedTransfers = $master->transfers;
+            $relatedTransfers = $instance->transfers;
             foreach ($relatedTransfers as $transfer) {
               if (isset($playbackMachine)) {
                 $transfer->playback_machine_id = $playbackMachine->id;
@@ -266,7 +266,7 @@ class AudioImport extends Import {
 
           // Update related cuts if specified, which should exist
           if (!empty($row['Side'])) {
-            $relatedCuts = $master->cuts;
+            $relatedCuts = $instance->cuts;
             foreach ($relatedCuts as $cut) {
               $cut->side = $row['Side'];
               $cut->save();
@@ -278,27 +278,27 @@ class AudioImport extends Import {
           // Original PM is empty, so all new records will be created.
           // For the audio PM, there is nothing to save, we just need the
           // ID for the new PM record.
-          $audioMaster = new AudioMaster;
+          $audioInstance = new AudioInstance;
           // Sampling rate id 8 = 96kHz/24bit
-          $audioMaster->sampling_rate_id = 8;
-          $audioMaster->save();
+          $audioInstance->sampling_rate_id = 8;
+          $audioInstance->save();
           $created++;
 
           // Create the PM using data from the import.
-          $master = new PreservationMaster;
-          $master->call_number = $callNumber;
-          $master->file_name = $row['OriginatorReference'];
-          $master->file_size_in_bytes = $row['FileSize'];
-          $master->duration_in_seconds = $duration;
-          $master->department_id = $department->id;
+          $instance = new PreservationInstance;
+          $instance->call_number = $callNumber;
+          $instance->file_name = $row['OriginatorReference'];
+          $instance->file_size_in_bytes = $row['FileSize'];
+          $instance->duration_in_seconds = $duration;
+          $instance->department_id = $department->id;
           // APPDEV-6760
-          $master->file_format = 'BWF';
-          $master->file_codec = 'Uncompressed PCM';
+          $instance->file_format = 'BWF';
+          $instance->file_codec = 'Uncompressed PCM';
 
-          $master->subclass_type = 'AudioMaster';
-          $master->subclass_id = $audioMaster->id;
-          $master->save();
-          $masters[] = $master;
+          $instance->subclass_type = 'AudioInstance';
+          $instance->subclass_id = $audioInstance->id;
+          $instance->save();
+          $instances[] = $instance;
           $created++;
 
           // There's really no information to import here, 
@@ -310,7 +310,7 @@ class AudioImport extends Import {
           // Create the transfer
           $transfer = new Transfer;
           $transfer->call_number = $callNumber;
-          $transfer->preservation_master_id = $master->id;
+          $transfer->preservation_instance_id = $instance->id;
           $transfer->playback_machine_id = $playbackMachine->id;
           // Right now we will assume the person importing is the
           // engineer, but that might change in the future.
@@ -327,7 +327,7 @@ class AudioImport extends Import {
           // Create the cut
           $cut = new Cut;
           $cut->call_number = $callNumber;
-          $cut->preservation_master_id = $master->id;
+          $cut->preservation_instance_id = $instance->id;
           $cut->transfer_id = $transfer->id;
           $cut->side = $row['Side'];
           $cut->cut_number = 1;
@@ -371,19 +371,19 @@ class AudioImport extends Import {
       DB::statement('set @transaction_id = null;');      
     });
 
-    $this->solrMasters->update($masters);
+    $this->solrInstances->update($instances);
     $this->solrTransfers->update($transfers);
 
     return array('created' => $created, 'updated' => $updated);
   }
 
   private function belongsToItem($pmId, $callNumber)
-  { // TODO can reduce to 1 query by querying preservation masters directly
+  { // TODO can reduce to 1 query by querying preservation instances directly
     $item = AudioVisualItem::where('call_number', $callNumber)->first();
     if ($item !== null) {
-      $masters = $item->preservationMasters;
-      foreach ($masters as $master) {
-        if ($master->id == $pmId) {
+      $instances = $item->preservationInstances;
+      foreach ($instances as $instance) {
+        if ($instance->id == $pmId) {
           return true;
         }
       }

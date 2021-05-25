@@ -10,7 +10,7 @@ use Illuminate\Support\MessageBag;
 use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Http\Requests\ReproductionMachineRequest;
 use Jitterbug\Models\ReproductionMachine;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Support\SolariumProxy;
 
 /**
@@ -19,7 +19,7 @@ use Jitterbug\Support\SolariumProxy;
 class ReproductionMachinesController extends Controller
 {
 
-  protected $solrMasters;
+  protected $solrInstances;
 
   /**
    * Create a new controller instance.
@@ -29,7 +29,7 @@ class ReproductionMachinesController extends Controller
   public function __construct()
   {
     $this->middleware(['auth', 'admin']);
-    $this->solrMasters = new SolariumProxy('jitterbug-masters');
+    $this->solrInstances = new SolariumProxy('jitterbug-instances');
   }
 
   public function index(Request $request) {
@@ -64,9 +64,9 @@ class ReproductionMachinesController extends Controller
         });
 
         // Update Solr
-        $affectedMasters = 
-          PreservationMaster::where('reproduction_machine_id', $id)->get();
-        $this->solrMasters->update($affectedMasters);
+        $affectedInstances =
+          PreservationInstance::where('reproduction_machine_id', $id)->get();
+        $this->solrInstances->update($affectedInstances);
       }
     }
   }
@@ -74,7 +74,7 @@ class ReproductionMachinesController extends Controller
   public function destroy($id, Request $request) {
     if ($request->ajax()) {
       $count = 
-        PreservationMaster::where('reproduction_machine_id', $id)->count();
+        PreservationInstance::where('reproduction_machine_id', $id)->count();
       if ($count === 0) {
         $reproductionMachine = ReproductionMachine::findOrFail($id);
         $reproductionMachine->delete();
@@ -84,7 +84,7 @@ class ReproductionMachinesController extends Controller
         $bag = new MessageBag();
         $bag->add('status', 'Looks like that reproduction machine is ' .
           'currently in use. Change the reproduction machine of the ' .
-          'related preservation masters before deleting.');
+          'related preservation instances before deleting.');
         $response = $bag;
         return response()->json($bag, 422);
       }

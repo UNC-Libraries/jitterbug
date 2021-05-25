@@ -3,7 +3,7 @@
 use Log;
 
 use Jitterbug\Http\Requests\Request;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 
 class TransferRequest extends Request {
 
@@ -26,8 +26,8 @@ class TransferRequest extends Request {
   {
     // Add rules for base transfer
     $rules = array();
-    $this->addRuleIfNotMixed($rules, 'preservation_master_id',
-      'required|exists:preservation_masters,id,deleted_at,NULL');
+    $this->addRuleIfNotMixed($rules, 'preservation_instance_id',
+      'required|exists:preservation_instances,id,deleted_at,NULL');
     $this->addRuleIfNotMixed($rules, 'transfer_date', 'required|date_format:Y-m-d');
     $this->addRuleIfNotMixed($rules, 'playback_machine_id', 'required');
     $this->addRuleIfNotMixed($rules, 'transfer_note', 'max:1000');
@@ -60,8 +60,8 @@ class TransferRequest extends Request {
   {
     return [
       // Messages for transfer fields
-      'preservation_master_id.required' => 'The preservation master number field is required.',
-      'preservation_master_id.exists' => 'The given preservation master does not exist.',
+      'preservation_instance_id.required' => 'The preservation instance number field is required.',
+      'preservation_instance_id.exists' => 'The given preservation instance does not exist.',
       'playback_machine_id.required' => 'The playback machine field is required.',
       'transfer_note.max' => 'The transfer note must be less than :max characters.',
       'condition_note.max' => 'The condition note must be less than :max characters.',
@@ -89,7 +89,7 @@ class TransferRequest extends Request {
 
     $validator->after(function($validator) {
       if ($this->typeMismatch()) {
-        $validator->errors()->add('preservation_master_id', 'The preservation master type must match the transfer type.');
+        $validator->errors()->add('preservation_instance_id', 'The preservation instance type must match the transfer type.');
       }
     });
 
@@ -100,8 +100,8 @@ class TransferRequest extends Request {
   {
     $inputType = $this->input('subclass_type');
     $type = substr($inputType, 0, strlen($inputType) - strlen('Transfer'));
-    $master = PreservationMaster::find($this->input('preservation_master_id'));
-    return $master !== null && $type !== $master->type;
+    $instance = PreservationInstance::find($this->input('preservation_instance_id'));
+    return $instance !== null && $type !== $instance->type;
   }
 
 }

@@ -3,7 +3,7 @@
 use Log;
 
 use Jitterbug\Http\Requests\Request;
-use Jitterbug\Models\PreservationMaster;
+use Jitterbug\Models\PreservationInstance;
 
 class CutRequest extends Request {
 
@@ -25,7 +25,7 @@ class CutRequest extends Request {
   public function rules()
   {
     return [
-      'preservation_master_id' => 'required|exists:preservation_masters,id,deleted_at,NULL',
+      'preservation_instance_id' => 'required|exists:preservation_instances,id,deleted_at,NULL',
       'side' => 'required|max:4',
       'cut_number' => 'integer',
       'title' => 'max:255',
@@ -43,8 +43,8 @@ class CutRequest extends Request {
   {
     return [
       // Messages for transfer fields
-      'preservation_master_id.required' => 'The preservation master number field is required.',
-      'preservation_master_id.exists' => 'The given preservation master does not exist.',
+      'preservation_instance_id.required' => 'The preservation instance number field is required.',
+      'preservation_instance_id.exists' => 'The given preservation instance does not exist.',
       'side.required' => 'The side field is required.',
       'side.max' => 'The side field must be less than :max characters.',
       'title.max' => 'The title field must be less than :max characters.',
