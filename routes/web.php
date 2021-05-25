@@ -124,17 +124,17 @@ Route::get('cuts/{id}', 'CutsController@get');
 */
 
 Route::get('instance/resolve-range', 'InstancesController@resolveRange');
-Route::match(['post', 'get'], 'instance/batch/edit',
+Route::match(['post', 'get'], 'instances/batch/edit',
   'InstancesController@batchEdit')->name('instances.batch.edit');
-Route::put('instance/batch',
+Route::put('instances/batch',
   'InstancesController@batchUpdate')->name('instances.batch.update');
-Route::delete('instance/batch',
+Route::delete('instances/batch',
   'InstancesController@batchDestroy')->name('instances.batch.destroy');
-Route::post('instance/batch/export-fields',
+Route::post('instances/batch/export-fields',
   'InstancesController@batchExportFields')->name('instances.batch.export.fields');
-Route::post('instance/batch/export-build',
+Route::post('instances/batch/export-build',
   'InstancesController@batchExportBuild')->name('instances.batch.export.build');
-Route::post('instance/batch/export-download',
+Route::post('instances/batch/export-download',
   'InstancesController@batchExportDownload')->name('instances.batch.export.download');
 Route::resource('instances', 'InstancesController');
 Route::resource('instance.cuts', 'CutsController', ['except' => ['index']]);
