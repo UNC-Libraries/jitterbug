@@ -123,7 +123,7 @@ Route::get('cuts/{id}', 'CutsController@get');
 |--------------------------------------------------------------------------
 */
 
-Route::get('instance/resolve-range', 'InstancesController@resolveRange');
+Route::get('instances/resolve-range', 'InstancesController@resolveRange');
 Route::match(['post', 'get'], 'instances/batch/edit',
   'InstancesController@batchEdit')->name('instances.batch.edit');
 Route::put('instances/batch',
