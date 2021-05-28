@@ -38,7 +38,7 @@ class PreservationInstanceFactory extends Factory
           'file_format' => $this->faker->word,
           'file_codec' => $this->faker->word,
           'access_file_location' => $this->faker->word,
-          'subclass_type' => $this->faker->word,
+          'subclass_type' => 'AudioInstance',
           'subclass_id' => $this->faker->randomNumber(),
         ];
     }
