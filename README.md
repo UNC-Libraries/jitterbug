@@ -2,7 +2,7 @@
 A Laravel / MySQL database management application to support large-scale description, digitization, preservation and access of archival audiovisual recordings in the Wilson Special Collections Library of UNC-Chapel Hill. Funded by an Andrew W. Mellon Foundation grant, "Extending the Reach of Southern Audiovisual Sources."
 
 ## Vagrant Installation
-Local development uses a pre-configured Vagrant box, Laravel Homestead.
+Local development uses a pre-configured Vagrant box, Laravel [Homestead](https://laravel.com/docs/8.x/homestead).
 
 ### Installation steps
 1. Clone the jitterbug repository.
@@ -27,11 +27,7 @@ $ cp .env.example .env
 $ php composer.phar install
 $ php vendor/bin/homestead make
 ```
-6. Install Vagrant Host Updater plugin.
-```bash
-$ vagrant plugin install vagrant-hostsupdater
-```
-If you would prefer not to install the vagrant-hostupdater plugin, you can edit your `/etc/hosts` file yourself:
+6. Edit your `/etc/hosts` file:
 ```bash
 192.168.10.10   homestead.test
 ```
@@ -45,22 +41,38 @@ $ vagrant up
  Try to log into Jitterbug with the username `dev-admin` 
  and the admin user password you set in your `.env` file.
  ---
-## Populating the DB and Solr cores (optional)
+## Populating the DB and Solr cores with existing data (optional)
+#### Populating the DB
 If you have data that you'd like to populate the DB with, export it as a SQL dump without views or 
 create/drop statements.
 1. Import the MySQL dump into your jitterbug DB. `$jitterbug-db-dump` is the path and 
 filename of your dump file
 
-In Vagrant VM:
+**Via the command line in Homestead:**
 ```bash
 $ vagrant ssh
 $ mysql -u homestead jitterbug < $jitterbug-db-dump -psecret
 ```
+**Via a SQL GUI like [Tableplus](https://tableplus.com/) or [SequelPro](https://www.sequelpro.com/), with the following configs:**
 
+- MySQL host: 127.0.0.1
+- Username: homestead
+- Password: secret
+- Database: (leave blank so you can access `jitterbug` or `jitterbug-testing` databases)
+- Port: 33060
+- SSH host: 192.168.10.10
+- SSH user: vagrant
+- SSH password: vagrant
+
+Once the GUI is set up, you can use the `import` option to import your DB dump. If your DB dump includes users, you'll need to re-run the user table seeder:
+```bash
+vagrant ssh
+cd /vagrant
+php artisan db:seed --class=UsersTableSeeder
+```
+#### Indexing Solr Cores
 2. Use the Solr web app to import data from MySQL to index each Jitterbug core. 
-This will take about 25 minutes for all cores.
-	1. Point your favorite web browser to http://homestead.test:8983/solr (vagrant) or 
-	http://localhost:8983/solr (local)
+	1. Point your favorite web browser to http://homestead.test:8983/solr
 	2. Use the Solr "Core Selector" menu to select the jitterbug-items core.
 	3. Click the Dataimport button under the Core Selector menu.
 	4. Underneath the Execute button, check the Auto-Refresh Status checkbox.
@@ -106,10 +118,10 @@ which is precisely what the cron job does every minute. This command instructs L
 jobs defined in the ```schedule()``` method of [```Jitterbug\Console\Kernel```](https://github.com/UNC-Libraries/jitterbug/blob/main/app/Console/Kernel.php). 
 More information about Laravel task scheduling can be found in the [documentation](https://laravel.com/docs/8.x/scheduling).
 
-The scheduled job in turn calls ```Junebug\Presenters\ActivityStream->generate()``` which generates the 
+The scheduled job in turn calls ```Jitterbug\Presenters\ActivityStream->generate()``` which generates the 
 stream if new transactions have occurred. The ActivityStream class instantiates 
-```Junebug\Presenters\TransactionDigest``` classes to summarize the revisions in the transaction and 
-create individual ```Junebug\Models\Activity``` instances for display in the Dashboard.
+```Jitterbug\Presenters\TransactionDigest``` classes to summarize the revisions in the transaction and 
+create individual ```Jitterbug\Models\Activity``` instances for display in the Dashboard.
 
 Although Jitterbug relies almost exclusively on revision records to determine what action took place 
 during a transaction, Jitterbug does look at another table, import_transactions, to determine what kind 
@@ -122,7 +134,7 @@ related transaction id.
 1. Determine what object type the field is related to (audio visual items, preservation instances, or transfers).
 2. Determine if the field is specific to a certain media type (i.e. audio only) or if it is common to all media types for the object type.
 3. Create a migration to add the field to the appropriate database table. For example, if the field is common to all types of audio visual items, the field would go on the audio_visual_items table. If the field is specific to film items only, it would go on the film_items table. Do not name the column with a trailing ‘_id’ unless it’s actually a foreign key.
-5. Run the migration.
+5. Run the migration (done manually locally, or will be automatically migrated if on UNC Servers).
 6. Add the field to the show page corresponding to the object type (items, instances, or transfers). Ask the project director in what order it should be placed (before or after a certain field).
 7. Add the field to the form partial corresponding to the object and media type (e.g. _form-audio.blade.php).
 8. Add validation rules and messages to the form request class corresponding to the object type.
