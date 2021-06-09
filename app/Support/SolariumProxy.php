@@ -149,6 +149,7 @@ class SolariumProxy {
     $doc->setField('accessionNumber', $item->accession_number, null, 'set');
     $doc->setField('typeName', $item->type, null, 'set');
     $doc->setField('typeId', $item->type_id, null, 'set');
+    $doc->setField('preservationInstanceExists', $item->preservationInstances()->exists(), null, 'set');
     $doc->setField('createdAt', $item->created_at, null, 'set');
     $doc->setField('updatedAt', $item->updated_at, null, 'set');
 
