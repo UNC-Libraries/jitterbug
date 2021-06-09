@@ -23,7 +23,7 @@
                 collections.name AS collection_name,
                 formats.name AS format_name,
                 TRIM(TRAILING 'Item' FROM items.subclass_type) AS type_name,
-                CASE WHEN preservation_instances.call_number IS NOT NULL THEN TRUE ELSE FALSE as preservation_instance_exists
+                CASE WHEN preservation_instances.call_number IS NOT NULL THEN TRUE ELSE FALSE END as preservation_instance_exists
             FROM
                 audio_visual_items AS items
             LEFT JOIN film_items ON
