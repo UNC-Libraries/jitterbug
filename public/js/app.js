@@ -2066,9 +2066,8 @@ jitterbug = {
       if (totalChecked != selectedFilters.length) {
         setDefault();
       }
-
+      // radio button should be checked if its value is in the selectedFilters array
       $.each(radioButtons, function(i, radioButton) {
-        // radio button should be checked if its value is in the selectedFilters array
         radioButton.checked = $.inArray(radioButton.value, selectedFilters) !== -1;
       });
       renderSelectionCount();
