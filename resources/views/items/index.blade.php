@@ -3,33 +3,7 @@
 @section('content')
 <div class="row">
   <div id="filter-panel" class="col-xs-3 panel">
-    <h6>Preservation Instance Filter<span class="selection-count label label-default" style="margin-left: 5px;"></span></h6>
-    <ul id="preservation-instance-filters" class="filter-list">
-      <li>
-        <div>
-          <label>
-            <input type="radio" name="pi_exists" value="0">
-            Any
-          </label>
-        </div>
-      </li>
-      <li>
-        <div>
-          <label>
-            <input type="radio" name="pi_exists" value="true">
-            Digitized
-          </label>
-        </div>
-      </li>
-      <li>
-        <div>
-          <label>
-            <input type="radio" name="pi_exists" value="false">
-            Not Digitized
-          </label>
-        </div>
-      </li>
-    </ul>
+    @include('items._preservation_instance_filter')
     @include('shared._filter-list', ['name' => 'type', 'filters' => $types])
     @include('shared._filter-list', ['name' => 'collection', 'filters' => $collections, 'style' => 'height: 188px;'])
     @include('shared._filter-list', ['name' => 'format', 'filters' => $formats, 'style' => 'height: 150px;'])
