@@ -2074,13 +2074,18 @@ jitterbug = {
     },
 
     setDefault = function() {
-      $.each(checkboxes, function(i, value) {
+      $.each(checkboxes, function(i) {
         if (i == 0) {
           checkboxes[i].checked = true;
         } else {
           checkboxes[i].checked = false;
         }
       });
+      // check first if there are any radio buttons on the page
+      // then check first radio button, which is the 'any'
+      if (radioButtons.length) {
+        radioButtons[0].checked = true;
+      }
     },
 
     listType = function() {
