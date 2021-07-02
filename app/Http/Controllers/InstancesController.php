@@ -195,6 +195,15 @@ class InstancesController extends Controller {
 
     // Update Solr
     $this->solrInstances->update($instances);
+    // we track which AV items have preservation instances
+    // so for each created preservation instance, the related item should be updated
+    foreach ($instances as $instance) {
+      $item =
+        AudioVisualItem::where('call_number', $instance->call_number)->first();
+      if ($item !== null) {
+        $this->solrItems->update($item);
+      }
+    }
 
     if ($batch) {
       $request->session()->put('alert', array('type' => 'success', 'message' => 
