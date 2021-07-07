@@ -265,8 +265,6 @@ class VideoImport extends Import {
 
         // collect related AV item in array for solr update
         $item = AudioVisualItem::where('call_number', $callNumber)->first();
-        $item->touch();
-        $item->save();
         $items[] = $item;
 
       } // end foreach row
