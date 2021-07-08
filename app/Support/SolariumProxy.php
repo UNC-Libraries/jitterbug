@@ -149,6 +149,7 @@ class SolariumProxy {
     $doc->setField('accessionNumber', $item->accession_number, null, 'set');
     $doc->setField('typeName', $item->type, null, 'set');
     $doc->setField('typeId', $item->type_id, null, 'set');
+    $doc->setField('preservationInstanceExists', $item->preservationInstances()->exists(), null, 'set');
     $doc->setField('createdAt', $item->created_at, null, 'set');
     $doc->setField('updatedAt', $item->updated_at, null, 'set');
 
@@ -324,7 +325,7 @@ class SolariumProxy {
       $cutPerformerComposers, null, 'set');
   }
 
-  protected function createFilterQueries($solariumQuery, $queryParams)
+  protected function createFilterQueries($solariumQuery, $queryParams) : void
   {
     $keys = array_keys((array)($queryParams));
     foreach ($keys as $key) {
@@ -332,7 +333,11 @@ class SolariumProxy {
         $filters = $queryParams->{$key};
         if($this->hasFilters($filters)) {
           $filterType = $this->filterType($key);
-          $filterQuery = $this->filterQueryFor($filterType . 'Id', $filters);
+          if ($filterType === 'preservation-instance') {
+            $filterQuery = 'preservationInstanceExists:' . $filters[0];
+          } else {
+            $filterQuery = $this->filterQueryFor($filterType . 'Id', $filters);
+          }
           $solariumQuery->
             createFilterQuery($filterType . 's')->setQuery($filterQuery);
         }
@@ -340,9 +345,10 @@ class SolariumProxy {
     }
   }
 
-  protected function hasFilters($filterArray)
+  protected function hasFilters($filterArray) : bool
   {
-    return $filterArray[0] != 0;
+    // '0' is the value for the "any" option in the filters
+    return $filterArray[0] !== '0';
   }
   
   protected function filterType($filterKey)
@@ -350,7 +356,7 @@ class SolariumProxy {
     return substr($filterKey,0,strlen($filterKey) - strlen('-filters'));
   }
 
-  protected function filterQueryFor($field, $filters)
+  protected function filterQueryFor($field, $filters) : string
   {
     $filterQuery = $field . ':(';
     $numFilters = count($filters);

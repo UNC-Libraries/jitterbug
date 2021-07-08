@@ -2001,6 +2001,7 @@ jitterbug = {
   FilterList: function(listElement) {
     var list = listElement,
         checkboxes = $(list).find(':checkbox'),
+        radioButtons = $(list).find(':radio'),
     
     init = function() {
       $.each(checkboxes, function(i, checkbox) {
@@ -2041,12 +2042,18 @@ jitterbug = {
           $.publish('filterChanged');
         });
       });
+      $.each(radioButtons, function(i, radioButton) {
+        $(radioButton).click(function(event) {
+          $.publish('filterChanged');
+        });
+      });
     },
 
     setSelected = function(selectedFilters) {
       var totalChecked = 0;
       $.each(checkboxes, function(i, checkbox) {
-        if ($.inArray(checkbox.value, selectedFilters) != -1) {
+        // if the checkbox value is found in the selectedFilters array
+        if ($.inArray(checkbox.value, selectedFilters) !== -1) {
           checkbox.checked = true;
           totalChecked++;
         } else {
@@ -2059,17 +2066,26 @@ jitterbug = {
       if (totalChecked != selectedFilters.length) {
         setDefault();
       }
+      // radio button should be checked if its value is in the selectedFilters array
+      $.each(radioButtons, function(i, radioButton) {
+        radioButton.checked = $.inArray(radioButton.value, selectedFilters) !== -1;
+      });
       renderSelectionCount();
     },
 
     setDefault = function() {
-      $.each(checkboxes, function(i, value) {
+      $.each(checkboxes, function(i) {
         if (i == 0) {
           checkboxes[i].checked = true;
         } else {
           checkboxes[i].checked = false;
         }
       });
+      // check first if there are any radio buttons on the page
+      // then check first radio button, which is the 'any'
+      if (radioButtons.length) {
+        radioButtons[0].checked = true;
+      }
     },
 
     listType = function() {

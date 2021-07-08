@@ -28,6 +28,7 @@ class AudioImport extends Import {
   protected $audioImportKeys = array();
   protected $mustAlreadyExistInDbKeys = array();
 
+  protected $solrItems;
   protected $solrInstances;
   protected $solrTransfers;
 
@@ -47,6 +48,7 @@ class AudioImport extends Import {
       'Speed' => AudioVisualItem::class
     );
 
+    $this->solrItems = new SolariumProxy('jitterbug-items');
     $this->solrInstances = new SolariumProxy('jitterbug-instances');
     $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
 
@@ -158,13 +160,14 @@ class AudioImport extends Import {
   public function execute()
   {
     // Keep track of which instances and transfers to update in Solr
+    $items = array();
     $instances = array();
     $transfers = array();
     $created = $updated = 0;
 
     // Update MySQL
     DB::transaction( function () 
-      use (&$instances, &$transfers, &$created, &$updated) {
+      use (&$items, &$instances, &$transfers, &$created, &$updated) {
       $transactionId = Uuid::uuid4();
       DB::statement("set @transaction_id = '$transactionId';");
 
@@ -362,6 +365,10 @@ class AudioImport extends Import {
           }
         }
 
+        // collect related AV item in array for solr update
+        $item = AudioVisualItem::where('call_number', $callNumber)->first();
+        $items[] = $item;
+
       } // end foreach row
       // if nothing was created and records were updated, the import is an update
       if (empty($created) && !empty($updated)) {
@@ -371,6 +378,7 @@ class AudioImport extends Import {
       DB::statement('set @transaction_id = null;');      
     });
 
+    $this->solrItems->update($items);
     $this->solrInstances->update($instances);
     $this->solrTransfers->update($transfers);
 

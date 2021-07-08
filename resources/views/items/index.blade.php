@@ -3,9 +3,10 @@
 @section('content')
 <div class="row">
   <div id="filter-panel" class="col-xs-3 panel">
+    @include('items._preservation_instance_filter')
     @include('shared._filter-list', ['name' => 'type', 'filters' => $types])
-    @include('shared._filter-list', ['name' => 'collection', 'filters' => $collections, 'style' => 'height: 268px;'])
-    @include('shared._filter-list', ['name' => 'format', 'filters' => $formats, 'style' => 'height: 250px;'])
+    @include('shared._filter-list', ['name' => 'collection', 'filters' => $collections, 'style' => 'height: 188px;'])
+    @include('shared._filter-list', ['name' => 'format', 'filters' => $formats, 'style' => 'height: 150px;'])
   </div>
   <div id="data-panel" class="col-xs-9 panel">
     <div class="top-controls">

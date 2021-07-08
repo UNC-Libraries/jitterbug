@@ -22,7 +22,8 @@
                 types.id AS type_id,
                 collections.name AS collection_name,
                 formats.name AS format_name,
-                TRIM(TRAILING 'Item' FROM items.subclass_type) AS type_name
+                TRIM(TRAILING 'Item' FROM items.subclass_type) AS type_name,
+                CASE WHEN preservation_instances.call_number IS NOT NULL THEN TRUE ELSE FALSE END as preservation_instance_exists
             FROM
                 audio_visual_items AS items
             LEFT JOIN film_items ON
@@ -37,6 +38,8 @@
                 items.format_id = formats.id
             LEFT JOIN media_types AS types ON
                 TRIM(TRAILING 'Item' FROM items.subclass_type) = types.name
+            LEFT JOIN preservation_instances ON
+                items.call_number = preservation_instances.call_number
             WHERE
                 items.deleted_at is null;
 
@@ -57,6 +60,7 @@
             <field column="type_name" name="typeName" />
             <field column="film_element" name="filmElement" />
             <field column="video_element" name="videoElement" />
+            <field column="preservation_instance_exists" name="preservationInstanceExists" />
             <field column="created_at" name="createdAt" />
             <field column="updated_at" name="updatedAt" />
 
