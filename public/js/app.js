@@ -1518,8 +1518,7 @@ jitterbug = {
 
   initRelatedCuts: function() {
     $('#related-cuts tr[role="button"]').click(function(event) {
-      window.location.href='/instances/' + $(this).data('instance') +
-      '/cuts/' + $(this).data('id');
+      window.location.href='/cuts/' + $(this).data('id') + '?instanceId=' + $(this).data('instance');
     });
   },
 

@@ -13,7 +13,7 @@
     </div>
   </div>
 
-  {!! Form::model($cut, array('route' => array('instances.cuts.store', $instance->id), 'method' => 'post')) !!}
+  {!! Form::model($cut, array('route' => array('cuts.store', $instance->id), 'method' => 'post')) !!}
   {!! Form::hidden('transferId') !!}
 
   <div class="row first detail-container">

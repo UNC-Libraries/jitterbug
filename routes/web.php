@@ -115,7 +115,6 @@ Route::post('items/batch/audio-import-upload',
 Route::post('items/batch/audio-import-execute', 
   'ItemsController@itemsImportExecute')->name('items.batch.items.import.execute');
 Route::resource('items', 'ItemsController');
-Route::get('cuts/{id}', 'CutsController@get');
 
 /*
 |--------------------------------------------------------------------------
@@ -137,8 +136,15 @@ Route::post('instances/batch/export-build',
 Route::post('instances/batch/export-download',
   'InstancesController@batchExportDownload')->name('instances.batch.export.download');
 Route::resource('instances', 'InstancesController');
-Route::resource('instances.cuts', 'CutsController', ['except' => ['index']]);
+//Route::resource('instances.cuts', 'CutsController', ['except' => ['index']]);
 
+/*
+|--------------------------------------------------------------------------
+| Cuts
+|--------------------------------------------------------------------------
+*/
+Route::resource('cuts', 'CutsController', ['except' => ['index']]);
+Route::get('cuts/{id}', 'CutsController@get');
 /*
 |--------------------------------------------------------------------------
 | Transfers
