@@ -144,7 +144,6 @@ Route::resource('instances', 'InstancesController');
 |--------------------------------------------------------------------------
 */
 Route::resource('cuts', 'CutsController', ['except' => ['index']]);
-Route::get('cuts/{id}', 'CutsController@get');
 /*
 |--------------------------------------------------------------------------
 | Transfers
