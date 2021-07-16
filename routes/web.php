@@ -136,7 +136,6 @@ Route::post('instances/batch/export-build',
 Route::post('instances/batch/export-download',
   'InstancesController@batchExportDownload')->name('instances.batch.export.download');
 Route::resource('instances', 'InstancesController');
-//Route::resource('instances.cuts', 'CutsController', ['except' => ['index']]);
 
 /*
 |--------------------------------------------------------------------------
@@ -144,6 +143,7 @@ Route::resource('instances', 'InstancesController');
 |--------------------------------------------------------------------------
 */
 Route::resource('cuts', 'CutsController', ['except' => ['index']]);
+
 /*
 |--------------------------------------------------------------------------
 | Transfers
