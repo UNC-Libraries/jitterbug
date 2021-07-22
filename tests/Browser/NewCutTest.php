@@ -51,7 +51,7 @@ class NewCutTest extends DuskTestCase
     $this->browse(function (Browser $browser) {
       $cut = Cut::factory()->create();
       $this->generateRevision('Cut', $cut->id);
-      
+
       $browser->loginAs($this->user->id)
         ->visit('/cuts/' . $cut->id . '?instanceId=' . $cut->preservation_instance_id)
         ->clickLink('Edit')
