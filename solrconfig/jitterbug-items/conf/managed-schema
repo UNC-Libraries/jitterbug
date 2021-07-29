@@ -136,7 +136,7 @@
    <field name="containerNote" type="text_general" indexed="true" stored="true" required="false" />
    <field name="containerNoteSortable" type="lowercase" indexed="true" stored="false" required="false" />
    <field name="recordingLocation" type="text_general" indexed="true" stored="true" required="false" />
-   <field name="itemDate" type="date" indexed="true" stored="true" required="false" />
+   <field name="itemDate" type="pdate" indexed="true" stored="true" required="false" />
    <field name="accessionNumber" type="string" indexed="true" stored="true" required="false" />
    <field name="collectionId" type="string" indexed="true" stored="true" required="false" />
    <field name="collectionName" type="text_general" indexed="true" stored="true" required="false" />
@@ -163,8 +163,10 @@
    <dynamicField name="*_i"  type="pint"    indexed="true"  stored="true"/>
    <dynamicField name="*_is" type="pint"    indexed="true"  stored="true"  multiValued="true"/>
    <dynamicField name="*_s"  type="string"  indexed="true"  stored="true" />
+   <dynamicField name="*_s_ns"  type="string"  indexed="true"  stored="false" />
    <dynamicField name="*_ss" type="string"  indexed="true"  stored="true" multiValued="true"/>
    <dynamicField name="*_l"  type="plong"   indexed="true"  stored="true"/>
+   <dynamicField name="*_l_ns"  type="plong"   indexed="true"  stored="false"/>
    <dynamicField name="*_ls" type="plong"   indexed="true"  stored="true"  multiValued="true"/>
    <dynamicField name="*_t"  type="text_general"    indexed="true"  stored="true"/>
    <dynamicField name="*_txt" type="text_general"   indexed="true"  stored="true" multiValued="true"/>
@@ -518,7 +520,7 @@
     <fieldType name="point" class="solr.PointType" dimension="2" subFieldSuffix="_d"/>
 
     <!-- A specialized field for geospatial search. If indexed, this fieldType must not be multivalued. -->
-    <fieldType name="location" class="solr.LatLonPointSpatialField" subFieldSuffix="_coordinate"/>
+    <fieldType name="location" class="solr.LatLonPointSpatialField" docValues="true"/>
 
     <!-- An alternative geospatial field type new to Solr 4.  It supports multiValued and polygon shapes.
       For more information about this and other Spatial fields new to Solr 4, see:

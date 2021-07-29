@@ -18,12 +18,12 @@ sudo update-alternatives --set php /usr/bin/php7.3
 
 # Download Solr
 cd ~
-# get the latest 7.x release via https://lucene.apache.org/solr/mirrors-solr-latest-redir.html
-sudo wget --no-verbose http://archive.apache.org/dist/lucene/solr/7.2.1/solr-7.2.1.tgz
+# get the latest 8.x release via https://solr.apache.org/downloads.html
+sudo wget --no-verbose https://downloads.apache.org/lucene/solr/8.9.0/solr-8.9.0.tgz
 # extract the service installation file
-sudo tar xzf solr-7.2.1.tgz solr-7.2.1/bin/install_solr_service.sh --strip-components=2
+sudo tar xzf solr-8.9.0.tgz solr-8.9.0/bin/install_solr_service.sh --strip-components=2
 # install Solr as a service
-sudo ./install_solr_service.sh solr-7.2.1.tgz
+sudo ./install_solr_service.sh solr-8.9.0.tgz
 
 # Get the MySQL connector file and unzip it if needed
 cd /vagrant
