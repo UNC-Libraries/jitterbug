@@ -480,7 +480,7 @@
              See the Java Regular Expression documentation for more
              information on pattern and replacement string syntax.
              
-             http://docs.oracle.com/javase/8/docs/api/java/util/regex/package-summary.htm
+             http://docs.oracle.com/javase/8/docs/api/java/util/regex/package-summary.html
           -->
         <filter class="solr.PatternReplaceFilterFactory"
                 pattern="([^a-z])" replacement="" replace="all"
