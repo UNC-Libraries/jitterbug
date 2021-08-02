@@ -55,10 +55,10 @@ class CutsController extends Controller
   public function create(Request $request)
   {
     $transfer = Transfer::findOrFail($request->transferId);
-    $instance = PreservationInstance::findOrFail($request->instanceId);
+    $instance = PreservationInstance::findOrFail($transfer->preservation_instance_id);
     $cut = new Cut;
     $cut->call_number = $transfer->call_number;
-    $cut->preservation_instance_id = $request->instanceId;
+    $cut->preservation_instance_id = $instance->id;
     $cut->transfer_id = $transfer->id;
 
     return view('instances.cuts.create', compact('cut', 'instance', 'transfer'));
