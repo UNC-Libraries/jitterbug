@@ -63,21 +63,21 @@ Breadcrumbs::for('instances.edit', function($trail, $instance)
 Breadcrumbs::for('instances.cuts.show', function($trail, $instance, $cut)
 {
   $trail->parent('instances.show', $instance);
-  $trail->push('View Cut', route('instances.cuts.show', [$instance->id, $cut->id]));
+  $trail->push('View Cut', route('cuts.show', [$instance->id, $cut->id]));
 });
 
 // Instances / View Instance / Edit Cut
 Breadcrumbs::for('instances.cuts.edit', function($trail, $instance, $cut)
 {
   $trail->parent('instances.show', $instance);
-  $trail->push('Edit Cut', route('instances.cuts.edit', [$instance->id, $cut->id]));
+  $trail->push('Edit Cut', route('cuts.edit', [$instance->id, $cut->id]));
 });
 
 // Instances / View Instance / Create Cut
 Breadcrumbs::for('instances.cuts.create', function($trail, $instance)
 {
   $trail->parent('instances.show', $instance);
-  $trail->push('Create Cut', route('instances.cuts.create', $instance->id));
+  $trail->push('Create Cut', route('cuts.create', $instance->id));
 });
 
 // Instances / Create Instance
