@@ -4,7 +4,7 @@ namespace Jitterbug\Http\Controllers;
 
 use Auth;
 use DB;
-use Log;
+
 use Uuid;
 
 use Illuminate\Http\Request;
@@ -15,6 +15,7 @@ use Jitterbug\Models\Cut;
 use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Models\Transfer;
 use Jitterbug\Support\SolariumProxy;
+
 
 class CutsController extends Controller
 {
@@ -40,10 +41,10 @@ class CutsController extends Controller
   /**
    * Display the details of a cut.
    */
-  public function show(Request $request, $instanceId, $cutId)
+  public function show($cutId)
   {
-    $instance = PreservationInstance::findOrFail($instanceId);
     $cut = Cut::findOrFail($cutId);
+    $instance = $cut->preservationInstance;
     $transfer = $cut->transfer;
     return view('instances.cuts.show', compact('instance', 'cut', 'transfer'));
   }
@@ -53,11 +54,11 @@ class CutsController extends Controller
    */
   public function create(Request $request)
   {
-    $transfer = Transfer::findOrFail($request->transfer_id);
-    $instance = $transfer->preservationInstance;
+    $transfer = Transfer::findOrFail($request->transferId);
+    $instance = PreservationInstance::findOrFail($transfer->preservation_instance_id);
     $cut = new Cut;
     $cut->call_number = $transfer->call_number;
-    $cut->preservation_instance_id = $transfer->preservation_instance_id;
+    $cut->preservation_instance_id = $instance->id;
     $cut->transfer_id = $transfer->id;
 
     return view('instances.cuts.create', compact('cut', 'instance', 'transfer'));
@@ -99,10 +100,10 @@ class CutsController extends Controller
   /**
    * Display the form for editing a cut.
    */
-  public function edit(Request $request, $instanceId, $cutId)
+  public function edit($cutId)
   {
-    $instance = PreservationInstance::findOrFail($instanceId);
     $cut = Cut::findOrFail($cutId);
+    $instance = $cut->preservationInstance;
     $transfer = $cut->transfer;
     return view('instances.cuts.edit', compact('instance', 'cut', 'transfer'));
   }
@@ -110,7 +111,7 @@ class CutsController extends Controller
   /**
    * Update the details of a cut.
    */
-  public function update(CutRequest $request, $instanceId, $cutId)
+  public function update(CutRequest $request, $cutId)
   {
     $input = $request->all();
     $cut = Cut::findOrFail($cutId);
@@ -142,14 +143,14 @@ class CutsController extends Controller
     $request->session()->put('alert', array('type' => 'success', 'message' => 
         '<strong>Got it!</strong> Your cut was successfully updated.'));
 
-    return redirect()->route('instances.cuts.show', [$instanceId, $cutId]);
+    return redirect()->route('cuts.show', $cutId);
 
   }
 
   /**
    * Delete a cut and potentially a transfer.
    */
-  public function destroy(Request $request, $instanceId, $cutId)
+  public function destroy(Request $request, $cutId)
   {
     $cut = Cut::findOrFail($cutId);
 
@@ -197,8 +198,7 @@ class CutsController extends Controller
   public function get($cutId)
   {
     $cut = Cut::findOrFail($cutId);
-    return redirect()->route('instances.cuts.show',
-        [$cut->preservation_instance_id, $cut->id]);
+    return redirect()->route('cuts.show', $cut->id);
   }
 
 }

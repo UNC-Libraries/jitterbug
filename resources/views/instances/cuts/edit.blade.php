@@ -1,4 +1,4 @@
-
+@extends('layouts.main', ['title' => 'Cut', 'section' => 'instances'])
 @section('content')
 <div id="detail">
   <div class="row">
@@ -12,7 +12,7 @@
     </div>
   </div>
 
-  {!! Form::model($cut, array('route' => array('instances.cuts.update', $instance->id, $cut->id), 'method' => 'put')) !!}
+  {!! Form::model($cut, array('route' => array('cuts.update', $cut->id), 'method' => 'put')) !!}
 
   <div class="row first detail-container">
     {{-- Left Column --}}
@@ -40,7 +40,7 @@
       </div>
     </div>
   </div>
-  
+
   @include('shared._revisions', ['revisionable' => $cut])
 
   <div class="row">
@@ -51,7 +51,7 @@
   <div class="row last">
     <div class="col-xs-12 actions">
       <button class="btn btn-sm btn-primary" type="submit" style="outline: none;"><i class="fa fa-save" aria-hidden="true"></i> Save</button>
-      <a class="" href="{{ route('instances.cuts.show', array($instance->id, $cut->id)) }}">or Cancel</a>
+      <a class="" href="{{ route('cuts.show', $cut->id) }}">or Cancel</a>
     </div>
   </div>
 

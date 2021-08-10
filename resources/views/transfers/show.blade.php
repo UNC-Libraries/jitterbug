@@ -204,7 +204,7 @@
     <div class="col-xs-12 actions">
       <a class="btn btn-sm btn-secondary" role="button" href="{{ route('transfers.edit', $transfer->id) }}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
       @if ($transfer->cut === null && $transfer->type === 'Audio') 
-      <a class="btn btn-sm btn-secondary" role="button" href="{{ route('instances.cuts.create', array('instances' => $transfer->preservationInstance->id, 'transferId' => $transfer->id)) }}"><i class="fa fa-plus" aria-hidden="true"></i> Add Cut</a>
+      <a class="btn btn-sm btn-secondary" role="button" href="{{ route('cuts.create', array('instanceId' => $transfer->preservationInstance->id, 'transferId' => $transfer->id)) }}"><i class="fa fa-plus" aria-hidden="true"></i> Add Cut</a>
       @endif
       <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target=".confirm-delete-modal" style="outline: none; float: right;"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></button>
 

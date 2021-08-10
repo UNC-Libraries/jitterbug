@@ -1,5 +1,18 @@
       {{-- Cut fields (right column) --}}
       <div class="row">
+        <div class="form-group @if ($errors->has('transfer_id')) has-danger @endif">
+          <div class="col-xs-4 detail-label">
+            {!! Form::label('transfer_id', 'Transfer ID', array('class' => 'form-control-label')) !!}
+          </div>
+          <div class="col-xs-7 detail-value">
+            {!! Form::text('transfer_id', null, array('id' => 'transfer-id', 'class' => 'form-control form-control-sm', 'readonly' => 'readonly')) !!}
+            @if ($errors->has('transfer_id'))
+              <div class="form-control-label"><small>{!! $errors->first('transfer_id') !!}</small></div>
+            @endif
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <div class="form-group @if ($errors->has('title')) has-danger @endif">
           <div class="col-xs-4 detail-label">
             {!! Form::label('title', 'Title', array('class' => 'form-control-label')) !!}
