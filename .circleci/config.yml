@@ -46,9 +46,9 @@ jobs:
           name: Install Solr
           command: |
             cd ~
-            sudo wget --no-verbose http://archive.apache.org/dist/lucene/solr/7.2.1/solr-7.2.1.tgz
-            sudo tar xzf solr-7.2.1.tgz solr-7.2.1/bin/install_solr_service.sh --strip-components=2
-            sudo ./install_solr_service.sh solr-7.2.1.tgz -n
+            sudo wget --no-verbose https://downloads.apache.org/lucene/solr/8.9.0/solr-8.9.0.tgz
+            sudo tar xzf solr-8.9.0.tgz solr-8.9.0/bin/install_solr_service.sh --strip-components=2
+            sudo ./install_solr_service.sh solr-8.9.0.tgz -n
 
       - run:
           name: Get and hook up connector file

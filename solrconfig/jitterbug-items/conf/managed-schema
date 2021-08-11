@@ -27,6 +27,22 @@
 
  For more information, on how to customize this file, please see
  http://wiki.apache.org/solr/SchemaXml
+
+ PERFORMANCE NOTE: this schema includes many optional features and should not
+  be used for benchmarking.  To improve performance one could
+   - set stored="false" for all fields possible (esp large fields) when you
+     only need to search on the field but don't need to return the original
+     value.
+   - set indexed="false" if you don't need to search on the field, but only
+     return the field as a result of searching on other indexed fields.
+   - remove all unneeded copyField statements
+   - for best index size and searching performance, set "index" to false
+     for all general text fields, use copyField to copy them to the
+     catchall "text" field, and use that for searching.
+   - For maximum indexing performance, use the ConcurrentUpdateSolrServer
+     java client.
+   - Remember to run the JVM in server mode, and use a higher logging level
+     that avoids logging every request
 -->
 
 <schema name="items" version="1.6">
@@ -52,18 +68,18 @@
    <!-- Valid attributes for fields:
      name: mandatory - the name for the field
      type: mandatory - the name of a field type from the 
-       <types> fieldType section
+       fieldTypes
      indexed: true if this field should be indexed (searchable or sortable)
      stored: true if this field should be retrievable
      docValues: true if this field should have doc values. Doc values are
-       useful for faceting, grouping, sorting and function queries. Although not
-       required, doc values will make the index faster to load, more
-       NRT-friendly and more memory-efficient. They however come with some
-       limitations: they are currently only supported by StrField, UUIDField
-       and all Trie*Fields, and depending on the field type, they might
-       require the field to be single-valued, be required or have a default
-       value (check the documentation of the field type you're interested in
-       for more information)
+       useful (required, if you are using *Point fields) for faceting,
+       grouping, sorting and function queries. Doc values will make the index
+       faster to load, more NRT-friendly and more memory-efficient.
+       They however come with some limitations: they are currently only
+       supported by StrField, UUIDField, all *PointFields, and depending
+       on the field type, they might require the field to be single-valued,
+       be required or have a default value (check the documentation
+       of the field type you're interested in for more information)
      multiValued: true if this field may contain multiple values per document
      omitNorms: (expert) set to true to omit the norms associated with
        this field (this disables length normalization and index-time
@@ -94,7 +110,7 @@
    <!-- If you remove this field, you must _also_ disable the update log in solrconfig.xml
       or Solr won't start. _version_ and update log are required for SolrCloud
    --> 
-   <field name="_version_" type="long" indexed="true" stored="false" />
+   <field name="_version_" type="plong" indexed="true" stored="false" />
    
    <!-- points to the root document of a block of nested documents. Required for nested
       document support, may be removed otherwise
@@ -120,7 +136,7 @@
    <field name="containerNote" type="text_general" indexed="true" stored="true" required="false" />
    <field name="containerNoteSortable" type="lowercase" indexed="true" stored="false" required="false" />
    <field name="recordingLocation" type="text_general" indexed="true" stored="true" required="false" />
-   <field name="itemDate" type="date" indexed="true" stored="true" required="false" />
+   <field name="itemDate" type="pdate" indexed="true" stored="true" required="false" />
    <field name="accessionNumber" type="string" indexed="true" stored="true" required="false" />
    <field name="collectionId" type="string" indexed="true" stored="true" required="false" />
    <field name="collectionName" type="text_general" indexed="true" stored="true" required="false" />
@@ -130,8 +146,8 @@
    <field name="typeName" type="text_general" indexed="true" stored="true" required="false" />
    <field name="filmElement" type="text_general" indexed="true" stored="true" required="false" />
    <field name="videoElement" type="text_general" indexed="true" stored="true" required="false" />
-   <field name="createdAt" type="date" indexed="false" stored="true" required="false" />
-   <field name="updatedAt" type="date" indexed="false" stored="true" required="false" />
+   <field name="createdAt" type="pdate" indexed="false" stored="true" required="false" />
+   <field name="updatedAt" type="pdate" indexed="false" stored="true" required="false" />
    <field name="cutIds" type="string" indexed="false" stored="true" required="false" multiValued="true" />
    <field name="cutPerformerComposers" type="text_general" indexed="true" stored="true" required="false" multiValued="true" />
    <field name="cutTitles" type="text_general" indexed="true" stored="true" required="false" multiValued="true" />
@@ -144,35 +160,30 @@
        RESTRICTION: the glob-like pattern in the name attribute must have
        a "*" only at the start or the end.  -->
    
-   <dynamicField name="*_i"  type="int"    indexed="true"  stored="true"/>
-   <dynamicField name="*_is" type="int"    indexed="true"  stored="true"  multiValued="true"/>
+   <dynamicField name="*_i"  type="pint"    indexed="true"  stored="true"/>
+   <dynamicField name="*_is" type="pint"    indexed="true"  stored="true"  multiValued="true"/>
    <dynamicField name="*_s"  type="string"  indexed="true"  stored="true" />
+   <dynamicField name="*_s_ns"  type="string"  indexed="true"  stored="false" />
    <dynamicField name="*_ss" type="string"  indexed="true"  stored="true" multiValued="true"/>
-   <dynamicField name="*_l"  type="long"   indexed="true"  stored="true"/>
-   <dynamicField name="*_ls" type="long"   indexed="true"  stored="true"  multiValued="true"/>
+   <dynamicField name="*_l"  type="plong"   indexed="true"  stored="true"/>
+   <dynamicField name="*_l_ns"  type="plong"   indexed="true"  stored="false"/>
+   <dynamicField name="*_ls" type="plong"   indexed="true"  stored="true"  multiValued="true"/>
    <dynamicField name="*_t"  type="text_general"    indexed="true"  stored="true"/>
    <dynamicField name="*_txt" type="text_general"   indexed="true"  stored="true" multiValued="true"/>
    <dynamicField name="*_en"  type="text_en"    indexed="true"  stored="true" multiValued="true"/>
    <dynamicField name="*_b"  type="boolean" indexed="true" stored="true"/>
    <dynamicField name="*_bs" type="boolean" indexed="true" stored="true"  multiValued="true"/>
-   <dynamicField name="*_f"  type="float"  indexed="true"  stored="true"/>
-   <dynamicField name="*_fs" type="float"  indexed="true"  stored="true"  multiValued="true"/>
-   <dynamicField name="*_d"  type="double" indexed="true"  stored="true"/>
-   <dynamicField name="*_ds" type="double" indexed="true"  stored="true"  multiValued="true"/>
+   <dynamicField name="*_f"  type="pfloat"  indexed="true"  stored="true"/>
+   <dynamicField name="*_fs" type="pfloat"  indexed="true"  stored="true"  multiValued="true"/>
+   <dynamicField name="*_d"  type="pdouble" indexed="true"  stored="true"/>
+   <dynamicField name="*_ds" type="pdouble" indexed="true"  stored="true"  multiValued="true"/>
 
    <!-- Type used to index the lat and lon components for the "location" FieldType -->
-   <dynamicField name="*_coordinate"  type="tdouble" indexed="true"  stored="false" useDocValuesAsStored="false" />
+   <dynamicField name="*_coordinate"  type="pdouble" indexed="true"  stored="false" useDocValuesAsStored="false" />
 
-   <dynamicField name="*_dt"  type="date"    indexed="true"  stored="true"/>
-   <dynamicField name="*_dts" type="date"    indexed="true"  stored="true" multiValued="true"/>
+   <dynamicField name="*_dt"  type="pdate"    indexed="true"  stored="true"/>
+   <dynamicField name="*_dts" type="pdate"    indexed="true"  stored="true" multiValued="true"/>
    <dynamicField name="*_p"  type="location" indexed="true" stored="true"/>
-
-   <!-- some trie-coded dynamic fields for faster range queries -->
-   <dynamicField name="*_ti" type="tint"    indexed="true"  stored="true"/>
-   <dynamicField name="*_tl" type="tlong"   indexed="true"  stored="true"/>
-   <dynamicField name="*_tf" type="tfloat"  indexed="true"  stored="true"/>
-   <dynamicField name="*_td" type="tdouble" indexed="true"  stored="true"/>
-   <dynamicField name="*_tdt" type="tdate"  indexed="true"  stored="true"/>
 
    <dynamicField name="*_c"   type="currency" indexed="true"  stored="true"/>
 
@@ -208,56 +219,40 @@
        standard package such as org.apache.solr.analysis
     -->
 
-    <!-- The StrField type is not analyzed, but indexed/stored verbatim.
-       It supports doc values but in that case the field needs to be
-       single-valued and either required or have a default value.
-      -->
+    <!-- The StrField type is not analyzed, but indexed/stored verbatim.-->
     <fieldType name="string" class="solr.StrField" sortMissingLast="true" docValues="true" />
 
     <!-- boolean type: "true" or "false" -->
     <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>
 
     <!-- sortMissingLast and sortMissingFirst attributes are optional attributes are
-         currently supported on types that are sorted internally as strings
-         and on numeric types.
-       This includes "string","boolean", and, as of 3.5 (and 4.x),
-       int, float, long, date, double, including the "Trie" variants.
-       - If sortMissingLast="true", then a sort on this field will cause documents
-         without the field to come after documents with the field,
-         regardless of the requested sort order (asc or desc).
-       - If sortMissingFirst="true", then a sort on this field will cause documents
-         without the field to come before documents with the field,
-         regardless of the requested sort order.
-       - If sortMissingLast="false" and sortMissingFirst="false" (the default),
-         then default lucene sorting will be used which places docs without the
-         field first in an ascending sort and last in a descending sort.
+          currently supported on types that are sorted internally as strings
+          and on numeric types.
+        This includes "string", "boolean", "pint", "pfloat", "plong", "pdate", "pdouble".
+        - If sortMissingLast="true", then a sort on this field will cause documents
+          without the field to come after documents with the field,
+          regardless of the requested sort order (asc or desc).
+        - If sortMissingFirst="true", then a sort on this field will cause documents
+          without the field to come before documents with the field,
+          regardless of the requested sort order.
+        - If sortMissingLast="false" and sortMissingFirst="false" (the default),
+          then default lucene sorting will be used which places docs without the
+          field first in an ascending sort and last in a descending sort.
     -->    
 
     <!--
-      Default numeric field types. For faster range queries, consider the tint/tfloat/tlong/tdouble types.
-
-      These fields support doc values, but they require the field to be
-      single-valued and either be required or have a default value.
+      Numeric field types that index values using KD-trees.
+      Point fields don't support FieldCache, so they must have docValues="true" if needed for sorting, faceting, functions, etc.
     -->
-    <fieldType name="int" class="solr.TrieIntField" docValues="true" precisionStep="0" positionIncrementGap="0"/>
-    <fieldType name="float" class="solr.TrieFloatField" docValues="true" precisionStep="0" positionIncrementGap="0"/>
-    <fieldType name="long" class="solr.TrieLongField" docValues="true" precisionStep="0" positionIncrementGap="0"/>
-    <fieldType name="double" class="solr.TrieDoubleField" docValues="true" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="pint" class="solr.IntPointField" docValues="true"/>
+    <fieldType name="pfloat" class="solr.FloatPointField" docValues="true"/>
+    <fieldType name="plong" class="solr.LongPointField" docValues="true"/>
+    <fieldType name="pdouble" class="solr.DoublePointField" docValues="true"/>
 
-    <!--
-     Numeric field types that index each value at various levels of precision
-     to accelerate range queries when the number of values between the range
-     endpoints is large. See the javadoc for NumericRangeQuery for internal
-     implementation details.
-
-     Smaller precisionStep values (specified in bits) will lead to more tokens
-     indexed per value, slightly larger index size, and faster range queries.
-     A precisionStep of 0 disables indexing at different precision levels.
-    -->
-    <fieldType name="tint" class="solr.TrieIntField" docValues="true" precisionStep="8" positionIncrementGap="0"/>
-    <fieldType name="tfloat" class="solr.TrieFloatField" docValues="true" precisionStep="8" positionIncrementGap="0"/>
-    <fieldType name="tlong" class="solr.TrieLongField" docValues="true" precisionStep="8" positionIncrementGap="0"/>
-    <fieldType name="tdouble" class="solr.TrieDoubleField" docValues="true" precisionStep="8" positionIncrementGap="0"/>
+    <fieldType name="pints" class="solr.IntPointField" docValues="true" multiValued="true"/>
+    <fieldType name="pfloats" class="solr.FloatPointField" docValues="true" multiValued="true"/>
+    <fieldType name="plongs" class="solr.LongPointField" docValues="true" multiValued="true"/>
+    <fieldType name="pdoubles" class="solr.DoublePointField" docValues="true" multiValued="true"/>
 
     <!-- The format for this date field is of the form 1995-12-31T23:59:59Z, and
          is a more restricted form of the canonical representation of dateTime
@@ -277,15 +272,12 @@
                   ... 6 months and 3 days in the future from the start of
                       the current day
                       
-         Consult the TrieDateField javadocs for more information.
-
-         Note: For faster range queries, consider the tdate type
+         Consult the DatePointField javadocs for more information.
       -->
-    <fieldType name="date" class="solr.TrieDateField" docValues="true" precisionStep="0" positionIncrementGap="0"/>
 
-    <!-- A Trie based date field for faster date range queries and date faceting. -->
-    <fieldType name="tdate" class="solr.TrieDateField" docValues="true" precisionStep="6" positionIncrementGap="0"/>
-
+    <!-- KD-tree versions of date fields -->
+    <fieldType name="pdate" class="solr.DatePointField" docValues="true"/>
+    <fieldType name="pdates" class="solr.DatePointField" docValues="true" multiValued="true"/>
 
     <!--Binary data type. The data should be sent/retrieved in as Base64 encoded Strings -->
     <fieldType name="binary" class="solr.BinaryField"/>
@@ -297,7 +289,7 @@
          name and the version of the index. As long as the index version
          remains unchanged, and the same field name is reused,
          the ordering of the docs will be consistent.  
-         If you want different psuedo-random orderings of documents,
+         If you want different pseudo-random orderings of documents,
          for the same version of the index, use a dynamicField and
          change the field name in the request.
      -->
@@ -370,7 +362,7 @@
                 words="lang/stopwords_en.txt"
                 />
         <filter class="solr.LowerCaseFilterFactory"/>
-  <filter class="solr.EnglishPossessiveFilterFactory"/>
+        <filter class="solr.EnglishPossessiveFilterFactory"/>
         <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
   <!-- Optionally you may want to use this less aggressive stemmer instead of PorterStemFilterFactory:
         <filter class="solr.EnglishMinimalStemFilterFactory"/>
@@ -528,7 +520,7 @@
     <fieldType name="point" class="solr.PointType" dimension="2" subFieldSuffix="_d"/>
 
     <!-- A specialized field for geospatial search. If indexed, this fieldType must not be multivalued. -->
-    <fieldType name="location" class="solr.LatLonType" subFieldSuffix="_coordinate"/>
+    <fieldType name="location" class="solr.LatLonPointSpatialField" docValues="true"/>
 
     <!-- An alternative geospatial field type new to Solr 4.  It supports multiValued and polygon shapes.
       For more information about this and other Spatial fields new to Solr 4, see:
@@ -546,15 +538,21 @@
 
    <!-- Money/currency field type. See http://wiki.apache.org/solr/MoneyFieldType
         Parameters:
-          defaultCurrency: Specifies the default currency if none specified. Defaults to "USD"
-          precisionStep:   Specifies the precisionStep for the TrieLong field used for the amount
-          providerClass:   Lets you plug in other exchange provider backend:
-                           solr.FileExchangeRateProvider is the default and takes one parameter:
-                             currencyConfig: name of an xml file holding exchange rates
-                           solr.OpenExchangeRatesOrgProvider uses rates from openexchangerates.org:
-                             ratesFileLocation: URL or path to rates JSON file (default latest.json on the web)
-                             refreshInterval: Number of minutes between each rates fetch (default: 1440, min: 60)
+          amountLongSuffix: Required. Refers to a dynamic field for the raw amount sub-field.
+                              The dynamic field must have a field type that extends LongValueFieldType.
+                              Note: If you expect to use Atomic Updates, this dynamic field may not be stored.
+          codeStrSuffix:    Required. Refers to a dynamic field for the currency code sub-field.
+                              The dynamic field must have a field type that extends StrField.
+                              Note: If you expect to use Atomic Updates, this dynamic field may not be stored.
+          defaultCurrency:  Specifies the default currency if none specified. Defaults to "USD"
+          providerClass:    Lets you plug in other exchange provider backend:
+                            solr.FileExchangeRateProvider is the default and takes one parameter:
+                              currencyConfig: name of an xml file holding exchange rates
+                            solr.OpenExchangeRatesOrgProvider uses rates from openexchangerates.org:
+                              ratesFileLocation: URL or path to rates JSON file (default latest.json on the web)
+                              refreshInterval: Number of minutes between each rates fetch (default: 1440, min: 60)
    -->
-    <fieldType name="currency" class="solr.CurrencyField" precisionStep="8" defaultCurrency="USD" currencyConfig="currency.xml" />
+    <fieldType name="currency" class="solr.CurrencyFieldType" amountLongSuffix="_l_ns" codeStrSuffix="_s_ns"
+               defaultCurrency="USD" currencyConfig="currency.xml" />
 
 </schema>
