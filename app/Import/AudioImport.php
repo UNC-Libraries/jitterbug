@@ -180,17 +180,16 @@ class AudioImport extends Import {
       $departmentCache = array();
 
       foreach($this->data as $row) {
-        $callNumber = $row['CallNumber'];
+        // call number is allowed to be null if it's an update
+        $callNumber = $row['CallNumber'] ?? null;
 
         // We need to lookup the playback machine record to get the 
         // id. In order to avoid hitting the database, we will utilize
         // a simple cache.
-        $playbackMachineName = $row['PlaybackMachine'];
-        if (isset($playbackMachineName)) {
+        if (isset($row['PlaybackMachine'])) {
+          $playbackMachineName = $row['PlaybackMachine'];
           // Check the cache first for this playback machine record
-          $playbackMachine =
-            isset($playbackMachineCache[$playbackMachineName]) ?
-              $playbackMachineCache[$playbackMachineName] : null;
+          $playbackMachine = $playbackMachineCache[$playbackMachineName] ?? null;
           // Not in cache, so get from database and add to cache
           if ($playbackMachine === null) {
             $playbackMachine =
@@ -202,12 +201,10 @@ class AudioImport extends Import {
         }
 
         // Same as playback machine, we will use a cache for the department
-        $departmentName = $row['IART'];
-        if (isset($departmentName)) {
+        if (isset($row['IART'])) {
+          $departmentName = $row['IART'];
           // Check the cache first for this department record
-          $department =
-            isset($departmentCache[$departmentName]) ?
-              $departmentCache[$departmentName] : null;
+          $department = $departmentCache[$departmentName] ?? null;
           // Not in cache, so get from database and add to cache
           if ($department === null) {
             $department =
@@ -219,7 +216,7 @@ class AudioImport extends Import {
         }
 
         // Original PM is optional, so the column may not be present in the file
-        $originalPm = isset($row['OriginalPm']) ? $row['OriginalPm'] : null;
+        $originalPm = $row['OriginalPm'] ?? null;
         $duration = DurationFormat::toSeconds($row['Duration']);
         
         if (!empty($originalPm)) { 
