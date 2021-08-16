@@ -71,6 +71,7 @@ cd /vagrant
 php artisan db:seed --class=UsersTableSeeder
 ```
 #### Indexing Solr Cores
+(The data import functionality is deprecated and scheduled to be removed in Solr 9.)
 2. Use the Solr web app to import data from MySQL to index each Jitterbug core. 
 	1. Point your favorite web browser to http://homestead.test:8983/solr
 	2. Use the Solr "Core Selector" menu to select the jitterbug-items core.

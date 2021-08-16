@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Go to the Solr Home direoctory
+# Go to the Solr Home directory
 cd /opt/solr
 
 # Stop the Solr instance
