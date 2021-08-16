@@ -172,7 +172,8 @@ class TransferAudioImportsTest extends TestCase
   {
     $user = $this->user;
     PreservationInstance::factory()->create(['id' => 82143, 'call_number' => 'FT-6708']);
-    PreservationInstance::factory()->create(['id' => 81073, 'call_number' => 'FT-6708']);
+    PreservationInstance::factory()->create(['id' => 81073]);
+    PlaybackMachine::factory()->create(['name' => 'Otari']);
     $filePath = base_path('tests/import-test-files/audio-import/sample_audio_import_update_missing_headers.csv');
 
     $response = $this->actingAs($user)
@@ -184,8 +185,26 @@ class TransferAudioImportsTest extends TestCase
     $responseArray = json_decode($response->getContent(), true);
     $htmlContainsSuccessMessage = strpos($responseArray['html'], 'Your import was successful!') !== false;
 
-
     $this->assertEquals('success', $responseArray['status'], "The JSON status should be 'success'.");
     $this->assertTrue($htmlContainsSuccessMessage, 'The HTML in the response does not include the correct success notification.');
+  }
+
+  public function testAudioImportUploadUpdateDoesNotUpdateBlankValues() : void
+  {
+    $user = $this->user;
+    $preservationInstance =PreservationInstance::factory()->create(['id' => 82143, 'call_number' => 'FT-6708']);
+    $originalFileName = $preservationInstance->file_name;
+    PreservationInstance::factory()->create(['id' => 81073]);
+    PlaybackMachine::factory()->create(['name' => 'Otari']);
+    $filePath = base_path('tests/import-test-files/audio-import/sample_audio_import_update_missing_headers.csv');
+
+    $this->actingAs($user)
+      ->withSession(['audio-import-file' => $filePath])
+      ->post('/transfers/batch/audio-import-execute',
+        [],
+        array('HTTP_X-Requested-With' => 'XMLHttpRequest'));
+    $preservationInstance->refresh();
+
+    $this->assertEquals($originalFileName, $preservationInstance->file_name, "The filename should be unchanged.");
   }
 }
