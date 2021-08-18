@@ -27,6 +27,7 @@ class AudioImport extends Import {
   protected $requiredAudioImportKeys = array();
   protected $audioImportKeys = array();
   protected $mustAlreadyExistInDbKeys = array();
+  protected $avItemFieldKeys = array();
 
   protected $solrItems;
   protected $solrInstances;
@@ -47,6 +48,7 @@ class AudioImport extends Import {
       'Base' => AudioItem::class,
       'Speed' => AudioVisualItem::class
     );
+    $this->avItemFieldKeys = array('Size', 'TrackConfiguration', 'Base', 'Speed');
 
     $this->solrItems = new SolariumProxy('jitterbug-items');
     $this->solrInstances = new SolariumProxy('jitterbug-instances');
@@ -70,10 +72,14 @@ class AudioImport extends Import {
 
         // Validate that all required fields have values if this is a new record
         if ($new_record && empty($row[$key]) &&
-          in_array($key, $this->requiredAudioImportKeys)) {
+          in_array($key, $this->requiredAudioImportKeys, true)) {
           $bag->add($key, 'A value for ' . $key . ' is required.');
         }
-
+        // Validate call number exists if AV item fields are present and filled in
+        if (!$new_record && !empty($row[$key]) && empty($row['CallNumber']) &&
+          in_array($key, $this->avItemFieldKeys, true)) {
+          $bag->add($key, 'Call number must be filled in.');
+        }
         // Validate call number is audio
         if ($key === 'CallNumber'
           && !empty($row[$key]) && !$this->isAudio($row[$key])) {
