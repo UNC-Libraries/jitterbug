@@ -217,7 +217,7 @@ class AudioImport extends Import {
 
         // Original PM is optional, so the column may not be present in the file
         $originalPm = $row['OriginalPm'] ?? null;
-        $duration = DurationFormat::toSeconds($row['Duration']);
+        $duration = isset($row['Duration']) ? DurationFormat::toSeconds($row['Duration']) : null;
         
         if (!empty($originalPm)) { 
           // Original PM not empty so this is an update
