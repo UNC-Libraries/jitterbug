@@ -40,15 +40,15 @@ class AudioImport extends Import {
     $this->requiredAudioImportKeys = array('CallNumber', 
       'OriginatorReference', 'Side', 'PlaybackMachine', 'FileSize', 
       'Duration', 'OriginationDate', 'IART');
+    $this->avItemFieldKeys = array('Size', 'TrackConfiguration', 'Base', 'Speed');
     $this->audioImportKeys = array_merge($this->requiredAudioImportKeys, 
-      array('TransferNote', 'OriginalPm', 'Size', 'TrackConfiguration', 'Base', 'Speed'));
+      array('TransferNote', 'OriginalPm'), $this->avItemFieldKeys);
     $this->mustAlreadyExistInDbKeys = array(
       'Size' => AudioItem::class,
       'TrackConfiguration' => AudioItem::class,
       'Base' => AudioItem::class,
       'Speed' => AudioVisualItem::class
     );
-    $this->avItemFieldKeys = array('Size', 'TrackConfiguration', 'Base', 'Speed');
 
     $this->solrItems = new SolariumProxy('jitterbug-items');
     $this->solrInstances = new SolariumProxy('jitterbug-instances');
