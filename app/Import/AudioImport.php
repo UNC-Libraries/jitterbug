@@ -186,7 +186,7 @@ class AudioImport extends Import {
       $departmentCache = array();
 
       foreach($this->data as $row) {
-        // call number is allowed to be null if it's an update
+        // call number has been validated to see if it's allowed to be null
         $callNumber = $row['CallNumber'] ?? null;
 
         // We need to lookup the playback machine record to get the 

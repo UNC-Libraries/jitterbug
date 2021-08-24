@@ -192,7 +192,7 @@ class TransferAudioImportsTest extends TestCase
   public function testAudioImportUploadUpdateDoesNotUpdateBlankValues() : void
   {
     $user = $this->user;
-    $preservationInstance =PreservationInstance::factory()->create(['id' => 82143, 'call_number' => 'FT-6708']);
+    $preservationInstance = PreservationInstance::factory()->create(['id' => 82143, 'call_number' => 'FT-6708']);
     $originalFileName = $preservationInstance->file_name;
     PreservationInstance::factory()->create(['id' => 81073]);
     PlaybackMachine::factory()->create(['name' => 'Otari']);
