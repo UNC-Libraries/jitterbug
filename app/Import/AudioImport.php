@@ -27,6 +27,7 @@ class AudioImport extends Import {
   protected $requiredAudioImportKeys = array();
   protected $audioImportKeys = array();
   protected $mustAlreadyExistInDbKeys = array();
+  protected $avItemFieldKeys = array();
 
   protected $solrItems;
   protected $solrInstances;
@@ -39,8 +40,9 @@ class AudioImport extends Import {
     $this->requiredAudioImportKeys = array('CallNumber', 
       'OriginatorReference', 'Side', 'PlaybackMachine', 'FileSize', 
       'Duration', 'OriginationDate', 'IART');
+    $this->avItemFieldKeys = array('Size', 'TrackConfiguration', 'Base', 'Speed');
     $this->audioImportKeys = array_merge($this->requiredAudioImportKeys, 
-      array('TransferNote', 'OriginalPm', 'Size', 'TrackConfiguration', 'Base', 'Speed'));
+      array('TransferNote', 'OriginalPm'), $this->avItemFieldKeys);
     $this->mustAlreadyExistInDbKeys = array(
       'Size' => AudioItem::class,
       'TrackConfiguration' => AudioItem::class,
@@ -70,10 +72,14 @@ class AudioImport extends Import {
 
         // Validate that all required fields have values if this is a new record
         if ($new_record && empty($row[$key]) &&
-          in_array($key, $this->requiredAudioImportKeys)) {
+          in_array($key, $this->requiredAudioImportKeys, true)) {
           $bag->add($key, 'A value for ' . $key . ' is required.');
         }
-
+        // Validate call number exists if AV item fields are present and filled in
+        if (!$new_record && !empty($row[$key]) && empty($row['CallNumber']) &&
+          in_array($key, $this->avItemFieldKeys, true)) {
+          $bag->add($key, 'Call number must be filled in.');
+        }
         // Validate call number is audio
         if ($key === 'CallNumber'
           && !empty($row[$key]) && !$this->isAudio($row[$key])) {
@@ -180,17 +186,16 @@ class AudioImport extends Import {
       $departmentCache = array();
 
       foreach($this->data as $row) {
-        $callNumber = $row['CallNumber'];
+        // call number has been validated to see if it's allowed to be null
+        $callNumber = $row['CallNumber'] ?? null;
 
         // We need to lookup the playback machine record to get the 
         // id. In order to avoid hitting the database, we will utilize
         // a simple cache.
-        $playbackMachineName = $row['PlaybackMachine'];
-        if (isset($playbackMachineName)) {
+        if (isset($row['PlaybackMachine'])) {
+          $playbackMachineName = $row['PlaybackMachine'];
           // Check the cache first for this playback machine record
-          $playbackMachine =
-            isset($playbackMachineCache[$playbackMachineName]) ?
-              $playbackMachineCache[$playbackMachineName] : null;
+          $playbackMachine = $playbackMachineCache[$playbackMachineName] ?? null;
           // Not in cache, so get from database and add to cache
           if ($playbackMachine === null) {
             $playbackMachine =
@@ -202,12 +207,10 @@ class AudioImport extends Import {
         }
 
         // Same as playback machine, we will use a cache for the department
-        $departmentName = $row['IART'];
-        if (isset($departmentName)) {
+        if (isset($row['IART'])) {
+          $departmentName = $row['IART'];
           // Check the cache first for this department record
-          $department =
-            isset($departmentCache[$departmentName]) ?
-              $departmentCache[$departmentName] : null;
+          $department = $departmentCache[$departmentName] ?? null;
           // Not in cache, so get from database and add to cache
           if ($department === null) {
             $department =
@@ -219,8 +222,8 @@ class AudioImport extends Import {
         }
 
         // Original PM is optional, so the column may not be present in the file
-        $originalPm = isset($row['OriginalPm']) ? $row['OriginalPm'] : null;
-        $duration = DurationFormat::toSeconds($row['Duration']);
+        $originalPm = $row['OriginalPm'] ?? null;
+        $duration = isset($row['Duration']) ? DurationFormat::toSeconds($row['Duration']) : null;
         
         if (!empty($originalPm)) { 
           // Original PM not empty so this is an update
