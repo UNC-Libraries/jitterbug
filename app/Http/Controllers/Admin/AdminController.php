@@ -2,6 +2,7 @@
 
 use Auth;
 use DB;
+use Illuminate\Support\MessageBag;
 use Log;
 
 use Illuminate\Http\Request;
@@ -33,8 +34,14 @@ class AdminController extends Controller
       $input = $request->all();
       $username = $input['username'];
       $user = User::where('username', $username)->first();
-      $user->admin = 1;
-      $user->save();
+      if ($user->inactive === 0) {
+        $user->admin = 1;
+        $user->save();
+        return response()->json(['status'=>'success']);
+      }
+      $bag = new MessageBag();
+      $bag->add('status', 'That user is inactive, so they cannot be made admin.');
+      return response()->json($bag, 422);
     }
   }
 
