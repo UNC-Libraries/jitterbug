@@ -220,7 +220,7 @@ $ npm run dev
     ```
 3. Run the Laravel Dusk tests
     ```bash
-    php artisan dusk
+    php artisan dusk --env=testing
     ```
 4. Check screenshots folder when there's a failure in `tests/Browser/screenshots`
 
