@@ -8,15 +8,16 @@ use Tests\TestCase;
 
 class AdminTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_example() : void
-    {
-        $response = $this->get('/');
+  use RefreshDatabase;
+  /**
+   * A basic feature test example.
+   *
+   * @return void
+   */
+  public function test_example() : void
+  {
+      $response = $this->get('/');
 
-        $response->assertStatus(200);
-    }
+      $response->assertStatus(200);
+  }
 }
