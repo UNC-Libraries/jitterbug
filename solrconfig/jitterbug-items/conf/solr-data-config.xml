@@ -39,7 +39,8 @@
             LEFT JOIN media_types AS types ON
                 TRIM(TRAILING 'Item' FROM items.subclass_type) = types.name
             LEFT JOIN preservation_instances ON
-                items.call_number = preservation_instances.call_number
+                items.call_number = preservation_instances.call_number AND
+                preservation_instances.deleted_at is null
             WHERE
                 items.deleted_at is null;
 
