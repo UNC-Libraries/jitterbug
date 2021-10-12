@@ -1,5 +1,6 @@
 <?php
 namespace Tests\Helpers;
+use Jitterbug\Models\Prefix;
 use Venturecraft\Revisionable\Revision;
 
 class TestHelper
@@ -15,5 +16,13 @@ class TestHelper
       ->first();
     $revision->user_id = $userId;
     $revision->save();
+  }
+
+  // call number generation requires prefixes from collections to be attached to formats
+  public static function createAndAttachPrefix($collection, $format)
+  {
+    $prefix = Prefix::factory()->create(['deleted_at' => null, 'collection_type_id' => $collection->id]);
+    $format->prefixes()->attach([$prefix->id]);
+    return $prefix;
   }
 }

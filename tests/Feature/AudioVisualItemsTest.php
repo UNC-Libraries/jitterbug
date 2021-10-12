@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\Cut;
+use Jitterbug\Models\NewCallNumberSequence;
 use Jitterbug\Models\User;
 use Tests\Helpers\TestHelper;
 use Jitterbug\Models\Collection;
@@ -45,6 +46,44 @@ class AudioVisualItemsTest extends TestCase
 
       $response->assertStatus(200);
       $response->assertViewIs('items.create');
+    }
+
+    public function test_store_saves_new_item() : void
+    {
+      $this->disableExceptionHandling();
+      $collection = Collection::factory()->create();
+      $format = Format::factory()->create();
+      $prefix = TestHelper::createAndAttachPrefix($collection, $format);
+      NewCallNumberSequence::factory()->create([
+        'prefix' => $prefix->label,
+        'collection_id' => $collection->id,
+        'next' => 1
+      ]);
+      $response = $this->actingAs($this->user)
+                       ->post('/items',
+                         [
+                           'batch_size' => 2,
+                           'title' => 'The Newest Title',
+                           'collection_id' => $collection->id,
+                           'format_id' => $format->id,
+                           'entry_date' => '2021-10-18',
+                           'subclass_type' => 'AudioItem',
+                           'subclass' => ['size' => 12]
+                         ]);
+      $newItem = AudioVisualItem::all()->last();
+      $response->assertRedirect('/items/' . $newItem->id);
+      $this->assertEquals('The Newest Title', $newItem->title, 'Test did not create AV Item with the right title');
+    }
+
+    public function test_edit_displays_form() : void
+    {
+      Collection::factory()->count(3)->create();
+      Format::factory()->count(3)->create();
+      $response = $this->actingAs($this->user)
+        ->get('/items/' . $this->avItem->id . '/edit');
+
+      $response->assertStatus(200);
+      $response->assertViewIs('items.edit');
     }
 
     public function test_update_edits_item() : void
