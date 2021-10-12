@@ -321,7 +321,7 @@ class ItemsController extends Controller
    */
   public function resolveRange(Request $request)
   {
-    return parent::rangeFor($request, $this->solrItems);
+    return $this->rangeFor($request, $this->solrItems);
   }
 
 

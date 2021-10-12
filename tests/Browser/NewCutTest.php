@@ -10,6 +10,7 @@ use Jitterbug\Models\Cut;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 use Venturecraft\Revisionable\Revision;
+use Tests\Helpers\TestHelper;
 
 class NewCutTest extends DuskTestCase
 {
@@ -26,7 +27,7 @@ class NewCutTest extends DuskTestCase
       'engineer_id' => $this->user->id,
       'subclass_type' => 'AudioTransfer',
       'subclass_id' => $audioTransfer->id]);
-    $this->generateRevision('Transfer', $this->transfer->id);
+    TestHelper::addUserIdToRevision('Transfer', $this->transfer->id, $this->user->id);
   }
 
   public function testUserIsAbleToAddCutWhenNecessary() : void
@@ -61,18 +62,5 @@ class NewCutTest extends DuskTestCase
         ->press('Save')
         ->assertPathIs('/cuts/' . $cut->id);
     });
-  }
-
-  // when a factory object is generated, if that model uses Revisionable
-  // a revision is automatically created without a user_id
-  // this adds a necessary user_id to to that revision
-  public function generateRevision($revisionableType, $revisionableId) : void
-  {
-    $revision = Revision::where('revisionable_type', $revisionableType)
-      ->where('revisionable_id', $revisionableId)
-      ->get()
-      ->first();
-    $revision->user_id = $this->user->id;
-    $revision->save();
   }
 }
