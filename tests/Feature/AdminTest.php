@@ -35,9 +35,9 @@ class AdminTest extends TestCase
   {
     $inactiveUser = User::factory()->create(['inactive' => 1]);
     $adminUser = $this->adminUser;
-    $this->be($adminUser);
 
-    $response = $this->post('/admin/make-admin',
+    $response = $this->actingAs($adminUser)
+      ->post('/admin/make-admin',
       [
         'username' => $inactiveUser->username,
       ],

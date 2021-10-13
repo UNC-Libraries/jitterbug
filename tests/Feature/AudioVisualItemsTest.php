@@ -50,7 +50,6 @@ class AudioVisualItemsTest extends TestCase
 
     public function test_store_saves_new_item() : void
     {
-      $this->disableExceptionHandling();
       $collection = Collection::factory()->create();
       $format = Format::factory()->create();
       $prefix = TestHelper::createAndAttachPrefix($collection, $format);
