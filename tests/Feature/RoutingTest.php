@@ -1,9 +1,10 @@
 <?php
 
 use Jitterbug\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class RoutingTest extends TestCase {
-
+  use RefreshDatabase;
 	/**
 	 * A basic functional test example.
 	 *

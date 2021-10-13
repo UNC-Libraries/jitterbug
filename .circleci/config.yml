@@ -46,7 +46,7 @@ jobs:
           name: Install Solr
           command: |
             cd ~
-            sudo wget --no-verbose https://downloads.apache.org/lucene/solr/8.9.0/solr-8.9.0.tgz
+            sudo wget --no-verbose https://archive.apache.org/dist/lucene/solr/8.9.0/solr-8.9.0.tgz
             sudo tar xzf solr-8.9.0.tgz solr-8.9.0/bin/install_solr_service.sh --strip-components=2
             sudo ./install_solr_service.sh solr-8.9.0.tgz -n
 

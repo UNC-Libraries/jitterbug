@@ -18,8 +18,8 @@ sudo update-alternatives --set php /usr/bin/php7.3
 
 # Download Solr
 cd ~
-# get the latest 8.x release via https://solr.apache.org/downloads.html
-sudo wget --no-verbose https://downloads.apache.org/lucene/solr/8.9.0/solr-8.9.0.tgz
+# get the 8.9 release via solr archive
+sudo wget --no-verbose https://archive.apache.org/dist/lucene/solr/8.9.0/solr-8.9.0.tgz
 # extract the service installation file
 sudo tar xzf solr-8.9.0.tgz solr-8.9.0/bin/install_solr_service.sh --strip-components=2
 # install Solr as a service
