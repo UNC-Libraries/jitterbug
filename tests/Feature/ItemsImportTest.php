@@ -8,6 +8,7 @@ use Jitterbug\Models\User;
 use Jitterbug\Models\Format;
 use Jitterbug\Models\Collection;
 use Jitterbug\Models\NewCallNumberSequence;
+use Tests\Helpers\TestHelper;
 
 class ItemsImportTest extends TestCase
 {
@@ -28,9 +29,7 @@ class ItemsImportTest extends TestCase
     $this->audioVisualItem2 = AudioVisualItem::factory()->create(['call_number' =>'FT-6709', 'access_restrictions' => 'Campus']);
     $this->collection1 = Collection::factory()->create(['archival_identifier' => '20027']);
     $this->format = Format::factory()->create(['id' => 28]);
-    $collectionTypeId = $this->collection1->collection_type_id;
-    $this->prefix = Prefix::factory()->create(['deleted_at' => null, 'collection_type_id' => $collectionTypeId]);
-    $this->format->prefixes()->attach([$this->prefix->id]);
+    $this->prefix = TestHelper::createAndAttachPrefix($this->collection1, $this->format);
   }
 
   public function testItemsImportUpload() : void

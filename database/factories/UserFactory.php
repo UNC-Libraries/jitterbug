@@ -28,7 +28,7 @@ class UserFactory extends Factory
           'email' => $this->faker->safeEmail,
           'username' => $this->faker->userName,
           'password' => bcrypt($this->faker->password),
-          'admin' => $this->faker->boolean,
+          'admin' => 0,
           'remember_token' => str_random(10),
           'legacy_initials' => null,
         ];
