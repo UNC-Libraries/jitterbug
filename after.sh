@@ -10,29 +10,29 @@ cd /
 sudo apt-get update -y
 sudo apt-get install openjdk-8-jdk -y
 
-# Install PHP 7.3
-sudo DEBIAN_FRONTEND=noninteractive apt-get install php7.3 php7.3-ldap php7.3-fpm php7.3-mbstring php7.3-dom php7.3-mysql -y
+# Install PHP 7.4
+sudo DEBIAN_FRONTEND=noninteractive apt-get install php7.4 php7.4-ldap php7.4-fpm php7.4-mbstring php7.4-dom php7.4-mysql -y
 
-# set the php symlink to point to the 7.3 version (for cli)
-sudo update-alternatives --set php /usr/bin/php7.3
+# set the php symlink to point to the 7.4 version (for cli)
+sudo update-alternatives --set php /usr/bin/php7.4
 
 # Download Solr
 cd ~
-# get the 8.9 release via solr archive
-sudo wget --no-verbose https://archive.apache.org/dist/lucene/solr/8.9.0/solr-8.9.0.tgz
+# get the 8.11.1 release via solr archive
+sudo wget --no-verbose https://archive.apache.org/dist/lucene/solr/8.11.1/solr-8.11.1.tgz
 # extract the service installation file
-sudo tar xzf solr-8.9.0.tgz solr-8.9.0/bin/install_solr_service.sh --strip-components=2
+sudo tar xzf solr-8.11.1.tgz solr-8.11.1/bin/install_solr_service.sh --strip-components=2
 # install Solr as a service
-sudo ./install_solr_service.sh solr-8.9.0.tgz
+sudo ./install_solr_service.sh solr-8.11.1.tgz
 
 # Get the MySQL connector file and unzip it if needed
 cd /vagrant
-sudo wget --no-verbose -nc http://www.mirrorservice.org/sites/ftp.mysql.com/Downloads/Connector-J/mysql-connector-java-8.0.24.zip
-sudo unzip -n mysql-connector-java-8.0.24.zip
+sudo wget --no-verbose -nc http://www.mirrorservice.org/sites/ftp.mysql.com/Downloads/Connector-J/mysql-connector-java-8.0.28.zip
+sudo unzip -n mysql-connector-java-8.0.28.zip
 
 # Copy the MySQL connector file to the right place
 cd /
-sudo cp /vagrant/mysql-connector-java-8.0.24/mysql-connector-java-8.0.24.jar /opt/solr/contrib/dataimporthandler-extras/lib/.
+sudo cp /vagrant/mysql-connector-java-8.0.28/mysql-connector-java-8.0.28.jar /opt/solr/contrib/dataimporthandler-extras/lib/.
 
 # Change users/groups/permissions of Solr home directory files
 cd /opt/solr
