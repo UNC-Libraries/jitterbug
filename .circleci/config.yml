@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       # Specify the version you desire here
-      - image: circleci/php:7.3-stretch-node
+      - image: circleci/php:7.4-stretch-node
       - image: circleci/mysql:5.7
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
@@ -46,18 +46,18 @@ jobs:
           name: Install Solr
           command: |
             cd ~
-            sudo wget --no-verbose https://archive.apache.org/dist/lucene/solr/8.9.0/solr-8.9.0.tgz
-            sudo tar xzf solr-8.9.0.tgz solr-8.9.0/bin/install_solr_service.sh --strip-components=2
-            sudo ./install_solr_service.sh solr-8.9.0.tgz -n
+            sudo wget --no-verbose https://archive.apache.org/dist/lucene/solr/8.11.1/solr-8.11.1.tgz
+            sudo tar xzf solr-8.11.1.tgz solr-8.11.1/bin/install_solr_service.sh --strip-components=2
+            sudo ./install_solr_service.sh solr-8.11.1.tgz -n
 
       - run:
           name: Get and hook up connector file
           command: |
             cd ~/jitterbug
-            sudo wget --no-verbose -nc http://www.mirrorservice.org/sites/ftp.mysql.com/Downloads/Connector-J/mysql-connector-java-8.0.24.zip
-            sudo unzip -n mysql-connector-java-8.0.24.zip
+            sudo wget --no-verbose -nc http://www.mirrorservice.org/sites/ftp.mysql.com/Downloads/Connector-J/mysql-connector-java-8.0.28.zip
+            sudo unzip -n mysql-connector-java-8.0.28.zip
             cd /
-            sudo cp ~/jitterbug/mysql-connector-java-8.0.24/mysql-connector-java-8.0.24.jar /opt/solr/contrib/dataimporthandler-extras/lib/.
+            sudo cp ~/jitterbug/mysql-connector-java-8.0.28/mysql-connector-java-8.0.28.jar /opt/solr/contrib/dataimporthandler-extras/lib/.
 
       - run:
           name: Change solr home directory
