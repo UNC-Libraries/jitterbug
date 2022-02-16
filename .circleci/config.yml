@@ -23,13 +23,13 @@ jobs:
           name: Install PHP & other exts
           command: |
             sudo apt-get update -y
-            sudo docker-php-ext-install zip
-            sudo docker-php-ext-install pdo_mysql
+            sudo apt-get install zip
+            sudo apt-get install pdo_mysql
             sudo apt-get install -y default-mysql-client
             sudo apt-get install libldap2-dev -y
             sudo rm -rf /var/lib/apt/lists/*
             sudo docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/
-            sudo docker-php-ext-install ldap
+            sudo apt-get install ldap
 
       - run: sudo composer self-update --stable
       - run:
