@@ -1,74 +1,74 @@
 {
-	"name": "laravel/laravel",
-	"description": "The Laravel Framework.",
-	"keywords": ["framework", "laravel"],
-	"license": "MIT",
-	"type": "project",
-	"repositories" : [
-		{
-			"type": "vcs",
-			"url": "https://github.com/UNC-Libraries/revisionable-1.git",
-			"no-api": true
-		}
-	],
-	"require": {
-		"laravel/framework": "^8.0",
-		"laravelcollective/html": "^6.0",
-		"solarium/solarium": "^5.1",
-		"venturecraft/revisionable": "dev-main",
-		"diglactic/laravel-breadcrumbs": "^6.0",
-		"ramsey/uuid": "^4.0",
-		"adldap2/adldap2-laravel": "^6.0",
-		"jimmiw/php-time-ago": "^3.1.0",
-		"laravel/tinker": "^2.0",
-		"doctrine/dbal": "^2.5",
-		"laravel/helpers": "^1.1",
-		"laravel/ui": "^3.0",
-		"fakerphp/faker": "^1.13"
-	},
-	"require-dev": {
-		"mockery/mockery": "1.2.2",
-		"phpunit/phpunit": "^9.0",
-		"symfony/css-selector": "5.*",
-		"symfony/dom-crawler": "5.*",
-		"laravel/homestead": "^11",
-		"filp/whoops": "~2.0",
-		"laravel/dusk": "^6.15"
-	},
-	"autoload": {
-		"psr-4": {
-			"Jitterbug\\": "app/",
-			"Database\\Factories\\": "database/factories/",
-			"Database\\Seeders\\": "database/seeders/"
-		}
-	},
-	"autoload-dev": {
-		"classmap": [
-			"tests/TestCase.php"
-		],
-		"psr-4": {
-			"Tests\\": "tests/"
-		}
-	},
-	"scripts": {
-		"post-install-cmd": [
-			"php artisan clear-compiled"
-		],
-		"post-update-cmd": [
-			"php artisan clear-compiled"
-		],
-		"post-create-project-cmd": [
-			"php -r \"copy('.env.example', '.env');\"",
-			"php artisan key:generate"
-		],
-		"post-autoload-dump": [
-			"Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-			"@php artisan package:discover"
-		]
-	},
-	"config": {
-		"preferred-install": "dist",
-		"optimize-autoloader": true,
-		"discard-changes": true
-	}
+  "name": "laravel/laravel",
+  "description": "The Laravel Framework.",
+  "keywords": ["framework", "laravel"],
+  "license": "MIT",
+  "type": "project",
+  "repositories" : [
+    {
+      "type": "vcs",
+      "url": "https://github.com/UNC-Libraries/revisionable-1.git",
+      "no-api": true
+    }
+  ],
+  "require": {
+    "laravel/framework": "^8.0",
+    "laravelcollective/html": "^6.0",
+    "solarium/solarium": "^5.1",
+    "venturecraft/revisionable": "dev-main",
+    "diglactic/laravel-breadcrumbs": "^6.0",
+    "ramsey/uuid": "^4.0",
+    "adldap2/adldap2-laravel": "^6.0",
+    "jimmiw/php-time-ago": "^3.1.0",
+    "laravel/tinker": "^2.0",
+    "doctrine/dbal": "^2.5",
+    "laravel/helpers": "^1.1",
+    "laravel/ui": "^3.0",
+    "fakerphp/faker": "^1.13"
+  },
+  "require-dev": {
+    "mockery/mockery": "^1",
+    "phpunit/phpunit": "^9.0",
+    "symfony/css-selector": "5.*",
+    "symfony/dom-crawler": "5.*",
+    "laravel/homestead": "^11",
+    "filp/whoops": "~2.0",
+    "laravel/dusk": "^6.15"
+  },
+  "autoload": {
+    "psr-4": {
+      "Jitterbug\\": "app/",
+      "Database\\Factories\\": "database/factories/",
+      "Database\\Seeders\\": "database/seeders/"
+    }
+  },
+  "autoload-dev": {
+    "classmap": [
+      "tests/TestCase.php"
+    ],
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "php artisan clear-compiled"
+    ],
+    "post-update-cmd": [
+      "php artisan clear-compiled"
+    ],
+    "post-create-project-cmd": [
+      "php -r \"copy('.env.example', '.env');\"",
+      "php artisan key:generate"
+    ],
+    "post-autoload-dump": [
+      "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+      "@php artisan package:discover"
+    ]
+  },
+  "config": {
+    "preferred-install": "dist",
+    "optimize-autoloader": true,
+    "discard-changes": true
+  }
 }
