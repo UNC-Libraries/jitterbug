@@ -19,7 +19,7 @@ Route::delete('alerts', 'AlertsController@destroy');
 |--------------------------------------------------------------------------
 */
 
-Route::group(['prefix' => 'suggestions'], function () {
+Route::prefix('suggestions')->group(function () {
     Route::get('recording-locations',
         'SuggestionsController@recordingLocations');
     Route::get('speeds', 'SuggestionsController@speeds');
@@ -41,29 +41,29 @@ Route::post('admin/make-admin', 'Admin\AdminController@makeAdmin');
 Route::post('admin/remove-admin', 'Admin\AdminController@removeAdmin');
 Route::get('users', 'Admin\UsersController@index');
 Route::resource('collections',
-    'Admin\CollectionsController', ['except' => ['show', 'create', 'edit']]);
+    'Admin\CollectionsController')->except('show', 'create', 'edit');
 Route::resource('formats',
-    'Admin\FormatsController', ['except' => ['create', 'edit']]);
+    'Admin\FormatsController')->except('create', 'edit');
 Route::resource('projects',
-    'Admin\ProjectsController', ['except' => ['show', 'create', 'edit']]);
+    'Admin\ProjectsController')->except('show', 'create', 'edit');
 Route::resource('vendors',
-    'Admin\VendorsController', ['except' => ['show', 'create', 'edit']]);
+    'Admin\VendorsController')->except('show', 'create', 'edit');
 Route::resource('departments',
-    'Admin\DepartmentsController', ['except' => ['show', 'create', 'edit']]);
+    'Admin\DepartmentsController')->except('show', 'create', 'edit');
 Route::resource('playback-machines',
-    'Admin\PlaybackMachinesController', ['except' => ['show', 'create', 'edit']]);
+    'Admin\PlaybackMachinesController')->except('show', 'create', 'edit');
 Route::resource('reproduction-machines',
-    'Admin\ReproductionMachinesController', ['except' => ['show', 'create', 'edit']]);
+    'Admin\ReproductionMachinesController')->except('show', 'create', 'edit');
 Route::resource('sampling-rates',
-    'Admin\SamplingRatesController', ['except' => ['show', 'create', 'edit']]);
+    'Admin\SamplingRatesController')->except('show', 'create', 'edit');
 Route::resource('pm-speeds',
-    'Admin\PmSpeedsController', ['except' => ['show', 'create', 'edit']]);
+    'Admin\PmSpeedsController')->except('show', 'create', 'edit');
 Route::resource('tape-brands',
-    'Admin\TapeBrandsController', ['except' => ['show', 'create', 'edit']]);
+    'Admin\TapeBrandsController')->except('show', 'create', 'edit');
 Route::resource('collection-types',
-    'Admin\CollectionTypesController', ['except' => ['show', 'create', 'edit']]);
+    'Admin\CollectionTypesController')->except('show', 'create', 'edit');
 Route::resource('prefixes',
-    'Admin\PrefixesController', ['except' => ['show', 'create', 'edit']]);
+    'Admin\PrefixesController')->except('show', 'create', 'edit');
 Route::post('prefixes/set-legacy-status', 'Admin\PrefixesController@setLegacyStatus');
 Route::post('prefixes/remove-legacy-status', 'Admin\PrefixesController@removeLegacyStatus');
 Route::post('formats/detach_prefixes', 'Admin\FormatsController@detachPrefixes');
@@ -142,7 +142,7 @@ Route::resource('instances', 'InstancesController');
 | Cuts
 |--------------------------------------------------------------------------
 */
-Route::resource('cuts', 'CutsController', ['except' => ['index']]);
+Route::resource('cuts', 'CutsController')->except('index');
 
 /*
 |--------------------------------------------------------------------------
