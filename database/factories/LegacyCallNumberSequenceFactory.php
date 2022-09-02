@@ -22,9 +22,9 @@ class LegacyCallNumberSequenceFactory extends Factory
     public function definition()
     {
         return [
-            'prefix' => $this->faker->word,
+            'prefix' => $this->faker->word(),
             'next' => $this->faker->randomNumber(),
-            'reserved' => $this->faker->word,
+            'reserved' => $this->faker->word(),
         ];
     }
 }

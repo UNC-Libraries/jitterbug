@@ -29,7 +29,7 @@ class NewCallNumberSequenceFactory extends Factory
                 return Collection::find($attributes['collection_id'])->archival_identifier;
             },
             'next' => $this->faker->randomNumber(),
-            'reserved' => $this->faker->word,
+            'reserved' => $this->faker->word(),
         ];
     }
 }

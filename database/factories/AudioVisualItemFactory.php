@@ -26,7 +26,7 @@ class AudioVisualItemFactory extends Factory
     {
         return [
             'call_number' => 'FS-'.$this->faker->randomNumber(4),
-            'title' => $this->faker->text,
+            'title' => $this->faker->text(),
             'recording_location' => 'Durham, NC',
             'physical_location' => null,
             'access_restrictions' => null,
@@ -35,13 +35,13 @@ class AudioVisualItemFactory extends Factory
             'collection_id' => Collection::factory(),
             'accession_number' => $this->faker->bothify('##??#???###?#?#'),
             'legacy' => null,
-            'container_note' => $this->faker->text,
-            'condition_note' => $this->faker->text,
+            'container_note' => $this->faker->text(),
+            'condition_note' => $this->faker->text(),
             'oclc' => null,
             'format_id' => Format::factory(),
-            'reel_tape_number' => $this->faker->word,
+            'reel_tape_number' => $this->faker->word(),
             'entry_date' => $this->faker->date(),
-            'speed' => $this->faker->word,
+            'speed' => $this->faker->word(),
             'subclass_type' => 'AudioItem',
             'subclass_id' => static function (array $attributes) {
                 return AudioItem::factory()->create([

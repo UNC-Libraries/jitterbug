@@ -34,9 +34,9 @@ class TransferFactory extends Factory
             'playback_machine_id' => PlaybackMachine::factory(),
             'engineer_id' => User::factory(),
             'vendor_id' => Vendor::factory(),
-            'condition_note' => $this->faker->text,
-            'transfer_note' => $this->faker->text,
-            'subclass_type' => $this->faker->word,
+            'condition_note' => $this->faker->text(),
+            'transfer_note' => $this->faker->text(),
+            'subclass_type' => $this->faker->word(),
             'subclass_id' => $this->faker->randomNumber(),
         ];
     }

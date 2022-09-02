@@ -23,7 +23,7 @@ class MarkFactory extends Factory
     {
         return [
             'user_id' => $this->faker->randomNumber(),
-            'markable_type' => $this->faker->word,
+            'markable_type' => $this->faker->word(),
             'markable_id' => $this->faker->randomNumber(),
         ];
     }
