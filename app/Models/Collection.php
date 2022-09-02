@@ -11,9 +11,6 @@ class Collection extends Model
     use NullFieldPreserver;
     use SoftDeletes;
     use HasFactory;
-
-    protected $dates = ['deleted_at'];
-
     protected $fillable = ['name', 'collection_type_id', 'archival_identifier'];
 
     public function audioVisualItems()

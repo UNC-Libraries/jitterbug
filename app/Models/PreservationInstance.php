@@ -18,9 +18,6 @@ class PreservationInstance extends Model
     use HasFactory;
 
     const BATCH_EDIT_MAX_LIMIT = 1000;
-
-    protected $dates = ['deleted_at'];
-
     protected $revisionCreationsEnabled = true;
 
     protected $revisionFormattedFields = [

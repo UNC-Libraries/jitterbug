@@ -13,9 +13,6 @@ class AudioItem extends Model
     use RevisionableTrait;
     use SoftDeletes;
     use HasFactory;
-
-    protected $dates = ['deleted_at'];
-
     protected $revisionCreationsEnabled = true;
 
     protected $revisionFormattedFields = [

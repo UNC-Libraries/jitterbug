@@ -9,9 +9,6 @@ class PmSpeed extends Model
 {
     use NullFieldPreserver;
     use SoftDeletes;
-
-    protected $dates = ['deleted_at'];
-
     protected $fillable = ['name'];
 
     /**

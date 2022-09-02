@@ -34,9 +34,6 @@ class Transfer extends Model
         'TimeBaseCorrector', 'A/Dconverter', 'CaptureEngineer', 'IART',
         'Date', 'Color', 'Sound', 'Format',
     ];
-
-    protected $dates = ['deleted_at'];
-
     protected $revisionCreationsEnabled = true;
 
     protected $revisionFormattedFields = [

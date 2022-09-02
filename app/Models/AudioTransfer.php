@@ -13,9 +13,6 @@ class AudioTransfer extends Model
     use RevisionableTrait;
     use SoftDeletes;
     use HasFactory;
-
-    protected $dates = ['deleted_at'];
-
     protected $revisionCreationsEnabled = true;
 
     public function superclass()

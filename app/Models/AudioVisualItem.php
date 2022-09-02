@@ -25,9 +25,6 @@ class AudioVisualItem extends Model
         'Base', 'Color', 'SoundType', 'LengthInFeet',
         'ContentDescription', 'ReelTapeNumber', 'CallNumber', 'AccessRestrictions',
     ];
-
-    protected $dates = ['deleted_at'];
-
     protected $revisionCreationsEnabled = true;
 
     protected $revisionFormattedFields = [

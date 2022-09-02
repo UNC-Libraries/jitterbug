@@ -11,9 +11,6 @@ class Project extends Model
     use NullFieldPreserver;
     use SoftDeletes;
     use HasFactory;
-
-    protected $dates = ['deleted_at'];
-
     protected $fillable = ['name'];
 
     /**

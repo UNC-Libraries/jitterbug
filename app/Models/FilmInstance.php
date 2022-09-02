@@ -11,9 +11,6 @@ class FilmInstance extends Model
     use NullFieldPreserver;
     use RevisionableTrait;
     use SoftDeletes;
-
-    protected $dates = ['deleted_at'];
-
     protected $revisionCreationsEnabled = true;
 
     protected $revisionFormattedFields = [

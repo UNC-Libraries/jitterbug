@@ -11,9 +11,6 @@ class FilmTransfer extends Model
     use NullFieldPreserver;
     use RevisionableTrait;
     use SoftDeletes;
-
-    protected $dates = ['deleted_at'];
-
     protected $revisionCreationsEnabled = true;
 
     // Although there probably will be in the future, currently there
