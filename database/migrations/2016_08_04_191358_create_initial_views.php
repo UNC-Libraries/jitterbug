@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class CreateInitialViews extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -206,4 +206,4 @@ class CreateInitialViews extends Migration
         DB::statement('DROP VIEW IF EXISTS preservation_master_formats');
         DB::statement('DROP VIEW IF EXISTS preservation_master_departments');
     }
-}
+};

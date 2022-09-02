@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInitialTables extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -141,4 +141,4 @@ class CreateInitialTables extends Migration
         Schema::drop('formats');
         Schema::drop('collections');
     }
-}
+};

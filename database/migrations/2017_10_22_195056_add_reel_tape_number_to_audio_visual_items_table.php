@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddReelTapeNumberToAudioVisualItemsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -29,4 +29,4 @@ class AddReelTapeNumberToAudioVisualItemsTable extends Migration
             $table->dropColumn('reel_tape_number');
         });
     }
-}
+};

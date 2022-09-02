@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTransferTables extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -76,4 +76,4 @@ class CreateTransferTables extends Migration
         Schema::drop('transfers');
         Schema::drop('audio_transfers');
     }
-}
+};

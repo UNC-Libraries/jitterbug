@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class AddDeletedAtToDepartmentsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -28,4 +28,4 @@ class AddDeletedAtToDepartmentsTable extends Migration
             $table->dropColumn('deleted_at');
         });
     }
-}
+};
