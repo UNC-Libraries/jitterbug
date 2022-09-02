@@ -1,9 +1,9 @@
 <?php
 
 return [
-  'name' => 'Jitterbug',
+    'name' => 'Jitterbug',
 
-  /*
+    /*
   |--------------------------------------------------------------------------
   | Application Environment
   |--------------------------------------------------------------------------
@@ -14,9 +14,9 @@ return [
   |
   */
 
-  'env' => env('APP_ENV', 'production'),
+    'env' => env('APP_ENV', 'production'),
 
-  /*
+    /*
   |--------------------------------------------------------------------------
   | Application Debug Mode
   |--------------------------------------------------------------------------
@@ -27,9 +27,9 @@ return [
   |
   */
 
-  'debug' => env('APP_DEBUG'),
+    'debug' => env('APP_DEBUG'),
 
-  /*
+    /*
   |--------------------------------------------------------------------------
   | Application URL
   |--------------------------------------------------------------------------
@@ -40,9 +40,9 @@ return [
   |
   */
 
-  'url' => 'http://localhost',
+    'url' => 'http://localhost',
 
-  /*
+    /*
   |--------------------------------------------------------------------------
   | Application Timezone
   |--------------------------------------------------------------------------
@@ -53,9 +53,9 @@ return [
   |
   */
 
-  'timezone' => 'UTC',
+    'timezone' => 'UTC',
 
-  /*
+    /*
   |--------------------------------------------------------------------------
   | Application Locale Configuration
   |--------------------------------------------------------------------------
@@ -66,9 +66,9 @@ return [
   |
   */
 
-  'locale' => 'en',
+    'locale' => 'en',
 
-  /*
+    /*
   |--------------------------------------------------------------------------
   | Application Fallback Locale
   |--------------------------------------------------------------------------
@@ -79,9 +79,9 @@ return [
   |
   */
 
-  'fallback_locale' => 'en',
+    'fallback_locale' => 'en',
 
-  /*
+    /*
   |--------------------------------------------------------------------------
   | Encryption Key
   |--------------------------------------------------------------------------
@@ -92,11 +92,11 @@ return [
   |
   */
 
-  'key' => env('APP_KEY'),
+    'key' => env('APP_KEY'),
 
-  'cipher' => 'AES-256-CBC',
+    'cipher' => 'AES-256-CBC',
 
-  /*
+    /*
   |--------------------------------------------------------------------------
   | Autoloaded Service Providers
   |--------------------------------------------------------------------------
@@ -107,59 +107,58 @@ return [
   |
   */
 
-  'providers' => [
+    'providers' => [
 
-    /*
+        /*
      * Laravel Framework Service Providers...
      */
-    'Illuminate\Auth\AuthServiceProvider',
-    'Illuminate\Broadcasting\BroadcastServiceProvider',
-    'Illuminate\Bus\BusServiceProvider',
-    'Illuminate\Cache\CacheServiceProvider',
-    'Illuminate\Foundation\Providers\ConsoleSupportServiceProvider',
-    'Illuminate\Cookie\CookieServiceProvider',
-    'Illuminate\Database\DatabaseServiceProvider',
-    'Illuminate\Encryption\EncryptionServiceProvider',
-    'Illuminate\Filesystem\FilesystemServiceProvider',
-    'Illuminate\Foundation\Providers\FoundationServiceProvider',
-    'Illuminate\Hashing\HashServiceProvider',
-    'Illuminate\Mail\MailServiceProvider',
-    'Illuminate\Notifications\NotificationServiceProvider',
-    'Illuminate\Pagination\PaginationServiceProvider',
-    'Illuminate\Pipeline\PipelineServiceProvider',
-    'Illuminate\Queue\QueueServiceProvider',
-    'Illuminate\Redis\RedisServiceProvider',
-    'Illuminate\Auth\Passwords\PasswordResetServiceProvider',
-    'Illuminate\Session\SessionServiceProvider',
-    'Illuminate\Translation\TranslationServiceProvider',
-    'Illuminate\Validation\ValidationServiceProvider',
-    'Illuminate\View\ViewServiceProvider',
-    
-    'Collective\Html\HtmlServiceProvider',
-    'Laravel\Tinker\TinkerServiceProvider',
+        'Illuminate\Auth\AuthServiceProvider',
+        'Illuminate\Broadcasting\BroadcastServiceProvider',
+        'Illuminate\Bus\BusServiceProvider',
+        'Illuminate\Cache\CacheServiceProvider',
+        'Illuminate\Foundation\Providers\ConsoleSupportServiceProvider',
+        'Illuminate\Cookie\CookieServiceProvider',
+        'Illuminate\Database\DatabaseServiceProvider',
+        'Illuminate\Encryption\EncryptionServiceProvider',
+        'Illuminate\Filesystem\FilesystemServiceProvider',
+        'Illuminate\Foundation\Providers\FoundationServiceProvider',
+        'Illuminate\Hashing\HashServiceProvider',
+        'Illuminate\Mail\MailServiceProvider',
+        'Illuminate\Notifications\NotificationServiceProvider',
+        'Illuminate\Pagination\PaginationServiceProvider',
+        'Illuminate\Pipeline\PipelineServiceProvider',
+        'Illuminate\Queue\QueueServiceProvider',
+        'Illuminate\Redis\RedisServiceProvider',
+        'Illuminate\Auth\Passwords\PasswordResetServiceProvider',
+        'Illuminate\Session\SessionServiceProvider',
+        'Illuminate\Translation\TranslationServiceProvider',
+        'Illuminate\Validation\ValidationServiceProvider',
+        'Illuminate\View\ViewServiceProvider',
 
-    /*
+        'Collective\Html\HtmlServiceProvider',
+        'Laravel\Tinker\TinkerServiceProvider',
+
+        /*
      * Application Service Providers...
      */
-    'Jitterbug\Providers\AppServiceProvider',
-    'Jitterbug\Providers\AuthServiceProvider',
-    // 'Jitterbug\Providers\BroadcastServiceProvider',
-    'Jitterbug\Providers\EventServiceProvider',
-    'Jitterbug\Providers\RouteServiceProvider',
+        'Jitterbug\Providers\AppServiceProvider',
+        'Jitterbug\Providers\AuthServiceProvider',
+        // 'Jitterbug\Providers\BroadcastServiceProvider',
+        'Jitterbug\Providers\EventServiceProvider',
+        'Jitterbug\Providers\RouteServiceProvider',
 
-    /*
+        /*
      * Third-party Service Providers
      */
-    // Comes from davejamesmiller/laravel-breadcrumbs (^5.0)
-    DaveJamesMiller\Breadcrumbs\BreadcrumbsServiceProvider::class,
-    Adldap\Laravel\AdldapServiceProvider::class,
-    Adldap\Laravel\AdldapAuthServiceProvider::class,
-    'Venturecraft\Revisionable\RevisionableServiceProvider',
+        // Comes from davejamesmiller/laravel-breadcrumbs (^5.0)
+        DaveJamesMiller\Breadcrumbs\BreadcrumbsServiceProvider::class,
+        Adldap\Laravel\AdldapServiceProvider::class,
+        Adldap\Laravel\AdldapAuthServiceProvider::class,
+        'Venturecraft\Revisionable\RevisionableServiceProvider',
 
+    ],
 
-  ],
-
-  /*
+    /*
   |--------------------------------------------------------------------------
   | Class Aliases
   |--------------------------------------------------------------------------
@@ -170,65 +169,65 @@ return [
   |
   */
 
-  'aliases' => [
+    'aliases' => [
 
-    'App'       => 'Illuminate\Support\Facades\App',
-    'Artisan'   => 'Illuminate\Support\Facades\Artisan',
-    'Auth'      => 'Illuminate\Support\Facades\Auth',
-    'Blade'     => 'Illuminate\Support\Facades\Blade',
-    'Bus'       => 'Illuminate\Support\Facades\Bus',
-    'Cache'     => 'Illuminate\Support\Facades\Cache',
-    'Config'    => 'Illuminate\Support\Facades\Config',
-    'Cookie'    => 'Illuminate\Support\Facades\Cookie',
-    'Crypt'     => 'Illuminate\Support\Facades\Crypt',
-    'DB'        => 'Illuminate\Support\Facades\DB',
-    'Eloquent'  => 'Illuminate\Database\Eloquent\Model',
-    'Event'     => 'Illuminate\Support\Facades\Event',
-    'File'      => 'Illuminate\Support\Facades\File',
-    'Gate'      => 'Illuminate\Support\Facades\Gate',
-    'Hash'      => 'Illuminate\Support\Facades\Hash',
-    'Input'     => 'Illuminate\Support\Facades\Input',
-    'Inspiring' => 'Illuminate\Foundation\Inspiring',
-    'Lang'      => 'Illuminate\Support\Facades\Lang',
-    'Log'       => 'Illuminate\Support\Facades\Log',
-    'Mail'      => 'Illuminate\Support\Facades\Mail',
-    'Notification' => 'Illuminate\Support\Facades\Notification',
-    'Password'  => 'Illuminate\Support\Facades\Password',
-    'Queue'     => 'Illuminate\Support\Facades\Queue',
-    'Redirect'  => 'Illuminate\Support\Facades\Redirect',
-    'Redis'     => 'Illuminate\Support\Facades\Redis',
-    'Request'   => 'Illuminate\Support\Facades\Request',
-    'Response'  => 'Illuminate\Support\Facades\Response',
-    'Route'     => 'Illuminate\Support\Facades\Route',
-    'Schema'    => 'Illuminate\Support\Facades\Schema',
-    'Session'   => 'Illuminate\Support\Facades\Session',
-    'Storage'   => 'Illuminate\Support\Facades\Storage',
-    'URL'       => 'Illuminate\Support\Facades\URL',
-    'Validator' => 'Illuminate\Support\Facades\Validator',
-    'View'      => 'Illuminate\Support\Facades\View',
-    'Str'       => 'Illuminate\Support\Str',
+        'App' => 'Illuminate\Support\Facades\App',
+        'Artisan' => 'Illuminate\Support\Facades\Artisan',
+        'Auth' => 'Illuminate\Support\Facades\Auth',
+        'Blade' => 'Illuminate\Support\Facades\Blade',
+        'Bus' => 'Illuminate\Support\Facades\Bus',
+        'Cache' => 'Illuminate\Support\Facades\Cache',
+        'Config' => 'Illuminate\Support\Facades\Config',
+        'Cookie' => 'Illuminate\Support\Facades\Cookie',
+        'Crypt' => 'Illuminate\Support\Facades\Crypt',
+        'DB' => 'Illuminate\Support\Facades\DB',
+        'Eloquent' => 'Illuminate\Database\Eloquent\Model',
+        'Event' => 'Illuminate\Support\Facades\Event',
+        'File' => 'Illuminate\Support\Facades\File',
+        'Gate' => 'Illuminate\Support\Facades\Gate',
+        'Hash' => 'Illuminate\Support\Facades\Hash',
+        'Input' => 'Illuminate\Support\Facades\Input',
+        'Inspiring' => 'Illuminate\Foundation\Inspiring',
+        'Lang' => 'Illuminate\Support\Facades\Lang',
+        'Log' => 'Illuminate\Support\Facades\Log',
+        'Mail' => 'Illuminate\Support\Facades\Mail',
+        'Notification' => 'Illuminate\Support\Facades\Notification',
+        'Password' => 'Illuminate\Support\Facades\Password',
+        'Queue' => 'Illuminate\Support\Facades\Queue',
+        'Redirect' => 'Illuminate\Support\Facades\Redirect',
+        'Redis' => 'Illuminate\Support\Facades\Redis',
+        'Request' => 'Illuminate\Support\Facades\Request',
+        'Response' => 'Illuminate\Support\Facades\Response',
+        'Route' => 'Illuminate\Support\Facades\Route',
+        'Schema' => 'Illuminate\Support\Facades\Schema',
+        'Session' => 'Illuminate\Support\Facades\Session',
+        'Storage' => 'Illuminate\Support\Facades\Storage',
+        'URL' => 'Illuminate\Support\Facades\URL',
+        'Validator' => 'Illuminate\Support\Facades\Validator',
+        'View' => 'Illuminate\Support\Facades\View',
+        'Str' => 'Illuminate\Support\Str',
 
-    'Form'      => 'Collective\Html\FormFacade',
-    'Html'      => 'Collective\Html\HtmlFacade',
+        'Form' => 'Collective\Html\FormFacade',
+        'Html' => 'Collective\Html\HtmlFacade',
 
-    'AudioVisualItem'         => 'Jitterbug\Models\AudioVisualItem',
-    'AudioItem'                 => 'Jitterbug\Models\AudioItem',
-    'VideoItem'                 => 'Jitterbug\Models\VideoItem',
-    'FilmItem'                  => 'Jitterbug\Models\FilmItem',
-    'PreservationInstance'      => 'Jitterbug\Models\PreservationInstance',
-    'AudioInstance'             => 'Jitterbug\Models\AudioInstance',
-    'FilmInstance'              => 'Jitterbug\Models\FilmInstance',
-    'VideoInstance'             => 'Jitterbug\Models\VideoInstance',
-    'Cut'                       => 'Jitterbug\Models\Cut',
-    'Transfer'                  => 'Jitterbug\Models\Transfer',
-    'AudioTransfer'             => 'Jitterbug\Models\AudioTransfer',
-    'FilmTransfer'              => 'Jitterbug\Models\FilmTransfer',
-    'VideoTransfer'             => 'Jitterbug\Models\VideoTransfer',
+        'AudioVisualItem' => 'Jitterbug\Models\AudioVisualItem',
+        'AudioItem' => 'Jitterbug\Models\AudioItem',
+        'VideoItem' => 'Jitterbug\Models\VideoItem',
+        'FilmItem' => 'Jitterbug\Models\FilmItem',
+        'PreservationInstance' => 'Jitterbug\Models\PreservationInstance',
+        'AudioInstance' => 'Jitterbug\Models\AudioInstance',
+        'FilmInstance' => 'Jitterbug\Models\FilmInstance',
+        'VideoInstance' => 'Jitterbug\Models\VideoInstance',
+        'Cut' => 'Jitterbug\Models\Cut',
+        'Transfer' => 'Jitterbug\Models\Transfer',
+        'AudioTransfer' => 'Jitterbug\Models\AudioTransfer',
+        'FilmTransfer' => 'Jitterbug\Models\FilmTransfer',
+        'VideoTransfer' => 'Jitterbug\Models\VideoTransfer',
 
-    'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs::class,
-    'Uuid'        => 'Ramsey\Uuid\Uuid',
-    'Adldap'      => 'Adldap\Laravel\Facades\Adldap',
+        'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs::class,
+        'Uuid' => 'Ramsey\Uuid\Uuid',
+        'Adldap' => 'Adldap\Laravel\Facades\Adldap',
 
-  ],
+    ],
 
 ];

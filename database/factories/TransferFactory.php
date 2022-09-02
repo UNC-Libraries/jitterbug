@@ -26,18 +26,18 @@ class TransferFactory extends Factory
     public function definition()
     {
         return [
-          'preservation_instance_id' => PreservationInstance::factory(),
-          'call_number' => function (array $attributes) {
-            return PreservationInstance::find($attributes['preservation_instance_id'])->call_number;
-          },
-          'transfer_date' => $this->faker->date(),
-          'playback_machine_id' => PlaybackMachine::factory(),
-          'engineer_id' => User::factory(),
-          'vendor_id' => Vendor::factory(),
-          'condition_note' => $this->faker->text,
-          'transfer_note' => $this->faker->text,
-          'subclass_type' => $this->faker->word,
-          'subclass_id' => $this->faker->randomNumber(),
+            'preservation_instance_id' => PreservationInstance::factory(),
+            'call_number' => function (array $attributes) {
+                return PreservationInstance::find($attributes['preservation_instance_id'])->call_number;
+            },
+            'transfer_date' => $this->faker->date(),
+            'playback_machine_id' => PlaybackMachine::factory(),
+            'engineer_id' => User::factory(),
+            'vendor_id' => Vendor::factory(),
+            'condition_note' => $this->faker->text,
+            'transfer_note' => $this->faker->text,
+            'subclass_type' => $this->faker->word,
+            'subclass_id' => $this->faker->randomNumber(),
         ];
     }
 }

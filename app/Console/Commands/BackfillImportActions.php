@@ -42,19 +42,19 @@ class BackfillImportActions extends Command
         $importTransactions = ImportTransaction::all();
         $bar = $this->output->createProgressBar($importTransactions->count());
         foreach ($importTransactions as $importTransaction) {
-          $bar->advance();
-          // grab revisions related to the import
-          $relatedRevisions = DB::table('revisions')
+            $bar->advance();
+            // grab revisions related to the import
+            $relatedRevisions = DB::table('revisions')
             ->where('transaction_id', $importTransaction->transaction_id)->get();
-          // determine unique field values
-          $fields = $relatedRevisions->pluck('field')->unique();
-          // if any of the fields are created_at, then it's a create, so skip
-          if ($fields->contains('created_at')) {
-            continue;
-          }
-          // otherwise set the import action to update
-          $importTransaction->import_action = 'update';
-          $importTransaction->save();
+            // determine unique field values
+            $fields = $relatedRevisions->pluck('field')->unique();
+            // if any of the fields are created_at, then it's a create, so skip
+            if ($fields->contains('created_at')) {
+                continue;
+            }
+            // otherwise set the import action to update
+            $importTransaction->import_action = 'update';
+            $importTransaction->save();
         }
         $bar->finish();
     }

@@ -14,7 +14,7 @@ class AddImportActionToImportTransactionsTable extends Migration
     public function up()
     {
         Schema::table('import_transactions', function (Blueprint $table) {
-          $table->string('import_action', 255)->default('create')->after('import_type');
+            $table->string('import_action', 255)->default('create')->after('import_type');
         });
     }
 
@@ -26,7 +26,7 @@ class AddImportActionToImportTransactionsTable extends Migration
     public function down()
     {
         Schema::table('import_transactions', function (Blueprint $table) {
-          $table->dropColumn('import_action');
+            $table->dropColumn('import_action');
         });
     }
 }

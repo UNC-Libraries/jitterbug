@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Jitterbug\Models\NewCallNumberSequence;
 use Jitterbug\Models\Collection;
+use Jitterbug\Models\NewCallNumberSequence;
 
 class NewCallNumberSequenceFactory extends Factory
 {
@@ -23,13 +23,13 @@ class NewCallNumberSequenceFactory extends Factory
     public function definition()
     {
         return [
-          'prefix' => strtoupper($this->faker->lexify('??')),
-          'collection_id' => Collection::factory(),
-          'archival_identifier' => static function (array $attributes) {
-            return Collection::find($attributes['collection_id'])->archival_identifier;
-          },
-          'next' => $this->faker->randomNumber(),
-          'reserved' => $this->faker->word,
+            'prefix' => strtoupper($this->faker->lexify('??')),
+            'collection_id' => Collection::factory(),
+            'archival_identifier' => static function (array $attributes) {
+                return Collection::find($attributes['collection_id'])->archival_identifier;
+            },
+            'next' => $this->faker->randomNumber(),
+            'reserved' => $this->faker->word,
         ];
     }
 }

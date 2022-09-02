@@ -1,74 +1,77 @@
-<?php namespace Jitterbug\Models;
+<?php
 
-use Log;
+namespace Jitterbug\Models;
 
-use Jitterbug\Models\AudioVisualItem;
+class BatchAudioVisualItem extends AudioVisualItem
+{
+    use MergeableAttributes;
 
-class BatchAudioVisualItem extends AudioVisualItem {
-  use MergeableAttributes;
+    protected $items;
 
-  protected $items;
-  protected $subclasses;
-  protected $aggregateItem;
-  protected $aggregateSubclass;
+    protected $subclasses;
 
-  protected $batchGuarded = ['id', 'subclass_type', 'subclass_id', 'created_at',
-    'updated_at'];
+    protected $aggregateItem;
 
-  protected $attributes;
+    protected $aggregateSubclass;
 
-  public function __construct($items, $subclasses)
-  {
-    parent::__construct();
+    protected $batchGuarded = ['id', 'subclass_type', 'subclass_id', 'created_at',
+        'updated_at', ];
 
-    $this->items = $items;
-    $this->subclasses = $subclasses;
+    protected $attributes;
 
-    $this->aggregateItem = new AudioVIsualItem;
-    $this->aggregateItem->entry_date = null;
-    $subclassType = $this->items->first()->subclass_type;
-    $this->aggregateItem->subclass_type = $subclassType;
-    $this->aggregateSubclass = new $subclassType;
-    $this->mergeAttributes($items, $this->aggregateItem);
-    $this->mergeAttributes($subclasses, $this->aggregateSubclass);
+    public function __construct($items, $subclasses)
+    {
+        parent::__construct();
 
-    $this->attributes = $this->aggregateItem->attributes;
-  }
+        $this->items = $items;
+        $this->subclasses = $subclasses;
 
-  public function batch()
-  {
-    return true;
-  }
+        $this->aggregateItem = new AudioVIsualItem;
+        $this->aggregateItem->entry_date = null;
+        $subclassType = $this->items->first()->subclass_type;
+        $this->aggregateItem->subclass_type = $subclassType;
+        $this->aggregateSubclass = new $subclassType;
+        $this->mergeAttributes($items, $this->aggregateItem);
+        $this->mergeAttributes($subclasses, $this->aggregateSubclass);
 
-  public function getIdsAttribute()
-  {
-    $ids = array();
-    foreach($this->items as $item) {
-      $ids[] = $item->id;
+        $this->attributes = $this->aggregateItem->attributes;
     }
-    return implode(',', $ids);
-  }
 
-  public function getSubclassAttribute()
-  {
-    return $this->aggregateSubclass;
-  }
+    public function batch()
+    {
+        return true;
+    }
 
-  public function subclass()
-  {
-    return $this->aggregateSubclass;
-  }
+    public function getIdsAttribute()
+    {
+        $ids = [];
+        foreach ($this->items as $item) {
+            $ids[] = $item->id;
+        }
 
-  public function getTypeAttribute()
-  {
-    $fullType = $this->items->first()->getAttribute('subclass_type');
-    $type = substr($fullType,0,strlen($fullType) - strlen('Item'));
-    return $type;
-  }
+        return implode(',', $ids);
+    }
 
-  public function count()
-  {
-    return $this->items->count();
-  }
+    public function getSubclassAttribute()
+    {
+        return $this->aggregateSubclass;
+    }
 
+    public function subclass()
+    {
+        return $this->aggregateSubclass;
+    }
+
+    public function getTypeAttribute()
+    {
+        $fullType = $this->items->first()->getAttribute('subclass_type');
+        $type = substr($fullType, 0, strlen($fullType) - strlen('Item'));
+
+        return $type;
+    }
+
+    public function count()
+    {
+        return $this->items->count();
+    }
 }

@@ -1,60 +1,63 @@
 <?php
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Jitterbug\Models\Format;
 use Jitterbug\Models\Prefix;
 use Jitterbug\Models\User;
-use Jitterbug\Models\Format;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class FormatsTest extends TestCase
 {
-  use RefreshDatabase;
-  private $adminUser;
-  private $prefix;
-  private $format;
+    use RefreshDatabase;
 
-  protected function setUp() : void
-  {
-    parent::setUp();
-    $this->adminUser = User::factory()->create(['admin' => 1]);
-    $this->format = Format::factory()->create(['name' => '16mm']);
-    $this->prefix = Prefix::factory()->create();
-  }
+    private $adminUser;
 
-  public function testAttachPrefixes()
-  {
-    $adminUser = $this->adminUser;
-    $format = $this->format;
-    $this->be($adminUser);
-    $prefix = $this->prefix;
+    private $prefix;
 
-    $response = $this->post('/formats/attach_prefixes',
-      [
-        'id' => $format->id,
-        'prefixIds' => array($prefix->id),
-      ],
-      array('HTTP_X-Requested-With' => 'XMLHttpRequest'));
+    private $format;
 
-    $this->assertDatabaseHas('format_prefix', ['format_id' => $format->id, 'prefix_id' => $prefix->id]);
-    $this->assertEquals(200, $response->getStatusCode());
-  }
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->adminUser = User::factory()->create(['admin' => 1]);
+        $this->format = Format::factory()->create(['name' => '16mm']);
+        $this->prefix = Prefix::factory()->create();
+    }
 
-  public function testDetachPrefixes()
-  {
-    $adminUser = $this->adminUser;
-    $format = $this->format;
-    $this->be($adminUser);
-    $prefix = $this->prefix;
-    $format->prefixes()->attach($prefix);
-    $this->assertDatabaseHas('format_prefix', ['format_id' => $format->id, 'prefix_id' => $prefix->id]);
+    public function testAttachPrefixes()
+    {
+        $adminUser = $this->adminUser;
+        $format = $this->format;
+        $this->be($adminUser);
+        $prefix = $this->prefix;
 
-    $response = $this->post('/formats/detach_prefixes',
-      [
-        'id' => $format->id,
-        'prefixIds' => array($prefix->id),
-      ],
-      array('HTTP_X-Requested-With' => 'XMLHttpRequest'));
+        $response = $this->post('/formats/attach_prefixes',
+            [
+                'id' => $format->id,
+                'prefixIds' => [$prefix->id],
+            ],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
-    $this->assertDatabaseMissing('format_prefix', ['format_id' => $format->id, 'prefix_id' => $prefix->id]);
-    $this->assertEquals(200, $response->getStatusCode());
-  }
+        $this->assertDatabaseHas('format_prefix', ['format_id' => $format->id, 'prefix_id' => $prefix->id]);
+        $this->assertEquals(200, $response->getStatusCode());
+    }
+
+    public function testDetachPrefixes()
+    {
+        $adminUser = $this->adminUser;
+        $format = $this->format;
+        $this->be($adminUser);
+        $prefix = $this->prefix;
+        $format->prefixes()->attach($prefix);
+        $this->assertDatabaseHas('format_prefix', ['format_id' => $format->id, 'prefix_id' => $prefix->id]);
+
+        $response = $this->post('/formats/detach_prefixes',
+            [
+                'id' => $format->id,
+                'prefixIds' => [$prefix->id],
+            ],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+
+        $this->assertDatabaseMissing('format_prefix', ['format_id' => $format->id, 'prefix_id' => $prefix->id]);
+        $this->assertEquals(200, $response->getStatusCode());
+    }
 }

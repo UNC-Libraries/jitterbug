@@ -1,8 +1,11 @@
-<?php namespace Jitterbug\Models;
+<?php
 
-use Illuminate\Database\Eloquent\Model;
+namespace Jitterbug\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class ImportTransaction extends Model {
-  use HasFactory;
+class ImportTransaction extends Model
+{
+    use HasFactory;
 }

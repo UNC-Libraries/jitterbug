@@ -100,7 +100,7 @@ return [
         // Adldap\Laravel\Scopes\UidScope::class,
 
         // Only allow members of specified groups to login
-        Jitterbug\Scopes\AdldapLimitationScope::class
+        Jitterbug\Scopes\AdldapLimitationScope::class,
 
     ],
 

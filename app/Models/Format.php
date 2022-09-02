@@ -1,55 +1,57 @@
-<?php namespace Jitterbug\Models;
+<?php
 
-use Log;
+namespace Jitterbug\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Format extends Model {
-  use NullFieldPreserver;
-  use SoftDeletes;
-  use HasFactory;
+class Format extends Model
+{
+    use NullFieldPreserver;
+    use SoftDeletes;
+    use HasFactory;
 
-  protected $dates = array('deleted_at');
+    protected $dates = ['deleted_at'];
 
-  protected $fillable = array('name', 'prefix', 'legacy_prefix');
+    protected $fillable = ['name', 'prefix', 'legacy_prefix'];
 
-  // Filters out formats that will not be used for new items
-  public function scopeWithFutureUse($query)
-  {
-    return $query->where('id', '<>', 25)
+    // Filters out formats that will not be used for new items
+    public function scopeWithFutureUse($query)
+    {
+        return $query->where('id', '<>', 25)
                  ->where('id', '<>', 54);
-  }
+    }
 
-  public function audioVisualItems()
-  {
-    return $this->hasMany(AudioVisualItem::class);
-  }
+    public function audioVisualItems()
+    {
+        return $this->hasMany(AudioVisualItem::class);
+    }
 
-  public function prefixes()
-  {
-    return $this->belongsToMany(Prefix::class)->withTimestamps();
-  }
+    public function prefixes()
+    {
+        return $this->belongsToMany(Prefix::class)->withTimestamps();
+    }
 
-  public function uniquePrefixLabels()
-  {
-    return $this->prefixes->unique('label')->pluck('label')->all();
-  }
+    public function uniquePrefixLabels()
+    {
+        return $this->prefixes->unique('label')->pluck('label')->all();
+    }
 
-  public function identifiableName()
-  {
-    return $this->name;
-  }
+    public function identifiableName()
+    {
+        return $this->name;
+    }
 
-  public function detachPrefixes($prefixIds)
-  {
-    // prefixIds may be: an integer, an array of IDs, or null (which will detach all prefixes)
-    $this->prefixes()->detach($prefixIds);
-  }
+    public function detachPrefixes($prefixIds)
+    {
+        // prefixIds may be: an integer, an array of IDs, or null (which will detach all prefixes)
+        $this->prefixes()->detach($prefixIds);
+    }
 
-  public function attachPrefixes($prefixIds)
-  {
-    // prefixIds may be: an integer or an array of IDs
-    $this->prefixes()->attach($prefixIds);
-  }
+    public function attachPrefixes($prefixIds)
+    {
+        // prefixIds may be: an integer or an array of IDs
+        $this->prefixes()->attach($prefixIds);
+    }
 }

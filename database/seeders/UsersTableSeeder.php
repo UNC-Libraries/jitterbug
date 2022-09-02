@@ -1,9 +1,10 @@
 <?php
 
 namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
-use Jitterbug\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Jitterbug\Models\User;
 
 class UsersTableSeeder extends Seeder
 {
@@ -14,18 +15,17 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        if(env('APP_ENV') !== 'production')
-        {
-          $password = Hash::make(env('ADMIN_USER_PASSWORD'));
-          $users[] = [
-            'first_name' => 'Dev',
-            'last_name' => 'Admin',
-            'email' => 'admin@jitterbug.com',
-            'admin' => 1,
-            'username' => 'dev-admin',
-            'password' => $password
-          ];
-          User::insert($users);
+        if (env('APP_ENV') !== 'production') {
+            $password = Hash::make(env('ADMIN_USER_PASSWORD'));
+            $users[] = [
+                'first_name' => 'Dev',
+                'last_name' => 'Admin',
+                'email' => 'admin@jitterbug.com',
+                'admin' => 1,
+                'username' => 'dev-admin',
+                'password' => $password,
+            ];
+            User::insert($users);
         }
     }
 }

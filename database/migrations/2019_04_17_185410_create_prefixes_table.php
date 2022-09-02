@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreatePrefixesTable extends Migration
 {
@@ -13,14 +13,14 @@ class CreatePrefixesTable extends Migration
      */
     public function up()
     {
-      Schema::create('prefixes', function (Blueprint $table) {
-        $table->increments('id');
-        $table->string('label');
-        $table->boolean('legacy')->default(0);
-        $table->integer('collection_type_id')->nullable()->unsigned()->index();
-        $table->timestamps();
-        $table->softDeletes();
-      });
+        Schema::create('prefixes', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('label');
+            $table->boolean('legacy')->default(0);
+            $table->integer('collection_type_id')->nullable()->unsigned()->index();
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
     /**
@@ -30,6 +30,6 @@ class CreatePrefixesTable extends Migration
      */
     public function down()
     {
-      Schema::dropIfExists('prefixes');
+        Schema::dropIfExists('prefixes');
     }
 }

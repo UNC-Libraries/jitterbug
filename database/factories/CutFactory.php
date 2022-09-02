@@ -20,17 +20,17 @@ class CutFactory extends Factory
      *
      * @return array
      */
-    public function definition() : array
+    public function definition(): array
     {
-      return [
-        'transfer_id' => Transfer::factory(),
-        'preservation_instance_id' => function (array $attributes) {
-          return Transfer::find($attributes['transfer_id'])->preservation_instance_id;
-        },
-        'call_number' => function (array $attributes) {
-          return Transfer::find($attributes['transfer_id'])->call_number;
-        },
-        'side' => 1,
-      ];
+        return [
+            'transfer_id' => Transfer::factory(),
+            'preservation_instance_id' => function (array $attributes) {
+                return Transfer::find($attributes['transfer_id'])->preservation_instance_id;
+            },
+            'call_number' => function (array $attributes) {
+                return Transfer::find($attributes['transfer_id'])->call_number;
+            },
+            'side' => 1,
+        ];
     }
 }

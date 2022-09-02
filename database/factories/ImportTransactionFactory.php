@@ -22,8 +22,8 @@ class ImportTransactionFactory extends Factory
     public function definition()
     {
         return [
-          'transaction_id' => $this->faker->word,
-          'import_type' => $this->faker->word,
+            'transaction_id' => $this->faker->word,
+            'import_type' => $this->faker->word,
         ];
     }
 }

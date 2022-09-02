@@ -1,7 +1,8 @@
-<?php namespace Jitterbug\Events;
+<?php
 
-abstract class Event {
+namespace Jitterbug\Events;
 
-	//
-
+abstract class Event
+{
+    //
 }

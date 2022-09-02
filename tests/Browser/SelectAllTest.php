@@ -10,24 +10,25 @@ use Tests\DuskTestCase;
 
 class SelectAllTest extends DuskTestCase
 {
-  use DatabaseMigrations;
+    use DatabaseMigrations;
+
     /**
      * A Dusk test example.
      *
      * @return void
      */
-  public function testSelectAllWorks()
-  {
-    User::factory()->create();
-    $this->browse(function (Browser $browser) {
-      $browser->loginAs(User::find(1))
+    public function testSelectAllWorks()
+    {
+        User::factory()->create();
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs(User::find(1))
         ->visit('/instances')
         ->keys('#search', 'general', '{enter}')
         ->pause(1000)
         ->click('table > thead > tr > th')
         ->driver->getKeyboard()->sendKeys([WebDriverKeys::COMMAND, 'a']);
 
-      $browser->pause(10000)->assertPresent('.selected');
-    });
-  }
+            $browser->pause(10000)->assertPresent('.selected');
+        });
+    }
 }

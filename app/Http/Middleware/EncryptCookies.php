@@ -1,4 +1,6 @@
-<?php namespace Jitterbug\Http\Middleware;
+<?php
+
+namespace Jitterbug\Http\Middleware;
 
 use Illuminate\Cookie\Middleware\EncryptCookies as BaseEncrypter;
 
@@ -10,6 +12,6 @@ class EncryptCookies extends BaseEncrypter
      * @var array
      */
     protected $except = [
-        'referrer'
+        'referrer',
     ];
 }

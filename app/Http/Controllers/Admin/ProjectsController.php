@@ -1,16 +1,14 @@
-<?php namespace Jitterbug\Http\Controllers\Admin;
+<?php
 
-use Auth;
+namespace Jitterbug\Http\Controllers\Admin;
+
 use DB;
-use Log;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
-
 use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Http\Requests\ProjectRequest;
-use Jitterbug\Models\Project;
 use Jitterbug\Models\PreservationInstance;
+use Jitterbug\Models\Project;
 use Jitterbug\Support\SolariumProxy;
 
 /**
@@ -18,77 +16,82 @@ use Jitterbug\Support\SolariumProxy;
  */
 class ProjectsController extends Controller
 {
+    protected $solrInstances;
 
-  protected $solrInstances;
-
-  /**
-   * Create a new controller instance.
-   *
-   * @return void
-   */
-  public function __construct()
-  {
-    $this->middleware(['auth', 'admin']);
-    $this->solrInstances = new SolariumProxy('jitterbug-instances');
-  }
-
-  public function index(Request $request) {
-    if ($request->ajax()) {
-      $records = Project::orderBy('name')->get();
-      return view('admin._names', compact('records'));
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(['auth', 'admin']);
+        $this->solrInstances = new SolariumProxy('jitterbug-instances');
     }
-  }
 
-  public function store(ProjectRequest $request) {
-    if ($request->ajax()) {
-      $input = $request->all();
-      $project = new Project;
-      $project->fill($input);
-      $project->save();
-      return response()->json($project);
+    public function index(Request $request)
+    {
+        if ($request->ajax()) {
+            $records = Project::orderBy('name')->get();
+
+            return view('admin._names', compact('records'));
+        }
     }
-  }
 
-  public function update($id, ProjectRequest $request) {
-    if ($request->ajax()) {
-      $input = $request->all();
+    public function store(ProjectRequest $request)
+    {
+        if ($request->ajax()) {
+            $input = $request->all();
+            $project = new Project;
+            $project->fill($input);
+            $project->save();
 
-      $project = Project::findOrFail($id);
-      $project->fill($input);
+            return response()->json($project);
+        }
+    }
 
-      if ($project->isDirty()) {
+    public function update($id, ProjectRequest $request)
+    {
+        if ($request->ajax()) {
+            $input = $request->all();
 
-        // Update MySQL
-        DB::transaction(function () use ($project) {
-          $project->save();
-        });
+            $project = Project::findOrFail($id);
+            $project->fill($input);
 
-        // Update Solr
-        $affectedInstances =
+            if ($project->isDirty()) {
+
+                // Update MySQL
+                DB::transaction(function () use ($project) {
+                    $project->save();
+                });
+
+                // Update Solr
+                $affectedInstances =
           PreservationInstance::where('project_id', $id)->get();
-        $this->solrInstances->update($affectedInstances);
-      }
+                $this->solrInstances->update($affectedInstances);
+            }
+        }
     }
-  }
 
-  public function destroy($id, Request $request) {
-    if ($request->ajax()) {
-      $count = PreservationInstance::where('project_id', $id)->count();
-      if ($count === 0) {
-        $project = Project::findOrFail($id);
-        $project->delete();
-        $response = array('status'=>'success');
-        return response()->json($response);
-      } else {
-        $bag = new MessageBag();
-        $bag->add('status', 'Looks like that project is currently in use. ' . 
-          'Change the project of the related preservation instances before ' .
+    public function destroy($id, Request $request)
+    {
+        if ($request->ajax()) {
+            $count = PreservationInstance::where('project_id', $id)->count();
+            if ($count === 0) {
+                $project = Project::findOrFail($id);
+                $project->delete();
+                $response = ['status' => 'success'];
+
+                return response()->json($response);
+            } else {
+                $bag = new MessageBag();
+                $bag->add('status', 'Looks like that project is currently in use. '.
+          'Change the project of the related preservation instances before '.
           'deleting.');
-        $response = $bag;
-        return response()->json($bag, 422);
-      }
+                $response = $bag;
+
+                return response()->json($bag, 422);
+            }
+        }
     }
-  }
-
 }
-

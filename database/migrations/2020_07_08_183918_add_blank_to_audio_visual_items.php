@@ -14,7 +14,7 @@ class AddBlankToAudioVisualItems extends Migration
     public function up()
     {
         Schema::table('audio_visual_items', function (Blueprint $table) {
-          $table->boolean('blank')->default(0)->after('subclass_id');
+            $table->boolean('blank')->default(0)->after('subclass_id');
         });
     }
 
@@ -26,7 +26,7 @@ class AddBlankToAudioVisualItems extends Migration
     public function down()
     {
         Schema::table('audio_visual_items', function (Blueprint $table) {
-          $table->dropColumn('blank');
+            $table->dropColumn('blank');
         });
     }
 }

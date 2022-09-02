@@ -13,19 +13,19 @@ class ChangePreservationMasterTableToPreservationInstance extends Migration
      */
     public function up()
     {
-      Schema::rename('preservation_masters', 'preservation_instances');
-      Schema::rename('audio_masters', 'audio_instances');
-      Schema::rename('film_masters', 'film_instances');
-      Schema::rename('video_masters', 'video_instances');
+        Schema::rename('preservation_masters', 'preservation_instances');
+        Schema::rename('audio_masters', 'audio_instances');
+        Schema::rename('film_masters', 'film_instances');
+        Schema::rename('video_masters', 'video_instances');
 
-      Schema::table('cuts', function (Blueprint $table) {
-        $table->renameColumn('preservation_master_id', 'preservation_instance_id');
-      });
-      Schema::table('transfers', function (Blueprint $table) {
-        $table->renameColumn('preservation_master_id', 'preservation_instance_id');
-      });
+        Schema::table('cuts', function (Blueprint $table) {
+            $table->renameColumn('preservation_master_id', 'preservation_instance_id');
+        });
+        Schema::table('transfers', function (Blueprint $table) {
+            $table->renameColumn('preservation_master_id', 'preservation_instance_id');
+        });
 
-      DB::statement("
+        DB::statement("
         CREATE OR REPLACE VIEW preservation_instance_types AS
           SELECT
             media_types.id,
@@ -40,7 +40,7 @@ class ChangePreservationMasterTableToPreservationInstance extends Migration
           GROUP BY media_types.name;
       ");
 
-      DB::statement('
+        DB::statement('
         CREATE OR REPLACE VIEW preservation_instance_collections AS
           SELECT 
             collections.id AS id,
@@ -60,7 +60,7 @@ class ChangePreservationMasterTableToPreservationInstance extends Migration
           ORDER BY name;
       ');
 
-      DB::statement('
+        DB::statement('
         CREATE OR REPLACE VIEW preservation_instance_formats AS
           SELECT 
             formats.id AS id,
@@ -80,7 +80,7 @@ class ChangePreservationMasterTableToPreservationInstance extends Migration
           ORDER BY name;
       ');
 
-      DB::statement('
+        DB::statement('
         CREATE OR REPLACE VIEW preservation_instance_departments AS
           SELECT 
             departments.id AS id,
@@ -97,7 +97,7 @@ class ChangePreservationMasterTableToPreservationInstance extends Migration
           ORDER BY name;
       ');
 
-      DB::statement('
+        DB::statement('
         DROP VIEW IF EXISTS preservation_master_types, 
           preservation_master_collections, 
           preservation_master_formats, 
@@ -112,19 +112,19 @@ class ChangePreservationMasterTableToPreservationInstance extends Migration
      */
     public function down()
     {
-      Schema::rename('preservation_instances', 'preservation_masters');
-      Schema::rename('audio_instances', 'audio_masters');
-      Schema::rename('film_instances', 'film_masters');
-      Schema::rename('video_instances', 'video_masters');
+        Schema::rename('preservation_instances', 'preservation_masters');
+        Schema::rename('audio_instances', 'audio_masters');
+        Schema::rename('film_instances', 'film_masters');
+        Schema::rename('video_instances', 'video_masters');
 
-      Schema::table('cuts', function (Blueprint $table) {
-        $table->renameColumn('preservation_instance_id', 'preservation_master_id');
-      });
-      Schema::table('transfers', function (Blueprint $table) {
-        $table->renameColumn('preservation_instance_id', 'preservation_master_id');
-      });
+        Schema::table('cuts', function (Blueprint $table) {
+            $table->renameColumn('preservation_instance_id', 'preservation_master_id');
+        });
+        Schema::table('transfers', function (Blueprint $table) {
+            $table->renameColumn('preservation_instance_id', 'preservation_master_id');
+        });
 
-      DB::statement("
+        DB::statement("
         CREATE OR REPLACE VIEW preservation_master_types AS
           SELECT
             media_types.id,
@@ -139,7 +139,7 @@ class ChangePreservationMasterTableToPreservationInstance extends Migration
           GROUP BY media_types.name;
       ");
 
-      DB::statement('
+        DB::statement('
         CREATE OR REPLACE VIEW preservation_master_collections AS
           SELECT 
             collections.id AS id,
@@ -159,7 +159,7 @@ class ChangePreservationMasterTableToPreservationInstance extends Migration
           ORDER BY name;
       ');
 
-      DB::statement('
+        DB::statement('
         CREATE OR REPLACE VIEW preservation_master_formats AS
           SELECT 
             formats.id AS id,
@@ -179,7 +179,7 @@ class ChangePreservationMasterTableToPreservationInstance extends Migration
           ORDER BY name;
       ');
 
-      DB::statement('
+        DB::statement('
         CREATE OR REPLACE VIEW preservation_master_departments AS
           SELECT 
             departments.id AS id,
@@ -196,7 +196,7 @@ class ChangePreservationMasterTableToPreservationInstance extends Migration
           ORDER BY name;
       ');
 
-      DB::statement('
+        DB::statement('
         DROP VIEW IF EXISTS preservation_instance_types, 
           preservation_instance_collections, 
           preservation_instance_formats, 

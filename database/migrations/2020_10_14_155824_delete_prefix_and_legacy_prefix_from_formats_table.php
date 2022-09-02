@@ -13,9 +13,9 @@ class DeletePrefixAndLegacyPrefixFromFormatsTable extends Migration
      */
     public function up()
     {
-      Schema::table('formats', function (Blueprint $table) {
-        $table->dropColumn(['prefix', 'legacy_prefix']);
-      });
+        Schema::table('formats', function (Blueprint $table) {
+            $table->dropColumn(['prefix', 'legacy_prefix']);
+        });
     }
 
     /**
@@ -25,9 +25,9 @@ class DeletePrefixAndLegacyPrefixFromFormatsTable extends Migration
      */
     public function down()
     {
-      Schema::table('formats', function (Blueprint $table) {
-        $table->string('prefix', 255);
-        $table->string('legacy_prefix', 255)->nullable();
-      });
+        Schema::table('formats', function (Blueprint $table) {
+            $table->string('prefix', 255);
+            $table->string('legacy_prefix', 255)->nullable();
+        });
     }
 }

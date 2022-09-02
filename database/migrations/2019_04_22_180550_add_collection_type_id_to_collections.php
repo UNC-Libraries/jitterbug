@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddCollectionTypeIdToCollections extends Migration
 {
@@ -13,9 +13,9 @@ class AddCollectionTypeIdToCollections extends Migration
      */
     public function up()
     {
-      Schema::table('collections', function (Blueprint $table) {
-        $table->integer('collection_type_id')->nullable()->after('name');
-      });
+        Schema::table('collections', function (Blueprint $table) {
+            $table->integer('collection_type_id')->nullable()->after('name');
+        });
     }
 
     /**
@@ -25,8 +25,8 @@ class AddCollectionTypeIdToCollections extends Migration
      */
     public function down()
     {
-      Schema::table('collections', function (Blueprint $table) {
-        $table->dropColumn('collection_type_id');
-      });
+        Schema::table('collections', function (Blueprint $table) {
+            $table->dropColumn('collection_type_id');
+        });
     }
 }

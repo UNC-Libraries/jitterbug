@@ -1,83 +1,89 @@
-<?php namespace Jitterbug\Models;
+<?php
 
+namespace Jitterbug\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Venturecraft\Revisionable\RevisionableTrait;
 
-class Cut extends Model {
-  use NullFieldPreserver;
-  use RevisionableTrait;
-  use SoftDeletes;
-  use HasFactory;
+class Cut extends Model
+{
+    use NullFieldPreserver;
+    use RevisionableTrait;
+    use SoftDeletes;
+    use HasFactory;
 
-  protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at'];
 
-  protected $revisionFormattedFields = array(
-    'side' => 'isEmpty:nothing|%s',
-    'cut_number' => 'isEmpty:nothing|%s',
-    'title' => 'isEmpty:nothing|%s',
-    'performer_composer' => 'isEmpty:nothing|%s',
-    'pm_start_time' => 'isEmpty:nothing|%s',
-  );
+    protected $revisionFormattedFields = [
+        'side' => 'isEmpty:nothing|%s',
+        'cut_number' => 'isEmpty:nothing|%s',
+        'title' => 'isEmpty:nothing|%s',
+        'performer_composer' => 'isEmpty:nothing|%s',
+        'pm_start_time' => 'isEmpty:nothing|%s',
+    ];
 
-  protected $revisionFormattedFieldNames = array(
-    'call_number' => 'call number',
-    'preservation_instance_id' => 'preservation instance',
-    'cut_number' => 'cut number',
-    'performer_composer' => 'performer composer',
-    'pm_start_time' => 'PM start time',
-  );
+    protected $revisionFormattedFieldNames = [
+        'call_number' => 'call number',
+        'preservation_instance_id' => 'preservation instance',
+        'cut_number' => 'cut number',
+        'performer_composer' => 'performer composer',
+        'pm_start_time' => 'PM start time',
+    ];
 
-  protected $fillable = array('call_number',
-    'preservation_instance_id', 'transfer_id', 'side', 'cut_number',
-    'side', 'title', 'performer_composer', 'pm_start_time');
+    protected $fillable = ['call_number',
+        'preservation_instance_id', 'transfer_id', 'side', 'cut_number',
+        'side', 'title', 'performer_composer', 'pm_start_time', ];
 
-  protected $revisionCreationsEnabled = true;
+    protected $revisionCreationsEnabled = true;
 
-  public function item()
-  {
-    return $this->belongsTo('Jitterbug\Models\AudioVisualItem', 'call_number', 'call_number');
-  }
-  
-  public function preservationInstance()
-  {
-    return $this->belongsTo('Jitterbug\Models\PreservationInstance');
-  }
+    public function item()
+    {
+        return $this->belongsTo('Jitterbug\Models\AudioVisualItem', 'call_number', 'call_number');
+    }
 
-  public function transfer()
-  {
-    return $this->belongsTo('Jitterbug\Models\Transfer');
-  }
+    public function preservationInstance()
+    {
+        return $this->belongsTo('Jitterbug\Models\PreservationInstance');
+    }
 
-  /**
-   * Returns the revision history for the Cut.
-   * 
-   * @return Collection
-   */
-  public function completeRevisionHistory()
-  {
-    return $this->revisionHistory()->get();
-  }
+    public function transfer()
+    {
+        return $this->belongsTo('Jitterbug\Models\Transfer');
+    }
 
-  public function getCreatedOnDisplayAttribute()
-  {
-    $revisionHistory = $this->completeRevisionHistory();
-    return $this->formattedHistory($revisionHistory->first());
-  }
+    /**
+     * Returns the revision history for the Cut.
+     *
+     * @return Collection
+     */
+    public function completeRevisionHistory()
+    {
+        return $this->revisionHistory()->get();
+    }
 
-  public function getUpdatedOnDisplayAttribute()
-  {
-    $revisionHistory = $this->completeRevisionHistory();
-    $revisionHistory = $revisionHistory->sortByDesc('created_at');
-    return $this->formattedHistory($revisionHistory->first());
-  }
+    public function getCreatedOnDisplayAttribute()
+    {
+        $revisionHistory = $this->completeRevisionHistory();
 
-  public function formattedHistory($history)
-  {
-    $user = $history->userResponsible()->first_name
-      . ' ' . $history->userResponsible()->last_name;
-    $date =  date('n/j/Y', strtotime($history->created_at));
-    return $date . ' by ' . $user;
-  }
+        return $this->formattedHistory($revisionHistory->first());
+    }
+
+    public function getUpdatedOnDisplayAttribute()
+    {
+        $revisionHistory = $this->completeRevisionHistory();
+        $revisionHistory = $revisionHistory->sortByDesc('created_at');
+
+        return $this->formattedHistory($revisionHistory->first());
+    }
+
+    public function formattedHistory($history)
+    {
+        $user = $history->userResponsible()->first_name
+      .' '.$history->userResponsible()->last_name;
+        $date = date('n/j/Y', strtotime($history->created_at));
+
+        return $date.' by '.$user;
+    }
 }

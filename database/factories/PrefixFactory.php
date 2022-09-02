@@ -22,8 +22,8 @@ class PrefixFactory extends Factory
     public function definition()
     {
         return [
-          'label' => strtoupper($this->faker->lexify('??')),
-          'collection_type_id' => $this->faker->randomNumber(),
+            'label' => strtoupper($this->faker->lexify('??')),
+            'collection_type_id' => $this->faker->randomNumber(),
         ];
     }
 }
