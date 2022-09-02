@@ -47,7 +47,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function marks()
     {
-        return $this->hasMany('Jitterbug\Models\Mark');
+        return $this->hasMany(\Jitterbug\Models\Mark::class);
     }
 
     /**

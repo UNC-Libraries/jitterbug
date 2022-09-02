@@ -84,23 +84,23 @@ class AudioVisualItem extends Model
 
     public function collection()
     {
-        return $this->belongsTo('Jitterbug\Models\Collection');
+        return $this->belongsTo(\Jitterbug\Models\Collection::class);
     }
 
     public function format()
     {
-        return $this->belongsTo('Jitterbug\Models\Format');
+        return $this->belongsTo(\Jitterbug\Models\Format::class);
     }
 
     public function preservationInstances()
     {
-        return $this->hasMany('Jitterbug\Models\PreservationInstance',
+        return $this->hasMany(\Jitterbug\Models\PreservationInstance::class,
             'call_number', 'call_number');
     }
 
     public function cuts()
     {
-        return $this->hasMany('Jitterbug\Models\Cut',
+        return $this->hasMany(\Jitterbug\Models\Cut::class,
             'call_number', 'call_number');
     }
 

@@ -69,32 +69,32 @@ class PreservationInstance extends Model
 
     public function item()
     {
-        return $this->belongsTo('Jitterbug\Models\AudioVisualItem', 'call_number', 'call_number');
+        return $this->belongsTo(\Jitterbug\Models\AudioVisualItem::class, 'call_number', 'call_number');
     }
 
     public function cuts()
     {
-        return $this->hasMany('Jitterbug\Models\Cut');
+        return $this->hasMany(\Jitterbug\Models\Cut::class);
     }
 
     public function transfers()
     {
-        return $this->hasMany('Jitterbug\Models\Transfer');
+        return $this->hasMany(\Jitterbug\Models\Transfer::class);
     }
 
     public function department()
     {
-        return $this->belongsTo('Jitterbug\Models\Department');
+        return $this->belongsTo(\Jitterbug\Models\Department::class);
     }
 
     public function project()
     {
-        return $this->belongsTo('Jitterbug\Models\Project');
+        return $this->belongsTo(\Jitterbug\Models\Project::class);
     }
 
     public function reproductionMachine()
     {
-        return $this->belongsTo('Jitterbug\Models\ReproductionMachine');
+        return $this->belongsTo(\Jitterbug\Models\ReproductionMachine::class);
     }
 
     public function subclass()

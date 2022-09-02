@@ -73,7 +73,7 @@ class Transfer extends Model
 
     public function item()
     {
-        return $this->belongsTo('Jitterbug\Models\AudioVisualItem', 'call_number', 'call_number');
+        return $this->belongsTo(\Jitterbug\Models\AudioVisualItem::class, 'call_number', 'call_number');
     }
 
     /**
@@ -81,12 +81,12 @@ class Transfer extends Model
      */
     public function cut()
     {
-        return $this->hasOne('Jitterbug\Models\Cut');
+        return $this->hasOne(\Jitterbug\Models\Cut::class);
     }
 
     public function engineer()
     {
-        return $this->belongsTo('Jitterbug\Models\User', 'engineer_id');
+        return $this->belongsTo(\Jitterbug\Models\User::class, 'engineer_id');
     }
 
     public function getEngineerNameAttribute()
@@ -102,17 +102,17 @@ class Transfer extends Model
 
     public function playbackMachine()
     {
-        return $this->belongsTo('Jitterbug\Models\PlaybackMachine');
+        return $this->belongsTo(\Jitterbug\Models\PlaybackMachine::class);
     }
 
     public function preservationInstance()
     {
-        return $this->belongsTo('Jitterbug\Models\PreservationInstance');
+        return $this->belongsTo(\Jitterbug\Models\PreservationInstance::class);
     }
 
     public function vendor()
     {
-        return $this->belongsTo('Jitterbug\Models\Vendor');
+        return $this->belongsTo(\Jitterbug\Models\Vendor::class);
     }
 
     public function subclass()

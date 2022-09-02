@@ -18,7 +18,7 @@ class Department extends Model
 
     public function preservationInstances()
     {
-        return $this->hasMany('Jitterbug\Models\PreservationInstance');
+        return $this->hasMany(\Jitterbug\Models\PreservationInstance::class);
     }
 
     /**

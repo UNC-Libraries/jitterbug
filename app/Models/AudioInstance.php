@@ -42,16 +42,16 @@ class AudioInstance extends Model
 
     public function tapeBrand()
     {
-        return $this->belongsTo('Jitterbug\Models\TapeBrand');
+        return $this->belongsTo(\Jitterbug\Models\TapeBrand::class);
     }
 
     public function pmSpeed()
     {
-        return $this->belongsTo('Jitterbug\Models\PmSpeed');
+        return $this->belongsTo(\Jitterbug\Models\PmSpeed::class);
     }
 
     public function samplingRate()
     {
-        return $this->belongsTo('Jitterbug\Models\SamplingRate');
+        return $this->belongsTo(\Jitterbug\Models\SamplingRate::class);
     }
 }

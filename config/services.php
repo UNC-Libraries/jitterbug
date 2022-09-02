@@ -30,7 +30,7 @@ return [
     ],
 
     'stripe' => [
-        'model' => 'Jitterbug\Models\User',
+        'model' => Jitterbug\Models\User::class,
         'secret' => '',
     ],
 

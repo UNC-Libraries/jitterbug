@@ -141,11 +141,11 @@ return [
         /*
      * Application Service Providers...
      */
-        'Jitterbug\Providers\AppServiceProvider',
-        'Jitterbug\Providers\AuthServiceProvider',
+        Jitterbug\Providers\AppServiceProvider::class,
+        Jitterbug\Providers\AuthServiceProvider::class,
         // 'Jitterbug\Providers\BroadcastServiceProvider',
-        'Jitterbug\Providers\EventServiceProvider',
-        'Jitterbug\Providers\RouteServiceProvider',
+        Jitterbug\Providers\EventServiceProvider::class,
+        Jitterbug\Providers\RouteServiceProvider::class,
 
         /*
      * Third-party Service Providers
@@ -210,19 +210,19 @@ return [
         'Form' => 'Collective\Html\FormFacade',
         'Html' => 'Collective\Html\HtmlFacade',
 
-        'AudioVisualItem' => 'Jitterbug\Models\AudioVisualItem',
-        'AudioItem' => 'Jitterbug\Models\AudioItem',
-        'VideoItem' => 'Jitterbug\Models\VideoItem',
-        'FilmItem' => 'Jitterbug\Models\FilmItem',
-        'PreservationInstance' => 'Jitterbug\Models\PreservationInstance',
-        'AudioInstance' => 'Jitterbug\Models\AudioInstance',
-        'FilmInstance' => 'Jitterbug\Models\FilmInstance',
-        'VideoInstance' => 'Jitterbug\Models\VideoInstance',
-        'Cut' => 'Jitterbug\Models\Cut',
-        'Transfer' => 'Jitterbug\Models\Transfer',
-        'AudioTransfer' => 'Jitterbug\Models\AudioTransfer',
-        'FilmTransfer' => 'Jitterbug\Models\FilmTransfer',
-        'VideoTransfer' => 'Jitterbug\Models\VideoTransfer',
+        'AudioVisualItem' => Jitterbug\Models\AudioVisualItem::class,
+        'AudioItem' => Jitterbug\Models\AudioItem::class,
+        'VideoItem' => Jitterbug\Models\VideoItem::class,
+        'FilmItem' => Jitterbug\Models\FilmItem::class,
+        'PreservationInstance' => Jitterbug\Models\PreservationInstance::class,
+        'AudioInstance' => Jitterbug\Models\AudioInstance::class,
+        'FilmInstance' => Jitterbug\Models\FilmInstance::class,
+        'VideoInstance' => Jitterbug\Models\VideoInstance::class,
+        'Cut' => Jitterbug\Models\Cut::class,
+        'Transfer' => Jitterbug\Models\Transfer::class,
+        'AudioTransfer' => Jitterbug\Models\AudioTransfer::class,
+        'FilmTransfer' => Jitterbug\Models\FilmTransfer::class,
+        'VideoTransfer' => Jitterbug\Models\VideoTransfer::class,
 
         'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs::class,
         'Uuid' => 'Ramsey\Uuid\Uuid',

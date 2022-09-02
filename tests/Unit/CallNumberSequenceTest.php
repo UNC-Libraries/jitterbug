@@ -40,7 +40,7 @@ class CallNumberSequenceTest extends TestCase
         $format->attachPrefixes($this->prefix->id);
 
         $sequence = CallNumberSequence::next($this->collection->id, $format->id);
-        $this->assertTrue(is_a($sequence, 'Jitterbug\Models\NewCallNumberSequence'),
+        $this->assertTrue(is_a($sequence, \Jitterbug\Models\NewCallNumberSequence::class),
             'Sequence is not a NewCallNumberSequence, as it should be.');
     }
 
@@ -57,7 +57,7 @@ class CallNumberSequenceTest extends TestCase
         $sequence = CallNumberSequence::next($this->collection->id, $format->id);
         $this->assertSame($callNumber->id, $sequence->id,
             'Sequence is not the existing NewCallNumberSequence, as it should be.');
-        $this->assertTrue(is_a($sequence, 'Jitterbug\Models\NewCallNumberSequence'),
+        $this->assertTrue(is_a($sequence, \Jitterbug\Models\NewCallNumberSequence::class),
             'Sequence is not a NewCallNumberSequence, as it should be.');
     }
 
@@ -79,7 +79,7 @@ class CallNumberSequenceTest extends TestCase
         $format->prefixes()->attach($prefix1->id);
 
         $sequence = CallNumberSequence::next($this->collection->id, $format->id);
-        $this->assertTrue(is_a($sequence, 'Jitterbug\Models\LegacyCallNumberSequence'),
+        $this->assertTrue(is_a($sequence, \Jitterbug\Models\LegacyCallNumberSequence::class),
             'Sequence is not a LegacyCallNumberSequence, as it should be.');
         $this->assertSame($legacyCallNumber->id, $sequence->id,
             'Sequence is not the existing legacyCallNumberSequence, as it should be.');

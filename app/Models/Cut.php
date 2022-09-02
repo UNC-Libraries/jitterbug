@@ -40,17 +40,17 @@ class Cut extends Model
 
     public function item()
     {
-        return $this->belongsTo('Jitterbug\Models\AudioVisualItem', 'call_number', 'call_number');
+        return $this->belongsTo(\Jitterbug\Models\AudioVisualItem::class, 'call_number', 'call_number');
     }
 
     public function preservationInstance()
     {
-        return $this->belongsTo('Jitterbug\Models\PreservationInstance');
+        return $this->belongsTo(\Jitterbug\Models\PreservationInstance::class);
     }
 
     public function transfer()
     {
-        return $this->belongsTo('Jitterbug\Models\Transfer');
+        return $this->belongsTo(\Jitterbug\Models\Transfer::class);
     }
 
     /**

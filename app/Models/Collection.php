@@ -18,7 +18,7 @@ class Collection extends Model
 
     public function audioVisualItems()
     {
-        return $this->hasMany('Jitterbug\Models\AudioVisualItem');
+        return $this->hasMany(\Jitterbug\Models\AudioVisualItem::class);
     }
 
     public function collectionType()
