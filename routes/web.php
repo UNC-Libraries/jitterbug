@@ -1,11 +1,11 @@
 <?php
 
-use Jitterbug\Http\Controllers\CutsController;
 use Illuminate\Support\Facades\Route;
 use Jitterbug\Http\Controllers\Admin;
 use Jitterbug\Http\Controllers\AlertsController;
 use Jitterbug\Http\Controllers\Auth;
 use Jitterbug\Http\Controllers\CallNumbersController;
+use Jitterbug\Http\Controllers\CutsController;
 use Jitterbug\Http\Controllers\DashboardController;
 use Jitterbug\Http\Controllers\InstancesController;
 use Jitterbug\Http\Controllers\ItemsController;

@@ -11,6 +11,7 @@ class VideoItem extends Model
     use NullFieldPreserver;
     use RevisionableTrait;
     use SoftDeletes;
+
     protected $revisionCreationsEnabled = true;
 
     protected $revisionFormattedFields = [

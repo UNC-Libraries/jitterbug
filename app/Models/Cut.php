@@ -13,6 +13,7 @@ class Cut extends Model
     use RevisionableTrait;
     use SoftDeletes;
     use HasFactory;
+
     protected $revisionFormattedFields = [
         'side' => 'isEmpty:nothing|%s',
         'cut_number' => 'isEmpty:nothing|%s',

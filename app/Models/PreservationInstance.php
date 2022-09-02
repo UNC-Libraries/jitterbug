@@ -18,6 +18,7 @@ class PreservationInstance extends Model
     use HasFactory;
 
     const BATCH_EDIT_MAX_LIMIT = 1000;
+
     protected $revisionCreationsEnabled = true;
 
     protected $revisionFormattedFields = [

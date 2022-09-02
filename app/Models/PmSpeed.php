@@ -9,6 +9,7 @@ class PmSpeed extends Model
 {
     use NullFieldPreserver;
     use SoftDeletes;
+
     protected $fillable = ['name'];
 
     /**

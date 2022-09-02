@@ -11,6 +11,7 @@ class Format extends Model
     use NullFieldPreserver;
     use SoftDeletes;
     use HasFactory;
+
     protected $fillable = ['name', 'prefix', 'legacy_prefix'];
 
     // Filters out formats that will not be used for new items

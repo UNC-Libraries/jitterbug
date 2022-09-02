@@ -13,6 +13,7 @@ class AudioItem extends Model
     use RevisionableTrait;
     use SoftDeletes;
     use HasFactory;
+
     protected $revisionCreationsEnabled = true;
 
     protected $revisionFormattedFields = [

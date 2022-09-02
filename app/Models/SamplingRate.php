@@ -9,6 +9,7 @@ class SamplingRate extends Model
 {
     use NullFieldPreserver;
     use SoftDeletes;
+
     protected $fillable = ['name'];
 
     /**

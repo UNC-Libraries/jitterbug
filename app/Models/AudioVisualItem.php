@@ -25,6 +25,7 @@ class AudioVisualItem extends Model
         'Base', 'Color', 'SoundType', 'LengthInFeet',
         'ContentDescription', 'ReelTapeNumber', 'CallNumber', 'AccessRestrictions',
     ];
+
     protected $revisionCreationsEnabled = true;
 
     protected $revisionFormattedFields = [

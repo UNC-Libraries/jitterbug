@@ -11,6 +11,7 @@ class PlaybackMachine extends Model
     use NullFieldPreserver;
     use SoftDeletes;
     use HasFactory;
+
     protected $fillable = ['name'];
 
     /**

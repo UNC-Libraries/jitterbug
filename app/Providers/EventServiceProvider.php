@@ -13,8 +13,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\SomeEvent' => [
-            'App\Listeners\EventListener',
+        'Jitterbug\Events\SomeEvent' => [
+            'Jitterbug\Listeners\EventListener',
         ],
     ];
 
@@ -40,4 +40,3 @@ class EventServiceProvider extends ServiceProvider
         return false;
     }
 }
-
