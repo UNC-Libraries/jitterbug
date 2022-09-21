@@ -8,6 +8,7 @@ use Jitterbug\Models\Cut;
 use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Models\Transfer;
 use Solarium;
+use Symfony;
 
 /**
  * The intermediary between Jitterbug and Solr. All interactions
@@ -33,8 +34,10 @@ class SolariumProxy
         $endpointConfig = $config[$endpointKeys[0]];
         $hostKeys = array_keys($endpointConfig);
         $config[$endpointKeys[0]][$hostKeys[0]]['core'] = $core;
+        $adapter = new Solarium\Core\Client\Adapter\Curl();
+        $eventDispatcher = new Symfony\Component\EventDispatcher\EventDispatcher();
 
-        return new Solarium\Client($config);
+        return new Solarium\Client($adapter, $eventDispatcher, $config);
     }
 
     public function query($queryParams, $start, $rows, $sortColumn = 'updatedAt', $sortDirection = 'desc')

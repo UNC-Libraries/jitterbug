@@ -10,11 +10,11 @@ cd /
 sudo apt-get update -y
 sudo apt-get install openjdk-8-jdk -y
 
-# Install PHP 7.4
-sudo DEBIAN_FRONTEND=noninteractive apt-get install php7.4 php7.4-ldap php7.4-fpm php7.4-mbstring php7.4-dom php7.4-mysql -y
+# Install PHP 8.1
+sudo DEBIAN_FRONTEND=noninteractive apt-get install php8.1 php8.1-ldap php8.1-fpm php8.1-mbstring php8.1-dom php8.1-mysql -y
 
-# set the php symlink to point to the 7.4 version (for cli)
-sudo update-alternatives --set php /usr/bin/php7.4
+# set the php symlink to point to the 8.1 version (for cli)
+sudo update-alternatives --set php /usr/bin/php8.1
 
 # Download Solr
 cd ~

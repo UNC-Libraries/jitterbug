@@ -170,8 +170,8 @@ return [
         /*
      * Third-party Service Providers
      */
-        // Comes from davejamesmiller/laravel-breadcrumbs (^5.0)
-        DaveJamesMiller\Breadcrumbs\BreadcrumbsServiceProvider::class,
+        // Comes from diglactic/laravel-breadcrumbs (^7.0)
+        Diglactic\Breadcrumbs\ServiceProvider::class,
         Adldap\Laravel\AdldapServiceProvider::class,
         Adldap\Laravel\AdldapAuthServiceProvider::class,
         'Venturecraft\Revisionable\RevisionableServiceProvider',
@@ -195,7 +195,7 @@ return [
         'AudioItem' => Jitterbug\Models\AudioItem::class,
         'AudioTransfer' => Jitterbug\Models\AudioTransfer::class,
         'AudioVisualItem' => Jitterbug\Models\AudioVisualItem::class,
-        'Breadcrumbs' => DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs::class,
+        'Breadcrumbs' => Diglactic\Breadcrumbs\Breadcrumbs::class,
         'Cut' => Jitterbug\Models\Cut::class,
         'FilmInstance' => Jitterbug\Models\FilmInstance::class,
         'FilmItem' => Jitterbug\Models\FilmItem::class,

@@ -14,10 +14,10 @@ sites:
     -
         map: homestead.test
         to: /home/vagrant/code/public
-        php: "7.3"
+        php: "8.1"
 databases:
     - homestead
-name: jitterbug
-hostname: jitterbug
+name: jitterbug-php-8
+hostname: jitterbug-php-8
 features:
     - webdriver: true
