@@ -1,7 +1,9 @@
-<?php namespace Jitterbug\Providers;
+<?php
 
-use Illuminate\Support\ServiceProvider;
+namespace Jitterbug\Providers;
+
 use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\ServiceProvider;
 
 class BroadcastServiceProvider extends ServiceProvider
 {

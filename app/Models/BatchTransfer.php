@@ -1,73 +1,76 @@
-<?php namespace Jitterbug\Models;
+<?php
 
-use Log;
+namespace Jitterbug\Models;
 
-use Jitterbug\Models\Transfer;
+class BatchTransfer extends Transfer
+{
+    use MergeableAttributes;
 
-class BatchTransfer extends Transfer {
-  use MergeableAttributes;
+    protected $transfers;
 
-  protected $transfers;
-  protected $subclasses;
-  protected $aggregateTransfer;
-  protected $aggregateSubclass;
+    protected $subclasses;
 
-  protected $batchGuarded = ['id', 'subclass_type', 'subclass_id', 'created_at',
-    'updated_at'];
+    protected $aggregateTransfer;
 
-  protected $attributes;
+    protected $aggregateSubclass;
 
-  public function __construct($transfers, $subclasses)
-  {
-    parent::__construct();
+    protected $batchGuarded = ['id', 'subclass_type', 'subclass_id', 'created_at',
+        'updated_at', ];
 
-    $this->transfers = $transfers;
-    $this->subclasses = $subclasses;
+    protected $attributes;
 
-    $this->aggregateTransfer = new Transfer;
-    $subclassType = $this->transfers->first()->subclass_type;
-    $this->aggregateTransfer->subclass_type = $subclassType;
-    $this->aggregateSubclass = new $subclassType;
-    $this->mergeAttributes($transfers, $this->aggregateTransfer);
-    $this->mergeAttributes($subclasses, $this->aggregateSubclass);
+    public function __construct($transfers, $subclasses)
+    {
+        parent::__construct();
 
-    $this->attributes = $this->aggregateTransfer->attributes;
-  }
+        $this->transfers = $transfers;
+        $this->subclasses = $subclasses;
 
-  public function batch()
-  {
-    return true;
-  }
+        $this->aggregateTransfer = new Transfer;
+        $subclassType = $this->transfers->first()->subclass_type;
+        $this->aggregateTransfer->subclass_type = $subclassType;
+        $this->aggregateSubclass = new $subclassType;
+        $this->mergeAttributes($transfers, $this->aggregateTransfer);
+        $this->mergeAttributes($subclasses, $this->aggregateSubclass);
 
-  public function getIdsAttribute()
-  {
-    $ids = array();
-    foreach($this->transfers as $transfer) {
-      $ids[] = $transfer->id;
+        $this->attributes = $this->aggregateTransfer->attributes;
     }
-    return implode(',', $ids);
-  }
 
-  public function getSubclassAttribute()
-  {
-    return $this->aggregateSubclass;
-  }
+    public function batch()
+    {
+        return true;
+    }
 
-  public function subclass()
-  {
-    return $this->aggregateSubclass;
-  }
+    public function getIdsAttribute()
+    {
+        $ids = [];
+        foreach ($this->transfers as $transfer) {
+            $ids[] = $transfer->id;
+        }
 
-  public function getTypeAttribute()
-  {
-    $fullType = $this->transfers->first()->getAttribute('subclass_type');
-    $type = substr($fullType,0,strlen($fullType) - strlen('Transfer'));
-    return $type;
-  }
+        return implode(',', $ids);
+    }
 
-  public function count()
-  {
-    return $this->transfers->count();
-  }
+    public function getSubclassAttribute()
+    {
+        return $this->aggregateSubclass;
+    }
 
+    public function subclass()
+    {
+        return $this->aggregateSubclass;
+    }
+
+    public function getTypeAttribute()
+    {
+        $fullType = $this->transfers->first()->getAttribute('subclass_type');
+        $type = substr($fullType, 0, strlen($fullType) - strlen('Transfer'));
+
+        return $type;
+    }
+
+    public function count()
+    {
+        return $this->transfers->count();
+    }
 }

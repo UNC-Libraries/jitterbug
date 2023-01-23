@@ -1,5 +1,18 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use Jitterbug\Http\Controllers\Admin;
+use Jitterbug\Http\Controllers\AlertsController;
+use Jitterbug\Http\Controllers\Auth;
+use Jitterbug\Http\Controllers\CallNumbersController;
+use Jitterbug\Http\Controllers\CutsController;
+use Jitterbug\Http\Controllers\DashboardController;
+use Jitterbug\Http\Controllers\InstancesController;
+use Jitterbug\Http\Controllers\ItemsController;
+use Jitterbug\Http\Controllers\MarksController;
+use Jitterbug\Http\Controllers\SuggestionsController;
+use Jitterbug\Http\Controllers\TransfersController;
+
 Route::get('/', function () {
     return redirect()->route('dashboard.index');
 });
@@ -10,8 +23,8 @@ Route::get('/', function () {
 |--------------------------------------------------------------------------
 */
 
-Route::get('alerts', 'AlertsController@index');
-Route::delete('alerts', 'AlertsController@destroy');
+Route::get('alerts', [AlertsController::class, 'index']);
+Route::delete('alerts', [AlertsController::class, 'destroy']);
 
 /*
 |--------------------------------------------------------------------------
@@ -19,15 +32,15 @@ Route::delete('alerts', 'AlertsController@destroy');
 |--------------------------------------------------------------------------
 */
 
-Route::group(['prefix' => 'suggestions'], function () {
-  Route::get('recording-locations',
-  	'SuggestionsController@recordingLocations');
-  Route::get('speeds', 'SuggestionsController@speeds');
-  Route::get('track-configurations', 
-    'SuggestionsController@trackConfigurations');
-  Route::get('audio-bases', 'SuggestionsController@audioBases');
-  Route::get('film-elements', 'SuggestionsController@filmElements');
-  Route::get('film-bases', 'SuggestionsController@filmBases');
+Route::prefix('suggestions')->group(function () {
+    Route::get('recording-locations',
+        [SuggestionsController::class, 'recordingLocations']);
+    Route::get('speeds', [SuggestionsController::class, 'speeds']);
+    Route::get('track-configurations',
+        [SuggestionsController::class, 'trackConfigurations']);
+    Route::get('audio-bases', [SuggestionsController::class, 'audioBases']);
+    Route::get('film-elements', [SuggestionsController::class, 'filmElements']);
+    Route::get('film-bases', [SuggestionsController::class, 'filmBases']);
 });
 
 /*
@@ -36,40 +49,40 @@ Route::group(['prefix' => 'suggestions'], function () {
 |--------------------------------------------------------------------------
 */
 
-Route::get('admin', 'Admin\AdminController@index')->name('admin.index');
-Route::post('admin/make-admin', 'Admin\AdminController@makeAdmin');
-Route::post('admin/remove-admin', 'Admin\AdminController@removeAdmin');
-Route::get('users', 'Admin\UsersController@index');
-Route::resource('collections', 
-  'Admin\CollectionsController', ['except' => ['show', 'create', 'edit']]);
-Route::resource('formats', 
-  'Admin\FormatsController', ['except' => ['create', 'edit']]);
-Route::resource('projects', 
-  'Admin\ProjectsController', ['except' => ['show', 'create', 'edit']]);
-Route::resource('vendors', 
-  'Admin\VendorsController', ['except' => ['show', 'create', 'edit']]);
-Route::resource('departments', 
-  'Admin\DepartmentsController', ['except' => ['show', 'create', 'edit']]);
-Route::resource('playback-machines', 
-  'Admin\PlaybackMachinesController', ['except' => ['show', 'create', 'edit']]);
-Route::resource('reproduction-machines', 
-  'Admin\ReproductionMachinesController', ['except' => ['show', 'create', 'edit']]);
-Route::resource('sampling-rates', 
-  'Admin\SamplingRatesController', ['except' => ['show', 'create', 'edit']]);
-Route::resource('pm-speeds', 
-  'Admin\PmSpeedsController', ['except' => ['show', 'create', 'edit']]);
-Route::resource('tape-brands', 
-  'Admin\TapeBrandsController', ['except' => ['show', 'create', 'edit']]);
+Route::get('admin', [Admin\AdminController::class, 'index'])->name('admin.index');
+Route::post('admin/make-admin', [Admin\AdminController::class, 'makeAdmin']);
+Route::post('admin/remove-admin', [Admin\AdminController::class, 'removeAdmin']);
+Route::get('users', [Admin\UsersController::class, 'index']);
+Route::resource('collections',
+    Admin\CollectionsController::class)->except('show', 'create', 'edit');
+Route::resource('formats',
+    Admin\FormatsController::class)->except('create', 'edit');
+Route::resource('projects',
+    Admin\ProjectsController::class)->except('show', 'create', 'edit');
+Route::resource('vendors',
+    Admin\VendorsController::class)->except('show', 'create', 'edit');
+Route::resource('departments',
+    Admin\DepartmentsController::class)->except('show', 'create', 'edit');
+Route::resource('playback-machines',
+    Admin\PlaybackMachinesController::class)->except('show', 'create', 'edit');
+Route::resource('reproduction-machines',
+    Admin\ReproductionMachinesController::class)->except('show', 'create', 'edit');
+Route::resource('sampling-rates',
+    Admin\SamplingRatesController::class)->except('show', 'create', 'edit');
+Route::resource('pm-speeds',
+    Admin\PmSpeedsController::class)->except('show', 'create', 'edit');
+Route::resource('tape-brands',
+    Admin\TapeBrandsController::class)->except('show', 'create', 'edit');
 Route::resource('collection-types',
-  'Admin\CollectionTypesController', ['except' => ['show', 'create', 'edit']]);
+    Admin\CollectionTypesController::class)->except('show', 'create', 'edit');
 Route::resource('prefixes',
-  'Admin\PrefixesController', ['except' => ['show', 'create', 'edit']]);
-Route::post('prefixes/set-legacy-status', 'Admin\PrefixesController@setLegacyStatus');
-Route::post('prefixes/remove-legacy-status', 'Admin\PrefixesController@removeLegacyStatus');
-Route::post('formats/detach_prefixes', 'Admin\FormatsController@detachPrefixes');
-Route::post('formats/attach_prefixes', 'Admin\FormatsController@attachPrefixes');
-Route::post('users/inactivate', 'Admin\UsersController@inactivate');
-Route::post('users/reactivate', 'Admin\UsersController@reactivate');
+    Admin\PrefixesController::class)->except('show', 'create', 'edit');
+Route::post('prefixes/set-legacy-status', [Admin\PrefixesController::class, 'setLegacyStatus']);
+Route::post('prefixes/remove-legacy-status', [Admin\PrefixesController::class, 'removeLegacyStatus']);
+Route::post('formats/detach_prefixes', [Admin\FormatsController::class, 'detachPrefixes']);
+Route::post('formats/attach_prefixes', [Admin\FormatsController::class, 'attachPrefixes']);
+Route::post('users/inactivate', [Admin\UsersController::class, 'inactivate']);
+Route::post('users/reactivate', [Admin\UsersController::class, 'reactivate']);
 
 /*
 |--------------------------------------------------------------------------
@@ -77,8 +90,8 @@ Route::post('users/reactivate', 'Admin\UsersController@reactivate');
 |--------------------------------------------------------------------------
 */
 
-Route::get('dashboard', 'DashboardController@index')->name('dashboard.index');
-Route::get('dashboard/marks-for-user', 'DashboardController@marksForUser');
+Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+Route::get('dashboard/marks-for-user', [DashboardController::class, 'marksForUser']);
 
 /*
 |--------------------------------------------------------------------------
@@ -86,8 +99,8 @@ Route::get('dashboard/marks-for-user', 'DashboardController@marksForUser');
 |--------------------------------------------------------------------------
 */
 
-Route::post('marks', 'MarksController@store')->name('marks.store');
-Route::delete('marks', 'MarksController@destroy')->name('marks.destroy');
+Route::post('marks', [MarksController::class, 'store'])->name('marks.store');
+Route::delete('marks', [MarksController::class, 'destroy'])->name('marks.destroy');
 
 /*
 |--------------------------------------------------------------------------
@@ -95,26 +108,26 @@ Route::delete('marks', 'MarksController@destroy')->name('marks.destroy');
 |--------------------------------------------------------------------------
 */
 
-Route::get('call-numbers/generate', 'CallNumbersController@generate');
-Route::get('call-numbers/for-pm', 'CallNumbersController@forPreservationInstance');
-Route::get('items/resolve-range', 'ItemsController@resolveRange');
+Route::get('call-numbers/generate', [CallNumbersController::class, 'generate']);
+Route::get('call-numbers/for-pm', [CallNumbersController::class, 'forPreservationInstance']);
+Route::get('items/resolve-range', [ItemsController::class, 'resolveRange']);
 Route::match(['post', 'get'], 'items/batch/edit',
-  'ItemsController@batchEdit')->name('items.batch.edit');
+    [ItemsController::class, 'batchEdit'])->name('items.batch.edit');
 Route::put('items/batch',
-  'ItemsController@batchUpdate')->name('items.batch.update');
-Route::delete('items/batch', 
-  'ItemsController@batchDestroy')->name('items.batch.destroy');
-Route::post('items/batch/export-fields', 
-  'ItemsController@batchExportFields')->name('items.batch.export.fields');
-Route::post('items/batch/export-build', 
-  'ItemsController@batchExportBuild')->name('items.batch.export.build');
-Route::post('items/batch/export-download', 
-  'ItemsController@batchExportDownload')->name('items.batch.export.download');
-Route::post('items/batch/audio-import-upload', 
-  'ItemsController@itemsImportUpload')->name('items.batch.items.import.upload');
-Route::post('items/batch/audio-import-execute', 
-  'ItemsController@itemsImportExecute')->name('items.batch.items.import.execute');
-Route::resource('items', 'ItemsController');
+    [ItemsController::class, 'batchUpdate'])->name('items.batch.update');
+Route::delete('items/batch',
+    [ItemsController::class, 'batchDestroy'])->name('items.batch.destroy');
+Route::post('items/batch/export-fields',
+    [ItemsController::class, 'batchExportFields'])->name('items.batch.export.fields');
+Route::post('items/batch/export-build',
+    [ItemsController::class, 'batchExportBuild'])->name('items.batch.export.build');
+Route::post('items/batch/export-download',
+    [ItemsController::class, 'batchExportDownload'])->name('items.batch.export.download');
+Route::post('items/batch/audio-import-upload',
+    [ItemsController::class, 'itemsImportUpload'])->name('items.batch.items.import.upload');
+Route::post('items/batch/audio-import-execute',
+    [ItemsController::class, 'itemsImportExecute'])->name('items.batch.items.import.execute');
+Route::resource('items', ItemsController::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -122,27 +135,27 @@ Route::resource('items', 'ItemsController');
 |--------------------------------------------------------------------------
 */
 
-Route::get('instances/resolve-range', 'InstancesController@resolveRange');
+Route::get('instances/resolve-range', [InstancesController::class, 'resolveRange']);
 Route::match(['post', 'get'], 'instances/batch/edit',
-  'InstancesController@batchEdit')->name('instances.batch.edit');
+    [InstancesController::class, 'batchEdit'])->name('instances.batch.edit');
 Route::put('instances/batch',
-  'InstancesController@batchUpdate')->name('instances.batch.update');
+    [InstancesController::class, 'batchUpdate'])->name('instances.batch.update');
 Route::delete('instances/batch',
-  'InstancesController@batchDestroy')->name('instances.batch.destroy');
+    [InstancesController::class, 'batchDestroy'])->name('instances.batch.destroy');
 Route::post('instances/batch/export-fields',
-  'InstancesController@batchExportFields')->name('instances.batch.export.fields');
+    [InstancesController::class, 'batchExportFields'])->name('instances.batch.export.fields');
 Route::post('instances/batch/export-build',
-  'InstancesController@batchExportBuild')->name('instances.batch.export.build');
+    [InstancesController::class, 'batchExportBuild'])->name('instances.batch.export.build');
 Route::post('instances/batch/export-download',
-  'InstancesController@batchExportDownload')->name('instances.batch.export.download');
-Route::resource('instances', 'InstancesController');
+    [InstancesController::class, 'batchExportDownload'])->name('instances.batch.export.download');
+Route::resource('instances', InstancesController::class);
 
 /*
 |--------------------------------------------------------------------------
 | Cuts
 |--------------------------------------------------------------------------
 */
-Route::resource('cuts', 'CutsController', ['except' => ['index']]);
+Route::resource('cuts', CutsController::class)->except('index');
 
 /*
 |--------------------------------------------------------------------------
@@ -150,28 +163,28 @@ Route::resource('cuts', 'CutsController', ['except' => ['index']]);
 |--------------------------------------------------------------------------
 */
 
-Route::get('transfers/resolve-range', 'TransfersController@resolveRange');
+Route::get('transfers/resolve-range', [TransfersController::class, 'resolveRange']);
 Route::match(['post', 'get'], 'transfers/batch/edit',
-  'TransfersController@batchEdit')->name('transfers.batch.edit');
+    [TransfersController::class, 'batchEdit'])->name('transfers.batch.edit');
 Route::put('transfers/batch',
-  'TransfersController@batchUpdate')->name('transfers.batch.update');
-Route::delete('transfers/batch', 
-  'TransfersController@batchDestroy')->name('transfers.batch.destroy');
-Route::post('transfers/batch/export-fields', 
-  'TransfersController@batchExportFields')->name('transfers.batch.export.fields');
-Route::post('transfers/batch/export-build', 
-  'TransfersController@batchExportBuild')->name('transfers.batch.export.build');
+    [TransfersController::class, 'batchUpdate'])->name('transfers.batch.update');
+Route::delete('transfers/batch',
+    [TransfersController::class, 'batchDestroy'])->name('transfers.batch.destroy');
+Route::post('transfers/batch/export-fields',
+    [TransfersController::class, 'batchExportFields'])->name('transfers.batch.export.fields');
+Route::post('transfers/batch/export-build',
+    [TransfersController::class, 'batchExportBuild'])->name('transfers.batch.export.build');
 Route::post('transfers/batch/export-download',
-  'TransfersController@batchExportDownload')->name('transfers.batch.export.download'); 
-Route::post('transfers/batch/audio-import-upload', 
-	'TransfersController@audioImportUpload')->name('transfers.batch.audio.import.upload');
-Route::post('transfers/batch/audio-import-execute', 
-  'TransfersController@audioImportExecute')->name('transfers.batch.audio.import.execute');
-Route::post('transfers/batch/video-import-upload', 
-  'TransfersController@videoImportUpload')->name('transfers.batch.video.import.upload');
-Route::post('transfers/batch/video-import-execute', 
-  'TransfersController@videoImportExecute')->name('transfers.batch.video.import.execute');
-Route::resource('transfers', 'TransfersController');
+    [TransfersController::class, 'batchExportDownload'])->name('transfers.batch.export.download');
+Route::post('transfers/batch/audio-import-upload',
+    [TransfersController::class, 'audioImportUpload'])->name('transfers.batch.audio.import.upload');
+Route::post('transfers/batch/audio-import-execute',
+    [TransfersController::class, 'audioImportExecute'])->name('transfers.batch.audio.import.execute');
+Route::post('transfers/batch/video-import-upload',
+    [TransfersController::class, 'videoImportUpload'])->name('transfers.batch.video.import.upload');
+Route::post('transfers/batch/video-import-execute',
+    [TransfersController::class, 'videoImportExecute'])->name('transfers.batch.video.import.execute');
+Route::resource('transfers', TransfersController::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -179,6 +192,6 @@ Route::resource('transfers', 'TransfersController');
 |--------------------------------------------------------------------------
 */
 
-Route::get('login', 'Auth\LoginController@showLoginForm')->name('loginForm');
-Route::post('login', 'Auth\LoginController@login')->name('login');
-Route::get('logout', 'Auth\LoginController@logout')->name('logout');
+Route::get('login', [Auth\LoginController::class, 'showLoginForm'])->name('loginForm');
+Route::post('login', [Auth\LoginController::class, 'login'])->name('login');
+Route::get('logout', [Auth\LoginController::class, 'logout'])->name('logout');

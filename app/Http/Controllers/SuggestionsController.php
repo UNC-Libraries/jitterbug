@@ -1,13 +1,12 @@
-<?php namespace Jitterbug\Http\Controllers;
+<?php
 
-use Jitterbug\Http\Requests;
-use Jitterbug\Http\Controllers\Controller;
+namespace Jitterbug\Http\Controllers;
 
 use Illuminate\Http\Request;
 
 /**
  * Controller for producing form level autocomplete suggestions for
- * the devbridge autocomplete jQuery plugin 
+ * the devbridge autocomplete jQuery plugin
  * (https://github.com/devbridge/jQuery-Autocomplete). JSON results are
  * formatted per plugin requirements.
  *
@@ -16,7 +15,7 @@ use Illuminate\Http\Request;
  * 1. Define a controller method in this class for the field using
  * plural naming conventions. You only need to copy and paste one
  * of the exsiting methods and change the parameters for the
- * getAutocompleteSuggestions() method call to correspnod to the 
+ * getAutocompleteSuggestions() method call to correspnod to the
  * model you want the suggestions for, and then the field name.
  *
  * 2. Add a route to routes.php in the 'suggestions' group that
@@ -29,79 +28,85 @@ use Illuminate\Http\Request;
  * 4. In app.js, add a jQuery selector using the id you created in step 3,
  * then call autocomplete. The serviceUrl should correspond to the route
  * you created in step 2. For example:
- * 
+ *
  *  $('#speed').autocomplete({
  *    serviceUrl: '/suggestions/speeds',
  *    deferRequestBy: 100
  *  });
  */
-class SuggestionsController extends Controller {
+class SuggestionsController extends Controller
+{
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
-  /**
-   * Create a new controller instance.
-   *
-   * @return void
-   */
-  public function __construct()
-  {
-    $this->middleware('auth');
-  }
+    public function recordingLocations(Request $request)
+    {
+        $query = $request->query('query');
+        $suggestions = $this->getAutocompleteSuggestions(
+            'AudioVisualItem', 'recording_location', $query);
 
-  public function recordingLocations(Request $request)
-  {
-    $query = $request->query('query');
-    $suggestions = $this->getAutocompleteSuggestions(
-                                      'AudioVisualItem','recording_location',$query);
-    return response()->json($suggestions);
-  }
+        return response()->json($suggestions);
+    }
 
-  public function speeds(Request $request)
-  {
-    $query = $request->query('query');
-    $suggestions = $this->getAutocompleteSuggestions('AudioVisualItem','speed',$query);
-    return response()->json($suggestions);
-  }
+    public function speeds(Request $request)
+    {
+        $query = $request->query('query');
+        $suggestions = $this->getAutocompleteSuggestions('AudioVisualItem', 'speed', $query);
 
-  public function trackConfigurations(Request $request)
-  {
-    $query = $request->query('query');
-    $suggestions = $this->getAutocompleteSuggestions(
-                                      'AudioItem','track_configuration',$query);
-    return response()->json($suggestions);
-  }
+        return response()->json($suggestions);
+    }
 
-  public function audioBases(Request $request)
-  {
-    $query = $request->query('query');
-    $suggestions = $this->getAutocompleteSuggestions('AudioItem','base',$query);
-    return response()->json($suggestions);
-  }
+    public function trackConfigurations(Request $request)
+    {
+        $query = $request->query('query');
+        $suggestions = $this->getAutocompleteSuggestions(
+            'AudioItem', 'track_configuration', $query);
 
-  public function filmElements(Request $request)
-  {
-    $query = $request->query('query');
-    $suggestions = $this->getAutocompleteSuggestions('FilmItem','element',$query);
-    return response()->json($suggestions);
-  }
+        return response()->json($suggestions);
+    }
 
-  public function filmBases(Request $request)
-  {
-    $query = $request->query('query');
-    $suggestions = $this->getAutocompleteSuggestions('FilmItem','base',$query);
-    return response()->json($suggestions);
-  }
+    public function audioBases(Request $request)
+    {
+        $query = $request->query('query');
+        $suggestions = $this->getAutocompleteSuggestions('AudioItem', 'base', $query);
 
-  private function getAutocompleteSuggestions($modelClass,$field,$query)
-  {
-    $results = $modelClass::select($field)->distinct()->
+        return response()->json($suggestions);
+    }
+
+    public function filmElements(Request $request)
+    {
+        $query = $request->query('query');
+        $suggestions = $this->getAutocompleteSuggestions('FilmItem', 'element', $query);
+
+        return response()->json($suggestions);
+    }
+
+    public function filmBases(Request $request)
+    {
+        $query = $request->query('query');
+        $suggestions = $this->getAutocompleteSuggestions('FilmItem', 'base', $query);
+
+        return response()->json($suggestions);
+    }
+
+    private function getAutocompleteSuggestions($modelClass, $field, $query)
+    {
+        $results = $modelClass::select($field)->distinct()->
       where($field, '!=', '')->
       where($field, '!=', 'null')->
       where($field, 'like', '%'.$query.'%')->get();
-    $suggestions = array('suggestions'=>[]);
-    foreach($results as $result) {
-      $suggestions['suggestions'][] = $result[$field];
-    }
-    return $suggestions;
-  }
+        $suggestions = ['suggestions' => []];
+        foreach ($results as $result) {
+            $suggestions['suggestions'][] = $result[$field];
+        }
 
+        return $suggestions;
+    }
 }

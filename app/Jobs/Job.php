@@ -1,4 +1,6 @@
-<?php namespace App\Jobs;
+<?php
+
+namespace Jitterbug\Jobs;
 
 use Illuminate\Bus\Queueable;
 

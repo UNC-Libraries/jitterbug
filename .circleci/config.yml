@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       # Specify the version you desire here
-      - image: circleci/php:7.4-zts-node-browsers-legacy
+      - image: cimg/php:8.1-browsers
       - image: cimg/mysql:5.7
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
@@ -23,13 +23,11 @@ jobs:
           name: Install PHP & other exts
           command: |
             sudo apt-get update -y
-            sudo docker-php-ext-install zip
-            sudo docker-php-ext-install pdo_mysql
             sudo apt-get install -y default-mysql-client
             sudo apt-get install libldap2-dev -y
             sudo rm -rf /var/lib/apt/lists/*
             sudo docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/
-            sudo docker-php-ext-install ldap
+            sudo install-php-extensions ldap
 
       - run: sudo composer self-update --stable
       - run:

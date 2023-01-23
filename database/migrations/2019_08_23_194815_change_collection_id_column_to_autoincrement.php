@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class ChangeCollectionIdColumnToAutoincrement extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class ChangeCollectionIdColumnToAutoincrement extends Migration
     public function up()
     {
         Schema::table('collections', function (Blueprint $table) {
-          $table->increments('id')->change();
+            $table->increments('id')->change();
         });
     }
 
@@ -26,7 +26,7 @@ class ChangeCollectionIdColumnToAutoincrement extends Migration
     public function down()
     {
         Schema::table('collections', function (Blueprint $table) {
-          $table->integer('id')->change();
+            $table->integer('id')->change();
         });
     }
-}
+};

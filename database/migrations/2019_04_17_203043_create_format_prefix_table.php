@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateFormatPrefixTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateFormatPrefixTable extends Migration
      */
     public function up()
     {
-      Schema::create('format_prefix', function (Blueprint $table) {
-        $table->smallInteger('format_id')->unsigned();
-        $table->foreign('format_id')->references('id')->on('formats')->onDelete('cascade');
+        Schema::create('format_prefix', function (Blueprint $table) {
+            $table->smallInteger('format_id')->unsigned();
+            $table->foreign('format_id')->references('id')->on('formats')->onDelete('cascade');
 
-        $table->integer('prefix_id')->unsigned();
-        $table->foreign('prefix_id')->references('id')->on('prefixes')->onDelete('cascade');
-        $table->timestamps();
-      });
+            $table->integer('prefix_id')->unsigned();
+            $table->foreign('prefix_id')->references('id')->on('prefixes')->onDelete('cascade');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -30,6 +30,6 @@ class CreateFormatPrefixTable extends Migration
      */
     public function down()
     {
-      Schema::dropIfExists('format_prefix');
+        Schema::dropIfExists('format_prefix');
     }
-}
+};

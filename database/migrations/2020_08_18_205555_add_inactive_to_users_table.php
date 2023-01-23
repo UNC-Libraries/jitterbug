@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddInactiveToUsersTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddInactiveToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-          $table->boolean('inactive')->default(0)->after('legacy_initials');
+            $table->boolean('inactive')->default(0)->after('legacy_initials');
         });
     }
 
@@ -26,7 +26,7 @@ class AddInactiveToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-          $table->dropColumn('inactive');
+            $table->dropColumn('inactive');
         });
     }
-}
+};

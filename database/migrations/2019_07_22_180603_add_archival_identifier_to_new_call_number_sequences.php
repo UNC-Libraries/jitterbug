@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class AddArchivalIdentifierToNewCallNumberSequences extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class AddArchivalIdentifierToNewCallNumberSequences extends Migration
      */
     public function up()
     {
-      Schema::table('new_call_number_sequences', function (Blueprint $table) {
-        $table->string('archival_identifier')->after('collection_id')->nullable();
-      });
+        Schema::table('new_call_number_sequences', function (Blueprint $table) {
+            $table->string('archival_identifier')->after('collection_id')->nullable();
+        });
     }
 
     /**
@@ -25,8 +25,8 @@ class AddArchivalIdentifierToNewCallNumberSequences extends Migration
      */
     public function down()
     {
-      Schema::table('new_call_number_sequences', function (Blueprint $table) {
-        $table->dropColumn('archival_identifier');
-      });
+        Schema::table('new_call_number_sequences', function (Blueprint $table) {
+            $table->dropColumn('archival_identifier');
+        });
     }
-}
+};

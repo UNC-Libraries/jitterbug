@@ -23,18 +23,18 @@ class CollectionTypeRequest extends FormRequest
      */
     public function rules()
     {
-      return [
-        'name' => 'required|min:2|max:255|unique:collection_types,name,',
-      ];
+        return [
+            'name' => 'required|min:2|max:255|unique:collection_types,name,',
+        ];
     }
 
     public function messages()
     {
         return [
-          'name.required' => 'A collection type name is required.',
-          'name.unique' => 'The collection type name has already been used.',
-          'name.min' => 'The collection type name must be at least :min characters.',
-          'name.max' => 'The collection type name must be less than :max characters.',
+            'name.required' => 'A collection type name is required.',
+            'name.unique' => 'The collection type name has already been used.',
+            'name.min' => 'The collection type name must be at least :min characters.',
+            'name.max' => 'The collection type name must be less than :max characters.',
         ];
     }
 }

@@ -1,4 +1,6 @@
-<?php namespace Jitterbug\Presenters;
+<?php
+
+namespace Jitterbug\Presenters;
 
 use Westsworld\TimeAgo;
 
@@ -7,67 +9,69 @@ use Westsworld\TimeAgo;
  */
 class DashboardMark
 {
+    private $mark;
 
-  private $mark;
-  private $objectType;
+    private $objectType;
 
-  public function __construct($mark)
-  {
-    $this->mark = $mark;
+    public function __construct($mark)
+    {
+        $this->mark = $mark;
 
-    $class = $this->mark->markable_type;
-    $snakeClass = snake_case($class);
-    $explodedClass = explode('_', $snakeClass);
-    $this->objectType = array_pop($explodedClass);
-  }
-
-  /**
-   * Instantiate an array of DashboardMarks from an iterable
-   * collection of Marks.
-   *
-   * @return array
-   */
-  static public function fromMarks($marks)
-  {
-  	$dashboardMarks = array();
-    foreach($marks as $mark) {
-      $dashboardMarks[] = new DashboardMark($mark);
+        $class = $this->mark->markable_type;
+        $snakeClass = snake_case($class);
+        $explodedClass = explode('_', $snakeClass);
+        $this->objectType = array_pop($explodedClass);
     }
-    return $dashboardMarks;
-  }
 
-  public function object()
-  {
-    $class = $this->mark->markable_type;
-    $instance = 
+    /**
+     * Instantiate an array of DashboardMarks from an iterable
+     * collection of Marks.
+     *
+     * @return array
+     */
+    public static function fromMarks($marks)
+    {
+        $dashboardMarks = [];
+        foreach ($marks as $mark) {
+            $dashboardMarks[] = new DashboardMark($mark);
+        }
+
+        return $dashboardMarks;
+    }
+
+    public function object()
+    {
+        $class = $this->mark->markable_type;
+        $instance =
       $class::findOrFail($this->mark->markable_id);
-    $mediaType = $instance->type;
+        $mediaType = $instance->type;
 
-    if ($this->objectType === 'item') {
-      return $mediaType . ' ' 
-        . $this->objectType . ' ' 
-        . $instance->call_number;
-    } else {
-      return $mediaType . ' ' 
-        . $this->objectType . ' ' 
-        . 'for item '
-        . $instance->call_number;
+        if ($this->objectType === 'item') {
+            return $mediaType.' '
+        .$this->objectType.' '
+        .$instance->call_number;
+        } else {
+            return $mediaType.' '
+        .$this->objectType.' '
+        .'for item '
+        .$instance->call_number;
+        }
     }
-  }
 
-  public function objectId()
-  {
-    return $this->mark->markable_id;
-  }
+    public function objectId()
+    {
+        return $this->mark->markable_id;
+    }
 
-  public function objectType()
-  {
-    return $this->objectType;
-  }
-  
-  public function timestamp()
-  {
-    $timeAgo = new TimeAgo();
-    return $timeAgo->inWordsFromStrings($this->mark->updated_at);
-  }
+    public function objectType()
+    {
+        return $this->objectType;
+    }
+
+    public function timestamp()
+    {
+        $timeAgo = new TimeAgo();
+
+        return $timeAgo->inWordsFromStrings($this->mark->updated_at);
+    }
 }

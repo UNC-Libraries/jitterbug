@@ -4,7 +4,6 @@ namespace Jitterbug\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Jitterbug\Models\NewCallNumberSequence;
 
 class SetCollectionToLegacyCallNumberSequence extends Command
 {
@@ -39,24 +38,24 @@ class SetCollectionToLegacyCallNumberSequence extends Command
      */
     public function handle()
     {
-      $archivalIdentifier = $this->argument('archival_identifier');
+        $archivalIdentifier = $this->argument('archival_identifier');
 
-      // Find all new call number sequences that have been used and get their associated prefix
-      $usedSequencePrefixes = DB::table('new_call_number_sequences')
+        // Find all new call number sequences that have been used and get their associated prefix
+        $usedSequencePrefixes = DB::table('new_call_number_sequences')
         ->where('archival_identifier', $archivalIdentifier)
         ->where('next', '>', 1)
         ->pluck('prefix');
 
-      // Only delete the new call number sequences that have never been used
-      DB::table('new_call_number_sequences')
+        // Only delete the new call number sequences that have never been used
+        DB::table('new_call_number_sequences')
         ->where('archival_identifier', $archivalIdentifier)
         ->where('next', '=', 1)
         ->delete();
 
-      if ($usedSequencePrefixes->count() > 0) {
-        $this->info('Done! The sequences with the following prefixes were not deleted because they have been used: ' . $usedSequencePrefixes);
-      } else {
-        $this->info('All sequences for archival identifier ' . $archivalIdentifier . ' were successfully deleted.');
-      }
+        if ($usedSequencePrefixes->count() > 0) {
+            $this->info('Done! The sequences with the following prefixes were not deleted because they have been used: '.$usedSequencePrefixes);
+        } else {
+            $this->info('All sequences for archival identifier '.$archivalIdentifier.' were successfully deleted.');
+        }
     }
 }

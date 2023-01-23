@@ -22,9 +22,9 @@ class MarkFactory extends Factory
     public function definition()
     {
         return [
-          'user_id' => $this->faker->randomNumber(),
-          'markable_type' => $this->faker->word,
-          'markable_id' => $this->faker->randomNumber(),
+            'user_id' => $this->faker->randomNumber(),
+            'markable_type' => $this->faker->word(),
+            'markable_id' => $this->faker->randomNumber(),
         ];
     }
 }

@@ -1,29 +1,30 @@
 <?php
 
-use Jitterbug\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Jitterbug\Models\User;
 
-class RoutingTest extends TestCase {
-  use RefreshDatabase;
-	/**
-	 * A basic functional test example.
-	 *
-	 * @return void
-	 */
-	public function testHomepageRedirectResponse()
-	{
-		$response = $this->call('GET', '/');
+class RoutingTest extends TestCase
+{
+    use RefreshDatabase;
 
-		$this->assertEquals(302, $response->getStatusCode());
-	}
+    /**
+     * A basic functional test example.
+     *
+     * @return void
+     */
+    public function testHomepageRedirectResponse()
+    {
+        $response = $this->call('GET', '/');
 
-	public function testTransfersIndexResponse()
-  {
-    $user = User::factory()->create();
-    $this->be($user);
-    $response = $this->call('GET', '/transfers');
+        $this->assertEquals(302, $response->getStatusCode());
+    }
 
-    $this->assertEquals(200, $response->getStatusCode());
-  }
+    public function testTransfersIndexResponse()
+    {
+        $user = User::factory()->create();
+        $this->be($user);
+        $response = $this->call('GET', '/transfers');
 
+        $this->assertEquals(200, $response->getStatusCode());
+    }
 }

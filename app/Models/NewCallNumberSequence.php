@@ -1,12 +1,15 @@
-<?php namespace Jitterbug\Models;
+<?php
+
+namespace Jitterbug\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class NewCallNumberSequence extends CallNumberSequence {
-  use HasFactory;
+class NewCallNumberSequence extends CallNumberSequence
+{
+    use HasFactory;
 
-  public function callNumber() {
-    return $this->prefix . '-' . $this->archival_identifier . '/' . $this->next;
-  }
-  
+    public function callNumber()
+    {
+        return $this->prefix.'-'.$this->archival_identifier.'/'.$this->next;
+    }
 }

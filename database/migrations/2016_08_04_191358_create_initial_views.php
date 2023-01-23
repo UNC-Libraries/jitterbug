@@ -1,10 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateInitialViews extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +11,7 @@ class CreateInitialViews extends Migration
      */
     public function up()
     {
-      DB::statement("
+        DB::statement('
         CREATE OR REPLACE VIEW audio_visual_item_collections AS 
           SELECT 
             collections.id AS id, 
@@ -28,9 +26,9 @@ class CreateInitialViews extends Migration
             audio_visual_items.deleted_at is null 
           GROUP BY audio_visual_items.collection_id
           ORDER BY name;
-      ");
+      ');
 
-      DB::statement("
+        DB::statement('
         CREATE OR REPLACE VIEW audio_visual_item_formats AS
           SELECT 
             formats.id AS id,
@@ -45,9 +43,9 @@ class CreateInitialViews extends Migration
             audio_visual_items.deleted_at is null
           GROUP BY audio_visual_items.format_id
           ORDER BY name;
-      ");
+      ');
 
-      DB::statement("
+        DB::statement("
         CREATE OR REPLACE VIEW audio_visual_item_types AS
           SELECT
             media_types.id,
@@ -62,7 +60,7 @@ class CreateInitialViews extends Migration
           GROUP BY media_types.name;
       ");
 
-      DB::statement("
+        DB::statement("
         CREATE OR REPLACE VIEW transfer_types AS
           SELECT
             media_types.id,
@@ -77,7 +75,7 @@ class CreateInitialViews extends Migration
           GROUP BY media_types.name;
       ");
 
-      DB::statement("
+        DB::statement('
         CREATE OR REPLACE VIEW transfer_collections AS
           SELECT 
             collections.id AS id,
@@ -95,9 +93,9 @@ class CreateInitialViews extends Migration
             transfers.deleted_at is null
           GROUP BY audio_visual_items.collection_id
           ORDER BY name;
-      ");
+      ');
 
-      DB::statement("
+        DB::statement('
         CREATE OR REPLACE VIEW transfer_formats AS
           SELECT 
             formats.id AS id,
@@ -115,9 +113,9 @@ class CreateInitialViews extends Migration
             transfers.deleted_at is null
           GROUP BY audio_visual_items.format_id
           ORDER BY name;
-      ");
+      ');
 
-      DB::statement("
+        DB::statement("
         CREATE OR REPLACE VIEW preservation_master_types AS
           SELECT
             media_types.id,
@@ -132,7 +130,7 @@ class CreateInitialViews extends Migration
           GROUP BY media_types.name;
       ");
 
-      DB::statement("
+        DB::statement('
         CREATE OR REPLACE VIEW preservation_master_collections AS
           SELECT 
             collections.id AS id,
@@ -150,9 +148,9 @@ class CreateInitialViews extends Migration
             preservation_masters.deleted_at is null
           GROUP BY audio_visual_items.collection_id
           ORDER BY name;
-      ");
+      ');
 
-      DB::statement("
+        DB::statement('
         CREATE OR REPLACE VIEW preservation_master_formats AS
           SELECT 
             formats.id AS id,
@@ -170,9 +168,9 @@ class CreateInitialViews extends Migration
             preservation_masters.deleted_at is null
           GROUP BY audio_visual_items.format_id
           ORDER BY name;
-      ");
+      ');
 
-      DB::statement("
+        DB::statement('
         CREATE OR REPLACE VIEW preservation_master_departments AS
           SELECT 
             departments.id AS id,
@@ -187,7 +185,7 @@ class CreateInitialViews extends Migration
             preservation_masters.deleted_at is null
           GROUP BY preservation_masters.department_id
           ORDER BY name;
-      ");
+      ');
     }
 
     /**
@@ -197,15 +195,15 @@ class CreateInitialViews extends Migration
      */
     public function down()
     {
-      DB::statement('DROP VIEW IF EXISTS audio_visual_item_collections');
-      DB::statement('DROP VIEW IF EXISTS audio_visual_item_formats');
-      DB::statement('DROP VIEW IF EXISTS audio_visual_item_types');
-      DB::statement('DROP VIEW IF EXISTS transfer_types');
-      DB::statement('DROP VIEW IF EXISTS transfer_collections');
-      DB::statement('DROP VIEW IF EXISTS transfer_formats');
-      DB::statement('DROP VIEW IF EXISTS preservation_master_types');
-      DB::statement('DROP VIEW IF EXISTS preservation_master_collections');
-      DB::statement('DROP VIEW IF EXISTS preservation_master_formats');
-      DB::statement('DROP VIEW IF EXISTS preservation_master_departments');
+        DB::statement('DROP VIEW IF EXISTS audio_visual_item_collections');
+        DB::statement('DROP VIEW IF EXISTS audio_visual_item_formats');
+        DB::statement('DROP VIEW IF EXISTS audio_visual_item_types');
+        DB::statement('DROP VIEW IF EXISTS transfer_types');
+        DB::statement('DROP VIEW IF EXISTS transfer_collections');
+        DB::statement('DROP VIEW IF EXISTS transfer_formats');
+        DB::statement('DROP VIEW IF EXISTS preservation_master_types');
+        DB::statement('DROP VIEW IF EXISTS preservation_master_collections');
+        DB::statement('DROP VIEW IF EXISTS preservation_master_formats');
+        DB::statement('DROP VIEW IF EXISTS preservation_master_departments');
     }
-}
+};

@@ -21,10 +21,10 @@ class AudioTransferFactory extends Factory
      */
     public function definition()
     {
-      return [
-        'stylus' => $this->faker->word,
-        'cartridge' => $this->faker->word,
-        'first_sound' => $this->faker->text
-      ];
+        return [
+            'stylus' => $this->faker->word(),
+            'cartridge' => $this->faker->word(),
+            'first_sound' => $this->faker->text(),
+        ];
     }
 }

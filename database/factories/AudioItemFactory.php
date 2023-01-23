@@ -22,13 +22,13 @@ class AudioItemFactory extends Factory
     public function definition()
     {
         return [
-          'call_number' => 'FS-'.$this->faker->randomNumber(4),
-          'listening_copy' => $this->faker->boolean,
-          'size' => null,
-          'track_configuration' => null,
-          'mono_stereo' => 'M',
-          'base' => $this->faker->word,
-          'content_description' => $this->faker->text,
+            'call_number' => 'FS-'.$this->faker->randomNumber(4),
+            'listening_copy' => $this->faker->boolean(),
+            'size' => null,
+            'track_configuration' => null,
+            'mono_stereo' => 'M',
+            'base' => $this->faker->word(),
+            'content_description' => $this->faker->text(),
         ];
     }
 }
