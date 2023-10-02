@@ -17,7 +17,7 @@ sites:
         php: "8.1"
 databases:
     - homestead
-name: jitterbug-trial
-hostname: jitterbug-trial
+name: jitterbug-php-8
+hostname: jitterbug-php-8
 features:
     - webdriver: true
