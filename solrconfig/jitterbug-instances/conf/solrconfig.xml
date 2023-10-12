@@ -38,9 +38,9 @@
   <luceneMatchVersion>8.9.0</luceneMatchVersion>
   
   <!-- Load optional libraries for data import handler -->
-  <lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-dataimporthandler-.*\.jar" />
+<!--  <lib dir="${solr.install.dir:../../../..}/dist/" regex="solr-dataimporthandler-.*\.jar" />
   <lib dir="${solr.install.dir:../../../..}/contrib/extraction/lib" regex=".*\.jar" />
-  <lib dir="${solr.install.dir:../../../..}/contrib/dataimporthandler-extras/lib" regex=".*\.jar" />
+  <lib dir="${solr.install.dir:../../../..}/contrib/dataimporthandler-extras/lib" regex=".*\.jar" />-->
 
   <!-- Data Directory
 
@@ -564,10 +564,10 @@
     </arr>
   </requestHandler>
 
-  <requestHandler name="/dataimport" class="solr.DataImportHandler">
+<!--  <requestHandler name="/dataimport" class="solr.DataImportHandler">
     <lst name="defaults">
       <str name="config">solr-data-config.xml</str>
     </lst>
-  </requestHandler>
+  </requestHandler>-->
 
 </config>

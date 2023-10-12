@@ -5,10 +5,10 @@ vagrant ssh
 cd /vagrant
 mysql -u homestead -psecret -e "CREATE DATABASE IF NOT EXISTS jitterbug; CREATE DATABASE IF NOT EXISTS jitterbug_testing;"
 
-# Download java 8
+# Download java 11
 cd /
 sudo apt-get update -y
-sudo apt-get install openjdk-8-jdk -y
+sudo apt-get install openjdk-11-jdk -y
 
 # Install PHP 8.1
 sudo DEBIAN_FRONTEND=noninteractive apt-get install php8.1 php8.1-ldap php8.1-fpm php8.1-mbstring php8.1-dom php8.1-mysql -y
@@ -18,12 +18,12 @@ sudo update-alternatives --set php /usr/bin/php8.1
 
 # Download Solr
 cd ~
-# get the 8.11.1 release via solr archive
-sudo wget --no-verbose https://archive.apache.org/dist/lucene/solr/8.11.1/solr-8.11.1.tgz
+# get the 9.3.0 release via solr archive
+sudo wget --no-verbose https://archive.apache.org/dist/solr/solr/9.3.0/solr-9.3.0.tgz
 # extract the service installation file
-sudo tar xzf solr-8.11.1.tgz solr-8.11.1/bin/install_solr_service.sh --strip-components=2
+sudo tar xzf solr-9.3.0.tgz solr-9.3.0/bin/install_solr_service.sh --strip-components=2
 # install Solr as a service
-sudo ./install_solr_service.sh solr-8.11.1.tgz
+sudo ./install_solr_service.sh solr-9.3.0.tgz
 
 # Get the MySQL connector file and unzip it if needed
 cd /vagrant
@@ -32,7 +32,7 @@ sudo unzip -n mysql-connector-java-8.0.28.zip
 
 # Copy the MySQL connector file to the right place
 cd /
-sudo cp /vagrant/mysql-connector-java-8.0.28/mysql-connector-java-8.0.28.jar /opt/solr/contrib/dataimporthandler-extras/lib/.
+# sudo cp /vagrant/mysql-connector-java-8.0.28/mysql-connector-java-8.0.28.jar /opt/solr/contrib/dataimporthandler-extras/lib/.
 
 # Change users/groups/permissions of Solr home directory files
 cd /opt/solr
