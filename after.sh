@@ -22,8 +22,15 @@ cd ~
 sudo wget --no-verbose https://archive.apache.org/dist/solr/solr/9.3.0/solr-9.3.0.tgz
 # extract the service installation file
 sudo tar xzf solr-9.3.0.tgz solr-9.3.0/bin/install_solr_service.sh --strip-components=2
+
 # install Solr as a service
 sudo ./install_solr_service.sh solr-9.3.0.tgz
+
+# Add in dataimporthandler package
+sudo mkdir /opt/solr/modules/dataimporthandler
+sudo mkdir /opt/solr/modules/dataimporthandler/lib
+cd /opt/solr/modules/dataimporthandler/lib
+sudo wget --no-verbose https://github.com/SearchScale/dataimporthandler/releases/download/v9.3.0/data-import-handler-9.3.0.jar
 
 # Get the MySQL connector file and unzip it if needed
 cd /vagrant
@@ -32,7 +39,11 @@ sudo unzip -n mysql-connector-java-8.0.28.zip
 
 # Copy the MySQL connector file to the right place
 cd /
-# sudo cp /vagrant/mysql-connector-java-8.0.28/mysql-connector-java-8.0.28.jar /opt/solr/contrib/dataimporthandler-extras/lib/.
+sudo cp /vagrant/mysql-connector-java-8.0.28/mysql-connector-java-8.0.28.jar /opt/solr/contrib/dataimporthandler-extras/lib/.
+
+# Copy solr.in.sh into place
+# Custom setting: SOLR_JETTY_HOST="0.0.0.0", so admin UI works
+sudo cp /vagrant/solr.in.sh /opt/solr/bin/.
 
 # Change users/groups/permissions of Solr home directory files
 cd /opt/solr
