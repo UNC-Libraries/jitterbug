@@ -1,6 +1,7 @@
 <dataConfig>
+    <!-- IMPORTANT: dataSource variables need to be prefixed with dataimporter.request or they won't work -->
     <dataSource driver="com.mysql.jdbc.Driver" type="JdbcDataSource"
-        url="${importDataSourceUrl}" user="${importDataSourceUser}" password="${importDataSourcePassword}" />
+        url="${dataimporter.request.importDataSourceUrl}" user="${dataimporter.request.importDataSourceUser}" password="${dataimporter.request.importDataSourcePassword}" />
     <document>
         <!-- this entity is the 'root' entity. -->
         <entity name="audio_visual_item" query="

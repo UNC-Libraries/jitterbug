@@ -468,7 +468,10 @@
 
   <requestHandler name="/dataimport" class="org.apache.solr.handler.dataimport.DataImportHandler">
     <lst name="defaults">
-      <str name="config">solr-data-config.xml</str>
+        <str name="config">solr-data-config.xml</str>
+        <str name="importDataSourceUrl">${importDataSourceUrl}</str>
+        <str name="importDataSourceUser">${importDataSourceUser}</str>
+        <str name="importDataSourcePassword">${importDataSourcePassword}</str>
     </lst>
   </requestHandler>
 
