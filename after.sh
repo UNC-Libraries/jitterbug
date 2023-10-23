@@ -39,7 +39,7 @@ sudo unzip -n mysql-connector-java-8.0.28.zip
 
 # Copy the MySQL connector file to the right place
 cd /
-sudo cp /vagrant/mysql-connector-java-8.0.28/mysql-connector-java-8.0.28.jar /opt/solr/contrib/dataimporthandler-extras/lib/.
+sudo cp /vagrant/mysql-connector-java-8.0.28/mysql-connector-java-8.0.28.jar /opt/solr/modules/dataimporthandler/lib/.
 
 # Copy solr.in.sh into place
 # Custom setting: SOLR_JETTY_HOST="0.0.0.0", so admin UI works
