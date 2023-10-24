@@ -44,9 +44,9 @@ jobs:
           name: Install Solr
           command: |
             cd ~
-            sudo wget --no-verbose https://archive.apache.org/dist/solr/solr/9.3.0/solr-9.3.0.tgz
-            sudo tar xzf solr-9.3.0.tgz solr-9.3.0/bin/install_solr_service.sh --strip-components=2
-            sudo ./install_solr_service.sh solr-9.3.0.tgz -n
+            sudo wget --no-verbose https://archive.apache.org/dist/solr/solr/9.4.0/solr-9.4.0.tgz
+            sudo tar xzf solr-9.4.0.tgz solr-9.4.0/bin/install_solr_service.sh --strip-components=2
+            sudo ./install_solr_service.sh solr-9.4.0.tgz -n
 
       - run:
           name: Setup DataImportHandler
@@ -54,7 +54,7 @@ jobs:
             sudo mkdir /opt/solr/modules/dataimporthandler
             sudo mkdir /opt/solr/modules/dataimporthandler/lib
             cd /opt/solr/modules/dataimporthandler/lib
-            sudo wget --no-verbose https://github.com/SearchScale/dataimporthandler/releases/download/v9.3.0/data-import-handler-9.3.0.jar
+            sudo wget --no-verbose https://github.com/SearchScale/dataimporthandler/releases/download/v9.4.0/data-import-handler-9.4.0.jar
 
       - run:
           name: Get and hook up connector file
