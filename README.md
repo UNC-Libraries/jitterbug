@@ -78,17 +78,12 @@ php artisan db:seed --class=UsersTableSeeder
     solrconfig/jitterbug-items/conf
     solrconfig/jitterbug-transfers/conf
 ```
-3. Use the Solr web app to import data from MySQL to index each Jitterbug core. 
-	1. Point your favorite web browser to http://homestead.test:8983/solr
-	2. Use the Solr "Core Selector" menu to select the jitterbug-items core.
-	3. Click the Dataimport button under the Core Selector menu.
-	4. Underneath the Execute button, check the Auto-Refresh Status checkbox.
-	5. Click Execute.
-	6. When jitterbug-items is finished indexing, repeat these steps for each core.
-- If the browser cannot connect, open virtualbox and click on your VM. 
-  Then click the settings icon and click on Network, and expand the Advanced dropdown.
-  Click on port forwarding and add 8983 to the list by clicking on the green plus in the top right.
-  Accept and reload the webpage and it should load.
+3. Login to the VM import data from MySQL to index each Jitterbug core.
+   1. Run the following command to index data into solr, switching out `<core-name>` with the name of the core you're
+      indexing. `curl http://localhost:8983/solr/<core-name>/dataimport?command=full-import`
+   2. To check the status of an import, run the following, again switching out `<core-name>` with the name of the core you're checking: `curl http://localhost:8983/solr/<core-name>/dataimport?command=status`
+   3. It is also possible to run any of the commands found here: https://solr.apache.org/guide/8_11/uploading-structured-data-store-data-with-the-data-import-handler.html#dataimporthandler-commands
+
 ---
 ## Revisionable
 A key feature of Jitterbug is how it maintains a detailed paper trail of all changes to the 
