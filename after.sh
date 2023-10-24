@@ -18,19 +18,19 @@ sudo update-alternatives --set php /usr/bin/php8.1
 
 # Download Solr
 cd ~
-# get the 9.3.0 release via solr archive
-sudo wget --no-verbose https://archive.apache.org/dist/solr/solr/9.3.0/solr-9.3.0.tgz
+# get the 9.4.0 release via solr archive
+sudo wget --no-verbose https://archive.apache.org/dist/solr/solr/9.4.0/solr-9.4.0.tgz
 # extract the service installation file
-sudo tar xzf solr-9.3.0.tgz solr-9.3.0/bin/install_solr_service.sh --strip-components=2
+sudo tar xzf solr-9.4.0.tgz solr-9.4.0/bin/install_solr_service.sh --strip-components=2
 
 # install Solr as a service
-sudo ./install_solr_service.sh solr-9.3.0.tgz
+sudo ./install_solr_service.sh solr-9.4.0.tgz
 
 # Add in dataimporthandler package
 sudo mkdir /opt/solr/modules/dataimporthandler
 sudo mkdir /opt/solr/modules/dataimporthandler/lib
 cd /opt/solr/modules/dataimporthandler/lib
-sudo wget --no-verbose https://github.com/SearchScale/dataimporthandler/releases/download/v9.3.0/data-import-handler-9.3.0.jar
+sudo wget --no-verbose https://github.com/SearchScale/dataimporthandler/releases/download/v9.4.0/data-import-handler-9.4.0.jar
 
 # Get the MySQL connector file and unzip it if needed
 cd /vagrant

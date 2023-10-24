@@ -35,7 +35,7 @@
        that you fully re-index after changing this setting as it can
        affect both how text is indexed and queried.
   -->
-  <luceneMatchVersion>9.7</luceneMatchVersion>
+  <luceneMatchVersion>9.8</luceneMatchVersion>
   
   <!-- Load optional libraries for data import handler -->
     <lib dir="${solr.install.dir:../../../..}/modules/extraction/lib" regex=".*\.jar" />
