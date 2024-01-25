@@ -44,9 +44,17 @@ jobs:
           name: Install Solr
           command: |
             cd ~
-            sudo wget --no-verbose https://archive.apache.org/dist/lucene/solr/8.11.1/solr-8.11.1.tgz
-            sudo tar xzf solr-8.11.1.tgz solr-8.11.1/bin/install_solr_service.sh --strip-components=2
-            sudo ./install_solr_service.sh solr-8.11.1.tgz -n
+            sudo wget --no-verbose https://archive.apache.org/dist/solr/solr/9.4.0/solr-9.4.0.tgz
+            sudo tar xzf solr-9.4.0.tgz solr-9.4.0/bin/install_solr_service.sh --strip-components=2
+            sudo ./install_solr_service.sh solr-9.4.0.tgz -n
+
+      - run:
+          name: Setup DataImportHandler
+          command: |
+            sudo mkdir /opt/solr/modules/dataimporthandler
+            sudo mkdir /opt/solr/modules/dataimporthandler/lib
+            cd /opt/solr/modules/dataimporthandler/lib
+            sudo wget --no-verbose https://github.com/SearchScale/dataimporthandler/releases/download/v9.4.0/data-import-handler-9.4.0.jar
 
       - run:
           name: Get and hook up connector file
@@ -55,7 +63,7 @@ jobs:
             sudo wget --no-verbose -nc http://www.mirrorservice.org/sites/ftp.mysql.com/Downloads/Connector-J/mysql-connector-java-8.0.28.zip
             sudo unzip -n mysql-connector-java-8.0.28.zip
             cd /
-            sudo cp ~/jitterbug/mysql-connector-java-8.0.28/mysql-connector-java-8.0.28.jar /opt/solr/contrib/dataimporthandler-extras/lib/.
+            sudo cp ~/jitterbug/mysql-connector-java-8.0.28/mysql-connector-java-8.0.28.jar /opt/solr/modules/dataimporthandler/lib/.
 
       - run:
           name: Change solr home directory

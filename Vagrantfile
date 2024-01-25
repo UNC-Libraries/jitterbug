@@ -55,4 +55,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         config.hostmanager.manage_host = true
         config.hostmanager.aliases = settings['sites'].map { |site| site['map'] }
     end
+
+    # Solr
+    config.vm.network :forwarded_port, guest: 8983, host: 8983
+
 end
