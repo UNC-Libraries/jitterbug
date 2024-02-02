@@ -84,6 +84,8 @@ php artisan db:seed --class=UsersTableSeeder
    2. To check the status of an import, run the following, again switching out `<core-name>` with the name of the core you're checking: `curl http://localhost:8983/solr/<core-name>/dataimport?command=status`
    3. It is also possible to run any of the commands found here: https://solr.apache.org/guide/8_11/uploading-structured-data-store-data-with-the-data-import-handler.html#dataimporthandler-commands
 
+See https://gitlab.lib.unc.edu/cappdev/jitterbug-app on how to index production servers
+
 ---
 ## Revisionable
 A key feature of Jitterbug is how it maintains a detailed paper trail of all changes to the 
