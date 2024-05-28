@@ -15,21 +15,21 @@
         }
     ],
     "require": {
-        "laravel/framework": "^9.27",
-        "solarium/solarium": "^6.2",
+        "laravel/framework": "^10.48",
+        "solarium/solarium": "^6.3",
         "symfony/event-dispatcher": "^4.3 || ^5.0 || ^6.0",
         "venturecraft/revisionable": "dev-main",
-        "diglactic/laravel-breadcrumbs": "^7.0",
+        "diglactic/laravel-breadcrumbs": "^9.0",
         "ramsey/uuid": "^4.0",
         "adldap2/adldap2-laravel": "^6.0",
-        "jimmiw/php-time-ago": "^3.1.0",
-        "laravel/tinker": "^2.7",
-        "doctrine/dbal": "^2.5",
+        "jimmiw/php-time-ago": "^3.2",
+        "laravel/tinker": "^v2.9",
+        "doctrine/dbal": "^3.2",
         "laravel/helpers": "^1.1",
-        "laravel/ui": "^3.0",
+        "laravel/ui": "^v4.5",
         "fakerphp/faker": "^1.13",
-        "php": "^8.0",
-        "guzzlehttp/guzzle": "^7.2",
+        "php": "^8.1",
+        "guzzlehttp/guzzle": "^7.8",
         "spatie/laravel-html": "^3.2"
     },
     "require-dev": {
@@ -39,9 +39,9 @@
         "symfony/dom-crawler": "^6.0",
         "laravel/homestead": "^13.2",
         "filp/whoops": "~2.0",
-        "laravel/dusk": "^6.15",
-        "nunomaduro/collision": "^6.3",
-        "spatie/laravel-ignition": "^1.4"
+        "laravel/dusk": "^v7.12",
+        "nunomaduro/collision": "^v7.10",
+        "spatie/laravel-ignition": "^2.7"
     },
     "autoload": {
         "psr-4": {
