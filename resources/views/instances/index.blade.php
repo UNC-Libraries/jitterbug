@@ -26,7 +26,7 @@
 
       @include('shared._data-export-modal', ['route' => 'instances.batch.export.build', 'title' => 'Export Preservation Instances'])
 
-      {!! Form::open(array('route' => array('instances.batch.destroy'), 'method' => 'delete', 'id' => 'batch-delete-form', 'style' => 'display: inline;')) !!}
+      {{ html()->form('DELETE', route('instances.batch.destroy', ))->id('batch-delete-form')->style('display: inline;')->open() }}
       <div id="confirm-batch-delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirmDelete" aria-hidden="true">
         <div class="modal-dialog modal-sm">
           <div class="modal-content">
@@ -42,8 +42,8 @@
               You are about to delete multiple preservation instances at once. You may choose to delete only the selected preservation instances or delete the selected preservation instances and all associated transfers and cuts. This cannot be undone.
             </div>
             <div class="modal-footer">
-              {!! Form::hidden('ids') !!}
-              {!! Form::hidden('deleteCommand') !!}
+              {{ html()->hidden('ids') }}
+              {{ html()->hidden('deleteCommand') }}
               <button name="deleteCommand" value="all" type="submit" class="btn btn-sm btn-danger" style="outline: none;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Delete All</button>
               <button name="deleteCommand" value="instance" type="submit" class="btn btn-sm btn-warning" style="outline: none;"><i class="fa fa-trash" aria-hidden="true"></i> Delete Preservation Instances Only</button>
             </div>
@@ -51,7 +51,7 @@
           </div>
         </div>
       </div>
-      {!! Form::close() !!}
+      {{ html()->form()->close() }}
 
       <div class="search-container">
         <div class="input-group">

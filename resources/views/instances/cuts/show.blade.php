@@ -123,7 +123,7 @@
       <a class="btn btn-sm btn-secondary" role="button" href="{{ route('cuts.edit', $cut->id) }}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
       <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target=".confirm-delete-modal" style="outline: none; float: right;"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></button>
 
-      {!! Form::open(array('route' => array('cuts.destroy', $cut->id), 'method' => 'delete', 'style' => 'display: inline;')) !!}
+      {{ html()->form('DELETE', route('cuts.destroy', [$cut->id]))->style('display: inline;')->open() }}
       <div class="modal fade confirm-delete-modal" tabindex="-1" role="dialog" aria-labelledby="confirmDelete" aria-hidden="true">
         <div class="modal-dialog modal-sm">
           <div class="modal-content">
@@ -145,7 +145,7 @@
           </div>
         </div>
       </div>
-      {!! Form::close() !!}
+      {{ html()->form()->close() }}
 
     </div>
   </div>

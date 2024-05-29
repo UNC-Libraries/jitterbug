@@ -7,7 +7,7 @@
   @else
     <h4 id='greeting'></h4>
   @endif
-  {!! Form::open(array('url' => '/login')) !!}
+  {{ html()->form('POST', url('/login'))->open() }}
     <div style="margin-top: 2rem">
       @if ($errors->has('failedLogin'))
       <div class="failed-login">
@@ -18,7 +18,7 @@
         <div class="input-group-addon">
           <i class="fa fa-fw fa-user" aria-hidden="true"></i>
         </div>
-        {!! Form::text('username', null, array('class'=>'form-control', 'placeholder'=>'Onyen')) !!}
+        {{ html()->text('username')->class('form-control')->placeholder('Onyen') }}
       </div>
     </div>
     <div style="margin-top: .75rem">
@@ -26,12 +26,12 @@
         <div class="input-group-addon">
           <i class="fa fa-fw fa-lock" aria-hidden="true"></i>
         </div>
-        {!! Form::password('password', array('class'=>'form-control', 'placeholder'=>'Password')) !!}
+        {{ html()->password('password')->class('form-control')->attribute('placeholder', 'Password') }}
       </div>
       <div style="margin-top: 1.5rem; margin-bottom: 1.5rem">
         <button type="submit" class="btn btn-primary btn-block" style="border: none">Sign In</button>
       </div>
     </div>
-  {!! Form::close() !!}
+  {{ html()->form()->close() }}
 </div>
 @endsection

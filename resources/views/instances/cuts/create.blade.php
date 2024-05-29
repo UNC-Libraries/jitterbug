@@ -13,8 +13,8 @@
     </div>
   </div>
 
-  {!! Form::model($cut, array('route' => array('cuts.store', $instance->id), 'method' => 'post')) !!}
-  {!! Form::hidden('transferId') !!}
+  {{ html()->modelForm($cut, 'POST', route('cuts.store', [$instance->id]))->open() }}
+  {{ html()->hidden('transferId') }}
 
   <div class="row first detail-container">
     <div class="row">
@@ -39,7 +39,7 @@
     </div>
   </div>
 
-  {!! Form::close() !!}
+  {{ html()->closeModelForm() }}
 
 
 </div>

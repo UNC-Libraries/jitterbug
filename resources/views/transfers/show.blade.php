@@ -208,7 +208,7 @@
       @endif
       <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target=".confirm-delete-modal" style="outline: none; float: right;"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></button>
 
-      {!! Form::open(array('route' => array('transfers.destroy', $transfer->id), 'method' => 'delete', 'style' => 'display: inline;')) !!}
+      {{ html()->form('DELETE', route('transfers.destroy', [$transfer->id]))->style('display: inline;')->open() }}
       <div class="modal fade confirm-delete-modal" tabindex="-1" role="dialog" aria-labelledby="confirmDelete" aria-hidden="true">
         <div class="modal-dialog modal-sm">
           <div class="modal-content">
@@ -229,7 +229,7 @@
           </div>
         </div>
       </div>
-      {!! Form::close() !!}
+      {{ html()->form()->close() }}
 
     </div>
   </div>

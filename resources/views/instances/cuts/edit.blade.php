@@ -12,7 +12,7 @@
     </div>
   </div>
 
-  {!! Form::model($cut, array('route' => array('cuts.update', $cut->id), 'method' => 'put')) !!}
+  {{ html()->modelForm($cut, 'PUT', route('cuts.update', [$cut->id]))->open() }}
 
   <div class="row first detail-container">
     {{-- Left Column --}}
@@ -55,7 +55,7 @@
     </div>
   </div>
 
-  {!! Form::close() !!}
+  {{ html()->closeModelForm() }}
 
   @include('instances.cuts._related')
 

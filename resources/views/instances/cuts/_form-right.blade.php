@@ -2,10 +2,10 @@
       <div class="row">
         <div class="form-group @if ($errors->has('transfer_id')) has-danger @endif">
           <div class="col-xs-4 detail-label">
-            {!! Form::label('transfer_id', 'Transfer ID', array('class' => 'form-control-label')) !!}
+            {{ html()->label('Transfer ID', 'transfer_id')->class('form-control-label') }}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('transfer_id', null, array('id' => 'transfer-id', 'class' => 'form-control form-control-sm', 'readonly' => 'readonly')) !!}
+            {{ html()->text('transfer_id')->id('transfer-id')->class('form-control form-control-sm')->isReadonly() }}
             @if ($errors->has('transfer_id'))
               <div class="form-control-label"><small>{!! $errors->first('transfer_id') !!}</small></div>
             @endif
@@ -15,10 +15,10 @@
       <div class="row">
         <div class="form-group @if ($errors->has('title')) has-danger @endif">
           <div class="col-xs-4 detail-label">
-            {!! Form::label('title', 'Title', array('class' => 'form-control-label')) !!}
+            {{ html()->label('Title', 'title')->class('form-control-label') }}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('title', null, array('class' => 'form-control form-control-sm')) !!}
+            {{ html()->text('title')->class('form-control form-control-sm') }}
             @if ($errors->has('title'))
               <div class="form-control-label"><small>{!! $errors->first('title') !!}</small></div>
             @endif
@@ -28,10 +28,10 @@
       <div class="row">
         <div class="form-group @if ($errors->has('performer_composer')) has-danger @endif">
           <div class="col-xs-4 detail-label">
-            {!! Form::label('performer_composer', 'Performer Composer', array('class' => 'form-control-label')) !!}
+            {{ html()->label('Performer Composer', 'performer_composer')->class('form-control-label') }}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('performer_composer', null, array('class' => 'form-control form-control-sm')) !!}
+            {{ html()->text('performer_composer')->class('form-control form-control-sm') }}
             @if ($errors->has('performer_composer'))
               <div class="form-control-label"><small>{!! $errors->first('performer_composer') !!}</small></div>
             @endif
@@ -41,10 +41,10 @@
       <div class="row">
         <div class="form-group @if ($errors->has('pm_start_time')) has-danger @endif">
           <div class="col-xs-4 detail-label">
-            {!! Form::label('pm_start_time', 'PM Start Time', array('class' => 'form-control-label')) !!}
+            {{ html()->label('PM Start Time', 'pm_start_time')->class('form-control-label') }}
           </div>
           <div class="col-xs-7 detail-value">
-            {!! Form::text('pm_start_time', null, array('class' => 'form-control form-control-sm')) !!}
+            {{ html()->text('pm_start_time')->class('form-control form-control-sm') }}
             @if ($errors->has('pm_start_time'))
               <div class="form-control-label"><small>{!! $errors->first('pm_start_time') !!}</small></div>
             @endif

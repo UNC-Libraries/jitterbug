@@ -16,7 +16,7 @@
       </div>
       <div class="row">
         <div id="global-nav" class="col-md-12">
-          <div id="logo">{!! Html::image('img/jitterbug-logo.svg', 'Jitterbug logo', array('width' => 56, 'height' => 54)) !!}</div>
+          <div id="logo">{{ html()->img(asset('img/jitterbug-logo.svg'), 'Jitterbug logo')->attribute('width', 56)->attribute('height', 54) }}</div>
           <nav>
             <ul>
               <li>

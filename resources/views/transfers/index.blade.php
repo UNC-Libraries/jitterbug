@@ -28,7 +28,7 @@
 
       @include('shared._data-export-modal', ['route' => 'transfers.batch.export.build', 'title' => 'Export Transfers'])
 
-      {!! Form::open(array('route' => array('transfers.batch.destroy'), 'method' => 'delete', 'id' => 'batch-delete-form', 'style' => 'display: inline;')) !!}
+      {{ html()->form('DELETE', route('transfers.batch.destroy', ))->id('batch-delete-form')->style('display: inline;')->open() }}
       <div id="confirm-batch-delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirmDelete" aria-hidden="true">
         <div class="modal-dialog modal-sm">
           <div class="modal-content">
@@ -44,15 +44,15 @@
               You are about to delete multiple transfers at once. This will also delete any associated cuts. This cannot be undone.
             </div>
             <div class="modal-footer">
-              {!! Form::hidden('ids') !!}
-              {!! Form::hidden('deleteCommand') !!}
+              {{ html()->hidden('ids') }}
+              {{ html()->hidden('deleteCommand') }}
               <button name="deleteCommand" value="all" type="submit" class="btn btn-sm btn-danger" style="outline: none;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Delete Transfers</button>
             </div>
 
           </div>
         </div>
       </div>
-      {!! Form::close() !!}
+      {{ html()->form()->close() }}
 
       @include('shared._data-import-modal', ['section' => 'transfers', 'type' => 'audio'])
       @include('shared._data-import-modal', ['section' => 'transfers', 'type' => 'video'])

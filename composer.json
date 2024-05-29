@@ -16,7 +16,6 @@
     ],
     "require": {
         "laravel/framework": "^9.27",
-        "laravelcollective/html": "^6.0",
         "solarium/solarium": "^6.2",
         "symfony/event-dispatcher": "^4.3 || ^5.0 || ^6.0",
         "venturecraft/revisionable": "dev-main",
@@ -30,7 +29,8 @@
         "laravel/ui": "^3.0",
         "fakerphp/faker": "^1.13",
         "php": "^8.0",
-        "guzzlehttp/guzzle": "^7.2"
+        "guzzlehttp/guzzle": "^7.2",
+        "spatie/laravel-html": "^3.2"
     },
     "require-dev": {
         "mockery/mockery": "^1.4.4",

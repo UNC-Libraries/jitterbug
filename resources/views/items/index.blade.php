@@ -28,7 +28,7 @@
 
       @include('shared._data-export-modal', ['route' => 'items.batch.export.build', 'title' => 'Export Audio Visual Items'])
 
-      {!! Form::open(array('route' => array('items.batch.destroy'), 'method' => 'delete', 'id' => 'batch-delete-form', 'style' => 'display: inline;')) !!}
+      {{ html()->form('DELETE', route('items.batch.destroy', ))->id('batch-delete-form')->style('display: inline;')->open() }}
       <div id="confirm-batch-delete-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="confirmDelete" aria-hidden="true">
         <div class="modal-dialog modal-sm">
           <div class="modal-content">
@@ -44,8 +44,8 @@
               You are about to delete multiple items at once. You may choose to delete only the selected items or delete the selected items and all associated preservation instances and transfers. This cannot be undone.
             </div>
             <div class="modal-footer">
-              {!! Form::hidden('ids') !!}
-              {!! Form::hidden('deleteCommand') !!}
+              {{ html()->hidden('ids') }}
+              {{ html()->hidden('deleteCommand') }}
               <button name="deleteCommand" value="all" type="submit" class="btn btn-sm btn-danger" style="outline: none;"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Delete All</button>
               <button name="deleteCommand" value="item" type="submit" class="btn btn-sm btn-warning" style="outline: none;"><i class="fa fa-trash" aria-hidden="true"></i> Delete Items Only</button>
             </div>
@@ -53,7 +53,7 @@
           </div>
         </div>
       </div>
-      {!! Form::close() !!}
+      {{ html()->form()->close() }}
 
       @include('shared._data-import-modal', ['section' => 'items', 'type' => 'items'])
 
