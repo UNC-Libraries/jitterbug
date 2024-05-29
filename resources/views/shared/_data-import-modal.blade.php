@@ -3,7 +3,7 @@
           <div id="{{$type}}-import-dialog-content" class="modal-content">
 
             <div id="{{$type}}-import-step-1">
-              {!! Form::open(array('route' => "$section.batch.$type.import.upload", 'files' => true, 'id' => "$type-upload-form")) !!}
+              {{ html()->form('POST', route("{$section}.batch.{$type}.import.upload"))->acceptsFiles()->id("{$type}-upload-form")->open() }}
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -25,11 +25,11 @@
                 <button name="upload" type="submit" class="btn btn-sm btn-secondary" style="outline: none;"><i class="fa fa-upload" aria-hidden="true"></i> Upload and Continue</button>
                 <i id="{{$type}}-upload-spinner" class="fa fa-spinner fa-pulse import-spinner" style="display: none;"></i>
               </div>
-              {!! Form::close() !!}
+              {{ html()->form()->close() }}
             </div>
 
             <div id="{{$type}}-import-step-2" style="display: none;">
-              {!! Form::open(array('route' => "$section.batch.$type.import.execute", 'id' => "$type-import-form")) !!}
+              {{ html()->form('POST', route("{$section}.batch.{$type}.import.execute"))->id("{$type}-import-form")->open() }}
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -47,7 +47,7 @@
                   <button type="submit" class="btn btn-sm btn-secondary reset" style="outline: none;"> Start Over</button>
                 </div>
               </div>
-              {!! Form::close() !!}
+              {{ html()->form()->close() }}
             </div>
 
             <div id="{{$type}}-import-step-3" style="display: none;">

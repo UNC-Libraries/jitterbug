@@ -34,8 +34,7 @@
         <div class="dashboard-module">
           <h6>Attach new prefixes</h6>
           <form class="form-inline" id="prefix-attach-form" data-format-id={{$format->id}}>
-            {!! Form::select('prefixes', $possiblePrefixes, null, array('class' => 'chosen-select',
-              'multiple' => 'multiple', 'data-placeholder' => 'Choose one or more of the following:')) !!}
+            {{ html()->multiselect('prefixes', $possiblePrefixes)->class('chosen-select')->data('placeholder', 'Choose one or more of the following:') }}
             <button id="prefix-attach" class="btn btn-sm btn-secondary popover-submit" type="submit" style="margin: 0.5em 0"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
           </form>
         </div>

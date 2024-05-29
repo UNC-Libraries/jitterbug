@@ -13,44 +13,44 @@
     </div>
   </div>
 
-  {!! Form::model($item, array('route' => array('items.store'), 'method' => 'post')) !!}
+  {{ html()->modelForm($item, 'POST', route('items.store', ))->open() }}
 
   <div class="row first detail-container">
     <div class="row">
       <div class="col-xs-12 preform">
         <span id="item-type-controls">
           <span style="margin-right: .75rem">
-            {!! Form::label('subclass_type', 'Item Type: ', array('class' => 'form-control-label')) !!}
+            {{ html()->label('Item Type: ', 'subclass_type')->class('form-control-label') }}
           </span>
           <label class="radio-inline">
-            {!! Form::radio('subclass_type', 'AudioItem') !!} Audio
+            {{ html()->radio('subclass_type', false, 'AudioItem') }} Audio
           </label>
           <label class="radio-inline">
-            {!! Form::radio('subclass_type', 'FilmItem') !!} Film
+            {{ html()->radio('subclass_type', false, 'FilmItem') }} Film
           </label>
           <label class="radio-inline">
-            {!! Form::radio('subclass_type', 'VideoItem') !!} Video
+            {{ html()->radio('subclass_type', false, 'VideoItem') }} Video
           </label>
         </span>
         <span class="divider"></span>
         <span style="margin-right: .75rem">
-          {!! Form::label('batch', 'Create Batch: ', array('class' => 'form-control-label')) !!}
+          {{ html()->label('Create Batch: ', 'batch')->class('form-control-label') }}
         </span>
         <label style="margin-right: 1.25rem">
-          {!! Form::checkbox('batch', '1') !!}
+          {{ html()->checkbox('batch', false, '1') }}
         </label>
         <span @if ($errors->has('batch_size')) class='has-danger' @endif style="margin-right: .75rem">
-          {!! Form::label('batch_size', 'Batch Size: ', array('class' => 'form-control-label')) !!}
+          {{ html()->label('Batch Size: ', 'batch_size')->class('form-control-label') }}
         </span>
         <label @if ($errors->has('batch_size')) class='has-danger' @endif>
-          {!! Form::text('batch_size', null, array('class' => 'form-control form-control-sm', 'style' => 'display: inline; width: 50px; padding: 0.2rem 0.5rem;', 'maxlength' => '3')) !!}
+          {{ html()->text('batch_size')->class('form-control form-control-sm')->style('display: inline; width: 50px; padding: 0.2rem 0.5rem;')->maxlength('3') }}
         </label>
         <span class="divider"></span>
         <span style="margin-right: .75rem">
-          {!! Form::label('mark', 'Mark: ', array('class' => 'form-control-label')) !!}
+          {{ html()->label('Mark: ', 'mark')->class('form-control-label') }}
         </span>
         <label>
-          {!! Form::checkbox('mark', '1') !!}
+          {{ html()->checkbox('mark', false, '1') }}
         </label>
       </div>
     </div>
@@ -93,7 +93,7 @@
     </div>
   </div>
 
-  {!! Form::close() !!}
+  {{ html()->closeModelForm() }}
 
 </div>
 @stop

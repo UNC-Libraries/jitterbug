@@ -13,44 +13,44 @@
     </div>
   </div>
 
-  {!! Form::model($transfer, array('route' => array('transfers.store'), 'method' => 'post')) !!}
+  {{ html()->modelForm($transfer, 'POST', route('transfers.store', ))->open() }}
 
   <div class="row first detail-container">
     <div class="row">
       <div class="col-xs-12 preform">
         <span id="transfer-type-controls">
           <span style="margin-right: .75rem">
-            {!! Form::label('subclass_type', 'Transfer Type: ', array('class' => 'form-control-label')) !!}
+            {{ html()->label('Transfer Type: ', 'subclass_type')->class('form-control-label') }}
           </span>
           @if ($linked)
-            {!! Form::hidden('subclass_type') !!}
+            {{ html()->hidden('subclass_type') }}
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'AudioTransfer', null, array('disabled' => 'disabled')) !!} Audio
+              {{ html()->radio('subclass_type', null, 'AudioTransfer')->attribute('disabled', 'disabled') }} Audio
             </label>
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'FilmTransfer', null, array('disabled' => 'disabled')) !!} Film
+              {{ html()->radio('subclass_type', null, 'FilmTransfer')->attribute('disabled', 'disabled') }} Film
             </label>
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'VideoTransfer', null, array('disabled' => 'disabled')) !!} Video
+              {{ html()->radio('subclass_type', null, 'VideoTransfer')->attribute('disabled', 'disabled') }} Video
             </label>
           @else
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'AudioTransfer') !!} Audio
+              {{ html()->radio('subclass_type', false, 'AudioTransfer') }} Audio
             </label>
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'FilmTransfer') !!} Film
+              {{ html()->radio('subclass_type', false, 'FilmTransfer') }} Film
             </label>
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'VideoTransfer') !!} Video
+              {{ html()->radio('subclass_type', false, 'VideoTransfer') }} Video
             </label>
           @endif
         </span>
         <span class="divider"></span>
         <span style="margin-right: .75rem">
-          {!! Form::label('mark', 'Mark: ', array('class' => 'form-control-label')) !!}
+          {{ html()->label('Mark: ', 'mark')->class('form-control-label') }}
         </span>
         <label>
-          {!! Form::checkbox('mark', '1') !!}
+          {{ html()->checkbox('mark', false, '1') }}
         </label>
       </div>
     </div>
@@ -97,7 +97,7 @@
     </div>
   </div>
 
-  {!! Form::close() !!}
+  {{ html()->closeModelForm() }}
 
 
 </div>

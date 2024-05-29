@@ -13,57 +13,57 @@
     </div>
   </div>
 
-  {!! Form::model($instance, array('route' => array('instances.store'), 'method' => 'post')) !!}
+  {{ html()->modelForm($instance, 'POST', route('instances.store', ))->open() }}
 
   <div class="row first detail-container">
     <div class="row">
       <div class="col-xs-12 preform">
         <span id="instance-type-controls">
           <span style="margin-right: .75rem">
-            {!! Form::label('subclass_type', 'Instance Type: ', array('class' => 'form-control-label')) !!}
+            {{ html()->label('Instance Type: ', 'subclass_type')->class('form-control-label') }}
           </span>
           @if ($linked)
-            {!! Form::hidden('subclass_type') !!}
+            {{ html()->hidden('subclass_type') }}
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'AudioInstance', null, array('disabled' => 'disabled')) !!} Audio
+              {{ html()->radio('subclass_type', null, 'AudioInstance')->attribute('disabled', 'disabled') }} Audio
             </label>
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'FilmInstance', null, array('disabled' => 'disabled')) !!} Film
+              {{ html()->radio('subclass_type', null, 'FilmInstance')->attribute('disabled', 'disabled') }} Film
             </label>
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'VideoInstance', null, array('disabled' => 'disabled')) !!} Video
+              {{ html()->radio('subclass_type', null, 'VideoInstance')->attribute('disabled', 'disabled') }} Video
             </label>
           @else
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'AudioInstance') !!} Audio
+              {{ html()->radio('subclass_type', false, 'AudioInstance') }} Audio
             </label>
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'FilmInstance') !!} Film
+              {{ html()->radio('subclass_type', false, 'FilmInstance') }} Film
             </label>
             <label class="radio-inline">
-              {!! Form::radio('subclass_type', 'VideoInstance') !!} Video
+              {{ html()->radio('subclass_type', false, 'VideoInstance') }} Video
             </label>
           @endif
         </span>
         <span class="divider"></span>
         <span style="margin-right: .75rem">
-          {!! Form::label('batch-checkbox', 'Create Batch: ', array('class' => 'form-control-label')) !!}
+          {{ html()->label('Create Batch: ', 'batch-checkbox')->class('form-control-label') }}
         </span>
         <label style="margin-right: 1.25rem">
-          {!! Form::checkbox('batch', '1', null, array('id' => 'batch-checkbox')) !!}
+          {{ html()->checkbox('batch', null, '1')->id('batch-checkbox') }}
         </label>
         <span @if ($errors->has('batch_size')) class='has-danger' @endif style="margin-right: .75rem">
-          {!! Form::label('batch_size', 'Batch Size: ', array('class' => 'form-control-label')) !!}
+          {{ html()->label('Batch Size: ', 'batch_size')->class('form-control-label') }}
         </span>
         <label @if ($errors->has('batch_size')) class='has-danger' @endif>
-          {!! Form::text('batch_size', null, array('class' => 'form-control form-control-sm', 'style' => 'display: inline; width: 50px; padding: 0.2rem 0.5rem;', 'maxlength' => '3')) !!}
+          {{ html()->text('batch_size')->class('form-control form-control-sm')->style('display: inline; width: 50px; padding: 0.2rem 0.5rem;')->maxlength('3') }}
         </label>
         <span class="divider"></span>
         <span style="margin-right: .75rem">
-          {!! Form::label('mark', 'Mark: ', array('class' => 'form-control-label')) !!}
+          {{ html()->label('Mark: ', 'mark')->class('form-control-label') }}
         </span>
         <label>
-          {!! Form::checkbox('mark', '1') !!}
+          {{ html()->checkbox('mark', false, '1') }}
         </label>
       </div>
     </div>
@@ -110,7 +110,7 @@
     </div>
   </div>
 
-  {!! Form::close() !!}
+  {{ html()->closeModelForm() }}
 
 
 </div>

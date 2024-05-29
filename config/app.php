@@ -154,8 +154,6 @@ return [
         'Illuminate\Translation\TranslationServiceProvider',
         'Illuminate\Validation\ValidationServiceProvider',
         'Illuminate\View\ViewServiceProvider',
-
-        'Collective\Html\HtmlServiceProvider',
         'Laravel\Tinker\TinkerServiceProvider',
 
         /*
@@ -200,8 +198,6 @@ return [
         'FilmInstance' => Jitterbug\Models\FilmInstance::class,
         'FilmItem' => Jitterbug\Models\FilmItem::class,
         'FilmTransfer' => Jitterbug\Models\FilmTransfer::class,
-        'Form' => 'Collective\Html\FormFacade',
-        'Html' => 'Collective\Html\HtmlFacade',
         'Input' => 'Illuminate\Support\Facades\Input',
         'Inspiring' => 'Illuminate\Foundation\Inspiring',
         'PreservationInstance' => Jitterbug\Models\PreservationInstance::class,

@@ -18,14 +18,14 @@
   </div>
 
   @if ($instance->batch())
-    {!! Form::model($instance, array('route' => array('instances.batch.update'), 'method' => 'put')) !!}
-    {!! Form::hidden('ids') !!}
-    {!! Form::hidden('subclass_type') !!}
+    {{ html()->modelForm($instance, 'PUT', route('instances.batch.update', ))->open() }}
+    {{ html()->hidden('ids') }}
+    {{ html()->hidden('subclass_type') }}
   @else
-    {!! Form::model($instance, array('route' => array('instances.update', $instance->id), 'method' => 'put')) !!}
-    {!! Form::hidden('id') !!}
-    {!! Form::hidden('subclass_type') !!}
-    {!! Form::hidden('subclass_id') !!}
+    {{ html()->modelForm($instance, 'PUT', route('instances.update', [$instance->id]))->open() }}
+    {{ html()->hidden('id') }}
+    {{ html()->hidden('subclass_type') }}
+    {{ html()->hidden('subclass_id') }}
   @endif
 
   <div class="row first detail-container">
@@ -85,7 +85,7 @@
     </div>
   </div>
 
-  {!! Form::close() !!}
+  {{ html()->closeModelForm() }}
 
   @if (!$instance->batch())
     @include('instances._related')

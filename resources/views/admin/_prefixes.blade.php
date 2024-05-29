@@ -36,7 +36,7 @@
 <div id="new-record-form" class="hidden">
   <form class="form-inline">
     <input type="text" name="label" class="form-control form-control-sm" maxlength="255" placeholder="Label" autocomplete="off" style="width: 250px;">
-    {!! Form::select('collection_type_id', $collectionTypes, null, array('class' => 'form-control form-control-sm')) !!}
+    {{ html()->select('collection_type_id', $collectionTypes)->class('form-control form-control-sm') }}
     Legacy?
     <input role="button" type="checkbox">
     <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
@@ -54,7 +54,7 @@
 
 <div id="edit-collection_type_id-form" class="hidden">
   <form class="form-inline">
-    {!! Form::select('collection_type_id', $collectionTypes, null, array('class' => 'form-control form-control-sm', 'data-field' => 'collection_type_id')) !!}
+    {{ html()->select('collection_type_id', $collectionTypes)->class('form-control form-control-sm')->data('field', 'collection_type_id') }}
     <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
     <button class="btn btn-sm btn-secondary cancel-edit"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
   </form>

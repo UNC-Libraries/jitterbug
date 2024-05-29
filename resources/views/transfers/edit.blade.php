@@ -18,14 +18,14 @@
   </div>
 
   @if ($transfer->batch())
-    {!! Form::model($transfer, array('route' => array('transfers.batch.update'), 'method' => 'put')) !!}
-    {!! Form::hidden('ids') !!}
-    {!! Form::hidden('subclass_type') !!}
+    {{ html()->modelForm($transfer, 'PUT', route('transfers.batch.update', ))->open() }}
+    {{ html()->hidden('ids') }}
+    {{ html()->hidden('subclass_type') }}
   @else
-    {!! Form::model($transfer, array('route' => array('transfers.update', $transfer->id), 'method' => 'put')) !!}
-    {!! Form::hidden('id') !!}
-    {!! Form::hidden('subclass_type') !!}
-    {!! Form::hidden('subclass_id') !!}
+    {{ html()->modelForm($transfer, 'PUT', route('transfers.update', [$transfer->id]))->open() }}
+    {{ html()->hidden('id') }}
+    {{ html()->hidden('subclass_type') }}
+    {{ html()->hidden('subclass_id') }}
   @endif
 
   <div class="row first detail-container">
@@ -85,7 +85,7 @@
     </div>
   </div>
 
-  {!! Form::close() !!}
+  {{ html()->closeModelForm() }}
 
   @if (!$transfer->batch())
     @include('transfers._related')
