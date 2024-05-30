@@ -67,12 +67,45 @@ return [
     'providers' => [
         'ldap' => [
             'driver' => 'ldap',
-            'model' => Jitterbug\Models\User::class,
+            'rules' => [],
+            'model' => LdapRecord\Models\ActiveDirectory\User::class,
+            'scopes' => [
+                Jitterbug\Scopes\AdldapLimitationScope::class
+            ],
+            'database' => [
+                'model' => Jitterbug\Models\User::class,
+                'sync_passwords' => true,
+                'sync_attributes' => [
+                    'username' => 'samaccountname',
+                    'first_name' => 'givenname',
+                    'last_name' => 'sn',
+                    'email' => 'mail',
+                ],
+                'sync_existing' => [
+                    'username' => 'samaccountname',
+                ],
+            ]
         ],
 
         'users' => [
             'driver' => env('APP_AUTH', 'ldap'),
-            'model' => Jitterbug\Models\User::class,
+            'model' => LdapRecord\Models\ActiveDirectory\User::class,
+            'scopes' => [
+                Jitterbug\Scopes\AdldapLimitationScope::class
+            ],
+            'database' => [
+                'model' => Jitterbug\Models\User::class,
+                'sync_passwords' => false,
+                'sync_attributes' => [
+                    'username' => 'samaccountname',
+                    'first_name' => 'givenname',
+                    'last_name' => 'sn',
+                    'email' => 'mail',
+                ],
+                'sync_existing' => [
+                    'username' => 'samaccountname',
+                ],
+            ]
         ],
 
         // 'users' => [

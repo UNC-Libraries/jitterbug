@@ -170,8 +170,6 @@ return [
      */
         // Comes from diglactic/laravel-breadcrumbs (^7.0)
         Diglactic\Breadcrumbs\ServiceProvider::class,
-        Adldap\Laravel\AdldapServiceProvider::class,
-        Adldap\Laravel\AdldapAuthServiceProvider::class,
         'Venturecraft\Revisionable\RevisionableServiceProvider',
 
     ],
@@ -188,7 +186,6 @@ return [
   */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'Adldap' => 'Adldap\Laravel\Facades\Adldap',
         'AudioInstance' => Jitterbug\Models\AudioInstance::class,
         'AudioItem' => Jitterbug\Models\AudioItem::class,
         'AudioTransfer' => Jitterbug\Models\AudioTransfer::class,
