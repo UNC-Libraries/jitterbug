@@ -89,23 +89,7 @@ return [
 
         'users' => [
             'driver' => env('APP_AUTH', 'ldap'),
-            'model' => LdapRecord\Models\ActiveDirectory\User::class,
-            'scopes' => [
-                Jitterbug\Scopes\AdldapLimitationScope::class
-            ],
-            'database' => [
-                'model' => Jitterbug\Models\User::class,
-                'sync_passwords' => false,
-                'sync_attributes' => [
-                    'username' => 'samaccountname',
-                    'first_name' => 'givenname',
-                    'last_name' => 'sn',
-                    'email' => 'mail',
-                ],
-                'sync_existing' => [
-                    'username' => 'samaccountname',
-                ],
-            ]
+            'model' => Jitterbug\Models\User::class,
         ],
 
         // 'users' => [

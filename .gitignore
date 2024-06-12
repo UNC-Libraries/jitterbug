@@ -11,3 +11,5 @@ README.html
 .vagrant/
 Homestead.yaml
 .phpunit.result.cache
+.phpunit.cache
+mysql-connector-java-*
