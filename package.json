@@ -1,9 +1,10 @@
 {
     "private": true,
     "scripts": {
-        "dev": "npm run development",
         "development": "node node_modules/cross-env/src/bin/cross-env.js NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "watch": "npm run development -- --watch"
+        "watch": "npm run dev -- --watch",
+        "dev": "vite",
+        "build": "vite build"
     },
     "devDependencies": {
         "bootstrap": "4.0.0-alpha.2",
