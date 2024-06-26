@@ -2,10 +2,10 @@
 
 namespace Jitterbug\Http\Controllers\Auth;
 
-use Adldap\Auth\BindException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Jitterbug\Http\Controllers\Controller;
+use LdapRecord\Auth\BindException;
 
 class LoginController extends Controller
 {
@@ -72,5 +72,17 @@ class LoginController extends Controller
     public function username()
     {
         return 'username';
+    }
+
+    protected function credentials(Request $request)
+    {
+        // 'samaccountname' is the attribute we are using to
+        // locate users in our LDAP directory with. The
+        // value of the key must be the input name of
+        // our HTML input, as shown above:
+        return [
+            'samaccountname' => $request->get('username'),
+            'password' => $request->get('password'),
+        ];
     }
 }

@@ -5,6 +5,7 @@ use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\ImportTransaction;
 use Jitterbug\Models\User;
 use Jitterbug\Presenters\TransactionDigest;
+use LdapRecord\Laravel\Testing\DirectoryEmulator;
 use Venturecraft\Revisionable\Revision;
 
 class TransactionDigestTest extends TestCase
@@ -17,9 +18,13 @@ class TransactionDigestTest extends TestCase
 
     private $revision;
 
+    /**
+     * @throws \LdapRecord\ContainerException
+     */
     protected function setUp(): void
     {
         parent::setUp();
+        DirectoryEmulator::setup('default');
         $this->transactionId = '12dh56kw345';
         // unable to use a factory for Revision as it's a model in a separate package
         $this->revision = new Revision;

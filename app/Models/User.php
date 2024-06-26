@@ -2,19 +2,20 @@
 
 namespace Jitterbug\Models;
 
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Support\Arr;
+use LdapRecord\Laravel\Auth\LdapAuthenticatable;
+use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
 
-class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
+class User extends Authenticatable implements LdapAuthenticatable, AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
-    use Authenticatable, Authorizable, CanResetPassword, HasFactory;
+    use Notifiable, Authorizable, AuthenticatesWithLdap, HasFactory;
 
     /**
      * The database table used by the model.
@@ -65,7 +66,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function fullName()
     {
-        $fullName = null;
         if ($this->legacy()) {
             $fullName = $this->legacy_initials;
         } else {
@@ -81,6 +81,16 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function identifiableName()
     {
         return $this->fullName();
+    }
+
+    public function getLdapDomainColumn(): string
+    {
+        return 'username';
+    }
+
+    public function getLdapGuidColumn(): string
+    {
+        return 'objectguid';
     }
 
     /**
