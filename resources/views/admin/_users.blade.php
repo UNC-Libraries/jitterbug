@@ -30,12 +30,12 @@
     </div>
 
     <script>
-      $(document).ready( function () {
+ /*     $(document).ready( function () {
         $('#user-table').DataTable({
           columnDefs: [
             // the last two columns are not orderable: admin & inactive checkboxes
             { orderable: false, targets: [-2, -1] }
           ]
         });
-      } );
+      } );*/
     </script>
