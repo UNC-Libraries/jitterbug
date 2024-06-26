@@ -162,7 +162,7 @@ jitterbug = {
       var route = makeAdmin ? '/admin/make-admin'
         : '/admin/remove-admin';
       var data = {};
-      var username = adminCheckboxes.data('username');
+      var username = $(this).data('username');
       data['username'] = username;
       $.post(route, data, function (data) {
         var message = makeAdmin
@@ -189,13 +189,14 @@ jitterbug = {
 
   toggleInactive: function() {
     var inactiveCheckboxes = $('.inactive input:checkbox');
-      var makeInactive = inactiveCheckboxes.is(':checked');
+    inactiveCheckboxes.each(function(d) {
+      var makeInactive = $(this).is(':checked');
       var route = makeInactive ? '/users/inactivate'
           : '/users/reactivate';
       var data = {};
       var row = $(this).closest('tr');
       var id = row.data('id');
-      var username = inactiveCheckboxes.data('username');
+      var username = $(this).data('username');
       var adminCheckbox = row.find('.admin input:checkbox');
       data['id'] = id;
       $.post(route, data, function(data) {
@@ -215,11 +216,12 @@ jitterbug = {
         $(window).scrollTop(0);
         jitterbug.displayAlert('success', message);
       });
+    });
   },
 
   toggleLegacy: function() {
     var legacyCheckboxes = $('.legacy input:checkbox');
-    legacyCheckboxes.click(function(event) {
+    legacyCheckboxes.each(function(d) {
       var makeLegacy = $(this).is(':checked');
       var route = makeLegacy ? '/prefixes/set-legacy-status'
           : '/prefixes/remove-legacy-status';
