@@ -39,7 +39,33 @@
         });
 
         table.on('click', '.admin', function(e) {
-          jitterbug.toggleAdmin();
+          var makeAdmin = $(this).is(':checked');
+          var route = makeAdmin ? '/admin/make-admin'
+                  : '/admin/remove-admin';
+          var data = {};
+          var username = $(this).data('username');
+          data['username'] = username;
+          $.post(route, data, function (data) {
+            var message = makeAdmin
+                    ? 'User ' + username + ' was successfully made admin.'
+                    : 'User ' + username + ' is no longer an admin.';
+            $(window).scrollTop(0);
+            jitterbug.displayAlert('success', message);
+          })
+                  .fail(function (jqXHR) {
+                    // Validation error
+                    if (jqXHR.status == 422) {
+                      var errors = JSON.parse(jqXHR.responseText);
+                      var errorMessage = errors['errors']['name'][0];
+                      // Get the first error, no matter which it is.
+
+                      // Unfortunately, we have to hide the popover here
+                      // because it doesn't stay pinned to the field it
+                      // relates to when the alert div is opened (a bug
+                      // in Bootstrap/Tether).
+                      jitterbug.displayAlert('danger', '<strong>Whoops.</strong> ' + errorMessage);
+                    }
+                  });
         });
 
         table.on('click', '.inactive', function(e) {
