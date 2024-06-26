@@ -162,7 +162,7 @@ jitterbug = {
       var route = makeAdmin ? '/admin/make-admin'
         : '/admin/remove-admin';
       var data = {};
-      var username = $(this).data('username');
+      var username = adminCheckboxes.data('username');
       data['username'] = username;
       $.post(route, data, function (data) {
         var message = makeAdmin
@@ -195,7 +195,7 @@ jitterbug = {
       var data = {};
       var row = $(this).closest('tr');
       var id = row.data('id');
-      var username = $(this).data('username');
+      var username = inactiveCheckboxes.data('username');
       var adminCheckbox = row.find('.admin input:checkbox');
       data['id'] = id;
       $.post(route, data, function(data) {
