@@ -157,8 +157,8 @@ jitterbug = {
   },
 
   toggleAdmin: function() {
-   // var adminCheckboxes = $('.admin input:checkbox');
-   // adminCheckboxes.click(function(event) {
+    var adminCheckboxes = $('.admin input:checkbox');
+    adminCheckboxes.click(function(event) {
       var makeAdmin = $(this).is(':checked');
       var route = makeAdmin ? '/admin/make-admin'
         : '/admin/remove-admin';
@@ -186,12 +186,12 @@ jitterbug = {
           jitterbug.displayAlert('danger', '<strong>Whoops.</strong> ' + errorMessage);
         }
       });
-    //});
+    });
   },
 
   toggleInactive: function() {
-   // var inactiveCheckboxes = $('.inactive input:checkbox');
-   // inactiveCheckboxes.click(function(event) {
+    var inactiveCheckboxes = $('.inactive input:checkbox');
+    inactiveCheckboxes.click(function(event) {
       var makeInactive = $(this).is(':checked');
       var route = makeInactive ? '/users/inactivate'
           : '/users/reactivate';
@@ -218,7 +218,7 @@ jitterbug = {
         $(window).scrollTop(0);
         jitterbug.displayAlert('success', message);
       });
-   // });
+    });
   },
 
   toggleLegacy: function() {
