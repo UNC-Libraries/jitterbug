@@ -163,6 +163,7 @@ jitterbug = {
         : '/admin/remove-admin';
     var data = {};
     var username = e.target.id
+    data['username'] = username;
     $.post(route, data, function (data) {
       var message = makeAdmin
           ? 'User ' + username + ' was successfully made admin.'
