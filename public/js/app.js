@@ -133,8 +133,8 @@ jitterbug = {
         // If this is the users table, bind click handlers to the 
         // admin checkboxes
         if (table == 'users') {
-          jitterbug.toggleAdmin();
-          jitterbug.toggleInactive();
+          //jitterbug.toggleAdmin();
+          //jitterbug.toggleInactive();
           // If this is the prefixes table, bind click handlers to
           // legacy checkboxes and set up the popovers
         } else if (table === 'prefixes') {
