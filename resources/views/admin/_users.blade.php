@@ -39,11 +39,11 @@
         });
 
         table.on('click', '.admin', function(e) {
-          jitterbug.toggleAdmin.bind(this);
+          jitterbug.toggleAdmin();
         });
 
         table.on('click', '.inactive', function(e) {
-          jitterbug.toggleInactive.bind(this);
+          jitterbug.toggleInactive();
         });
       });
     </script>
