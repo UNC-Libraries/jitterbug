@@ -156,50 +156,50 @@ jitterbug = {
     });
   },
 
-  toggleAdmin: function() {
+  toggleAdmin: function(e) {
     var adminCheckboxes = $('.admin input:checkbox');
       var makeAdmin = adminCheckboxes.is(':checked');
       var route = makeAdmin ? '/admin/make-admin'
-        : '/admin/remove-admin';
+          : '/admin/remove-admin';
       var data = {};
       var username = $(this).data('username');
       data['username'] = username;
       $.post(route, data, function (data) {
         var message = makeAdmin
-          ? 'User ' + username + ' was successfully made admin.'
-          : 'User ' + username + ' is no longer an admin.';
+            ? 'User ' + username + ' was successfully made admin.'
+            : 'User ' + username + ' is no longer an admin.';
         $(window).scrollTop(0);
         jitterbug.displayAlert('success', message);
       })
-      .fail(function (jqXHR) {
-        // Validation error
-        if (jqXHR.status == 422) {
-          var errors = JSON.parse(jqXHR.responseText);
-          var errorMessage = errors['errors']['name'][0];
-          // Get the first error, no matter which it is.
+          .fail(function (jqXHR) {
+            // Validation error
+            if (jqXHR.status == 422) {
+              var errors = JSON.parse(jqXHR.responseText);
+              var errorMessage = errors['errors']['name'][0];
+              // Get the first error, no matter which it is.
 
-          // Unfortunately, we have to hide the popover here
-          // because it doesn't stay pinned to the field it
-          // relates to when the alert div is opened (a bug
-          // in Bootstrap/Tether).
-          jitterbug.displayAlert('danger', '<strong>Whoops.</strong> ' + errorMessage);
-        }
-      });
+              // Unfortunately, we have to hide the popover here
+              // because it doesn't stay pinned to the field it
+              // relates to when the alert div is opened (a bug
+              // in Bootstrap/Tether).
+              jitterbug.displayAlert('danger', '<strong>Whoops.</strong> ' + errorMessage);
+            }
+          });
   },
 
-  toggleInactive: function() {
-    var inactiveCheckboxes = $('.inactive input:checkbox');
-    inactiveCheckboxes.each(function(d) {
-      var makeInactive = $(this).is(':checked');
+  toggleInactive: function(e) {
+    console.log(e)
+   // var inactiveCheckboxes = $('.inactive input:checkbox');
+      var makeInactive = $(`#${e.target.id}`).is(':checked');
       var route = makeInactive ? '/users/inactivate'
           : '/users/reactivate';
       var data = {};
       var row = $(this).closest('tr');
       var id = row.data('id');
-      var username = $(this).data('username');
+      var username = $(`#${e.target.id}`).data('username');
       var adminCheckbox = row.find('.admin input:checkbox');
       data['id'] = id;
-      $.post(route, data, function(data) {
+      $.post(route, data, function (data) {
         var numberDeleted = data['marksDeleted'];
         if (makeInactive) {
           // when inactivating the user, uncheck and disable admin checkbox
@@ -216,12 +216,11 @@ jitterbug = {
         $(window).scrollTop(0);
         jitterbug.displayAlert('success', message);
       });
-    });
   },
 
   toggleLegacy: function() {
     var legacyCheckboxes = $('.legacy input:checkbox');
-    legacyCheckboxes.each(function(d) {
+    legacyCheckboxes.click(function(event) {
       var makeLegacy = $(this).is(':checked');
       var route = makeLegacy ? '/prefixes/set-legacy-status'
           : '/prefixes/remove-legacy-status';

@@ -20,8 +20,8 @@
               <td>{{ $record->first_name }}</td>
               <td>{{ $record->last_name }}</td>
               <td>{{ $record->updated_at }}</td>
-              <td class="admin"><input role="button" data-username="{{$record->username}}" type="checkbox" @if ($record->admin === 1) checked="checked" @endif @if ($record->inactive === 1 || \Auth::user()->id === $record->id) disabled="disabled" @endif></td>
-              <td class="inactive"><input role="button" data-username="{{$record->username}}" type="checkbox" @if ($record->inactive === 1) checked="checked" @endif @if (\Auth::user()->id === $record->id) disabled="disabled" @endif></td>
+              <td class="admin"><input id="{{$record->username}}" role="button" data-username="{{$record->username}}" type="checkbox" @if ($record->admin === 1) checked="checked" @endif @if ($record->inactive === 1 || \Auth::user()->id === $record->id) disabled="disabled" @endif></td>
+              <td class="inactive"><input id="{{$record->username}}" role="button" data-username="{{$record->username}}" type="checkbox" @if ($record->inactive === 1) checked="checked" @endif @if (\Auth::user()->id === $record->id) disabled="disabled" @endif></td>
             </tr>
             @endforeach
           </tbody>
@@ -39,11 +39,11 @@
         });
 
         table.on('click', '.admin', function(e) {
-          jitterbug.toggleAdmin();
+          jitterbug.toggleAdmin(e);
         });
 
         table.on('click', '.inactive', function(e) {
-          jitterbug.toggleInactive();
+          jitterbug.toggleInactive(e);
         });
       });
     </script>
