@@ -158,7 +158,7 @@ jitterbug = {
 
   toggleAdmin: function() {
     var adminCheckboxes = $('.admin input:checkbox');
-    adminCheckboxes.click(function(event) {
+    adminCheckboxes.on('click',function(event) {
       var makeAdmin = $(this).is(':checked');
       var route = makeAdmin ? '/admin/make-admin'
         : '/admin/remove-admin';
@@ -191,7 +191,7 @@ jitterbug = {
 
   toggleInactive: function() {
     var inactiveCheckboxes = $('.inactive input:checkbox');
-    inactiveCheckboxes.click(function(event) {
+    inactiveCheckboxes.on('click',function(event) {
       var makeInactive = $(this).is(':checked');
       var route = makeInactive ? '/users/inactivate'
           : '/users/reactivate';

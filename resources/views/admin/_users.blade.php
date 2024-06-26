@@ -39,7 +39,6 @@
         });
 
         table.on('click', '.admin', function(e) {
-          console.log('bing')
           jitterbug.toggleAdmin();
         });
 
