@@ -44,6 +44,6 @@
 
         table.on('click', '.inactive', function(e) {
           jitterbug.toggleInactive();
-        })
+        });
       });
     </script>
