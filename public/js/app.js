@@ -194,9 +194,9 @@ jitterbug = {
       var route = makeInactive ? '/users/inactivate'
           : '/users/reactivate';
       var data = {};
-      var row = $(this).closest('tr');
+      var row = $(`#${e.target.id}`).closest('tr');
       var id = row.data('id');
-      var username = $(`#${e.target.id}`).data('username');
+      var username = $(`#${e.target.id}`);
       var adminCheckbox = row.find('.admin input:checkbox');
       data['id'] = id;
       $.post(route, data, function (data) {
