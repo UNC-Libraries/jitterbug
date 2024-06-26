@@ -157,65 +157,63 @@ jitterbug = {
   },
 
   toggleAdmin: function(e) {
-    var adminCheckboxes = $('.admin input:checkbox');
-      var makeAdmin = adminCheckboxes.is(':checked');
-      var route = makeAdmin ? '/admin/make-admin'
-          : '/admin/remove-admin';
-      var data = {};
-      var username = $(this).data('username');
-      data['username'] = username;
-      $.post(route, data, function (data) {
-        var message = makeAdmin
-            ? 'User ' + username + ' was successfully made admin.'
-            : 'User ' + username + ' is no longer an admin.';
-        $(window).scrollTop(0);
-        jitterbug.displayAlert('success', message);
-      })
-          .fail(function (jqXHR) {
-            // Validation error
-            if (jqXHR.status == 422) {
-              var errors = JSON.parse(jqXHR.responseText);
-              var errorMessage = errors['errors']['name'][0];
-              // Get the first error, no matter which it is.
+    let user = $(`#${e.target.id}`);
+    var makeAdmin = user.is(':checked');
+    var route = makeAdmin ? '/admin/make-admin'
+        : '/admin/remove-admin';
+    var data = {};
+    var username = e.target.id
+    $.post(route, data, function (data) {
+      var message = makeAdmin
+          ? 'User ' + username + ' was successfully made admin.'
+          : 'User ' + username + ' is no longer an admin.';
+      $(window).scrollTop(0);
+      jitterbug.displayAlert('success', message);
+    })
+        .fail(function (jqXHR) {
+          // Validation error
+          if (jqXHR.status == 422) {
+            var errors = JSON.parse(jqXHR.responseText);
+            var errorMessage = errors['errors']['name'][0];
+            // Get the first error, no matter which it is.
 
-              // Unfortunately, we have to hide the popover here
-              // because it doesn't stay pinned to the field it
-              // relates to when the alert div is opened (a bug
-              // in Bootstrap/Tether).
-              jitterbug.displayAlert('danger', '<strong>Whoops.</strong> ' + errorMessage);
-            }
-          });
+            // Unfortunately, we have to hide the popover here
+            // because it doesn't stay pinned to the field it
+            // relates to when the alert div is opened (a bug
+            // in Bootstrap/Tether).
+            jitterbug.displayAlert('danger', '<strong>Whoops.</strong> ' + errorMessage);
+          }
+        });
   },
 
   toggleInactive: function(e) {
-    console.log(e)
-   // var inactiveCheckboxes = $('.inactive input:checkbox');
-      var makeInactive = $(`#${e.target.id}`).is(':checked');
-      var route = makeInactive ? '/users/inactivate'
-          : '/users/reactivate';
-      var data = {};
-      var row = $(`#${e.target.id}`).closest('tr');
-      var id = row.data('id');
-      var username = $(`#${e.target.id}`);
-      var adminCheckbox = row.find('.admin input:checkbox');
-      data['id'] = id;
-      $.post(route, data, function (data) {
-        var numberDeleted = data['marksDeleted'];
-        if (makeInactive) {
-          // when inactivating the user, uncheck and disable admin checkbox
-          adminCheckbox.prop('checked', false);
-          adminCheckbox.attr('disabled', true);
-          row.addClass('inactive-row');
-          var message = `User ${username} was successfully inactivated. 
+    let user = $(`#${e.target.id}`);
+    var makeInactive = user.is(':checked');
+    var route = makeInactive ? '/users/inactivate'
+        : '/users/reactivate';
+    var data = {};
+    var row = user.closest('tr');
+    var id = row.data('id');
+    var username = e.target.id;
+    var adminCheckbox = row.find('.admin input:checkbox');
+    data['id'] = id;
+    $.post(route, data, function (data) {
+      var numberDeleted = data['marksDeleted'];
+      if (makeInactive) {
+        // when inactivating the user, uncheck and disable admin checkbox
+        adminCheckbox.prop('checked', false);
+        adminCheckbox.attr('disabled', true);
+        row.addClass('inactive-row');
+        var message = `User ${username} was successfully inactivated. 
               ${numberDeleted} of their marks were deleted.`;
-        } else {
-          adminCheckbox.attr('disabled', false);
-          row.removeClass('inactive-row');
-          var message = 'User ' + username + ' is now active.';
-        }
-        $(window).scrollTop(0);
-        jitterbug.displayAlert('success', message);
-      });
+      } else {
+        adminCheckbox.attr('disabled', false);
+        row.removeClass('inactive-row');
+        var message = 'User ' + username + ' is now active.';
+      }
+      $(window).scrollTop(0);
+      jitterbug.displayAlert('success', message);
+    });
   },
 
   toggleLegacy: function() {
