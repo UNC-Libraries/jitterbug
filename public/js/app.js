@@ -158,8 +158,7 @@ jitterbug = {
 
   toggleAdmin: function() {
     var adminCheckboxes = $('.admin input:checkbox');
-    adminCheckboxes.on('click',function(event) {
-      var makeAdmin = $(this).is(':checked');
+      var makeAdmin = adminCheckboxes.is(':checked');
       var route = makeAdmin ? '/admin/make-admin'
         : '/admin/remove-admin';
       var data = {};
@@ -186,13 +185,11 @@ jitterbug = {
           jitterbug.displayAlert('danger', '<strong>Whoops.</strong> ' + errorMessage);
         }
       });
-    });
   },
 
   toggleInactive: function() {
     var inactiveCheckboxes = $('.inactive input:checkbox');
-    inactiveCheckboxes.on('click',function(event) {
-      var makeInactive = $(this).is(':checked');
+      var makeInactive = inactiveCheckboxes.is(':checked');
       var route = makeInactive ? '/users/inactivate'
           : '/users/reactivate';
       var data = {};
@@ -218,7 +215,6 @@ jitterbug = {
         $(window).scrollTop(0);
         jitterbug.displayAlert('success', message);
       });
-    });
   },
 
   toggleLegacy: function() {
