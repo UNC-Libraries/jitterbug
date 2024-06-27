@@ -21,10 +21,10 @@
               <td>{{ $record->last_name }}</td>
               <td>{{ $record->updated_at }}</td>
               <td class="admin">
-                <input id="{{$record->username}}" type="checkbox" aria-label="Admin" @if ($record->admin === 1) checked="checked" @endif @if ($record->inactive === 1 || \Auth::user()->id === $record->id) disabled="disabled" @endif>
+                <input id="admin-{{$record->username}}" data-username="{{$record->username}}" type="checkbox" aria-label="Admin" @if ($record->admin === 1) checked="checked" @endif @if ($record->inactive === 1 || \Auth::user()->id === $record->id) disabled="disabled" @endif>
               </td>
               <td class="inactive">
-                <input id="{{$record->username}}" type="checkbox" aria-label="Inactive" @if ($record->inactive === 1) checked="checked" @endif @if (\Auth::user()->id === $record->id) disabled="disabled" @endif>
+                <input id="active-{{$record->username}}" data-username="{{$record->username}}" type="checkbox" aria-label="Inactive" @if ($record->inactive === 1) checked="checked" @endif @if (\Auth::user()->id === $record->id) disabled="disabled" @endif>
               </td>
             </tr>
             @endforeach

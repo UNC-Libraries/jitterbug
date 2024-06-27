@@ -151,11 +151,12 @@ jitterbug = {
     });
   },
 
-  toggleAdmin: function(username) {
-    let user = $(`#${username}`);
+  toggleAdmin: function(user_id) {
+    let user = $(`#${user_id}`);
     let makeAdmin = user.is(':checked');
     let route = makeAdmin ? '/admin/make-admin'
         : '/admin/remove-admin';
+    let username = user.data('username');
     let data = {};
     data['username'] = username;
     $.post(route, data, function (data) {
@@ -181,11 +182,12 @@ jitterbug = {
         });
   },
 
-  toggleInactive: function(username) {
-    let user = $(`#${username}`);
+  toggleInactive: function(user_id) {
+    let user = $(`#${user_id}`);
     let makeInactive = user.is(':checked');
     let route = makeInactive ? '/users/inactivate'
         : '/users/reactivate';
+    let username = user.data('username');
     let data = {};
     let row = user.closest('tr');
     let id = row.data('id');
