@@ -28,14 +28,14 @@ jitterbug = {
   },
 
   initSessionTimeout: function() {
-    var threeHours = 10800000;
+    let threeHours = 10800000;
     window.setTimeout(function() {
       window.location.href='/logout'
     }, threeHours);
   },
 
   initGreeting: function() {
-    var hour = new Date().getHours(),
+    let hour = new Date().getHours(),
     greeting;
     if (hour > 17) {
       greeting = 'Good Evening!';
@@ -60,7 +60,7 @@ jitterbug = {
 
   displayAlert: function(type, message) {
     if (type.length && message.length) {
-      var alert = document.createElement('div');
+      let alert = document.createElement('div');
       $(alert).attr('id', 'alert');
       $(alert).attr('class', 'col-md-12 alert alert-' + type);
       $(alert).attr('role', 'alert');
@@ -94,7 +94,7 @@ jitterbug = {
     // if all checkboxes are individually clicked, populate select all accordingly
     $(checkboxSelector).change(function () {
       if ($(this).is(":checked")) {
-        var isAllChecked = 0;
+        let isAllChecked = 0;
 
         $(checkboxSelector).each(function() {
           if (!this.checked)
@@ -112,14 +112,14 @@ jitterbug = {
   },
 
   initAdmin: function() {
-    var selectedTable = sessionStorage.getItem('selectedAdminTable');
+    let selectedTable = sessionStorage.getItem('selectedAdminTable');
     if (selectedTable == null) {
       selectedTable = 'users';
       sessionStorage.setItem('selectedAdminTable', 'users');
     }
     // Bind click handlers to each table radio button in the admin section
     $('input[name=table]').click(function(event) {
-      var table = $(this).val(),
+      let table = $(this).val(),
       resource = table.replace(/_/g, '-');
       // Get the records for the chosen table
       $.get('/' + resource, function(data) {
@@ -156,16 +156,15 @@ jitterbug = {
     });
   },
 
-  toggleAdmin: function(e) {
-    let user = $(`#${e.target.id}`);
-    var makeAdmin = user.is(':checked');
-    var route = makeAdmin ? '/admin/make-admin'
+  toggleAdmin: function(username) {
+    let user = $(`#${username}`);
+    let makeAdmin = user.is(':checked');
+    let route = makeAdmin ? '/admin/make-admin'
         : '/admin/remove-admin';
-    var data = {};
-    var username = e.target.id
+    let data = {};
     data['username'] = username;
     $.post(route, data, function (data) {
-      var message = makeAdmin
+      let message = makeAdmin
           ? 'User ' + username + ' was successfully made admin.'
           : 'User ' + username + ' is no longer an admin.';
       $(window).scrollTop(0);
@@ -173,9 +172,9 @@ jitterbug = {
     })
         .fail(function (jqXHR) {
           // Validation error
-          if (jqXHR.status == 422) {
-            var errors = JSON.parse(jqXHR.responseText);
-            var errorMessage = errors['errors']['name'][0];
+          if (jqXHR.status === 422) {
+            let errors = JSON.parse(jqXHR.responseText);
+            let errorMessage = errors['errors']['name'][0];
             // Get the first error, no matter which it is.
 
             // Unfortunately, we have to hide the popover here
@@ -187,30 +186,30 @@ jitterbug = {
         });
   },
 
-  toggleInactive: function(e) {
-    let user = $(`#${e.target.id}`);
-    var makeInactive = user.is(':checked');
-    var route = makeInactive ? '/users/inactivate'
+  toggleInactive: function(username) {
+    let user = $(`#username`);
+    let makeInactive = user.is(':checked');
+    let route = makeInactive ? '/users/inactivate'
         : '/users/reactivate';
-    var data = {};
-    var row = user.closest('tr');
-    var id = row.data('id');
-    var username = e.target.id;
-    var adminCheckbox = row.find('.admin input:checkbox');
+    let data = {};
+    let row = user.closest('tr');
+    let id = row.data('id');
+    let adminCheckbox = row.find('.admin input:checkbox');
     data['id'] = id;
     $.post(route, data, function (data) {
-      var numberDeleted = data['marksDeleted'];
+      let numberDeleted = data['marksDeleted'];
+      let message = '';
       if (makeInactive) {
         // when inactivating the user, uncheck and disable admin checkbox
         adminCheckbox.prop('checked', false);
         adminCheckbox.attr('disabled', true);
         row.addClass('inactive-row');
-        var message = `User ${username} was successfully inactivated. 
+        message = `User ${username} was successfully inactivated. 
               ${numberDeleted} of their marks were deleted.`;
       } else {
         adminCheckbox.attr('disabled', false);
         row.removeClass('inactive-row');
-        var message = 'User ' + username + ' is now active.';
+        message = 'User ' + username + ' is now active.';
       }
       $(window).scrollTop(0);
       jitterbug.displayAlert('success', message);
@@ -218,16 +217,15 @@ jitterbug = {
   },
 
   toggleLegacy: function() {
-    var legacyCheckboxes = $('.legacy input:checkbox');
+    let legacyCheckboxes = $('.legacy input:checkbox');
     legacyCheckboxes.click(function(event) {
-      var makeLegacy = $(this).is(':checked');
-      var route = makeLegacy ? '/prefixes/set-legacy-status'
+      let makeLegacy = $(this).is(':checked');
+      let route = makeLegacy ? '/prefixes/set-legacy-status'
           : '/prefixes/remove-legacy-status';
-      var data = {};
-      var id = $(this).data('id');
-      data['id'] = id;
+      let data = {};
+      data['id'] = $(this).data('id');
       $.post(route, data, function(data) {
-        var message = makeLegacy
+        let message = makeLegacy
             ? 'That prefix was successfully made legacy.'
             : 'That prefix is no longer legacy.';
         jitterbug.displayAlert('success', message);
@@ -244,11 +242,11 @@ jitterbug = {
       content: $('#new-record-form').html()
     }).click(function(event) {
       event.preventDefault();
-      var button = this;
+      let button = this;
       // Because setting the container option is broken, we have to resort
       // to this ugliness to style the popover with an unlimited max-width
       // (for our inline form) for only this use.
-      var popover = $('#' + $(this).attr('aria-describedby'));
+      let popover = $('#' + $(this).attr('aria-describedby'));
       popover.css('max-width', 'none');
       // This causes the popover to redraw properly centered after the
       // max-width was changed. This must be popover('show') rather than
@@ -258,14 +256,14 @@ jitterbug = {
       // Hookup the new record popover form submit
       popover.find('form').submit(function(event) {
         event.preventDefault();
-        var form = $(this).serialize();
+        let form = $(this).serialize();
 
         // Disable submit buttons and start the spinner
-        var submitButton = $(this).find('button[type="submit"]');
-        var cancelButton = $(this).find('button.cancel-new-record');
+        let submitButton = $(this).find('button[type="submit"]');
+        let cancelButton = $(this).find('button.cancel-new-record');
         submitButton.attr('disabled', true);
         cancelButton.attr('disabled', true);
-        var icon = submitButton.find('i');
+        let icon = submitButton.find('i');
         icon.removeClass('fa-check');
         icon.addClass('fa-spinner').addClass('fa-pulse');
 
@@ -274,18 +272,18 @@ jitterbug = {
           type: 'post',
           data: form,
           success: function (data) {
-            var tableContainer = $('#table-container');
+            let tableContainer = $('#table-container');
             // Scroll the table div to the top to show the new record
             tableContainer.animate({ scrollTop: 0 });
 
             // Use the first row of the table as a template
-            var templateRow = tableContainer.find('tbody > tr:first').clone();
+            let templateRow = tableContainer.find('tbody > tr:first').clone();
             templateRow.find('[data-field]').each(function() {
-              var field = $(this).attr('data-field');
+              let field = $(this).attr('data-field');
               $(this).attr('data-id', data.id);
               // If field is empty, add non-breaking spaces so
               // there is something to click on
-              var newCellValue = data[field] == '' ? '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : data[field];
+              let newCellValue = data[field] === '' ? '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : data[field];
               // if it's the collection type ID column, display the name instead of the ID
               if (field === 'collection_type_id') {
                 newCellValue = data['collectionTypeName']
@@ -299,7 +297,7 @@ jitterbug = {
                 jitterbug.createAdminEditableFieldPopover(resource, this);
               }
             });
-            var deleteAnchor = templateRow.find('.delete');
+            let deleteAnchor = templateRow.find('.delete');
             jitterbug.bindAdminRecordDelete(resource, deleteAnchor);
 
             // Insert row
@@ -307,9 +305,9 @@ jitterbug = {
           },
           error: function (jqXHR, textStatus, error) {
             // Validation error
-            if (jqXHR.status==422) {
-              var errors = JSON.parse(jqXHR.responseText);
-              var errorMessage = errors['errors']['name'][0];
+            if (jqXHR.status === 422) {
+              let errors = JSON.parse(jqXHR.responseText);
+              let errorMessage = errors['errors']['name'][0];
               // Get the first error, no matter which it is.
 
               // Unfortunately, we have to hide the popover here
@@ -330,8 +328,9 @@ jitterbug = {
       });
     });
 
+    let body_events = $('body');
     // This will hide the 'create new record' popover, canceling the create
-    $('body').on('click', '.cancel-new-record', function(event) {
+    body_events.on('click', '.cancel-new-record', function(event) {
       event.preventDefault();
       $('#new-record-button').popover('hide');
     });
@@ -340,7 +339,7 @@ jitterbug = {
     // (as we do above) will cause the popover to require 2 clicks to
     // show again:
     // https://github.com/twbs/bootstrap/issues/16732
-    $('body').on('hidden.bs.popover', function (event) {
+    body_events.on('hidden.bs.popover', function (event) {
       // This hack fixes the bug referenced above
       $(event.target).data('bs.popover')._activeTrigger.click = false;
     });
@@ -356,15 +355,15 @@ jitterbug = {
     });
 
     // This will hide any editable field popover, canceling the edit
-    $('body').on('click', '.cancel-edit', function(event) {
+    body_events.on('click', '.cancel-edit', function(event) {
       event.preventDefault();
-      var popover = $(this).closest('.popover');
+      let popover = $(this).closest('.popover');
       popover.popover('hide');
     });
 
     // When a new popover is opened, hide any already opened.
-    $('body').on('show.bs.popover', function (event) {
-      var target = event.target;
+    body_events.on('show.bs.popover', function (event) {
+      let target = event.target;
       $('.editable').each(function() {
         if ($(this).is(target)) {
           return true;
@@ -386,7 +385,7 @@ jitterbug = {
   },
 
   createAdminEditableFieldPopover: function(resource, span) {
-    var fieldName = $(span).data('field'),
+    let fieldName = $(span).data('field'),
     fieldText = $(span).text().trim(),
     formSelector = '#edit-' + fieldName + '-form',
     field = $(formSelector + ' input[name=' + fieldName + ']');
@@ -399,14 +398,14 @@ jitterbug = {
       content: $(formSelector).html()
     }).click(function(event) {
       event.preventDefault();
-      var fieldSpan = this;
+      let fieldSpan = this;
 
       $(this).popover('show');
       // The popover doesn't exist until the user has clicked the
       // field, and the aria-describedby attribute (which is the 
       // popover id) is undefined until the popover has been
       // shown.
-      var popover = $('#' + $(this).attr('aria-describedby'));
+      let popover = $('#' + $(this).attr('aria-describedby'));
       popover.css('max-width', 'none');
 
       // Must show again to redraw after max-width has changed
@@ -415,7 +414,7 @@ jitterbug = {
       // Must update the popover input field with the current
       // value of the field in case the user has changed the
       // value, and then reopens the popover.
-      var popoverInput = 
+      let popoverInput = 
           popover.find('input[name=' + fieldName + ']');
       popoverInput.attr('value', $(fieldSpan).text().trim());
       
@@ -423,7 +422,7 @@ jitterbug = {
       popover.find('form').submit(function(event) {
         event.preventDefault();
         // This needs to be attr('data-id') instead of .data('id')
-        var id = $(fieldSpan).attr('data-id'),
+        let id = $(fieldSpan).attr('data-id'),
         // we assume it's not a dropdown
         dropdownSelect = false,
         // Get field value set by the user
@@ -432,17 +431,17 @@ jitterbug = {
         if (formInputVal === undefined ) {
           formInputVal = parseInt($(this).find(':selected').val());
           dropdownSelect = true;
-          var formInputText = $(this).find(':selected').text();
+          let formInputText = $(this).find(':selected').text();
         }
         data = {};
         data[fieldName] = formInputVal;
 
         // Disable submit buttons and start the spinner
-        var submitButton = $(this).find('button[type="submit"]');
-        var cancelButton = $(this).find('button.cancel-edit');
+        let submitButton = $(this).find('button[type="submit"]');
+        let cancelButton = $(this).find('button.cancel-edit');
         submitButton.attr('disabled', true);
         cancelButton.attr('disabled', true);
-        var icon = submitButton.find('i');
+        let icon = submitButton.find('i');
         icon.removeClass('fa-check');
         icon.addClass('fa-spinner').addClass('fa-pulse');
 
@@ -454,7 +453,7 @@ jitterbug = {
             // If ajax is successful we need to change the cell value
             // to the new value. the default is an empty space
             // if the input was a select, we need the text, not the value
-            var newCellValue = formInputVal === '' ? '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : formInputVal;
+            let newCellValue = formInputVal === '' ? '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' : formInputVal;
             if (dropdownSelect === true) {
               newCellValue = formInputText;
             }
@@ -471,9 +470,9 @@ jitterbug = {
           error: function (jqXHR, textStatus, error) {
             // Validation error
             if (jqXHR.status==422) {
-              var errors = JSON.parse(jqXHR.responseText);
+              let errors = JSON.parse(jqXHR.responseText);
               // Get the first error, no matter which field it is for.
-              for (var key in errors) if (errors.hasOwnProperty(key)) break;
+              for (let key in errors) if (errors.hasOwnProperty(key)) break;
               jitterbug.displayAlert('danger', 
                 '<strong>Whoops.</strong> ' + errors[key]);
             } else {
@@ -497,14 +496,14 @@ jitterbug = {
     $(anchor).click(function(event) {
       event.preventDefault();
       
-      var row = $(this).closest('tr');
-      var id = row.find('.editable').first().attr('data-id');
+      let row = $(this).closest('tr');
+      let id = row.find('.editable').first().attr('data-id');
 
       $.ajax({
         url: '/' + resource + '/' + id,
         type: 'delete',
         success: function (data) {
-          var additionalMessage = data['message'] === undefined ? '' : data['message'];
+          let additionalMessage = data['message'] === undefined ? '' : data['message'];
           row.remove();
           jitterbug.displayAlert('success',
               '<strong>Gone.</strong> The record was successfully deleted. ' + additionalMessage);
@@ -512,9 +511,9 @@ jitterbug = {
         error: function (jqXHR, textStatus, error) {
           // Validation error
           if (jqXHR.status==422) {
-            var errors = JSON.parse(jqXHR.responseText);
+            let errors = JSON.parse(jqXHR.responseText);
             // Get the first error
-            for (var key in errors) if (errors.hasOwnProperty(key)) break;
+            for (let key in errors) if (errors.hasOwnProperty(key)) break;
             jitterbug.displayAlert('danger', 
               '<strong>Hmm.</strong> ' + errors[key]);
           } else {
@@ -547,12 +546,12 @@ jitterbug = {
     $('#prefix-attach-form').submit(function(event) {
       event.preventDefault();
 
-      var dropdown = $(this).find('select');
-      var prefixIds = dropdown.val();
-      var id = $(this).attr('data-format-id');
-      var url = window.location.href;
+      let dropdown = $(this).find('select');
+      let prefixIds = dropdown.val();
+      let id = $(this).attr('data-format-id');
+      let url = window.location.href;
 
-      var data = {
+      let data = {
         'id': id,
         'prefixIds': prefixIds
       };
@@ -582,8 +581,8 @@ jitterbug = {
     $(anchor).click(function(event) {
       event.preventDefault();
 
-      var row = $(this).closest('tr');
-      var data = {
+      let row = $(this).closest('tr');
+      let data = {
         'id': row.attr('data-format-id'),
         'prefixId': row.attr('data-prefix-id')
       };
@@ -611,9 +610,9 @@ jitterbug = {
   },
 
   drawDashboardCharts: function() {
-    var itemChart = $('#item-chart');
-    var itemCounts = itemChart.data('counts').split(',').map(Number);
-    var itemData = new google.visualization.DataTable();
+    let itemChart = $('#item-chart');
+    let itemCounts = itemChart.data('counts').split(',').map(Number);
+    let itemData = new google.visualization.DataTable();
     itemData.addColumn('string', 'Type');
     itemData.addColumn('number', 'Count');
     itemData.addRows([
@@ -622,9 +621,9 @@ jitterbug = {
       ['Video', itemCounts[2]],
     ]);
 
-    var instanceChart = $('#instance-chart');
-    var instanceCounts = instanceChart.data('counts').split(',').map(Number);
-    var instanceData = new google.visualization.DataTable();
+    let instanceChart = $('#instance-chart');
+    let instanceCounts = instanceChart.data('counts').split(',').map(Number);
+    let instanceData = new google.visualization.DataTable();
     instanceData.addColumn('string', 'Type');
     instanceData.addColumn('number', 'Count');
     instanceData.addRows([
@@ -633,9 +632,9 @@ jitterbug = {
       ['Video', instanceCounts[2]],
     ]);
 
-    var transferChart = $('#transfer-chart');
-    var transferCounts = transferChart.data('counts').split(',').map(Number);
-    var transferData = new google.visualization.DataTable();
+    let transferChart = $('#transfer-chart');
+    let transferCounts = transferChart.data('counts').split(',').map(Number);
+    let transferData = new google.visualization.DataTable();
     transferData.addColumn('string', 'Type');
     transferData.addColumn('number', 'Count');
     transferData.addRows([
@@ -644,7 +643,7 @@ jitterbug = {
       ['Video', transferCounts[2]],
     ]);
 
-    var options = {
+    let options = {
       width: 200,
       height: 200,
       legend: 'none',
@@ -666,14 +665,14 @@ jitterbug = {
 
   initDashboardActivityStream: function() {
     $('.recent-activity li[role="button"]').click(function(event) {
-      var type = $(this).data('object-type'),
+      let type = $(this).data('object-type'),
       id = $(this).data('object-id');
       window.location.href='/' + type + 's/' + id;
     });
   },
 
   initDashboardMarks: function() {
-    var marksModule = jitterbug.MarksModule.load('dashboardMarks', 'session');
+    let marksModule = jitterbug.MarksModule.load('dashboardMarks', 'session');
     if (marksModule == null) {
       marksModule = new jitterbug.MarksModule({ 
         key: 'dashboardMarks',
@@ -715,8 +714,8 @@ jitterbug = {
 
   initItemsBatchMenu: function() {
     $('#items-batch-edit').click(function(event) {
-      var tableSelection = jitterbug.tableSelection;
-      var maxEditLimit = $(this).data('max-edit-limit');
+      let tableSelection = jitterbug.tableSelection;
+      let maxEditLimit = $(this).data('max-edit-limit');
       if (!jitterbug.validateBatchSelection(tableSelection, 'editing', maxEditLimit)) {
         return;
       }
@@ -725,7 +724,7 @@ jitterbug = {
 
     jitterbug.initDataExportModal('items');
     $('#items-batch-export').click(function(event) {
-      var tableSelection = jitterbug.tableSelection;
+      let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'exporting')) {
         return;
       }
@@ -733,7 +732,7 @@ jitterbug = {
     });
 
     $('#items-batch-mark').click(function(event) {
-      var tableSelection = jitterbug.tableSelection;
+      let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'marking', 100)) {
         return;
       }
@@ -741,7 +740,7 @@ jitterbug = {
     });
 
     $('#items-batch-unmark').click(function(event) {
-      var tableSelection = jitterbug.tableSelection;
+      let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'unmarking', 100)) {
         return;
       }
@@ -749,7 +748,7 @@ jitterbug = {
     });
 
     $('#items-batch-delete').click(function(event) {
-      var tableSelection = jitterbug.tableSelection;
+      let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'deleting', 100)) {
         return;
       }
@@ -833,8 +832,8 @@ jitterbug = {
 
   initItemCallNumberGeneration: function() {
     $('#collection-id, #format-id').change(function() {
-      var collectionId = $('#collection-id').val();
-      var formatId = $('#format-id').val();
+      let collectionId = $('#collection-id').val();
+      let formatId = $('#format-id').val();
       if (collectionId.length && formatId.length) {
         query = {};
         query['format'] = formatId;
@@ -859,8 +858,8 @@ jitterbug = {
 
   initInstancesBatchMenu: function() {
     $('#instances-batch-edit').click(function(event) {
-      var tableSelection = jitterbug.tableSelection;
-      var maxEditLimit = $(this).data('max-edit-limit');
+      let tableSelection = jitterbug.tableSelection;
+      let maxEditLimit = $(this).data('max-edit-limit');
       if (!jitterbug.validateBatchSelection(tableSelection, 'editing', maxEditLimit)) {
         return;
       }
@@ -869,7 +868,7 @@ jitterbug = {
 
     jitterbug.initDataExportModal('instances');
     $('#instances-batch-export').click(function(event) {
-      var tableSelection = jitterbug.tableSelection;
+      let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'exporting')) {
         return;
       }
@@ -877,7 +876,7 @@ jitterbug = {
     });
 
     $('#instances-batch-mark').click(function(event) {
-      var tableSelection = jitterbug.tableSelection;
+      let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'marking', 100)) {
         return;
       }
@@ -885,7 +884,7 @@ jitterbug = {
     });
 
     $('#instances-batch-unmark').click(function(event) {
-      var tableSelection = jitterbug.tableSelection;
+      let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'unmarking', 500)) {
         return;
       }
@@ -893,7 +892,7 @@ jitterbug = {
     });
 
     $('#instances-batch-delete').click(function(event) {
-      var tableSelection = jitterbug.tableSelection;
+      let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'deleting', 100)) {
         return;
       }
@@ -936,8 +935,8 @@ jitterbug = {
 
   initTransfersBatchMenu: function() {
     $('#transfers-batch-edit').click(function(event) {
-      var tableSelection = jitterbug.tableSelection;
-      var maxEditLimit = $(this).data('max-edit-limit');
+      let tableSelection = jitterbug.tableSelection;
+      let maxEditLimit = $(this).data('max-edit-limit');
       if (!jitterbug.validateBatchSelection(tableSelection, 'editing', maxEditLimit)) {
         return;
       }
@@ -946,7 +945,7 @@ jitterbug = {
 
     jitterbug.initDataExportModal('transfers');
     $('#transfers-batch-export').click(function(event) {
-      var tableSelection = jitterbug.tableSelection;
+      let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'exporting')) {
         return;
       }
@@ -954,7 +953,7 @@ jitterbug = {
     });
 
     $('#transfers-batch-mark').click(function(event) {
-      var tableSelection = jitterbug.tableSelection;
+      let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'marking', 100)) {
         return;
       }
@@ -962,7 +961,7 @@ jitterbug = {
     });
 
     $('#transfers-batch-unmark').click(function(event) {
-      var tableSelection = jitterbug.tableSelection;
+      let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'unmarking', 500)) {
         return;
       }
@@ -970,7 +969,7 @@ jitterbug = {
     });
 
     $('#transfers-batch-delete').click(function(event) {
-      var tableSelection = jitterbug.tableSelection;
+      let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'deleting', 100)) {
         return;
       }
@@ -1007,7 +1006,7 @@ jitterbug = {
 
   initTransferCallNumberQuery: function() {
     $('#preservation-instance-id').change(function() {
-      var preservationInstanceId = $('#preservation-instance-id').val();
+      let preservationInstanceId = $('#preservation-instance-id').val();
       if (preservationInstanceId.length) {
         query = {};
         query['preservation-instance-id'] = preservationInstanceId;
@@ -1030,8 +1029,8 @@ jitterbug = {
     $('#batch-delete-form').submit( function(event) {
       jitterbug.tableSelection.clear();
       jitterbug.tableParams.setPage(1);
-      var submitButtons = $(this).find('button[type="submit"]');
-      var deleteCommand = $(this).find('button[type="submit"][clicked="true"]').val();
+      let submitButtons = $(this).find('button[type="submit"]');
+      let deleteCommand = $(this).find('button[type="submit"][clicked="true"]').val();
       $(this).find('input[name="deleteCommand"]').val(deleteCommand);
       submitButtons.attr('disabled', true);
     });
@@ -1077,7 +1076,7 @@ jitterbug = {
 
   initFileSelect: function() {
     $(':file').change(function() {
-      var input = $(this),
+      let input = $(this),
       fileName = input.val().replace(/\\/g, '/').replace(/.*\//, '');
       input.trigger('fileselect', fileName);
     });
@@ -1124,7 +1123,7 @@ jitterbug = {
       }
 
       $('#' + type + '-upload-spinner').show();
-      var form = new FormData(this);
+      let form = new FormData(this);
       $.ajax({
         url: $(this).attr('action'),
         type: 'post',
@@ -1133,7 +1132,7 @@ jitterbug = {
         contentType: false, 
         success: function (data) {
           console.log('upload success');
-          var count = data['count'];
+          let count = data['count'];
           if (count==0) {
             $('#' + type + '-import-step-2 .success-actions').hide();
             $('#' + type + '-import-step-2 .failure-actions').show();
@@ -1142,7 +1141,7 @@ jitterbug = {
           $('#' + type + '-import-dialog').width(700);
           $('#' + type + '-import-dialog-content').width(700);
           // Delay to let the css transition finish (hack)
-          var delay = 500;
+          let delay = 500;
           setTimeout(function() {
             $('#' + type + '-import-step-1').hide();
             $('#' + type + '-import-step-2').show();
@@ -1174,11 +1173,11 @@ jitterbug = {
     $('#' + type + '-import-form').submit( function(event) {
       event.preventDefault();
 
-      var submitButton = $(this).find('button[type="submit"]');
+      let submitButton = $(this).find('button[type="submit"]');
       submitButton.attr('disabled', true);
 
       $('#' + type + '-import-spinner').show();
-      var form = new FormData(this);
+      let form = new FormData(this);
       $.ajax({
         url: $(this).attr('action'),
         type: 'post',
@@ -1186,7 +1185,7 @@ jitterbug = {
         processData: false,
         contentType: false,
         success: function (data) {
-          var status = data['status'];
+          let status = data['status'];
 
           $('#' + type + '-import-result-container').replaceWith(data['html']);
           $('#' + type + '-import-step-2').hide();
@@ -1231,7 +1230,7 @@ jitterbug = {
       event.preventDefault();
 
       // Validate that at least one field is selected
-      var fieldCheckboxes = 
+      let fieldCheckboxes = 
         $('#data-export-fields-container').find(':checkbox'),
       oneIsChecked = false;
       $.each(fieldCheckboxes, function(i, checkbox) {
@@ -1249,11 +1248,11 @@ jitterbug = {
       }
 
       $('#export-building-spinner').show();
-      var submitButton = $(this).find('button[type="submit"]');
+      let submitButton = $(this).find('button[type="submit"]');
       submitButton.attr('disabled', true);
 
       // Build export file
-      var form = new FormData(this);
+      let form = new FormData(this);
       $.ajax({
         url: $(this).attr('action'),
         type: 'post',
@@ -1262,7 +1261,7 @@ jitterbug = {
         contentType: false,
         success: function (data) {
           // File is built, now download
-          var form = $(document.createElement('form'));
+          let form = $(document.createElement('form'));
           form.attr('action', '/' + resource + '/batch/export-download');
           form.attr('method', 'post');
           $('<input>').attr('type', 'hidden')
@@ -1300,7 +1299,7 @@ jitterbug = {
       data: {'ids': tableSelection.selectedIds().toString()},
       success: function (data) {
         $('#data-export-fields-container').replaceWith(data);
-        var delay = 200;
+        let delay = 200;
         setTimeout(function() {
           $('.export-modal-body').height(220);
         }, delay);
@@ -1343,7 +1342,7 @@ jitterbug = {
   },
 
   submitBatchEditForm: function(resource, tableSelection) {
-    var form = $(document.createElement('form'));
+    let form = $(document.createElement('form'));
     form.attr('action', '/' + resource + '/batch/edit');
     form.attr('method', 'post');
     $('<input>').attr('type', 'hidden')
@@ -1359,8 +1358,8 @@ jitterbug = {
 
   initMarkRibbon: function() {
     $('.mark').click(function(event) {
-      var mark = $(this);
-      var data = {};
+      let mark = $(this);
+      let data = {};
       data['markableType'] = mark.data('markable-type');
       data['markableIds'] = [mark.data('markable-id')];
 
@@ -1378,13 +1377,13 @@ jitterbug = {
   },
 
   batchMark: function(resourceName, type, tableSelection) {
-    var data = {};
+    let data = {};
     data['markableType'] = type;
     data['markableIds'] = tableSelection.selectedIds();
     $.post('/marks', data, function(data) {
       // Render marks currently in view in the data table
       $('#' + resourceName + '-data tr[role="button"]').each(function() {
-        var id = $(this).data('id');
+        let id = $(this).data('id');
         if ($.inArray(id, tableSelection.selectedIds()) != -1) {
           $(this).addClass('marked');
         }
@@ -1393,14 +1392,14 @@ jitterbug = {
   },
 
   batchUnmark: function(resourceName, type, tableSelection) {
-    var data = {};
+    let data = {};
     data['markableType'] = type;
     data['markableIds'] = tableSelection.selectedIds();
     data['_method'] = 'DELETE';
     $.post('/marks', data, function(data) {
       // Remove marks currently in view in the data table
       $('#' + resourceName + '-data tr[role="button"]').each(function() {
-        var id = $(this).data('id');
+        let id = $(this).data('id');
         if ($.inArray(id, tableSelection.selectedIds()) != -1) {
           $(this).removeClass('marked');
         }
@@ -1445,12 +1444,12 @@ jitterbug = {
   sequence: 0,
 
   handleMixedValueChange: function(that) {
-    var input = $(that);
-    var parent = $(that).closest('.detail-value');
+    let input = $(that);
+    let parent = $(that).closest('.detail-value');
     if ($(that).val() !== '<mixed>' && parent.hasClass('col-xs-7')) {
       parent.removeClass('col-xs-7');
       parent.addClass('col-xs-6');
-      var divId = jitterbug.sequence++, linkId = jitterbug.sequence++;
+      let divId = jitterbug.sequence++, linkId = jitterbug.sequence++;
       parent.after('\
         <div id=' + divId + ' class="col-xs-1 detail-value">\
           <a id=' + linkId + ' href="#" title="Reset">\
@@ -1478,7 +1477,7 @@ jitterbug = {
       if ($('#search').is(':focus') && $('#search').val() != '') {
         return;
       }
-      var modalOpen = false;
+      let modalOpen = false;
       $('.modal').each(function() {
         if ($(this).is(':visible')) {
           modalOpen = true;
@@ -1508,7 +1507,7 @@ jitterbug = {
   initRevisionHistory: function() {
     $('.revision-history-title').click(function(event) {
       event.preventDefault();
-      var icon = $('.revision-history-title i');
+      let icon = $('.revision-history-title i');
       if (icon.hasClass('fa-caret-right')) {
         icon.removeClass('fa-caret-right');
         icon.addClass('fa-caret-down');
@@ -1539,7 +1538,7 @@ jitterbug = {
   },
 
   initIndexPage: function(resourceName) {
-    var searchField = jitterbug.SearchField.load(resourceName + 'SearchField');
+    let searchField = jitterbug.SearchField.load(resourceName + 'SearchField');
     if (searchField==null) {
       searchField = new jitterbug.SearchField({
           key:resourceName + 'SearchField',
@@ -1551,7 +1550,7 @@ jitterbug = {
     }
     jitterbug.searchField = searchField;
 
-    var filterPanel = jitterbug.FilterPanel.load(resourceName + 'FilterPanel');
+    let filterPanel = jitterbug.FilterPanel.load(resourceName + 'FilterPanel');
     if (filterPanel==null) {
       filterPanel = new jitterbug.FilterPanel({
           key:resourceName + 'FilterPanel',
@@ -1564,7 +1563,7 @@ jitterbug = {
     }
     jitterbug.filterPanel = filterPanel;
 
-    var tableParams = jitterbug.TableParams.load(resourceName + 'TableParams');
+    let tableParams = jitterbug.TableParams.load(resourceName + 'TableParams');
     if (tableParams==null) {
       tableParams = new jitterbug.TableParams({
           key:resourceName + 'TableParams'});
@@ -1572,7 +1571,7 @@ jitterbug = {
     }
     jitterbug.tableParams = tableParams;
 
-    var tableSelection = 
+    let tableSelection = 
       jitterbug.TableSelection.load(resourceName + 'TableSelection','session');
     if (tableSelection==null) {
       tableSelection = new jitterbug.TableSelection({
@@ -1589,7 +1588,7 @@ jitterbug = {
     }
     jitterbug.tableSelection = tableSelection;
 
-    var queryManager = new jitterbug.QueryManager(searchField, filterPanel, 
+    let queryManager = new jitterbug.QueryManager(searchField, filterPanel, 
                                 tableParams, tableSelection, resourceName);
     jitterbug.tableSelection.setQueryManager(queryManager);
 
@@ -1613,7 +1612,7 @@ jitterbug = {
 
   QueryManager: function(searchFieldInstance, filterPanelInstance,
              tableParamsInstance, tableSelectionInstance, resourceName) {
-    var searchField = searchFieldInstance,
+    let searchField = searchFieldInstance,
         filterPanel = filterPanelInstance,
         tableSelection = tableSelectionInstance,
         tableParams = tableParamsInstance,
@@ -1637,14 +1636,14 @@ jitterbug = {
     },
 
     queryString = function() {
-      var query = {};
+      let query = {};
       query['search'] = searchField.elementValue();
       query = $.extend(query, filterPanel.selectedFilters());
       return JSON.stringify(query);
     },
       // default sort is updatedAt column, descending
     executeQuery = function(sortColumn = 'updatedAt', sortDirection = 'desc') {
-      var query = {};
+      let query = {};
       query['q'] = encodeURIComponent(queryString());
       query['page'] = tableParams.getPage();
       query['perPage'] = tableParams.getPerPage();
@@ -1654,7 +1653,7 @@ jitterbug = {
       $.get('/' + resource, query, function(data) {
         $('#data-container').replaceWith(data);
 
-        var dataSelector = '#' + resource + '-data';
+        let dataSelector = '#' + resource + '-data';
         // Initialize the colResizable plugin. Note that we're using a very
         // slightly modified version that doesn't set an explict width of the
         // grip container element.
@@ -1688,7 +1687,7 @@ jitterbug = {
 
         // Bind click handlers to all data pagination links
         if ($('.pagination').length) {
-          var currentPage = parseInt($('.page-item.active').text().trim());
+          let currentPage = parseInt($('.page-item.active').text().trim());
           tableParams.setPage(currentPage);
           $('.pagination').each(function() {
             $('.page-link').each(function() {
@@ -1728,7 +1727,7 @@ jitterbug = {
   },
 
   TableParams: function(params) {
-    var key = params.key,
+    let key = params.key,
         location = params.location,
         page = params.page == null ? 1 : params.page,
         perPage = params.perPage == null ? 20 : params.perPage,
@@ -1798,7 +1797,7 @@ jitterbug = {
         "is required.");
     }
 
-    var key = params.key,
+    let key = params.key,
         location = params.location,
         selector = params.selector,
         value = params.value,
@@ -1812,7 +1811,7 @@ jitterbug = {
       }
 
       // Hook up the clear search link
-      var clearLink = $(selector).next().find('a');
+      let clearLink = $(selector).next().find('a');
       clearLink.click(function(event) {
         event.preventDefault();
         $(selector).next().find('i').hide();
@@ -1918,7 +1917,7 @@ jitterbug = {
         "and 'listSelector' are required.");
     }
 
-    var key = params.key,
+    let key = params.key,
         location = params.location,
         selector = params.selector,
         listSelector = params.listSelector,
@@ -1927,7 +1926,7 @@ jitterbug = {
 
     init = function() {
       $(selector).find(listSelector).each(function() {
-        var list = new jitterbug.FilterList(this);
+        let list = new jitterbug.FilterList(this);
         list.init();
 
         if (selected != null && selected[list.listType()] != null) {
@@ -1962,7 +1961,7 @@ jitterbug = {
       // init() may not have been called yet
       if(!lists.length) {
         $(selector).find(listSelector).each(function() {
-          var list = new jitterbug.FilterList(this);
+          let list = new jitterbug.FilterList(this);
           // We're not calling list.init() here on purpose
           lists.push(list);
         });
@@ -2008,7 +2007,7 @@ jitterbug = {
   },
 
   FilterList: function(listElement) {
-    var list = listElement,
+    let list = listElement,
         checkboxes = $(list).find(':checkbox'),
         radioButtons = $(list).find(':radio'),
     
@@ -2025,13 +2024,13 @@ jitterbug = {
             }
 
             // Uncheck the other filters
-            for (var i = 1; i < checkboxes.length; i++) {
+            for (let i = 1; i < checkboxes.length; i++) {
               checkboxes[i].checked = false;
             }
           } else {
             // Check if at least one non-Any filter is checked
-            var oneIsChecked = false;
-            for (var i = 1; i < checkboxes.length; i++) {
+            let oneIsChecked = false;
+            for (let i = 1; i < checkboxes.length; i++) {
               if (checkboxes[i].checked == true) {
                 oneIsChecked = true;
                 break;
@@ -2059,7 +2058,7 @@ jitterbug = {
     },
 
     setSelected = function(selectedFilters) {
-      var totalChecked = 0;
+      let totalChecked = 0;
       $.each(checkboxes, function(i, checkbox) {
         // if the checkbox value is found in the selectedFilters array
         if ($.inArray(checkbox.value, selectedFilters) !== -1) {
@@ -2102,9 +2101,9 @@ jitterbug = {
     },
 
     selectedFilters = function() {
-      var selected = $(list).find('input:checked');
-      var values = [];
-      for (var i=0; i < selected.length; i++) {
+      let selected = $(list).find('input:checked');
+      let values = [];
+      for (let i=0; i < selected.length; i++) {
         values.push(selected[i].value);
       }
       return values;
@@ -2124,7 +2123,7 @@ jitterbug = {
 
     renderSelectionCount = function() {
       if (scrollable()) {
-        var countSelector = '#' + listType() + '-selection-count';
+        let countSelector = '#' + listType() + '-selection-count';
         if (count() > 0) {
           $(countSelector).html(count() + ' selected' + 
             ' <a id="' + listType() + '-clear-selection" href="#" style="color: #fff">\
@@ -2185,7 +2184,7 @@ jitterbug = {
                             "'selector' and 'countSelector' are required.");
     }
 
-    var key = params.key,
+    let key = params.key,
         location = params.location,
         resource = params.resource,
         selector = params.selector,
@@ -2201,7 +2200,7 @@ jitterbug = {
       // Prevent multiple subscriptions after data load
       $.unsubscribe('dataLoaded');
       
-      var dataTableRows = $(selector);
+      let dataTableRows = $(selector);
 
       // Prevent the user from selecting text in the data table
       dataTableRows.on('selectstart dragstart', function(event) {
@@ -2211,9 +2210,9 @@ jitterbug = {
       // Bind click handlers to all data table rows
       dataTableRows.click(function(event) {
         // The index of the Solr search result
-        var index = $(this).data('index');
+        let index = $(this).data('index');
         // The id of the record at the index
-        var id = $(this).data('id');
+        let id = $(this).data('id');
         // column by which table is being sorted. may be null
         const sortColumn = $(this).closest('table').data('sort-column');
         // direction of sort, if there is one in use
@@ -2248,7 +2247,7 @@ jitterbug = {
     dataLoaded = function(event) {
       // Cache the loaded indices & ids
       $(selector).each(function() {
-        var index = $(this).data('index'),
+        let index = $(this).data('index'),
         id = $(this).data('id');
         cache[index] = id;
         // Refresh beginIndex in case it's gotten out of sync
@@ -2265,7 +2264,7 @@ jitterbug = {
 
     render = function() {
       $(selector).each(function() {
-        var id = $(this).data('id');
+        let id = $(this).data('id');
         if (selected(id)) {
           $(this).addClass('selected');
         } else {
@@ -2294,7 +2293,7 @@ jitterbug = {
         beginId = endId;
         ids = [beginId];
       } else {
-        var beforeCount = count();
+        let beforeCount = count();
 
         // Check if full range is currently within the table on screen
         if (rangeInTable(beginIndex, endIndex)) {
@@ -2308,9 +2307,9 @@ jitterbug = {
         } else {
           if (queryManager != null) {
             console.log('Getting range from server');
-            var query = {};
+            let query = {};
             query['q'] = encodeURIComponent(queryManager.queryString());
-            var range = JSON.stringify({beginIndex: beginIndex, 
+            let range = JSON.stringify({beginIndex: beginIndex, 
               beginId: beginId, endIndex: endIndex, endId: endId});
             query['r'] = encodeURIComponent(range);
             query['sortColumn'] = sortColumn;
@@ -2352,16 +2351,16 @@ jitterbug = {
     },
 
     rangeInTable = function(begin, end) {
-      var table = tableToObject();
+      let table = tableToObject();
       return table[begin] != null && table[end] != null;
     },
 
     idsFromTable = function(begin, end) {
-      var first = Math.min(begin, end),
+      let first = Math.min(begin, end),
       last = Math.max(begin, end);
       tableIds = [];
       $(selector).each(function() {
-        var thisIndex = $(this).data('index'),
+        let thisIndex = $(this).data('index'),
         thisId = $(this).data('id');
         if (thisIndex >= first && thisIndex <= last) {
           tableIds.push(thisId);
@@ -2371,7 +2370,7 @@ jitterbug = {
     },
 
     rangeInCache = function(begin, end) {
-      var first = Math.min(begin, end),
+      let first = Math.min(begin, end),
       last = Math.max(begin, end);
       for(i = first; i <= last; i++) {
         if(cache[i] == null) {
@@ -2382,7 +2381,7 @@ jitterbug = {
     },
 
     idsFromCache = function(begin, end) {
-      var first = Math.min(begin, end),
+      let first = Math.min(begin, end),
       last = Math.max(begin, end),
       cacheIds = [];
       for(i = first; i <= last; i++) {
@@ -2392,7 +2391,7 @@ jitterbug = {
     },
 
     tableToObject = function() {
-      var table = {};
+      let table = {};
       $(selector).each(function() {
         table[$(this).data('index')] = $(this).data('id');
       });
@@ -2400,7 +2399,7 @@ jitterbug = {
     },
 
     toggle = function(id) {
-      var result = $.inArray(id, ids);
+      let result = $.inArray(id, ids);
       if (result == -1) {
         ids.push(id);
       } else {
@@ -2416,9 +2415,9 @@ jitterbug = {
     },
 
     selectAll = function() {
-      var max = 3000;
+      let max = 3000;
       // This is kinda gross
-      var total = parseInt($('.record-count').text().trim().split(/\s+/)[0]);
+      let total = parseInt($('.record-count').text().trim().split(/\s+/)[0]);
       if (total > max) {
         jitterbug.displayAlert('warning',
           '<strong>Sorry!</strong> That\'s too many records to select at \
@@ -2434,7 +2433,7 @@ jitterbug = {
           render();
         }
         // Cache all ids
-        for (var i = beginIndex; i <= endIndex; i++) {
+        for (let i = beginIndex; i <= endIndex; i++) {
          cache[i] = ids[i];
         }
       }
@@ -2510,7 +2509,7 @@ jitterbug = {
                             "'selectedUserSelector' are required.");
     }
 
-    var key = params.key,
+    let key = params.key,
         location = params.location,
         marksContainer = params.marksContainer,
         marksSelector = params.marksSelector,
@@ -2565,7 +2564,7 @@ jitterbug = {
       }
       // set up delete marks button
       $('.delete-marks button').click(function() {
-        var size = $('input.delete-checkbox:checkbox:checked').length;
+        let size = $('input.delete-checkbox:checkbox:checked').length;
         if (confirm('Are you sure you want to delete ' + size + ' marks?')) {
           deleteMarks();
         }
@@ -2583,8 +2582,8 @@ jitterbug = {
         link();
         toggleSelectAllVisibility(selectedUserId);
         render();
-        var selectedUserFullName = selectedUserName();
-        var truncatedUser = selectedUserFullName.length > 13 ? 
+        let selectedUserFullName = selectedUserName();
+        let truncatedUser = selectedUserFullName.length > 13 ? 
           selectedUserFullName.substr(0, 13) + '...' : selectedUserFullName;
         $(selectedUserSelector).text(truncatedUser);
         jitterbug.initSelectAll('#mark-checkbox-all', '.delete-checkbox:visible');
@@ -2592,13 +2591,13 @@ jitterbug = {
     },
 
     deleteMarks = function() {
-      var marksToDelete = {};
+      let marksToDelete = {};
 
       // gather and sort all selected markable IDs by type
       $('input.delete-checkbox:checkbox:checked').each(function() {
-        var parent = $(this).parent();
-        var markId = parent.data('object-id');
-        var type = parent.data('object-type');
+        let parent = $(this).parent();
+        let markId = parent.data('object-id');
+        let type = parent.data('object-type');
 
         if (marksToDelete[type] === undefined) {
           marksToDelete[type] = [markId];
@@ -2607,21 +2606,21 @@ jitterbug = {
         }
       });
 
-      var keys = Object.keys(marksToDelete);
+      let keys = Object.keys(marksToDelete);
 
-      for (var index in keys) {
+      for (let index in keys) {
         key = keys[index];
 
         // reformat names correctly
         if (key == 'item') {
-          var markableType = 'AudioVisualItem';
+          let markableType = 'AudioVisualItem';
         } else if (key == 'instance') {
-          var markableType = 'PreservationInstance';
+          let markableType = 'PreservationInstance';
         } else if (key == 'transfer') {
-          var markableType = 'Transfer';
+          let markableType = 'Transfer';
         }
 
-        var data = {};
+        let data = {};
         data['markableType'] = markableType;
         data['markableIds'] = marksToDelete[key];
         data['_method'] = 'DELETE';
@@ -2638,7 +2637,7 @@ jitterbug = {
     link = function() {
       // Hook up individual marks to their associated objects
       $(marksSelector).click(function(event) {
-        var type = $(this).data('object-type'),
+        let type = $(this).data('object-type'),
         id = $(this).data('object-id');
         window.location.href='/' + type + 's/' + id;
       });
@@ -2667,14 +2666,14 @@ jitterbug = {
     },
 
     render = function() {
-      var hasOne = false;
+      let hasOne = false;
       $(marksSelector).each(function() {
         if (currentFilter == 'all') {
           $(this).show();
           hasOne = true;
           return true;
         }
-        var type = $(this).data('object-type');
+        let type = $(this).data('object-type');
         if (currentFilter == type) {
           $(this).show();
           hasOne = true;
@@ -2704,7 +2703,7 @@ jitterbug = {
     },
 
     currentUser = function() {
-      var currentUser = {};
+      let currentUser = {};
       $(usersSelector).each(function() {
         if ($(this).hasClass('current-user')) {
           currentUser.id = $(this).data('user-id');
@@ -2782,7 +2781,7 @@ jitterbug = {
       console.log("Could not load object. Param 'key' is null.");
       return null;
     }
-    var string = null;
+    let string = null;
     if (location=='local' || location==null) {
       string = localStorage.getItem(key);
     } else if (location=='session') {
@@ -2806,7 +2805,7 @@ jitterbug.MarksModule.load = jitterbug.loader;
  * http://benalman.com/
  * Copyright (c) 2011 "Cowboy" Ben Alman; Licensed MIT, GPL */
 (function($) {
-  var o = $({});
+  let o = $({});
   $.subscribe = function() {
     o.on.apply(o, arguments);
   };

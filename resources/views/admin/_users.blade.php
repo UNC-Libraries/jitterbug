@@ -39,11 +39,15 @@
         });
 
         table.on('click', '.admin', function(e) {
-          jitterbug.toggleAdmin(e);
+          if (e.target.id !== undefined) {
+            jitterbug.toggleAdmin(e.target.id);
+          }
         });
 
         table.on('click', '.inactive', function(e) {
-          jitterbug.toggleInactive(e);
+          if (e.target.id !== undefined) {
+            jitterbug.toggleInactive(e.target.id);
+          }
         });
       });
     </script>
