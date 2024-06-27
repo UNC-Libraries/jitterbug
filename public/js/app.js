@@ -130,18 +130,13 @@ jitterbug = {
 
         $('#record-container').replaceWith(data);
 
-        // If this is the users table, bind click handlers to the 
-        // admin checkboxes
-        if (table == 'users') {
-          //jitterbug.toggleAdmin();
-          //jitterbug.toggleInactive();
-          // If this is the prefixes table, bind click handlers to
-          // legacy checkboxes and set up the popovers
-        } else if (table === 'prefixes') {
+        // If this is the prefixes table, bind click handlers to
+        // legacy checkboxes and set up the popovers
+        if (table === 'prefixes') {
           jitterbug.toggleLegacy();
           jitterbug.initAdminEditableFields(resource);
-          // This is one of the reference tables. Setup the 'new record' popover
-          // first, then setup the field popovers.
+          // This is one of the reference tables. Set up the 'new record' popover
+          // first, then set up the field popovers.
         } else {
           jitterbug.initAdminEditableFields(resource);
         }
@@ -194,6 +189,7 @@ jitterbug = {
     let data = {};
     let row = user.closest('tr');
     let id = row.data('id');
+    console.log(id)
     let adminCheckbox = row.find('.admin input:checkbox');
     data['id'] = id;
     $.post(route, data, function (data) {
