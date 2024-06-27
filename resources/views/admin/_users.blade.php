@@ -49,7 +49,6 @@
         });
 
         table.on('click', '.inactive', function(e) {
-          console.log(e.target.id)
           if (e.target.id !== undefined) {
             jitterbug.toggleInactive(e.target.id);
           }

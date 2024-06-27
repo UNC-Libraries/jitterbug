@@ -182,14 +182,13 @@ jitterbug = {
   },
 
   toggleInactive: function(username) {
-    let user = $(`#username`);
+    let user = $(`#${username}`);
     let makeInactive = user.is(':checked');
     let route = makeInactive ? '/users/inactivate'
         : '/users/reactivate';
     let data = {};
     let row = user.closest('tr');
     let id = row.data('id');
-    console.log(id)
     let adminCheckbox = row.find('.admin input:checkbox');
     data['id'] = id;
     $.post(route, data, function (data) {
