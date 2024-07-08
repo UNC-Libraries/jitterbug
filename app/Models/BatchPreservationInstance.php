@@ -23,7 +23,9 @@ class BatchPreservationInstance extends PreservationInstance
 
     public function __construct($instances, $subclasses)
     {
-        parent::__construct();
+        // IRemove parent__construct call as it seems to also be called when instantiating the
+        // PreservationInstance class in the batch constructor, which the batch class inherits from
+        // parent::__construct();
 
         $this->instances = $instances;
         $this->subclasses = $subclasses;
