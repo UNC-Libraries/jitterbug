@@ -21,7 +21,9 @@ class BatchTransfer extends Transfer
 
     public function __construct($transfers, $subclasses)
     {
-        parent::__construct();
+        // Remove parent__construct call as it seems to also be called when instantiating
+        // the Transfer class in the batch constructor, which the batch class inherits from
+        // parent::__construct();
 
         $this->transfers = $transfers;
         $this->subclasses = $subclasses;

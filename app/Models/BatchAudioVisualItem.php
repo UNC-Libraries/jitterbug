@@ -21,12 +21,14 @@ class BatchAudioVisualItem extends AudioVisualItem
 
     public function __construct($items, $subclasses)
     {
-        parent::__construct();
+        // Remove parent__construct call as it seems to also be called when instantiating the
+        // AudioVisualItem class in the batch constructor, which the batch class inherits from
+        // parent::__construct();
 
         $this->items = $items;
         $this->subclasses = $subclasses;
 
-        $this->aggregateItem = new AudioVIsualItem;
+        $this->aggregateItem = new AudioVisualItem;
         $this->aggregateItem->entry_date = null;
         $subclassType = $this->items->first()->subclass_type;
         $this->aggregateItem->subclass_type = $subclassType;
