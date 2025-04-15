@@ -4,7 +4,6 @@ namespace Jitterbug\Presenters;
 
 use DB;
 use Jitterbug\Models\Activity;
-use 
 
 /**
  * Models a stream of recent activity, culled from the revisions table.
