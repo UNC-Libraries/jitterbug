@@ -4,6 +4,7 @@ namespace Jitterbug\Presenters;
 
 use DB;
 use Jitterbug\Models\Activity;
+use 
 
 /**
  * Models a stream of recent activity, culled from the revisions table.
@@ -70,13 +71,12 @@ class ActivityStream
     private function hasNewTransactions(): bool
     {
         // Fetch last transaction in the revisions table
-        // $results = DB::table('revisions')->select('transaction_id')
-        //                              ->orderBy('id', 'desc')
-        //                              ->limit(1)
-        //                              ->get()->all();
-        $lastRevisionTransactionId = Revision::latest('id')->first()->transaction_id;
+        $results = DB::table('revisions')->select('transaction_id')
+                                     ->orderBy('id', 'desc')
+                                     ->limit(1)
+                                     ->get()->all();
 
-        // $lastRevisionTransactionId = $results[0]->transaction_id;
+        $lastRevisionTransactionId = $results[0]->transaction_id;
 
         // Fetch last transaction in the activities table
         $results = DB::table('activities')->select('transaction_id')
