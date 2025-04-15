@@ -373,7 +373,8 @@ class TransactionDigest
         }
         $this->associatedItem = AudioVisualItem::withTrashed()
             ->where('call_number', $instance->call_number)
-            ->last();
+            ->orderBy('id', 'desc')
+            ->first();
         $this->associatedCallNumber = $instance->call_number;
 
         return $this->associatedItem;
@@ -399,7 +400,8 @@ class TransactionDigest
 
         $item = AudioVisualItem::withTrashed()
             ->where('call_number', $this->associatedCallNumber)
-            ->last();
+            ->orderBy('id', 'desc')
+            ->first();
         if ($item !== null) {
             $this->associatedItem = $item;
             $this->associatedItemType = strtolower($item->type);
