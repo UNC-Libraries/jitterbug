@@ -71,7 +71,7 @@ class ActivityStream
     {
         // Fetch last transaction in the revisions table
         $results = DB::table('revisions')->select('transaction_id')
-                                     ->orderBy('id')
+                                     ->orderBy('id', 'desc')
                                      ->limit(1)
                                      ->get()->all();
 

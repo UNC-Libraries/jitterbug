@@ -367,14 +367,14 @@ class TransactionDigest
         }
         $firstRev = $this->revisions->first();
         $class = $firstRev->revisionable_type;
-        $instance =
-      $class::withTrashed()->findOrFail($firstRev->revisionable_id);
+        $instance = $class::withTrashed()->findOrFail($firstRev->revisionable_id);
         if (! array_key_exists($firstRev->revisionable_type, $this->baseClasses)) {
             $instance = $instance->superclass;
         }
         $this->associatedItem = AudioVisualItem::withTrashed()
-      ->where('call_number', $instance->call_number)
-      ->first();
+            ->where('call_number', $instance->call_number)
+            ->last();
+        $this->associatedCallNumber = $instance->call_number;
 
         return $this->associatedItem;
     }
@@ -391,9 +391,15 @@ class TransactionDigest
         if ($this->associatedItemType) {
             return $this->associatedItemType;
         }
+
+        if ($this->associatedItem) {
+            $this->associatedItemType = strtolower($this->associatedItem->type);
+            return $this->associatedItemType;
+        }
+
         $item = AudioVisualItem::withTrashed()
-      ->where('call_number', $this->findAssociatedCallNumber())
-      ->first();
+            ->where('call_number', $this->associatedCallNumber)
+            ->last();
         if ($item !== null) {
             $this->associatedItem = $item;
             $this->associatedItemType = strtolower($item->type);
@@ -415,8 +421,7 @@ class TransactionDigest
         }
         $firstRev = $this->revisions->first();
         $class = $firstRev->revisionable_type;
-        $instance =
-      $class::withTrashed()->findOrFail($firstRev->revisionable_id);
+        $instance = $class::withTrashed()->findOrFail($firstRev->revisionable_id);
         if (! array_key_exists($firstRev->revisionable_type, $this->baseClasses)) {
             $instance = $instance->superclass;
         }
@@ -449,8 +454,7 @@ class TransactionDigest
     protected function wasUpdate()
     {
         foreach ($this->revisions as $revision) {
-            if ($revision->field === 'created_at' ||
-          $revision->field === 'deleted_at') {
+            if ($revision->field === 'created_at' || $revision->field === 'deleted_at') {
                 return false;
             }
         }
