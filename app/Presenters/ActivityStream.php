@@ -78,7 +78,6 @@ class ActivityStream
                                      ->get()->all();
 
         $lastRevisionTransactionId = $results[0]->transaction_id;
-        Log::error('last revision transaction ID is {id}', ['id' => $lastRevisionTransactionId]);
 
         // Fetch most recent transaction in the activities table
         // The smallest ID is the most recently done activity
@@ -88,14 +87,11 @@ class ActivityStream
                                       ->get()->all();
 
         if (count($results) === 0) {
-            Log::error("count is empty, return true");
             return true;
         }
 
         $lastActivityTransactionId = $results[0]->transaction_id;
-        Log::error('last activity transaction ID is {id}', ['id' => $lastActivityTransactionId]);
-        $hasNew = $lastRevisionTransactionId !== $lastActivityTransactionId;
-        Log::error("has new is {hasNew}", ['hasNew' => $hasNew]);
+
         return $lastRevisionTransactionId !== $lastActivityTransactionId;
     }
 }
