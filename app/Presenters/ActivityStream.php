@@ -47,7 +47,7 @@ class ActivityStream
                 }
 
                 // Delete all activities
-                Activity::truncate();
+                Activity::query()->delete();
 
                 // Insert activities into the database
                 foreach ($activities as $activity) {
