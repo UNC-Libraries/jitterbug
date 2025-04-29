@@ -34,6 +34,6 @@ class Kernel extends ConsoleKernel
       ->everyMinute()
       ->timezone('America/New_York')
       ->between('7:00', '18:00')
-      ->withoutOverlapping(2);
+      ->withoutOverlapping(15);
     }
 }
