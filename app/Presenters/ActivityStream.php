@@ -70,6 +70,7 @@ class ActivityStream
     private function hasNewTransactions(): bool
     {
         // Fetch last transaction made in the revisions table
+        // Each batch of revisions will have the same transaction ID
         $results = DB::table('revisions')->select('transaction_id')
                                      ->orderBy('id', 'desc')
                                      ->limit(1)
@@ -78,6 +79,7 @@ class ActivityStream
         $lastRevisionTransactionId = $results[0]->transaction_id;
 
         // Fetch most recent transaction in the activities table
+        // The smallest ID is the most recently done activity
         $results = DB::table('activities')->select('transaction_id')
                                       ->orderBy('id')
                                       ->limit(1)
