@@ -230,3 +230,21 @@ $ npm run dev
     ```
 4. Check screenshots folder when there's a failure in `tests/Browser/screenshots`
 
+## Running PHPUnit tests for the first time
+1. Cache the config
+
+    ```bash
+    php artisan config:cache --env=testing
+    ```
+
+2. Migrate the DB
+
+    ```bash
+    php artisan migrate --env=testing --force
+    ```
+
+3. Run the tests
+
+    ```bash
+    php artisan test --env=testing
+    ```

@@ -77,4 +77,21 @@ class Prefix extends Model
 
         return $arrayForSelect;
     }
+
+    private static function useLegacyPrefix($collectionId, $collectionTypeId)
+    {
+        // if it's an SHC collection, see if there are any items in this collection
+        // that already start with the FD prefix
+        if ($collectionTypeId == 4) {
+            $query = DB::table('audio_visual_items')->select('id')
+            ->where([
+                ['collection_id', '=', $collectionId],
+                ['call_number', 'LIKE', 'FD-%']
+            ])
+            ->limit(1);
+            // if there are no FD prefixes already in use then use legacy
+            return $query.length == 0;
+        }
+        return false;
+    }
 }
