@@ -45,7 +45,7 @@ class PrefixTest extends TestCase
     public function testFindLegacyPrefixLabelForSHCCollectionSpecialCase()
     {
         $collection = Collection::factory()->create(['collection_type_id' => 4]);
-        AudioVisualItem::factory()->create(['call_number' => 'DAT-1234/1']);
+        AudioVisualItem::factory()->create(['call_number' => 'DAT-1234/1', 'collection_id' => $collection->id]);
 
         // attach the formats to the prefix
         $this->format->prefixes()->attach([$this->prefix2->id, $this->prefix3->id]);
@@ -56,7 +56,7 @@ class PrefixTest extends TestCase
     public function testFindNonLegacyPrefixLabelForSHCCollectionSpecialCase()
     {
         $collection = Collection::factory()->create(['collection_type_id' => 4]);
-        AudioVisualItem::factory()->create(['call_number' => 'FD-1234/1']);
+        AudioVisualItem::factory()->create(['call_number' => 'FD-1234/1', 'collection_id' => $collection->id]);
 
         // attach the formats to the prefix
         $this->format->prefixes()->attach([$this->prefix2->id, $this->prefix3->id]);
