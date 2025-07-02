@@ -1,143 +1,173 @@
 # Jitterbug
+
 A Laravel / MySQL database management application to support large-scale description, digitization, preservation and access of archival audiovisual recordings in the Wilson Special Collections Library of UNC-Chapel Hill. Funded by an Andrew W. Mellon Foundation grant, "Extending the Reach of Southern Audiovisual Sources."
 
 ## Vagrant Installation
+
 Local development uses a pre-configured Vagrant box, Laravel [Homestead](https://laravel.com/docs/8.x/homestead).
 
 ### Installation steps
+
 1. Clone the jitterbug repository.
+
 ```bash
-$ git clone https://github.com/UNC-Libraries/jitterbug.git
+git clone https://github.com/UNC-Libraries/jitterbug.git
 ```
+
 2. `$jitterbug-home` is the directory where you've cloned the jitterbug project. Navigate to it.
+
 ```bash
-$ cd $jitterbug-home
+cd $jitterbug-home
 ```
-3. Install composer by following directions at https://getcomposer.org/download/
+
+3. Install composer by following directions at <https://getcomposer.org/download/>
 
 4. Create a .env file and copy the contents of .env.example into it.
+
 ```bash
-$ cp .env.example .env
+cp .env.example .env
 ```
 
-   * Set the `ADMIN_USER_PASSWORD` in your `.env` file to the password you'd like to use for your dev admin user
+* Set the `ADMIN_USER_PASSWORD` in your `.env` file to the password you'd like to use for your dev admin user
 
 5. Use Composer to update packages and install Homestead.
+
 ```bash
-$ php composer.phar install
-$ php vendor/bin/homestead make
+php composer.phar install
+php vendor/bin/homestead make
 ```
+
 6. Edit your `/etc/hosts` file:
+
 ```bash
 192.168.10.10   homestead.test
 ```
+
 7. Start the Vagrant box.
+
 ```bash
-$ vagrant up
+vagrant up
 ```
-8. When that finishes, go to http://homestead.test and see if the jitterbug login page loads.
+
+8. When that finishes, go to <http://homestead.test> and see if the jitterbug login page loads.
 
 #### Log in with the non-LDAP admin user
- Try to log into Jitterbug with the username `dev-admin` 
- and the admin user password you set in your `.env` file.
+
+Try to log into Jitterbug with the username `dev-admin`
+ and the admin user password you set in your `.env` file
  ---
+
 ## Populating the DB and Solr cores with existing data (optional)
+
 #### Populating the DB
-If you have data that you'd like to populate the DB with, export it as a SQL dump without views or 
+
+If you have data that you'd like to populate the DB with, export it as a SQL dump without views or
 create/drop statements.
-1. Import the MySQL dump into your jitterbug DB. `$jitterbug-db-dump` is the path and 
+
+1. Import the MySQL dump into your jitterbug DB. `$jitterbug-db-dump` is the path and
 filename of your dump file
 
 **Via the command line in Homestead:**
+
 ```bash
-$ vagrant ssh
-$ mysql -u homestead jitterbug < $jitterbug-db-dump -psecret
+vagrant ssh
+mysql -u homestead jitterbug < $jitterbug-db-dump -psecret
 ```
+
 **Via a SQL GUI like [Tableplus](https://tableplus.com/) or [SequelPro](https://www.sequelpro.com/), with the following configs:**
 
-- MySQL host: 127.0.0.1
-- Username: homestead
-- Password: secret
-- Database: (leave blank so you can access `jitterbug` or `jitterbug-testing` databases)
-- Port: 33060
-- SSH host: 192.168.10.10
-- SSH user: vagrant
-- SSH password: vagrant
+* MySQL host: 127.0.0.1
+* Username: homestead
+* Password: secret
+* Database: (leave blank so you can access `jitterbug` or `jitterbug-testing` databases)
+* Port: 33060
+* SSH host: 192.168.10.10
+* SSH user: vagrant
+* SSH password: vagrant
 
 Once the GUI is set up, you can use the `import` option to import your DB dump. If your DB dump includes users, you'll need to re-run the user table seeder:
+
 ```bash
 vagrant ssh
 cd /vagrant
 php artisan db:seed --class=UsersTableSeeder
 ```
+
 #### Indexing Solr Cores
+
 (The data import functionality is deprecated and scheduled to be removed in Solr 9.)
 2. You must create empty `dataimport.properties` files in the following Solr config directories for each core:
+
 ```bash
     solrconfig/jitterbug-instances/conf
     solrconfig/jitterbug-items/conf
     solrconfig/jitterbug-transfers/conf
 ```
+
 3. Login to the VM import data from MySQL to index each Jitterbug core.
    1. Run the following command to index data into solr, switching out `<core-name>` with the name of the core you're
       indexing. `curl http://localhost:8983/solr/<core-name>/dataimport?command=full-import`
    2. To check the status of an import, run the following, again switching out `<core-name>` with the name of the core you're checking: `curl http://localhost:8983/solr/<core-name>/dataimport?command=status`
-   3. It is also possible to run any of the commands found here: https://solr.apache.org/guide/8_11/uploading-structured-data-store-data-with-the-data-import-handler.html#dataimporthandler-commands
+   3. It is also possible to run any of the commands found here: <https://solr.apache.org/guide/8_11/uploading-structured-data-store-data-with-the-data-import-handler.html#dataimporthandler-commands>
 
-See https://gitlab.lib.unc.edu/cappdev/jitterbug-app on how to index production servers
+See <https://gitlab.lib.unc.edu/cappdev/jitterbug-app> on how to index production servers
 
 ---
+
 ## Revisionable
-A key feature of Jitterbug is how it maintains a detailed paper trail of all changes to the 
-four object types (items, instances, cuts, and transfers). Jitterbug leverages 
-[a fork](https://github.com/UNC-Libraries/revisionable-1) of a 3rd party package for Laravel, 
-called Revisionable, that hooks into the lifecycle of Eloquent models to maintain revision histories. 
-Revisionable preserves the fields that are modified, what their old value was, and what their new 
-value is. Revisionable writes to a single table, “revisions” which implements 
-[Laravel polymorphic relations](https://laravel.com/docs/8.x/eloquent-relationships#polymorphic-relations). 
-By merely adding a single trait (RevisionableTrait) to your model class, revision histories can be 
+
+A key feature of Jitterbug is how it maintains a detailed paper trail of all changes to the
+four object types (items, instances, cuts, and transfers). Jitterbug leverages
+[a fork](https://github.com/UNC-Libraries/revisionable-1) of a 3rd party package for Laravel,
+called Revisionable, that hooks into the lifecycle of Eloquent models to maintain revision histories.
+Revisionable preserves the fields that are modified, what their old value was, and what their new
+value is. Revisionable writes to a single table, “revisions” which implements
+[Laravel polymorphic relations](https://laravel.com/docs/8.x/eloquent-relationships#polymorphic-relations).
+By merely adding a single trait (RevisionableTrait) to your model class, revision histories can be
 tracked and will be saved to the revisions table.
 
-Forking Revisionable was necessary to add several important features needed for Jitterbug. Using 
-Revisionable out of the box, there is no way to determine which revisions happened in the same atomic 
-database transaction, critical information for retrospective analyses of revision histories, such as those 
-performed by the code that generates the Dashboard activity stream. The revision timestamp cannot be used as 
-a unique identifier because long running transactions will be made up of revisions with different timestamps. 
-To implement this feature, a ['transaction_id' field was added](https://github.com/UNC-Libraries/revisionable-1/commit/1fe065280c6911091d13e182004947a9b73fdc14) 
-to the revisions table, and code was added to persist the transaction id when creating, updating, or deleting 
-models. The transaction id itself is a UUID4 generated key that is passed down from application code to 
-Revisionable via a database connection variable. Look in any of the controller classes and you will see 
-this code just after the beginning of a transaction block: 
-```DB::statement("set @transaction_id = '$transactionId';");```. That code is Jitterbug setting the connection 
+Forking Revisionable was necessary to add several important features needed for Jitterbug. Using
+Revisionable out of the box, there is no way to determine which revisions happened in the same atomic
+database transaction, critical information for retrospective analyses of revision histories, such as those
+performed by the code that generates the Dashboard activity stream. The revision timestamp cannot be used as
+a unique identifier because long running transactions will be made up of revisions with different timestamps.
+To implement this feature, a ['transaction_id' field was added](https://github.com/UNC-Libraries/revisionable-1/commit/1fe065280c6911091d13e182004947a9b73fdc14)
+to the revisions table, and code was added to persist the transaction id when creating, updating, or deleting
+models. The transaction id itself is a UUID4 generated key that is passed down from application code to
+Revisionable via a database connection variable. Look in any of the controller classes and you will see
+this code just after the beginning of a transaction block:
+```DB::statement("set @transaction_id = '$transactionId';");```. That code is Jitterbug setting the connection
 variable which is picked up by Revisionable when revisions are saved.
 
-In addition to the transaction_id mechanics, several other small features were added to Revisionable. 
-An IP address field was added to track user locations. Support for soft deleted foreign keys was added 
-(used when displaying revision histories). And storing the fully qualified namespace of models was changed 
+In addition to the transaction_id mechanics, several other small features were added to Revisionable.
+An IP address field was added to track user locations. Support for soft deleted foreign keys was added
+(used when displaying revision histories). And storing the fully qualified namespace of models was changed
 to storing only the base class name.
 
 ## Recent Activity
-The Recent Activity module in the Dashboard uses transactional information in the revisions table to 
-generate a representation of recent activity in the system. A simple cron job, which runs every minute, 
-is used to generate the activity stream when new revisionable transactions have occurred. You can run 
-this job yourself on demand by navigating to the root of your Jitterbug repository and running `php artisan schedule:run`, 
-which is precisely what the cron job does every minute. This command instructs Laravel to run any pending 
-jobs defined in the ```schedule()``` method of [```Jitterbug\Console\Kernel```](https://github.com/UNC-Libraries/jitterbug/blob/main/app/Console/Kernel.php). 
+
+The Recent Activity module in the Dashboard uses transactional information in the revisions table to
+generate a representation of recent activity in the system. A simple cron job, which runs every minute,
+is used to generate the activity stream when new revisionable transactions have occurred. You can run
+this job yourself on demand by navigating to the root of your Jitterbug repository and running `php artisan schedule:run`,
+which is precisely what the cron job does every minute. This command instructs Laravel to run any pending
+jobs defined in the ```schedule()``` method of [```Jitterbug\Console\Kernel```](https://github.com/UNC-Libraries/jitterbug/blob/main/app/Console/Kernel.php).
 More information about Laravel task scheduling can be found in the [documentation](https://laravel.com/docs/8.x/scheduling).
 
-The scheduled job in turn calls ```Jitterbug\Presenters\ActivityStream->generate()``` which generates the 
-stream if new transactions have occurred. The ActivityStream class instantiates 
-```Jitterbug\Presenters\TransactionDigest``` classes to summarize the revisions in the transaction and 
+The scheduled job in turn calls ```Jitterbug\Presenters\ActivityStream->generate()``` which generates the
+stream if new transactions have occurred. The ActivityStream class instantiates
+```Jitterbug\Presenters\TransactionDigest``` classes to summarize the revisions in the transaction and
 create individual ```Jitterbug\Models\Activity``` instances for display in the Dashboard.
 
-Although Jitterbug relies almost exclusively on revision records to determine what action took place 
-during a transaction, Jitterbug does look at another table, import_transactions, to determine what kind 
-of import the transaction relates to, if it is an import. The records in this table are created when an 
-import transaction begins. Some import types proved impossible to distinguish from batch creates, so an 
-import_transactions table was added to record at the time of import what kind of import it was and the 
+Although Jitterbug relies almost exclusively on revision records to determine what action took place
+during a transaction, Jitterbug does look at another table, import_transactions, to determine what kind
+of import the transaction relates to, if it is an import. The records in this table are created when an
+import transaction begins. Some import types proved impossible to distinguish from batch creates, so an
+import_transactions table was added to record at the time of import what kind of import it was and the
 related transaction id.
 
 ## Adding an Items, Instances, or Transfers Field
+
 1. Determine what object type the field is related to (audio visual items, preservation instances, or transfers).
 2. Determine if the field is specific to a certain media type (i.e. audio only) or if it is common to all media types for the object type.
 3. Create a migration to add the field to the appropriate database table. For example, if the field is common to all types of audio visual items, the field would go on the audio_visual_items table. If the field is specific to film items only, it would go on the film_items table. Do not name the column with a trailing ‘_id’ unless it’s actually a foreign key.
@@ -145,13 +175,14 @@ related transaction id.
 6. Add the field to the show page corresponding to the object type (items, instances, or transfers). Ask the project director in what order it should be placed (before or after a certain field).
 7. Add the field to the form partial corresponding to the object and media type (e.g. _form-audio.blade.php).
 8. Add validation rules and messages to the form request class corresponding to the object type.
-9. In the model that corresponds to the object and media type (e.g. AudioTransfer, or just Transfer if the field is common to all transfer types) add an appropriate element to the $revisionFormattedFields array. This array is used by the ‘revisionable’ package to determine how to format field values in revision histories. For more information on the syntax, see 
+9. In the model that corresponds to the object and media type (e.g. AudioTransfer, or just Transfer if the field is common to all transfer types) add an appropriate element to the $revisionFormattedFields array. This array is used by the ‘revisionable’ package to determine how to format field values in revision histories. For more information on the syntax, see
 [https://github.com/VentureCraft/revisionable](https://github.com/VentureCraft/revisionable).
 10. If the field name contains multiple words, in the model that corresponds to the object and media type (e.g. AudioTransfer, or just Transfer if the field is common to all transfer types) add an appropriate element to the $revisionFormattedFieldNames array. This array is used by the ‘revisionable’ package to determine how to render the field name in revision histories.
 11. In the model that corresponds to the object and media type (e.g. AudioTransfer, or just Transfer if the field is common to all transfer types) add an element to the $fillable array so that Laravel can mass assign field values to the field.
 12. Add the field to the Export class corresponding to the object type so the field will be made available in the user interface for exporting to .csv format.
 
 ## Adding a New Suggested Form Field
+
 Jitterbug uses the [devbridge autocomplete plugin](https://github.com/devbridge/jQuery-Autocomplete) for jQuery to implement suggested form field values. In order to add a new suggested form field value, do the following:
 
 1. Define a controller method in the SuggestionsController class for the field using plural naming conventions. You only need to copy and paste one of the exsiting methods and change the parameters for the ```getAutocompleteSuggestions()``` method call to correspond to the model you want the suggestions for, and then the field name.
@@ -167,32 +198,40 @@ $('#speed').autocomplete({
 ```
 
 ## Compiling Assets
+
 Jitterbug uses [Laravel Mix](https://laravel.com/docs/8.x/mix) to compile its assets, including Sass for its css.
 Add your css to `resources/assets/sass/app.scss` and then run `npm run dev` in the application terminal to compile the new changes.
 
 For example, in the VM:
+
 ```bash
-$ vagrant ssh
-$ cd /vagrant
-$ npm run dev
+vagrant ssh
+cd /vagrant
+npm run dev
 ```
 
 ## Updating Homestead
+
 1. Update the base box version specified in `Homestead.yaml.example`
 2. Destroy the VM `vagrant destroy`
 3. Delete `Homestead.yaml` and `Vagrantfile`
 4. Use Composer to update packages and initialize Homestead.
+
    ```bash
-   $ php composer.phar install
-   $ php vendor/bin/homestead make
+   php composer.phar install
+   php vendor/bin/homestead make
    ```
+
 5. Update the Vagrantfile to use the Solr restart script
 
     After `aliasesPath = "aliases"`
+
     ```bash
     solrRestartScriptPath = "solr-restart.sh"
     ```
+
     After the customization script path part:
+
     ```bash
     if File.exist? customizationScriptPath then
       config.vm.provision "shell", path: customizationScriptPath, privileged: false, keep_color: true
@@ -202,31 +241,64 @@ $ npm run dev
       config.vm.provision "shell", path: solrRestartScriptPath, run: 'always', privileged: false, keep_color: true
     end
     ```
+
 6. In your known_hosts file (on your host machine, not the VM) delete the entry for `192.168.10.10`
+
     ```bash
-    $ cd ~/.ssh
-    $ nano known_hosts
+    cd ~/.ssh
+    nano known_hosts
     ```
+
 6. Navigate back to your Jitterbug repo folder and start the VM
+
     ```bash
-    $ cd jitterbug
-    $ vagrant up
+    cd jitterbug
+    vagrant up
     ```
+
 7. Repopulate the DB and re-index Solr (instructions above).
-   
+
 ## Running [Laravel Dusk](https://laravel.com/docs/8.x/dusk) tests (VM only)
+
 1. Start up the vm and ssh into the VM
+
     ```bash
     vagrant up
     vagrant ssh
     ```
+
 2. Navigate to the Jitterbug repo folder
+
     ```bash
     cd /vagrant
     ```
+
 3. Run the Laravel Dusk tests
+
     ```bash
     php artisan dusk --env=testing
     ```
+
 4. Check screenshots folder when there's a failure in `tests/Browser/screenshots`
 
+## Running PHPUnit tests for the first time
+
+1. Cache the config
+
+    ```bash
+    php artisan config:cache --env=testing
+    ```
+
+2. Migrate the DB
+
+    ```bash
+    php artisan migrate --env=testing --force
+    ```
+
+3. Run the tests
+
+    ```bash
+    php artisan test --env=testing
+    ```
+
+Once you have the DB set up you should be able to run just the last command for the tests.

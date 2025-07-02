@@ -41,16 +41,17 @@ jobs:
             sudo apt-get install default-jdk -y
 
       - run:
-          name: Install Solr
+          name: Install Solr (slim version)
           command: |
             cd ~
-            sudo wget --no-verbose https://archive.apache.org/dist/solr/solr/9.4.0/solr-9.4.0.tgz
-            sudo tar xzf solr-9.4.0.tgz solr-9.4.0/bin/install_solr_service.sh --strip-components=2
-            sudo ./install_solr_service.sh solr-9.4.0.tgz -n
+            sudo wget --no-verbose https://archive.apache.org/dist/solr/solr/9.4.0/solr-9.4.0-slim.tgz
+            sudo tar xzf solr-9.4.0-slim.tgz solr-9.4.0-slim/bin/install_solr_service.sh --strip-components=2
+            sudo ./install_solr_service.sh solr-9.4.0-slim.tgz -n
 
       - run:
           name: Setup DataImportHandler
           command: |
+            sudo mkdir /opt/solr/modules
             sudo mkdir /opt/solr/modules/dataimporthandler
             sudo mkdir /opt/solr/modules/dataimporthandler/lib
             cd /opt/solr/modules/dataimporthandler/lib
