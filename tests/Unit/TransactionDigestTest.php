@@ -24,7 +24,7 @@ class TransactionDigestTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        DirectoryEmulator::setup('default');
+        DirectoryEmulator::setUp('default');
         $this->transactionId = '12dh56kw345';
         // unable to use a factory for Revision as it's a model in a separate package
         $this->revision = new Revision;
