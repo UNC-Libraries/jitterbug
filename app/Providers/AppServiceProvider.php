@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         // For legacy support of Jitterbug, keep resource parameters plural
         Route::singularResourceParameters(false);
@@ -72,7 +72,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         require_once __DIR__.'/../Http/helpers.php';
     }

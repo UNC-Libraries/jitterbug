@@ -17,7 +17,7 @@ class SelectAllTest extends DuskTestCase
      *
      * @return void
      */
-    public function test_select_all_works()
+    public function test_select_all_works(): void
     {
         User::factory()->create();
         $this->browse(function (Browser $browser) {

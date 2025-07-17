@@ -37,7 +37,7 @@ class BackfillImportActions extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $importTransactions = ImportTransaction::all();
         $bar = $this->output->createProgressBar($importTransactions->count());

@@ -15,7 +15,7 @@ class NewAudioVisualItemTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
-    public function test_new_form_creates_new_audio_visual_item()
+    public function test_new_form_creates_new_audio_visual_item(): void
     {
         User::factory()->create();
         $collection = Collection::factory()->create();

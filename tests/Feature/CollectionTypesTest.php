@@ -25,7 +25,7 @@ class CollectionTypesTest extends TestCase
         $this->user = User::factory()->create(['admin' => 0]);
     }
 
-    public function test_index_redirects_non_admin_user()
+    public function test_index_redirects_non_admin_user(): void
     {
         $user = $this->user;
         $this->be($user);
@@ -35,7 +35,7 @@ class CollectionTypesTest extends TestCase
         $response->assertRedirect('/dashboard');
     }
 
-    public function test_index_responds_successfully()
+    public function test_index_responds_successfully(): void
     {
         $adminUser = $this->adminUser;
         $this->be($adminUser);
@@ -44,7 +44,7 @@ class CollectionTypesTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    public function test_store_creates_new_collection_type()
+    public function test_store_creates_new_collection_type(): void
     {
         $adminUser = $this->adminUser;
         $this->be($adminUser);
@@ -58,7 +58,7 @@ class CollectionTypesTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    public function test_update_edits_collection_type()
+    public function test_update_edits_collection_type(): void
     {
         $collectionType = CollectionType::factory()->create(['name' => 'SFC Collection']);
         $newName = 'Amazing SFC Collection';
@@ -74,7 +74,7 @@ class CollectionTypesTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode(), 'Did not get a successful response.');
     }
 
-    public function test_delete_does_not_work_on_collection_type_in_use()
+    public function test_delete_does_not_work_on_collection_type_in_use(): void
     {
         $collectionType = CollectionType::factory()->create();
         Collection::factory()->create(['collection_type_id' => $collectionType->id]);
@@ -92,7 +92,7 @@ class CollectionTypesTest extends TestCase
                                             'and/or prefixes before deleting.', ]]);
     }
 
-    public function test_delete_removes_unused_collection_type()
+    public function test_delete_removes_unused_collection_type(): void
     {
         $collectionType = CollectionType::factory()->create(['deleted_at' => null]);
         $adminUser = $this->adminUser;

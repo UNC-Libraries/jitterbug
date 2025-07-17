@@ -37,7 +37,7 @@ class AutoIncrementCollectionIds extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $bar = $this->output->createProgressBar(100);
         $collections = Collection::withTrashed()->get();

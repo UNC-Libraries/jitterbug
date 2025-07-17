@@ -12,14 +12,14 @@ class RoutingTest extends TestCase
      *
      * @return void
      */
-    public function test_homepage_redirect_response()
+    public function test_homepage_redirect_response(): void
     {
         $response = $this->call('GET', '/');
 
         $this->assertEquals(302, $response->getStatusCode());
     }
 
-    public function test_transfers_index_response()
+    public function test_transfers_index_response(): void
     {
         $user = User::factory()->create();
         $this->be($user);

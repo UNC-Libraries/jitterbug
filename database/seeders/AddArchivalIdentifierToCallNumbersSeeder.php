@@ -11,7 +11,7 @@ class AddArchivalIdentifierToCallNumbersSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         // find all the new call number sequences that need their archival_identifier field populated
         // fill it in with the corresponding archival identifier from the associated collection

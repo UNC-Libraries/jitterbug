@@ -9,7 +9,7 @@ class CollectionRequest extends Request
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -19,7 +19,7 @@ class CollectionRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $required = '';
         // Only require the fields if it's a new record
@@ -41,7 +41,7 @@ class CollectionRequest extends Request
      *
      * @return array of messages
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'name.required' => 'A collection name is required.',

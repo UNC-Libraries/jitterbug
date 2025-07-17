@@ -2,6 +2,9 @@
 
 namespace Jitterbug\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -80,29 +83,29 @@ class AudioVisualItem extends Model
         return false;
     }
 
-    public function collection()
+    public function collection(): BelongsTo
     {
         return $this->belongsTo(\Jitterbug\Models\Collection::class);
     }
 
-    public function format()
+    public function format(): BelongsTo
     {
         return $this->belongsTo(\Jitterbug\Models\Format::class);
     }
 
-    public function preservationInstances()
+    public function preservationInstances(): HasMany
     {
         return $this->hasMany(\Jitterbug\Models\PreservationInstance::class,
             'call_number', 'call_number');
     }
 
-    public function cuts()
+    public function cuts(): HasMany
     {
         return $this->hasMany(\Jitterbug\Models\Cut::class,
             'call_number', 'call_number');
     }
 
-    public function subclass()
+    public function subclass(): MorphTo
     {
         return $this->morphTo();
     }

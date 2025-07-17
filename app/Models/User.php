@@ -2,6 +2,7 @@
 
 namespace Jitterbug\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
@@ -46,7 +47,7 @@ class User extends Authenticatable implements AuthenticatableContract, Authoriza
     /**
      * Return the marks for this user.
      */
-    public function marks()
+    public function marks(): HasMany
     {
         return $this->hasMany(\Jitterbug\Models\Mark::class);
     }

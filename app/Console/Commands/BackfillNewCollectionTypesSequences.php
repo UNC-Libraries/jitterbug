@@ -37,7 +37,7 @@ class BackfillNewCollectionTypesSequences extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $collectionTypeId = $this->argument('collection_type_id');
         $prefixes = DB::table('prefixes')->select('label')

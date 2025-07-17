@@ -12,7 +12,7 @@ class InstanceRequest extends Request
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -22,7 +22,7 @@ class InstanceRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         // Add rules for base preservation instances
         $rules = [];
@@ -75,7 +75,7 @@ class InstanceRequest extends Request
      *
      * @return array of messages
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             // Messages for preservation instance fields

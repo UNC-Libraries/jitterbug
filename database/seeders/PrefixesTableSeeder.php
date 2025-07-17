@@ -12,7 +12,7 @@ class PrefixesTableSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $ncpaId = 1;
         $rbcId = 2;

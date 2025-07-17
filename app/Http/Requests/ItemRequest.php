@@ -9,7 +9,7 @@ class ItemRequest extends Request
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -19,7 +19,7 @@ class ItemRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         // Add rules for base audio visual item
         $rules = [];
@@ -81,7 +81,7 @@ class ItemRequest extends Request
      *
      * @return array of messages
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             // Messages for audio visual item fields

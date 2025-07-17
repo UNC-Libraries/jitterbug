@@ -9,7 +9,7 @@ class CutRequest extends Request
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -19,7 +19,7 @@ class CutRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'preservation_instance_id' => 'required|exists:preservation_instances,id,deleted_at,NULL',
@@ -36,7 +36,7 @@ class CutRequest extends Request
      *
      * @return array of messages
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             // Messages for transfer fields

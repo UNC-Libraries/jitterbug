@@ -2,6 +2,8 @@
 
 namespace Jitterbug\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,12 +16,12 @@ class Prefix extends Model
 
     protected $fillable = ['label', 'legacy', 'collection_type_id'];
 
-    public function collectionType()
+    public function collectionType(): BelongsTo
     {
         return $this->belongsTo(CollectionType::class);
     }
 
-    public function formats()
+    public function formats(): BelongsToMany
     {
         return $this->belongsToMany(Format::class)->withTimestamps();
     }

@@ -11,7 +11,7 @@ class AddArchivalIdentifierToCollectionsSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         // to backfill the collection IDs as strings in the archival_identifier column
         // TODO APPDEV-8779 delete seeder when collection ID is auto incrementing

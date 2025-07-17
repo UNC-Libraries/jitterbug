@@ -11,7 +11,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::rename('preservation_masters', 'preservation_instances');
         Schema::rename('audio_masters', 'audio_instances');
@@ -110,7 +110,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::rename('preservation_instances', 'preservation_masters');
         Schema::rename('audio_instances', 'audio_masters');

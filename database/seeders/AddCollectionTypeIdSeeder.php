@@ -12,7 +12,7 @@ class AddCollectionTypeIdSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $uarmsId = 3;
         $shcId = 4;

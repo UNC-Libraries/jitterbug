@@ -12,7 +12,7 @@ class LoginTest extends DuskTestCase
     use DatabaseMigrations;
 
     // this test uses a non LDAP login method that only works on a local or test environment
-    public function test_logging_in_works()
+    public function test_logging_in_works(): void
     {
         User::factory()->create([
             'username' => 'best_user',

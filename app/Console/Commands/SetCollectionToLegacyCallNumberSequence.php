@@ -36,7 +36,7 @@ class SetCollectionToLegacyCallNumberSequence extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $archivalIdentifier = $this->argument('archival_identifier');
 

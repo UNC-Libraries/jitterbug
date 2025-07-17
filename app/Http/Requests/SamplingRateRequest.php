@@ -9,7 +9,7 @@ class SamplingRateRequest extends Request
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -19,7 +19,7 @@ class SamplingRateRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => 'required|min:2|max:255|unique:sampling_rates,name,'.
@@ -32,7 +32,7 @@ class SamplingRateRequest extends Request
      *
      * @return array of messages
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'name.required' => 'A sampling rate name is required.',

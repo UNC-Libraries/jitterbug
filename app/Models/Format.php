@@ -2,6 +2,8 @@
 
 namespace Jitterbug\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -21,12 +23,12 @@ class Format extends Model
             ->where('id', '<>', 54);
     }
 
-    public function audioVisualItems()
+    public function audioVisualItems(): HasMany
     {
         return $this->hasMany(AudioVisualItem::class);
     }
 
-    public function prefixes()
+    public function prefixes(): BelongsToMany
     {
         return $this->belongsToMany(Prefix::class)->withTimestamps();
     }

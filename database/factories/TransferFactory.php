@@ -23,7 +23,7 @@ class TransferFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'preservation_instance_id' => PreservationInstance::factory(),

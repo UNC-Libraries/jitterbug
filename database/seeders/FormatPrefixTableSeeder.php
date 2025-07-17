@@ -12,7 +12,7 @@ class FormatPrefixTableSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $associations[] = ['format_id' => 1, 'prefix_id' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()];
         $associations[] = ['format_id' => 2, 'prefix_id' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()];

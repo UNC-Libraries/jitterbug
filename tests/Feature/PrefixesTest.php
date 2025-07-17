@@ -29,7 +29,7 @@ class PrefixesTest extends TestCase
         $this->collectionType = CollectionType::factory()->create(['name' => 'SFC Collection']);
     }
 
-    public function test_index_redirects_non_admin_user()
+    public function test_index_redirects_non_admin_user(): void
     {
         $user = $this->user;
         $this->be($user);
@@ -39,7 +39,7 @@ class PrefixesTest extends TestCase
         $response->assertRedirect('/dashboard');
     }
 
-    public function test_index_responds_successfully()
+    public function test_index_responds_successfully(): void
     {
         $adminUser = $this->adminUser;
         $this->be($adminUser);
@@ -48,7 +48,7 @@ class PrefixesTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    public function test_store_creates_new_prefix()
+    public function test_store_creates_new_prefix(): void
     {
         $adminUser = $this->adminUser;
         $collectionType = $this->collectionType;
@@ -64,7 +64,7 @@ class PrefixesTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    public function test_update_edits_prefix()
+    public function test_update_edits_prefix(): void
     {
         $collectionType = $this->collectionType;
         $prefix = Prefix::factory()->create(['label' => 'SFC', 'collection_type_id' => $collectionType->id]);
@@ -83,7 +83,7 @@ class PrefixesTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode(), 'Did not get a successful response.');
     }
 
-    public function test_delete_removes_prefix_and_connections_to_formats()
+    public function test_delete_removes_prefix_and_connections_to_formats(): void
     {
         $prefix = Prefix::factory()->create(['deleted_at' => null]);
         $format1 = Format::factory()->create();

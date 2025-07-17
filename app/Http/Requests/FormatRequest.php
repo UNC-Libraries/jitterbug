@@ -9,7 +9,7 @@ class FormatRequest extends Request
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -19,7 +19,7 @@ class FormatRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $required = '';
         // Only require if it's a new record
@@ -38,7 +38,7 @@ class FormatRequest extends Request
      *
      * @return array of messages
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'name.required' => 'A format name is required.',

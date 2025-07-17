@@ -10,7 +10,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('audio_visual_items', function (Blueprint $table) {
             $table->dropUnique('call_number');
@@ -23,7 +23,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('audio_visual_items', function (Blueprint $table) {
             $table->dropIndex('call_number');

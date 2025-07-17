@@ -10,7 +10,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('audio_visual_items', function (Blueprint $table) {
             $table->integer('accession_number')->nullable()->after('collection_id');
@@ -22,7 +22,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('audio_visual_items', function (Blueprint $table) {
             $table->dropColumn('accession_number');

@@ -11,7 +11,7 @@ class PrefixRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -21,7 +21,7 @@ class PrefixRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $required = '';
         // Only require the fields if it's a new record
@@ -35,7 +35,7 @@ class PrefixRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'label.required' => 'A prefix label is required.',
