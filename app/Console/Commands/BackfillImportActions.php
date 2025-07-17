@@ -45,7 +45,7 @@ class BackfillImportActions extends Command
             $bar->advance();
             // grab revisions related to the import
             $relatedRevisions = DB::table('revisions')
-            ->where('transaction_id', $importTransaction->transaction_id)->get();
+                ->where('transaction_id', $importTransaction->transaction_id)->get();
             // determine unique field values
             $fields = $relatedRevisions->pluck('field')->unique();
             // if any of the fields are created_at, then it's a create, so skip

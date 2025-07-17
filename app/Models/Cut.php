@@ -9,10 +9,10 @@ use Venturecraft\Revisionable\RevisionableTrait;
 
 class Cut extends Model
 {
+    use HasFactory;
     use NullFieldPreserver;
     use RevisionableTrait;
     use SoftDeletes;
-    use HasFactory;
 
     protected $revisionFormattedFields = [
         'side' => 'isEmpty:nothing|%s',

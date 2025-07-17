@@ -67,7 +67,7 @@ class AudioImport extends Import
         $originatorReferences = [];
         $messages = [];
         foreach ($this->data as $row) {
-            $bag = new MessageBag();
+            $bag = new MessageBag;
             $messages[] = $bag;
             foreach ($this->audioImportKeys as $key) {
                 // if the batch import edit field is empty, this is a new record

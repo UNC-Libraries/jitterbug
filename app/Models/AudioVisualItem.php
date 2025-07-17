@@ -9,12 +9,12 @@ use Venturecraft\Revisionable\RevisionableTrait;
 
 class AudioVisualItem extends Model
 {
+    use CompositeHistory;
+    use HasFactory;
+    use Markable;
     use NullFieldPreserver;
     use RevisionableTrait;
-    use CompositeHistory;
     use SoftDeletes;
-    use Markable;
-    use HasFactory;
 
     const BATCH_EDIT_MAX_LIMIT = 1000;
 
@@ -71,7 +71,7 @@ class AudioVisualItem extends Model
     public function __construct($attributes = [])
     {
         $this->subclass_type = 'AudioItem';
-        $this->entry_date = (new \DateTime())->format('Y-m-d');
+        $this->entry_date = (new \DateTime)->format('Y-m-d');
         parent::__construct($attributes);
     }
 

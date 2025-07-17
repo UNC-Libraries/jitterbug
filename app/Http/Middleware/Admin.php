@@ -11,7 +11,6 @@ class Admin
      * Verify the user is an admin. Redirect if they are not.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)

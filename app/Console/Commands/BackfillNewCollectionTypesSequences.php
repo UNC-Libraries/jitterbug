@@ -41,9 +41,9 @@ class BackfillNewCollectionTypesSequences extends Command
     {
         $collectionTypeId = $this->argument('collection_type_id');
         $prefixes = DB::table('prefixes')->select('label')
-        ->where('collection_type_id', '=', $collectionTypeId)
-        ->distinct()
-        ->get();
+            ->where('collection_type_id', '=', $collectionTypeId)
+            ->distinct()
+            ->get();
 
         $collections = DB::table('collections')->where('collection_type_id', '=', $collectionTypeId)->get();
         $bar = $this->output->createProgressBar($collections->count());
@@ -52,12 +52,12 @@ class BackfillNewCollectionTypesSequences extends Command
             $bar->advance();
             foreach ($prefixes as $prefix) {
                 $sequenceExists = DB::table('new_call_number_sequences')
-            ->where('prefix', '=', $prefix->label)
-            ->where('collection_id', '=', $collection->id)
-            ->exists();
+                    ->where('prefix', '=', $prefix->label)
+                    ->where('collection_id', '=', $collection->id)
+                    ->exists();
 
                 if (! $sequenceExists) {
-                    $sequence = new NewCallNumberSequence();
+                    $sequence = new NewCallNumberSequence;
                     $sequence->prefix = $prefix->label;
                     $sequence->collection_id = $collection->id;
                     $sequence->archival_identifier = $collection->archival_identifier;

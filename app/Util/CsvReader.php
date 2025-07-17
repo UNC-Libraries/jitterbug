@@ -9,7 +9,7 @@ class CsvReader
     /**
      * Create a new CsvReader instance.
      *
-     * @param  string  $filePath The path to the csv file to parse.
+     * @param  string  $filePath  The path to the csv file to parse.
      * @return void
      */
     public function __construct($filePath)
@@ -21,8 +21,8 @@ class CsvReader
      * For each row, return an array of key/value pairs for the
      * given keys.
      *
-     * @param  array  $keys Array of keys to fetch data for. Keys should
-     * be heading names in the CSV file.
+     * @param  array  $keys  Array of keys to fetch data for. Keys should
+     *                       be heading names in the CSV file.
      * @return array
      */
     public function fetchKeys($keys)

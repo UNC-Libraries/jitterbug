@@ -15,7 +15,7 @@ class NewAudioVisualItemTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
-    public function testNewFormCreatesNewAudioVisualItem()
+    public function test_new_form_creates_new_audio_visual_item()
     {
         User::factory()->create();
         $collection = Collection::factory()->create();
@@ -32,16 +32,15 @@ class NewAudioVisualItemTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-        ->visit('/items')
-        ->clickLink('New')
-        ->assertSee('Create Audio Visual Item')
-
-        ->type('title', 'Example Title')
-        ->select('collection_id', 1)
-        ->select('format_id', 1)
-        ->press('Save')
-        ->assertPathIs('/items/1')
-        ->assertSee('Audio Item Details');
+                ->visit('/items')
+                ->clickLink('New')
+                ->assertSee('Create Audio Visual Item')
+                ->type('title', 'Example Title')
+                ->select('collection_id', 1)
+                ->select('format_id', 1)
+                ->press('Save')
+                ->assertPathIs('/items/1')
+                ->assertSee('Audio Item Details');
         });
     }
 }

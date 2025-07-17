@@ -15,7 +15,7 @@ class AdminTest extends TestCase
         $this->adminUser = User::factory()->create(['admin' => 1]);
     }
 
-    public function testUserIsMadeAdminAppropriately(): void
+    public function test_user_is_made_admin_appropriately(): void
     {
         $regularUser = User::factory()->create(['inactive' => 0, 'admin' => 0]);
         $adminUser = $this->adminUser;
@@ -31,23 +31,23 @@ class AdminTest extends TestCase
         $response->assertSuccessful();
     }
 
-    public function testInactiveUserIsNotMadeAdmin(): void
+    public function test_inactive_user_is_not_made_admin(): void
     {
         $inactiveUser = User::factory()->create(['inactive' => 1]);
         $adminUser = $this->adminUser;
 
         $response = $this->actingAs($adminUser)
-      ->post('/admin/make-admin',
-          [
-              'username' => $inactiveUser->username,
-          ],
-          ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+            ->post('/admin/make-admin',
+                [
+                    'username' => $inactiveUser->username,
+                ],
+                ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
         $this->assertEquals(0, User::find($inactiveUser->id)->admin);
         $response->assertStatus(422);
     }
 
-    public function testAdminUserHasAdminStatusRemovedAppropriately(): void
+    public function test_admin_user_has_admin_status_removed_appropriately(): void
     {
         $adminUser1 = User::factory()->create(['admin' => 1]);
         $adminUser = $this->adminUser;

@@ -37,10 +37,8 @@ class TransactionDigestTest extends TestCase
 
     /**
      * A basic unit test example.
-     *
-     * @return void
      */
-    public function testAnalyzeRevisionsWithUpdateImport(): void
+    public function test_analyze_revisions_with_update_import(): void
     {
         $this->importTransaction = ImportTransaction::factory()->create([
             'transaction_id' => $this->transactionId,
@@ -51,7 +49,7 @@ class TransactionDigestTest extends TestCase
         $this->assertEquals('updated via import', $transactionDigest->action);
     }
 
-    public function testAnalyzeRevisionsWithCreateImport(): void
+    public function test_analyze_revisions_with_create_import(): void
     {
         $this->importTransaction = ImportTransaction::factory()->create([
             'transaction_id' => $this->transactionId,
@@ -62,7 +60,7 @@ class TransactionDigestTest extends TestCase
         $this->assertEquals('created via import', $transactionDigest->action);
     }
 
-    public function testAnalyzeRevisionsWithCreate(): void
+    public function test_analyze_revisions_with_create(): void
     {
         $this->revision->field = 'created_at';
         $this->revision->save();
@@ -71,7 +69,7 @@ class TransactionDigestTest extends TestCase
         $this->assertEquals('created', $transactionDigest->action);
     }
 
-    public function testAnalyzeRevisionsWithUpdate(): void
+    public function test_analyze_revisions_with_update(): void
     {
         $this->revision->field = 'content_description';
         $this->revision->save();
@@ -80,7 +78,7 @@ class TransactionDigestTest extends TestCase
         $this->assertEquals('updated', $transactionDigest->action);
     }
 
-    public function testAnalyzeRevisionsWithDelete(): void
+    public function test_analyze_revisions_with_delete(): void
     {
         $this->revision->field = 'deleted_at';
         $this->revision->save();

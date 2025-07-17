@@ -38,7 +38,7 @@ class TransferRequest extends Request
             $this->addRuleIfNotMixed($rules, 'subclass.stylus', 'max:255');
             $this->addRuleIfNotMixed($rules, 'subclass.cartridge', 'max:255');
             $this->addRuleIfNotMixed($rules, 'subclass.first_sound', 'max:1000');
-        // Add rules for film transfers
+            // Add rules for film transfers
         } elseif ($subclassType === 'FilmTransfer') {
             // No film transfer rules at the moment
             // Add rules for video transfers

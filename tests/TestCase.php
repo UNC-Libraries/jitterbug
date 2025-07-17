@@ -43,9 +43,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 
 class PassThroughHandler extends Jitterbug\Exceptions\Handler
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function report(Throwable $e)
     {

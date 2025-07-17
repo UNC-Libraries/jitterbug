@@ -76,9 +76,9 @@ class InstancesController extends Controller
                 $instanceIds[] = $instance->id;
             }
             $marks = Mark::whereIn('markable_id', $instanceIds)
-            ->where('markable_type', 'PreservationInstance')
-            ->where('user_id', Auth::user()->id)
-            ->get()->pluck('markable_id');
+                ->where('markable_type', 'PreservationInstance')
+                ->where('user_id', Auth::user()->id)
+                ->get()->pluck('markable_id');
 
             return view('instances._instances',
                 compact('instances', 'marks', 'start', 'sortColumn', 'sortDirection', 'totalRecordCount'));
@@ -129,7 +129,7 @@ class InstancesController extends Controller
              ReproductionMachine::pluck('name', 'id')->all();
         $departments = ['' => 'Select a department'] + Department::pluck('name', 'id')->all();
         $projects = ['' => 'Select a project'] + Project::orderBy('name')
-             ->pluck('name', 'id')->all();
+            ->pluck('name', 'id')->all();
         $samplingRates = ['' => 'Select a sampling rate'] +
              SamplingRate::pluck('name', 'id')->all();
 
@@ -274,7 +274,7 @@ class InstancesController extends Controller
         $subclassType = $first->subclass_type;
 
         $instances = PreservationInstance::whereIn('id', $instanceIds)
-                            ->where('subclass_type', $subclassType)->get();
+            ->where('subclass_type', $subclassType)->get();
         if ($instanceIdsCount !== $instances->count()) {
             $request->session()->put('alert', ['type' => 'danger', 'message' => '<strong>Oops! There\'s a problem.</strong> '.
         'Batch editing can only be done with preservation instances of the same type. '.

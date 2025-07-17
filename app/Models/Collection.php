@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Collection extends Model
 {
+    use HasFactory;
     use NullFieldPreserver;
     use SoftDeletes;
-    use HasFactory;
 
     protected $fillable = ['name', 'collection_type_id', 'archival_identifier'];
 

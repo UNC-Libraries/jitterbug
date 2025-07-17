@@ -53,7 +53,7 @@ class ItemRequest extends Request
             $this->addRuleIfNotMixed($rules, 'subclass.track_configuration', 'max:100');
             $this->addRuleIfNotMixed($rules, 'subclass.audio_base', 'max:100');
             $this->addRuleIfNotMixed($rules, 'subclass.audio_content_description', 'max:1000');
-        // Add rules for film items
+            // Add rules for film items
         } elseif ($subclassType === 'FilmItem') {
             $this->addRuleIfNotMixed($rules, 'subclass.film_element', 'max:255');
             $this->addRuleIfNotMixed($rules, 'subclass.film_base', 'required|max:255');
@@ -65,7 +65,7 @@ class ItemRequest extends Request
             $this->addRuleIfNotMixed($rules, 'subclass.can_number', 'integer|digits_between:0,6');
             $this->addRuleIfNotMixed($rules, 'subclass.condition', 'max:255');
             $this->addRuleIfNotMixed($rules, 'subclass.film_content_description', 'max:1000');
-        // Add rules for video items
+            // Add rules for video items
         } elseif ($subclassType === 'VideoItem') {
             $this->addRuleIfNotMixed($rules, 'subclass.video_element', 'max:255');
             $this->addRuleIfNotMixed($rules, 'subclass.video_color', 'max:255');

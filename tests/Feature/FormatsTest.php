@@ -23,7 +23,7 @@ class FormatsTest extends TestCase
         $this->prefix = Prefix::factory()->create();
     }
 
-    public function testAttachPrefixes()
+    public function test_attach_prefixes()
     {
         $adminUser = $this->adminUser;
         $format = $this->format;
@@ -41,7 +41,7 @@ class FormatsTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    public function testDetachPrefixes()
+    public function test_detach_prefixes()
     {
         $adminUser = $this->adminUser;
         $format = $this->format;

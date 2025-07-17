@@ -63,8 +63,8 @@ class InstancesExport extends Export
         // record types. For example, if all the records are AudioItems, we
         // don't want to return fields that are specific to film.
         $types = DB::table('preservation_instances')
-      ->select(DB::raw('TRIM(TRAILING "Instance" FROM subclass_type) AS type'))
-      ->whereIn('id', $this->ids)->distinct()->get()->pluck('type');
+            ->select(DB::raw('TRIM(TRAILING "Instance" FROM subclass_type) AS type'))
+            ->whereIn('id', $this->ids)->distinct()->get()->pluck('type');
         $fields = [];
         // Fields at index 0 are intended to be rendered on the left in the
         // export dialog, and those at index 1 on the right.

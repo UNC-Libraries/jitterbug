@@ -8,7 +8,7 @@ class NewCallNumberSequenceTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testCallNumberUsesArchivalIdentifierInsteadOfCollectionId()
+    public function test_call_number_uses_archival_identifier_instead_of_collection_id()
     {
         $prefix = Prefix::factory()->create(['label' => 'TR']);
         $sequence = NewCallNumberSequence::factory()->create([

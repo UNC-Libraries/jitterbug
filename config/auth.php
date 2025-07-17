@@ -70,7 +70,7 @@ return [
             'rules' => [],
             'model' => LdapRecord\Models\ActiveDirectory\User::class,
             'scopes' => [
-                Jitterbug\Scopes\AdldapLimitationScope::class
+                Jitterbug\Scopes\AdldapLimitationScope::class,
             ],
             'database' => [
                 'model' => Jitterbug\Models\User::class,
@@ -84,7 +84,7 @@ return [
                 'sync_existing' => [
                     'username' => 'samaccountname',
                 ],
-            ]
+            ],
         ],
 
         'users' => [

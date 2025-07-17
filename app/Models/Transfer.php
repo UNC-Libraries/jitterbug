@@ -9,12 +9,12 @@ use Venturecraft\Revisionable\RevisionableTrait;
 
 class Transfer extends Model
 {
+    use CompositeHistory;
+    use HasFactory;
+    use Markable;
     use NullFieldPreserver;
     use RevisionableTrait;
-    use CompositeHistory;
     use SoftDeletes;
-    use Markable;
-    use HasFactory;
 
     const BATCH_EDIT_MAX_LIMIT = 1000;
 
@@ -65,7 +65,7 @@ class Transfer extends Model
     public function __construct($attributes = [])
     {
         $this->subclass_type = 'AudioTransfer';
-        $this->transfer_date = (new \DateTime())->format('Y-m-d');
+        $this->transfer_date = (new \DateTime)->format('Y-m-d');
         parent::__construct($attributes);
     }
 

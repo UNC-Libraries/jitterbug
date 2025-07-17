@@ -53,13 +53,13 @@ class InstanceRequest extends Request
             $this->addRuleIfNotMixed($rules, 'audio_file_codec', 'required|max:60');
             $this->addRuleIfNotMixed($rules, 'subclass.sampling_rate_id', 'required');
             $this->addRuleIfNotMixed($rules, 'subclass.test_tones', 'max:255');
-        // Add rules for film instances
+            // Add rules for film instances
         } elseif ($subclassType === 'FilmInstance') {
             $this->addRuleIfNotMixed($rules, 'film_file_format', 'required|max:60');
             $this->addRuleIfNotMixed($rules, 'film_file_codec', 'required|max:60');
             $this->addRuleIfNotMixed($rules, 'subclass.film_frame_size', 'max:30');
             $this->addRuleIfNotMixed($rules, 'subclass.film_aspect_ratio', 'max:30');
-        // Add rules for video instances
+            // Add rules for video instances
         } elseif ($subclassType === 'VideoInstance') {
             $this->addRuleIfNotMixed($rules, 'video_file_format', 'required|max:60');
             $this->addRuleIfNotMixed($rules, 'video_file_codec', 'required|max:60');

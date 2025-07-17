@@ -34,7 +34,7 @@ class CallNumberSequenceTest extends TestCase
         ]);
     }
 
-    public function testNextAlwaysUsesNewCallSequenceIfPrefixInNewStyleArray(): void
+    public function test_next_always_uses_new_call_sequence_if_prefix_in_new_style_array(): void
     {
         $format = Format::factory()->create();
         $format->attachPrefixes($this->prefix->id);
@@ -44,7 +44,7 @@ class CallNumberSequenceTest extends TestCase
             'Sequence is not a NewCallNumberSequence, as it should be.');
     }
 
-    public function testNextReturnsNewCallNumberSequenceIfItAlreadyExists(): void
+    public function test_next_returns_new_call_number_sequence_if_it_already_exists(): void
     {
         $callNumber = NewCallNumberSequence::factory()->create([
             'prefix' => $this->prefix->label,
@@ -61,7 +61,7 @@ class CallNumberSequenceTest extends TestCase
             'Sequence is not a NewCallNumberSequence, as it should be.');
     }
 
-    public function testNextReturnsExistingLegacyCallNumberSequenceIfNoNewCallNumberSequenceExists(): void
+    public function test_next_returns_existing_legacy_call_number_sequence_if_no_new_call_number_sequence_exists(): void
     {
         $prefix1 = Prefix::factory()->create([
             'label' => 'CD',
@@ -85,7 +85,7 @@ class CallNumberSequenceTest extends TestCase
             'Sequence is not the existing legacyCallNumberSequence, as it should be.');
     }
 
-    public function testNextRaises404ErrorForMissingPrefix(): void
+    public function test_next_raises404_error_for_missing_prefix(): void
     {
         $format = Format::factory()->create();
         // no prefixes have been attached to this format

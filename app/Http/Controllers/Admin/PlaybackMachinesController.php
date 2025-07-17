@@ -84,7 +84,7 @@ class PlaybackMachinesController extends Controller
 
                 return response()->json($response);
             } else {
-                $bag = new MessageBag();
+                $bag = new MessageBag;
                 $bag->add('status', 'Looks like that playback machine is '.
           'currently in use. Change the playback machine of the '.
           'related transfers before deleting.');

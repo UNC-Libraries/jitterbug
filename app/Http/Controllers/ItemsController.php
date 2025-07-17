@@ -75,9 +75,9 @@ class ItemsController extends Controller
                 $itemIds[] = $item->id;
             }
             $marks = Mark::whereIn('markable_id', $itemIds)
-                   ->where('markable_type', 'AudioVisualItem')
-                   ->where('user_id', Auth::user()->id)
-                   ->get()->pluck('markable_id');
+                ->where('markable_type', 'AudioVisualItem')
+                ->where('user_id', Auth::user()->id)
+                ->get()->pluck('markable_id');
 
             return view('items._items',
                 compact('items', 'marks', 'start', 'sortColumn', 'sortDirection', 'totalRecordCount'));
@@ -99,9 +99,9 @@ class ItemsController extends Controller
     {
         $item = AudioVisualItem::findOrFail($id);
         $cuts = Cut::where('call_number', $item->call_number)
-               ->orderBy('preservation_instance_id', 'asc')
-               ->orderBy('cut_number', 'asc')
-               ->get();
+            ->orderBy('preservation_instance_id', 'asc')
+            ->orderBy('cut_number', 'asc')
+            ->get();
 
         return view('items.show', compact('item', 'cuts'));
     }
@@ -113,9 +113,9 @@ class ItemsController extends Controller
     {
         $item = new AudioVisualItem;
         $collections = ['' => 'Select a collection'] + Collection::orderBy('name', 'asc')
-                                            ->pluck('name', 'id')->all();
+            ->pluck('name', 'id')->all();
         $formats = ['' => 'Select a format'] + Format::withFutureUse()->orderBy('name', 'asc')
-                                            ->pluck('name', 'id')->all();
+            ->pluck('name', 'id')->all();
 
         return view('items.create', compact('item', 'collections', 'formats'));
     }
@@ -199,13 +199,13 @@ class ItemsController extends Controller
     {
         $item = AudioVisualItem::findOrFail($id);
         $cuts = Cut::where('call_number', $item->call_number)
-               ->orderBy('preservation_instance_id', 'asc')
-               ->orderBy('cut_number', 'asc')
-               ->get();
+            ->orderBy('preservation_instance_id', 'asc')
+            ->orderBy('cut_number', 'asc')
+            ->get();
         $collections = ['' => 'Select a collection'] + Collection::orderBy('name', 'asc')
-              ->pluck('name', 'id')->all();
+            ->pluck('name', 'id')->all();
         $formats = ['' => 'Select a format'] + Format::orderBy('name', 'asc')
-              ->pluck('name', 'id')->all();
+            ->pluck('name', 'id')->all();
 
         return view('items.edit',
             compact('item', 'cuts', 'collections', 'formats'));
@@ -266,7 +266,7 @@ class ItemsController extends Controller
         $subclassType = $first->subclass_type;
 
         $items = AudioVisualItem::whereIn('id', $itemIds)
-                            ->where('subclass_type', $subclassType)->get();
+            ->where('subclass_type', $subclassType)->get();
         if ($itemIdsCount !== $items->count()) {
             $request->session()->put('alert', ['type' => 'danger', 'message' => '<strong>Oops! There\'s a problem.</strong> '.
         'Batch editing can only be done with items of the same type. '.
@@ -287,22 +287,22 @@ class ItemsController extends Controller
             $collections = ['' => 'Select a collection'] +
                      ['<mixed>' => '<mixed>'] +
                      Collection::orderBy('name', 'asc')
-                     ->pluck('name', 'id')->all();
+                         ->pluck('name', 'id')->all();
         } else {
             $collections = ['' => 'Select a collection'] +
                      Collection::orderBy('name', 'asc')
-                     ->pluck('name', 'id')->all();
+                         ->pluck('name', 'id')->all();
         }
 
         if ($item->format_id === '<mixed>') {
             $formats = ['' => 'Select a format'] +
                  ['<mixed>' => '<mixed>'] +
                  Format::orderBy('name', 'asc')
-                 ->pluck('name', 'id')->all();
+                     ->pluck('name', 'id')->all();
         } else {
             $formats = ['' => 'Select a format'] +
                  Format::orderBy('name', 'asc')
-                 ->pluck('name', 'id')->all();
+                     ->pluck('name', 'id')->all();
         }
 
         return view('items.edit',

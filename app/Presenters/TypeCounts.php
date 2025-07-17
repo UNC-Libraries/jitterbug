@@ -21,8 +21,8 @@ class TypeCounts
      * AudioVisualItemType, PreservationInstanceType or
      * TransferType.
      *
-     * @param  \Illuminate\Support\Collection  $types Collection of
-     * AudioVisualItemType, PreservationInstanceType, or TransferType.
+     * @param  \Illuminate\Support\Collection  $types  Collection of
+     *                                                 AudioVisualItemType, PreservationInstanceType, or TransferType.
      */
     public function __construct($types)
     {

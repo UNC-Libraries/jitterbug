@@ -24,7 +24,7 @@ class PrefixTest extends TestCase
         $this->format = Format::factory()->create();
     }
 
-    public function testFindPrefixLabelFindsLabelSuccessfully()
+    public function test_find_prefix_label_finds_label_successfully()
     {
         $collection = Collection::factory()->create(['collection_type_id' => 3]);
 
@@ -34,7 +34,7 @@ class PrefixTest extends TestCase
         $this->assertEquals($this->prefix1->label, Prefix::findPrefixLabel($this->format->id, $collection->id));
     }
 
-    public function testFindPrefixLabelRaisesExceptionForNullCollectionTypeId()
+    public function test_find_prefix_label_raises_exception_for_null_collection_type_id()
     {
         $this->expectException(NotFoundHttpException::class);
         Prefix::findPrefixLabel($this->format->id, 20001);

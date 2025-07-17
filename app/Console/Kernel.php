@@ -21,7 +21,6 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
@@ -31,9 +30,9 @@ class Kernel extends ConsoleKernel
             $activityStream = new ActivityStream;
             $activityStream->generate();
         })->name('generateActivityStream')
-      ->everyMinute()
-      ->timezone('America/New_York')
-      ->between('7:00', '18:00')
-      ->withoutOverlapping(15);
+            ->everyMinute()
+            ->timezone('America/New_York')
+            ->between('7:00', '18:00')
+            ->withoutOverlapping(15);
     }
 }

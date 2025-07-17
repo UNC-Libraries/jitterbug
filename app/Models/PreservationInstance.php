@@ -10,12 +10,12 @@ use Venturecraft\Revisionable\RevisionableTrait;
 
 class PreservationInstance extends Model
 {
+    use CompositeHistory;
+    use HasFactory;
+    use Markable;
     use NullFieldPreserver;
     use RevisionableTrait;
-    use CompositeHistory;
     use SoftDeletes;
-    use Markable;
-    use HasFactory;
 
     const BATCH_EDIT_MAX_LIMIT = 1000;
 
