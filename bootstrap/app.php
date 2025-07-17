@@ -14,7 +14,25 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->encryptCookies(except: [
+            'referrer',
+        ]);
+
+        $middleware->append(\Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class);
+
+        $middleware->web([
+            \Jitterbug\Http\Middleware\EncryptCookies::class,
+            \Jitterbug\Http\Middleware\VerifyCsrfToken::class,
+        ]);
+
+        $middleware->throttleApi('60,1');
+
+        $middleware->alias([
+            'admin' => \Jitterbug\Http\Middleware\Admin::class,
+            'auth' => \App\Http\Middleware\Authenticate::class,
+            'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
