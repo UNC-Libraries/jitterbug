@@ -1,18 +1,20 @@
 <?php
 
 use Illuminate\Foundation\Inspiring;
-
-/*
-|--------------------------------------------------------------------------
-| Console Routes
-|--------------------------------------------------------------------------
-|
-| This file is where you may define all of your Closure based console
-| commands. Each Closure is bound to a command instance allowing a
-| simple approach to interacting with each command's IO methods.
-|
-*/
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
+use Jitterbug\Presenters\ActivityStream;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
-})->describe('Display an inspiring quote');
+})->purpose('Display an inspiring quote');
+
+// Generate the activity stream
+Schedule::call(function () {
+    $activityStream = new ActivityStream;
+    $activityStream->generate();
+})->name('generateActivityStream')
+    ->everyMinute()
+    ->timezone('America/New_York')
+    ->between('7:00', '18:00')
+    ->withoutOverlapping(15);

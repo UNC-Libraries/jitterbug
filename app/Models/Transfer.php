@@ -4,17 +4,20 @@ namespace Jitterbug\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Transfer extends Model
 {
+    use CompositeHistory;
+    use HasFactory;
+    use Markable;
     use NullFieldPreserver;
     use RevisionableTrait;
-    use CompositeHistory;
     use SoftDeletes;
-    use Markable;
-    use HasFactory;
 
     const BATCH_EDIT_MAX_LIMIT = 1000;
 
@@ -65,11 +68,11 @@ class Transfer extends Model
     public function __construct($attributes = [])
     {
         $this->subclass_type = 'AudioTransfer';
-        $this->transfer_date = (new \DateTime())->format('Y-m-d');
+        $this->transfer_date = (new \DateTime)->format('Y-m-d');
         parent::__construct($attributes);
     }
 
-    public function item()
+    public function item(): BelongsTo
     {
         return $this->belongsTo(\Jitterbug\Models\AudioVisualItem::class, 'call_number', 'call_number');
     }
@@ -77,12 +80,12 @@ class Transfer extends Model
     /**
      * Return the associated cut, if there is one.
      */
-    public function cut()
+    public function cut(): HasOne
     {
         return $this->hasOne(\Jitterbug\Models\Cut::class);
     }
 
-    public function engineer()
+    public function engineer(): BelongsTo
     {
         return $this->belongsTo(\Jitterbug\Models\User::class, 'engineer_id');
     }
@@ -98,22 +101,22 @@ class Transfer extends Model
         return $engineer->fullName();
     }
 
-    public function playbackMachine()
+    public function playbackMachine(): BelongsTo
     {
         return $this->belongsTo(\Jitterbug\Models\PlaybackMachine::class);
     }
 
-    public function preservationInstance()
+    public function preservationInstance(): BelongsTo
     {
         return $this->belongsTo(\Jitterbug\Models\PreservationInstance::class);
     }
 
-    public function vendor()
+    public function vendor(): BelongsTo
     {
         return $this->belongsTo(\Jitterbug\Models\Vendor::class);
     }
 
-    public function subclass()
+    public function subclass(): MorphTo
     {
         return $this->morphTo();
     }

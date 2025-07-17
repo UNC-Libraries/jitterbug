@@ -36,7 +36,7 @@ class AdminController extends Controller
 
                 return response()->json(['status' => 'success'], 200);
             }
-            $bag = new MessageBag();
+            $bag = new MessageBag;
             $bag->add('status', 'That user is inactive, so they cannot be made admin.');
 
             return response()->json($bag, 422);

@@ -8,20 +8,16 @@ class TransferRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         // Add rules for base transfer
         $rules = [];
@@ -38,7 +34,7 @@ class TransferRequest extends Request
             $this->addRuleIfNotMixed($rules, 'subclass.stylus', 'max:255');
             $this->addRuleIfNotMixed($rules, 'subclass.cartridge', 'max:255');
             $this->addRuleIfNotMixed($rules, 'subclass.first_sound', 'max:1000');
-        // Add rules for film transfers
+            // Add rules for film transfers
         } elseif ($subclassType === 'FilmTransfer') {
             // No film transfer rules at the moment
             // Add rules for video transfers
@@ -55,7 +51,7 @@ class TransferRequest extends Request
      *
      * @return array of messages
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             // Messages for transfer fields

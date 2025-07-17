@@ -70,7 +70,7 @@ class DashboardMark
 
     public function timestamp()
     {
-        $timeAgo = new TimeAgo();
+        $timeAgo = new TimeAgo;
 
         return $timeAgo->inWordsFromStrings($this->mark->updated_at);
     }

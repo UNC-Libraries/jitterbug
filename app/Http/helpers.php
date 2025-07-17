@@ -11,7 +11,7 @@ function routeName()
  */
 function fileTimestamp()
 {
-    $date = new DateTime();
+    $date = new DateTime;
     $date->setTimezone(new DateTimeZone('America/New_York'));
     $timestamp = $date->format('Y-m-d-H-i-sO');
 

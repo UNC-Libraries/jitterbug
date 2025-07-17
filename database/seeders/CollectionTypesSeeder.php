@@ -9,10 +9,8 @@ class CollectionTypesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         $collectionTypes[] = ['id' => 1, 'name' => 'NCCPA', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()];
         $collectionTypes[] = ['id' => 2, 'name' => 'RBC', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()];

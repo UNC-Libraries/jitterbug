@@ -51,7 +51,7 @@ trait Markable
     public function removeAllMarks()
     {
         $marks = Mark::where('markable_type', class_basename(get_class($this)))
-                 ->where('markable_id', $this->id)->get();
+            ->where('markable_id', $this->id)->get();
         foreach ($marks as $mark) {
             $mark->delete();
         }
@@ -60,7 +60,7 @@ trait Markable
     private function getMark()
     {
         return Mark::where('markable_type', class_basename(get_class($this)))
-               ->where('markable_id', $this->id)
-               ->where('user_id', \Auth::user()->id)->first();
+            ->where('markable_id', $this->id)
+            ->where('user_id', \Auth::user()->id)->first();
     }
 }

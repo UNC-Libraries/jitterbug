@@ -142,8 +142,8 @@ class TransactionDigest
         $this->transactionId = $transactionId;
         // Order revisions by most recent, which is important for analysis
         $this->revisions = Revision::where('transaction_id', $transactionId)
-                                     ->orderBy('id', 'desc')
-                                     ->get();
+            ->orderBy('id', 'desc')
+            ->get();
         $this->associatedImportTransaction = ImportTransaction::where('transaction_id', $transactionId)->first();
         $this->analyzeRevisions();
         $this->generateActivities();
@@ -395,6 +395,7 @@ class TransactionDigest
 
         if ($this->associatedItem) {
             $this->associatedItemType = strtolower($this->associatedItem->type);
+
             return $this->associatedItemType;
         }
 
@@ -503,10 +504,10 @@ class TransactionDigest
             // by grouping the same revision types together and their revisionable IDs
             // we are only counting revisions for PreservationInstances, AudioVisualItems, and AudioItems
             $uniqueRevisionsCount = Revision::where('transaction_id', $this->transactionId)
-                                        ->groupBy('revisionable_type', 'revisionable_id')
-                                        ->whereIn('revisionable_type', ['PreservationInstance', 'AudioItem', 'AudioVisualItem'])
-                                        ->get()
-                                        ->count();
+                ->groupBy('revisionable_type', 'revisionable_id')
+                ->whereIn('revisionable_type', ['PreservationInstance', 'AudioItem', 'AudioVisualItem'])
+                ->get()
+                ->count();
             $this->batchSize = $uniqueRevisionsCount;
         }
 

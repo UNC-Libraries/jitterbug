@@ -9,10 +9,8 @@ class AdditionalFormatPrefixTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         $associations[] = ['format_id' => 58, 'prefix_id' => 87, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()];
         $associations[] = ['format_id' => 58, 'prefix_id' => 7, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()];

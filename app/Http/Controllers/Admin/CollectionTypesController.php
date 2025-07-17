@@ -77,7 +77,7 @@ class CollectionTypesController extends Controller
 
                 return response()->json($response);
             } else {
-                $bag = new MessageBag();
+                $bag = new MessageBag;
                 $bag->add('status', 'Looks like that collection type is currently '.
           'in use. Change the collection type of the related collections '.
           'and/or prefixes before deleting.');

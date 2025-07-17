@@ -7,7 +7,7 @@ use Solarium\QueryType\Select\Result\Result;
 /*
  * Pagination support for Solarium result sets.
  */
-class SolariumPaginator implements \IteratorAggregate, \Countable
+class SolariumPaginator implements \Countable, \IteratorAggregate
 {
     /**
      * The current page being viewed.

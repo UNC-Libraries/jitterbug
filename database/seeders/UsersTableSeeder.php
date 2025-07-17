@@ -10,10 +10,8 @@ class UsersTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         if (env('APP_ENV') !== 'production') {
             $password = Hash::make(env('ADMIN_USER_PASSWORD'));

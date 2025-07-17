@@ -34,8 +34,8 @@ class SolariumProxy
         $endpointConfig = $config[$endpointKeys[0]];
         $hostKeys = array_keys($endpointConfig);
         $config[$endpointKeys[0]][$hostKeys[0]]['core'] = $core;
-        $adapter = new Solarium\Core\Client\Adapter\Curl();
-        $eventDispatcher = new Symfony\Component\EventDispatcher\EventDispatcher();
+        $adapter = new Solarium\Core\Client\Adapter\Curl;
+        $eventDispatcher = new Symfony\Component\EventDispatcher\EventDispatcher;
 
         return new Solarium\Client($adapter, $eventDispatcher, $config);
     }

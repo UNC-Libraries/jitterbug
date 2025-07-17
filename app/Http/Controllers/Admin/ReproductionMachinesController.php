@@ -85,7 +85,7 @@ class ReproductionMachinesController extends Controller
 
                 return response()->json($response);
             } else {
-                $bag = new MessageBag();
+                $bag = new MessageBag;
                 $bag->add('status', 'Looks like that reproduction machine is '.
           'currently in use. Change the reproduction machine of the '.
           'related preservation instances before deleting.');

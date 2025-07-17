@@ -19,10 +19,8 @@ class AudioVisualItemFactory extends Factory
 
     /**
      * Define the model's default state.
-     *
-     * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'call_number' => 'FS-'.$this->faker->randomNumber(4),

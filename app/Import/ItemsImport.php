@@ -50,7 +50,7 @@ class ItemsImport extends Import
     {
         $messages = [];
         foreach ($this->data as $row) {
-            $bag = new MessageBag();
+            $bag = new MessageBag;
             $messages[] = $bag;
             $callNumbers = [];
             $formatExists = $this->formatExists($row['FormatID']);

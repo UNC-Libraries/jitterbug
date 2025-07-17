@@ -8,10 +8,8 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('new_call_number_sequences', function (Blueprint $table) {
             $table->increments('id');
@@ -35,10 +33,8 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::drop('new_call_number_sequences');
         Schema::drop('legacy_call_number_sequences');

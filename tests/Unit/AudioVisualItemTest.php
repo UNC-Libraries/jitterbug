@@ -9,10 +9,8 @@ class AudioVisualItemTest extends TestCase
 
     /**
      * A basic test example.
-     *
-     * @return void
      */
-    public function testTypeIdAttribute(): void
+    public function test_type_id_attribute(): void
     {
         $av_audio_item = AudioVisualItem::factory()->make();
         $av_film_item = AudioVisualItem::factory()->make([
@@ -27,7 +25,7 @@ class AudioVisualItemTest extends TestCase
         $this->assertSame(3, $av_video_item->getTypeIdAttribute(), 'TypeIdAttribute returned wrong ID for Video Item');
     }
 
-    public function testBlankDisplayAttributeWithRevisionable(): void
+    public function test_blank_display_attribute_with_revisionable(): void
     {
         $av_item = AudioVisualItem::factory()->make();
 
@@ -35,7 +33,7 @@ class AudioVisualItemTest extends TestCase
             'BlankDisplayAttribute should return yes when revisionable passes true in');
     }
 
-    public function testBlankDisplayAttribute(): void
+    public function test_blank_display_attribute(): void
     {
         $av_item = AudioVisualItem::factory()->make(['blank' => true]);
 

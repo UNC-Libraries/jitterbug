@@ -77,7 +77,7 @@ class Activity extends Model
             $value = $this->timestamp;
         }
 
-        $timeAgo = new TimeAgo();
+        $timeAgo = new TimeAgo;
 
         return $timeAgo->inWordsFromStrings($value);
     }

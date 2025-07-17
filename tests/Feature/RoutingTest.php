@@ -9,17 +9,15 @@ class RoutingTest extends TestCase
 
     /**
      * A basic functional test example.
-     *
-     * @return void
      */
-    public function testHomepageRedirectResponse()
+    public function test_homepage_redirect_response(): void
     {
         $response = $this->call('GET', '/');
 
         $this->assertEquals(302, $response->getStatusCode());
     }
 
-    public function testTransfersIndexResponse()
+    public function test_transfers_index_response(): void
     {
         $user = User::factory()->create();
         $this->be($user);

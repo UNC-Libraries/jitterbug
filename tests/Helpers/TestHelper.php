@@ -13,9 +13,9 @@ class TestHelper
     public static function addUserIdToRevision($revisionableType, $revisionableId, $userId): void
     {
         $revision = Revision::where('revisionable_type', $revisionableType)
-      ->where('revisionable_id', $revisionableId)
-      ->get()
-      ->first();
+            ->where('revisionable_id', $revisionableId)
+            ->get()
+            ->first();
         $revision->user_id = $userId;
         $revision->save();
     }

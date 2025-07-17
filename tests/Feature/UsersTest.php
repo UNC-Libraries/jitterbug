@@ -8,7 +8,7 @@ class UsersTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testInactivateSetsInactiveToTrue(): void
+    public function test_inactivate_sets_inactive_to_true(): void
     {
         $user = User::factory()->create(['inactive' => 0]);
         $adminUser = User::factory()->create(['admin' => 1]);
@@ -23,7 +23,7 @@ class UsersTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    public function testInactivateDeletesUserMarks(): void
+    public function test_inactivate_deletes_user_marks(): void
     {
         $user = User::factory()->create(['inactive' => 0]);
         $adminUser = User::factory()->create(['admin' => 1]);
@@ -42,7 +42,7 @@ class UsersTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    public function testReactivateSetsInactiveToFalse(): void
+    public function test_reactivate_sets_inactive_to_false(): void
     {
         $user = User::factory()->create(['inactive' => 1]);
         $adminUser = User::factory()->create(['admin' => 1]);
