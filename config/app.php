@@ -5,28 +5,6 @@ use Illuminate\Support\Facades\Facade;
 
 return [
 
-    'providers' => ServiceProvider::defaultProviders()->merge([
-        /*
-     * Laravel Framework Service Providers...
-     */
-        'Laravel\Tinker\TinkerServiceProvider',
-
-        /*
-     * Application Service Providers...
-     */
-        Jitterbug\Providers\AppServiceProvider::class,
-        Jitterbug\Providers\AuthServiceProvider::class,
-        // 'Jitterbug\Providers\BroadcastServiceProvider',
-        Jitterbug\Providers\EventServiceProvider::class,
-        Jitterbug\Providers\RouteServiceProvider::class,
-
-        /*
-     * Third-party Service Providers
-     */
-        // Comes from diglactic/laravel-breadcrumbs (^7.0)
-        Diglactic\Breadcrumbs\ServiceProvider::class,
-        'Venturecraft\Revisionable\RevisionableServiceProvider',
-    ])->toArray(),
 
     'aliases' => Facade::defaultAliases()->merge([
         'AudioInstance' => Jitterbug\Models\AudioInstance::class,

@@ -1,5 +1,6 @@
 <?php
 
 return [
-    App\Providers\AppServiceProvider::class,
+    Jitterbug\Providers\AppServiceProvider::class,
+    Jitterbug\Providers\RouteServiceProvider::class,
 ];
