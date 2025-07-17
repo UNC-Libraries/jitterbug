@@ -33,9 +33,9 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'admin' => \Jitterbug\Http\Middleware\Admin::class,
-            'auth' => \App\Http\Middleware\Authenticate::class,
+            'auth' => \Jitterbug\Http\Middleware\Authenticate::class,
             'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+            'guest' => \Jitterbug\Http\Middleware\RedirectIfAuthenticated::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

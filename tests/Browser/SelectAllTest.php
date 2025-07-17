@@ -14,8 +14,6 @@ class SelectAllTest extends DuskTestCase
 
     /**
      * A Dusk test example.
-     *
-     * @return void
      */
     public function test_select_all_works(): void
     {

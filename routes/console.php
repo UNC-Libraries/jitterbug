@@ -9,7 +9,6 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-
 // Generate the activity stream
 Schedule::call(function () {
     $activityStream = new ActivityStream;
