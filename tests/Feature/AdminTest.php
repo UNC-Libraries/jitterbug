@@ -1,7 +1,9 @@
 <?php
+namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models\User;
+use PHPUnit\Framework\TestCase;
 
 class AdminTest extends TestCase
 {

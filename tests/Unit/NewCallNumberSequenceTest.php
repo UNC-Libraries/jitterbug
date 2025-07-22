@@ -1,8 +1,10 @@
 <?php
+namespace Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models\NewCallNumberSequence;
 use Jitterbug\Models\Prefix;
+use PHPUnit\Framework\TestCase;
 
 class NewCallNumberSequenceTest extends TestCase
 {

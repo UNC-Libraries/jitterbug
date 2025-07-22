@@ -1,4 +1,5 @@
 <?php
+namespace Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models\AudioVisualItem;
@@ -6,6 +7,7 @@ use Jitterbug\Models\ImportTransaction;
 use Jitterbug\Models\User;
 use Jitterbug\Presenters\TransactionDigest;
 use LdapRecord\Laravel\Testing\DirectoryEmulator;
+use PHPUnit\Framework\TestCase;
 use Venturecraft\Revisionable\Revision;
 
 class TransactionDigestTest extends TestCase

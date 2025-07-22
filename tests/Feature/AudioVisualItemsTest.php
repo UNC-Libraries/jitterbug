@@ -1,4 +1,5 @@
 <?php
+namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models\AudioVisualItem;
@@ -7,6 +8,7 @@ use Jitterbug\Models\Cut;
 use Jitterbug\Models\Format;
 use Jitterbug\Models\NewCallNumberSequence;
 use Jitterbug\Models\User;
+use PHPUnit\Framework\TestCase;
 use Tests\Helpers\TestHelper;
 
 class AudioVisualItemsTest extends TestCase

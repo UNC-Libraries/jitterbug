@@ -1,7 +1,9 @@
 <?php
+namespace Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models\AudioVisualItem;
+use PHPUnit\Framework\TestCase;
 
 class AudioVisualItemTest extends TestCase
 {

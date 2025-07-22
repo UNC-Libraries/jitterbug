@@ -1,9 +1,11 @@
 <?php
+namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models\Collection;
 use Jitterbug\Models\CollectionType;
 use Jitterbug\Models\User;
+use PHPUnit\Framework\TestCase;
 
 class CollectionTypesTest extends TestCase
 {

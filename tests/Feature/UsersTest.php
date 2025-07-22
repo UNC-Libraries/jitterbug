@@ -1,8 +1,10 @@
 <?php
+namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models\Mark;
 use Jitterbug\Models\User;
+use PHPUnit\Framework\TestCase;
 
 class UsersTest extends TestCase
 {

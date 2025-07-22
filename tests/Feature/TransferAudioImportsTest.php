@@ -1,4 +1,5 @@
 <?php
+namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models\AudioItem;
@@ -7,6 +8,7 @@ use Jitterbug\Models\Department;
 use Jitterbug\Models\PlaybackMachine;
 use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Models\User;
+use PHPUnit\Framework\TestCase;
 
 class TransferAudioImportsTest extends TestCase
 {

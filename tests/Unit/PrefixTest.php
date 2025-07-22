@@ -1,9 +1,11 @@
 <?php
+namespace Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models\Collection;
 use Jitterbug\Models\Format;
 use Jitterbug\Models\Prefix;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PrefixTest extends TestCase
