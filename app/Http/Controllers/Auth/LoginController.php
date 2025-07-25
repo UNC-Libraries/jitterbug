@@ -52,7 +52,7 @@ class LoginController extends Controller
     /**
      * Get the failed login response instance.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     protected function sendFailedLoginResponse(Request $request)
     {
@@ -82,6 +82,10 @@ class LoginController extends Controller
         return [
             'samaccountname' => $request->get('username'),
             'password' => $request->get('password'),
+            'fallback' => [
+                'username' => $request->get('username'),
+                'password' => $request->get('password')
+            ],
         ];
     }
 }

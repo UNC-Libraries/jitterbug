@@ -49,7 +49,7 @@ class User extends Authenticatable implements AuthenticatableContract, Authoriza
      */
     public function marks(): HasMany
     {
-        return $this->hasMany(\Jitterbug\Models\Mark::class);
+        return $this->hasMany(Mark::class);
     }
 
     /**

@@ -34,12 +34,11 @@ class AppServiceProvider extends ServiceProvider
         app('view')->composer('*', function ($view) {
             $route = app('request')->route();
             if ($route) {
-                $action = app('request')->route()->getAction();
+                $action = $route->getAction();
                 $controller = class_basename($action['controller']);
                 [$controller, $action] = explode('@', $controller);
                 // Remove controller from the end of the name
-                $controller =
-          substr($controller, 0, strlen($controller) - strlen('Controller'));
+                $controller = substr($controller, 0, strlen($controller) - strlen('Controller'));
                 $controller = Str::camel($controller);
                 $view->with(compact('controller', 'action'));
             }
