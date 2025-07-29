@@ -4,68 +4,7 @@ A Laravel / MySQL database management application to support large-scale descrip
 
 ### Installation steps
 
-1. Clone the jitterbug repository.
-
-```bash
-git clone https://github.com/UNC-Libraries/jitterbug.git
-
-
-#### Log in with the non-LDAP admin user
-
-Try to log into Jitterbug with the username `dev-admin`
- and the admin user password you set in your `.env` file
- ---
-
-## Populating the DB and Solr cores with existing data (optional)
-
-#### Populating the DB
-
-If you have data that you'd like to populate the DB with, export it as a SQL dump without views or
-create/drop statements.
-
-1. Import the MySQL dump into your jitterbug DB. `$jitterbug-db-dump` is the path and
-filename of your dump file
-
-**Via the command line in Homestead:**
-
-```bash
-vagrant ssh
-mysql -u homestead jitterbug < $jitterbug-db-dump -psecret
-```
-
-**Via a SQL GUI like [Tableplus](https://tableplus.com/) or [SequelPro](https://www.sequelpro.com/), with the following configs:**
-
-* MySQL host: 127.0.0.1
-* Username: homestead
-* Password: secret
-* Database: (leave blank so you can access `jitterbug` or `jitterbug-testing` databases)
-* Port: 33060
-* SSH host: 192.168.10.10
-* SSH user: vagrant
-* SSH password: vagrant
-
-Once the GUI is set up, you can use the `import` option to import your DB dump. If your DB dump includes users, you'll need to re-run the user table seeder:
-
-#### Indexing Solr Cores
-
-(The data import functionality is deprecated and scheduled to be removed in Solr 9.)
-2. You must create empty `dataimport.properties` files in the following Solr config directories for each core:
-
-```bash
-    solrconfig/jitterbug-instances/conf
-    solrconfig/jitterbug-items/conf
-    solrconfig/jitterbug-transfers/conf
-```
-
-3. Login to the VM import data from MySQL to index each Jitterbug core.
-   1. Run the following command to index data into solr, switching out `<core-name>` with the name of the core you're
-      indexing. `curl http://localhost:8983/solr/<core-name>/dataimport?command=full-import`
-   2. To check the status of an import, run the following, again switching out `<core-name>` with the name of the core you're checking: `curl http://localhost:8983/solr/<core-name>/dataimport?command=status`
-   3. It is also possible to run any of the commands found here: <https://solr.apache.org/guide/8_11/uploading-structured-data-store-data-with-the-data-import-handler.html#dataimporthandler-commands>
-
-See <https://gitlab.lib.unc.edu/cappdev/jitterbug-app> on how to index production servers
-
----
+See https://gitlab.lib.unc.edu/cappdev/jitterbug-vm
 
 ## Revisionable
 

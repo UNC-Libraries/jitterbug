@@ -3,23 +3,23 @@
 @section('content')
 <div id="detail">
   <div class="row">
-    <div class="col-xs-12"> 
+    <div class="col-sm-12">
       {!! Breadcrumbs::render('instances.cuts.show', $instance, $cut) !!}
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
       <h6>Cut Details</h6>
     </div>
   </div>
   <div class="row first detail-container">
     {{-- Left Column --}}
-    <div class="col-xs-6">
+    <div class="col-sm-6">
       <div class="row">
-        <div class="col-xs-4 col-xs-offset-1 detail-label">
+        <div class="col-sm-4 col-sm-offset-1 detail-label">
           PM #
         </div>
-        <div class="col-xs-7 detail-value">
+        <div class="col-sm-7 detail-value">
           @if ($cut->preservationInstance)
             <a href="{{route('instances.show', $cut->preservationInstance->id)}}" class="detail-link">{{$cut->preservation_instance_id}}</a>
           @else
@@ -28,10 +28,10 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-4 col-xs-offset-1 detail-label">
+        <div class="col-sm-4 col-sm-offset-1 detail-label">
           Call Number
         </div>
-        <div class="col-xs-7 detail-value">
+        <div class="col-sm-7 detail-value">
           @if ($cut->item)
             <a href="{{route('items.show', $cut->item->id)}}" class="detail-link">{{$cut->call_number}}</a>
           @else
@@ -41,70 +41,70 @@
       </div>
       @if ($cut->side)
       <div class="row">
-        <div class="col-xs-4 col-xs-offset-1 detail-label">
+        <div class="col-sm-4 col-sm-offset-1 detail-label">
           Side
         </div>
-        <div class="col-xs-7 detail-value">
+        <div class="col-sm-7 detail-value">
           {{$cut->side}}
         </div>
       </div>
       @endif
       @if ($cut->cut_number)
       <div class="row">
-        <div class="col-xs-4 col-xs-offset-1 detail-label">
+        <div class="col-sm-4 col-sm-offset-1 detail-label">
           Cut Number
         </div>
-        <div class="col-xs-7 detail-value">
+        <div class="col-sm-7 detail-value">
           {{$cut->cut_number}}
         </div>
       </div>
       @endif
     </div>
     {{-- Right Column --}}
-    <div class="col-xs-6">
+    <div class="col-sm-6">
       @if ($cut->title)
       <div class="row">
-        <div class="col-xs-4 detail-label">
+        <div class="col-sm-4 detail-label">
           Title
         </div>
-        <div class="col-xs-8 detail-value">
+        <div class="col-sm-8 detail-value">
           {{$cut->title}}
         </div>
       </div>
       @endif
       @if ($cut->performer_composer)
       <div class="row">
-        <div class="col-xs-4 detail-label">
+        <div class="col-sm-4 detail-label">
           Performer Composer
         </div>
-        <div class="col-xs-8 detail-value">
+        <div class="col-sm-8 detail-value">
           {{$cut->performer_composer}}
         </div>
       </div>
       @endif
       @if ($cut->pm_start_time)
       <div class="row">
-        <div class="col-xs-4 detail-label">
+        <div class="col-sm-4 detail-label">
           PM Start Time
         </div>
-        <div class="col-xs-8 detail-value">
+        <div class="col-sm-8 detail-value">
           {{$cut->pm_start_time}}
         </div>
       </div>
       @endif
       <div class="row">
-        <div class="col-xs-4 detail-label">
+        <div class="col-sm-4 detail-label">
           Created On
         </div>
-        <div class="col-xs-8 detail-value">
+        <div class="col-sm-8 detail-value">
           {{$cut->createdOnDisplay}}
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-4 detail-label">
+        <div class="col-sm-4 detail-label">
           Updated On
         </div>
-        <div class="col-xs-8 detail-value">
+        <div class="col-sm-8 detail-value">
           {{$cut->updatedOnDisplay}}
         </div>
       </div>
@@ -114,12 +114,12 @@
   @include('shared._revisions', ['revisionable' => $cut])
 
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
       <hr class="after" />
     </div>
   </div>
   <div class="row last">
-    <div class="col-xs-12 actions">
+    <div class="col-sm-12 actions">
       <a class="btn btn-sm btn-secondary" role="button" href="{{ route('cuts.edit', $cut->id) }}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
       <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target=".confirm-delete-modal" style="outline: none; float: right;"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></button>
 

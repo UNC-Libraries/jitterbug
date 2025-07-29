@@ -1,11 +1,11 @@
   @if (count($item->preservationInstances) > 0 )
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
       <h6>Related Preservation Instances</h6>
     </div>
   </div>
   <div class="row related-container">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
       <table id="related-instances" class="table table-sm table-hover">
         <thead>
           <tr>
@@ -36,12 +36,12 @@
 
   @if (count($cuts) > 0 )
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
       <h6>Related Cuts</h6>
     </div>
   </div>
   <div class="row related-container">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
       <table id="related-cuts" class="table table-sm table-hover">
         <thead>
           <tr>

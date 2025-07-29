@@ -3,12 +3,12 @@
 @section('content')
 <div id="detail">
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
       {!! Breadcrumbs::render('instances.edit', $instance) !!}
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
       @if ($instance->batch())
         <h6>{{$instance->type}} Preservation Instance Details (editing {{$instance->count()}} instances)</h6>
       @else
@@ -29,10 +29,10 @@
   @endif
 
   <div class="row first detail-container">
-    <div class="col-xs-6">
+    <div class="col-sm-6">
       @include('instances._form-common')
     </div>
-    <div class="col-xs-6">
+    <div class="col-sm-6">
       {{-- Begin subclass fields --}}
       @if (get_class($instance->subclass) === 'Jitterbug\Models\AudioInstance')
         @include('instances._form-audio')
@@ -46,18 +46,18 @@
       {{-- End subclass fields --}}
       @if (!$instance->batch())
       <div class="row">
-        <div class="col-xs-4 detail-label">
+        <div class="col-sm-4 detail-label">
           Created On
         </div>
-        <div class="col-xs-8 detail-value">
+        <div class="col-sm-8 detail-value">
           {{$instance->createdOnDisplay}}
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-4 detail-label">
+        <div class="col-sm-4 detail-label">
           Updated On
         </div>
-        <div class="col-xs-8 detail-value">
+        <div class="col-sm-8 detail-value">
           {{$instance->updatedOnDisplay}}
         </div>
       </div>
@@ -70,12 +70,12 @@
   @endif
 
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
       <hr class="after"/>
     </div>
   </div>
   <div class="row last">
-    <div class="col-xs-12 actions">
+    <div class="col-sm-12 actions">
       <button class="btn btn-sm btn-primary" type="submit" style="outline: none;"><i class="fa fa-save" aria-hidden="true"></i> Save</button>
       @if (!$instance->batch())
         <a class="" href="{{ route('instances.show', $instance->id) }}">or Cancel</a>

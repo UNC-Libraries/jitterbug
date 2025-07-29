@@ -3,12 +3,12 @@
 @section('content')
   <div id="data-panel">
     <div class="row">
-      <div class="col-xs-12 m-t-1">
+      <div class="col-sm-12 m-t-1">
         <span class="well-lg"><h5><b>{{$format->name}}</b> Format</h5></span>
       </div>
     </div>
     <div class="row last">
-      <div class="col-xs-6 p-l-1 pull-left" style="width:50%">
+      <div class="col-sm-6 p-l-1 pull-left" style="width:50%">
         <div id="prefix-table" class="table-container dashboard-module" >
           <table class="table table-sm pull-left table-hover">
             <thead>
@@ -30,7 +30,7 @@
           </table>
         </div>
       </div>
-      <div class="col-xs-6 p-l-1 pull-right" style="width:40%">
+      <div class="col-sm-6 p-l-1 pull-right" style="width:40%">
         <div class="dashboard-module">
           <h6>Attach new prefixes</h6>
           <form class="form-inline" id="prefix-attach-form" data-format-id={{$format->id}}>

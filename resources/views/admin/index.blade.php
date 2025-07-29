@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="row">
-  <div id="table-panel" class="col-xs-3 panel">
+  <div id="table-panel" class="col-sm-3 panel">
     <h6>User Administration</h6>
     <ul class="table-list">
       <li>
@@ -114,7 +114,7 @@
       </li>
     </ul>
   </div>
-  <div id="record-panel" class="col-xs-9 panel">
+  <div id="record-panel" class="col-sm-9 panel">
     <div id="record-container">
       <div id="table-container">
         {{-- Need this empty table here for initial rendering of the page to avoid a twitch --}}

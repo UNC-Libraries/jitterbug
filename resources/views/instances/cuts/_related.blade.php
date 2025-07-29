@@ -1,11 +1,11 @@
   @if ($transfer !== null)
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
       <h6>Related Transfer</h6>
     </div>
   </div>
   <div class="row related-container">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
       <table id="related-transfers" class="table table-sm table-hover">
         <thead>
           <tr>

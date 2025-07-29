@@ -28,8 +28,8 @@
         </div>
         {{ html()->password('password')->class('form-control')->attribute('placeholder', 'Password') }}
       </div>
-      <div style="margin-top: 1.5rem; margin-bottom: 1.5rem">
-        <button type="submit" class="btn btn-primary btn-block" style="border: none">Sign In</button>
+      <div class="d-grid gap-2" style="margin-top: 1.5rem; margin-bottom: 1.5rem">
+        <button type="submit" class="btn btn-primary" style="border: none">Sign In</button>
       </div>
     </div>
   {{ html()->form()->close() }}
