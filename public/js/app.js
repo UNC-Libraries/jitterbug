@@ -1409,8 +1409,9 @@ jitterbug = {
   },
 
   initDatepicker: function() {
-    $('#detail .input-group.date').datepicker({
-      format: "yyyy-mm-dd"
+    flatpickr('#detail .input-group.date', {
+      dateFormat: 'Y-m-d',
+      wrap: true
     });
   },
 

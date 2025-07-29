@@ -1,9 +1,10 @@
-  <script type="text/javascript" src="{!! asset('js/jquery.min.js') !!}"></script>
-  <script type="text/javascript" src="{!! asset('js/tether.min.js') !!}"></script>
-  <script type="text/javascript" src="{!! asset('js/bootstrap-datepicker.min.js') !!}"></script>
-  <script type="text/javascript" src="{!! asset('js/charts.loader.min.js') !!}"></script>
-  <script type="text/javascript" src="{!! asset('js/chosen.jquery.min.js') !!}"></script>
-  <script type="text/javascript" src="{!! asset('js/jquery.dataTables.min.js') !!}"></script>
-  <script type="text/javascript" src="{!! asset('js/vendor.js') !!}"></script>
-  <script type="text/javascript" src="{!! asset('js/app.js') !!}"></script>
-  <script type="text/javascript" src="{!! asset('js/router.js') !!}"></script>
+  <link rel="stylesheet" href="{{ asset('css/flatpickr.min.css') }}">
+  <script src="{{ asset('js/jquery.min.js') }}"></script>
+  <script src="{{ asset('js/tether.min.js') }}"></script>
+  <script src="{{ asset('js/flatpickr.min.js') }}"></script>
+  <script src="{{ asset('js/charts.loader.min.js') }}"></script>
+  <script src="{{ asset('js/chosen.jquery.min.js') }}"></script>
+  <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+  <script src="{{ asset('js/vendor.js') }}"></script>
+  <script src="{{ asset('js/app.js') }}"></script>
+  <script src="{{ asset('js/router.js') }}"></script>
