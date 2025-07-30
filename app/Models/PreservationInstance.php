@@ -4,18 +4,21 @@ namespace Jitterbug\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Jitterbug\Util\DurationFormat;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class PreservationInstance extends Model
 {
+    use CompositeHistory;
+    use HasFactory;
+    use Markable;
     use NullFieldPreserver;
     use RevisionableTrait;
-    use CompositeHistory;
     use SoftDeletes;
-    use Markable;
-    use HasFactory;
 
     const BATCH_EDIT_MAX_LIMIT = 1000;
 
@@ -65,37 +68,37 @@ class PreservationInstance extends Model
         return false;
     }
 
-    public function item()
+    public function item(): BelongsTo
     {
         return $this->belongsTo(\Jitterbug\Models\AudioVisualItem::class, 'call_number', 'call_number');
     }
 
-    public function cuts()
+    public function cuts(): HasMany
     {
         return $this->hasMany(\Jitterbug\Models\Cut::class);
     }
 
-    public function transfers()
+    public function transfers(): HasMany
     {
         return $this->hasMany(\Jitterbug\Models\Transfer::class);
     }
 
-    public function department()
+    public function department(): BelongsTo
     {
         return $this->belongsTo(\Jitterbug\Models\Department::class);
     }
 
-    public function project()
+    public function project(): BelongsTo
     {
         return $this->belongsTo(\Jitterbug\Models\Project::class);
     }
 
-    public function reproductionMachine()
+    public function reproductionMachine(): BelongsTo
     {
         return $this->belongsTo(\Jitterbug\Models\ReproductionMachine::class);
     }
 
-    public function subclass()
+    public function subclass(): MorphTo
     {
         return $this->morphTo();
     }

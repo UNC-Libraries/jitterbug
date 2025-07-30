@@ -9,10 +9,10 @@ use Venturecraft\Revisionable\RevisionableTrait;
 
 class AudioItem extends Model
 {
+    use HasFactory;
     use NullFieldPreserver;
     use RevisionableTrait;
     use SoftDeletes;
-    use HasFactory;
 
     protected $revisionCreationsEnabled = true;
 

@@ -6,20 +6,16 @@ class FormatRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $required = '';
         // Only require if it's a new record
@@ -38,7 +34,7 @@ class FormatRequest extends Request
      *
      * @return array of messages
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             'name.required' => 'A format name is required.',

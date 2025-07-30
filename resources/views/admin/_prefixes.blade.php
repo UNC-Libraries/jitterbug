@@ -34,7 +34,7 @@
 
 {{--Need the surrounding div here to keep the form displaying inline--}}
 <div id="new-record-form" class="hidden">
-  <form class="form-inline">
+  <form class="d-flex flex-row align-items-center flex-wrap">
     <input type="text" name="label" class="form-control form-control-sm" maxlength="255" placeholder="Label" autocomplete="off" style="width: 250px;">
     {{ html()->select('collection_type_id', $collectionTypes)->class('form-control form-control-sm') }}
     Legacy?
@@ -45,7 +45,7 @@
 </div>
 
 <div id="edit-label-form" class="hidden">
-  <form class="form-inline">
+  <form class="d-flex flex-row align-items-center flex-wrap">
     <input type="text" name="label" class="form-control form-control-sm" maxlength="255" placeholder="Label" autocomplete="off" style="width: 250px;">
     <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
     <button class="btn btn-sm btn-secondary cancel-edit"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
@@ -53,7 +53,7 @@
 </div>
 
 <div id="edit-collection_type_id-form" class="hidden">
-  <form class="form-inline">
+  <form class="d-flex flex-row align-items-center flex-wrap">
     {{ html()->select('collection_type_id', $collectionTypes)->class('form-control form-control-sm')->data('field', 'collection_type_id') }}
     <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
     <button class="btn btn-sm btn-secondary cancel-edit"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
@@ -61,7 +61,7 @@
 </div>
 
 <div id="edit-legacy-form" class="hidden">
-  <form class="form-inline">
+  <form class="d-flex flex-row align-items-center flex-wrap">
     <input type="text" name="legacy" class="form-control form-control-sm" maxlength="255" placeholder="Legacy?" autocomplete="off" style="width: 250px;">
     <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
     <button class="btn btn-sm btn-secondary cancel-edit"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>

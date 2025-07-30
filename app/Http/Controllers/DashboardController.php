@@ -64,7 +64,7 @@ class DashboardController extends Controller
             $currentUser = Auth::user();
             $marks = DashboardMark::fromMarks(
                 Mark::where('user_id', $selectedMarksUserId)
-                ->orderBy('updated_at', 'desc')->get());
+                    ->orderBy('updated_at', 'desc')->get());
 
             return view('dashboard._marks',
                 compact('selectedMarksUserId', 'currentUser', 'marks'));

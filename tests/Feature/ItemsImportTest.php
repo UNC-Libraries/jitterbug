@@ -1,4 +1,5 @@
 <?php
+namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models\AudioVisualItem;
@@ -6,6 +7,7 @@ use Jitterbug\Models\Collection;
 use Jitterbug\Models\Format;
 use Jitterbug\Models\NewCallNumberSequence;
 use Jitterbug\Models\User;
+use TestCase;
 use Tests\Helpers\TestHelper;
 
 class ItemsImportTest extends TestCase
@@ -37,7 +39,7 @@ class ItemsImportTest extends TestCase
         $this->prefix = TestHelper::createAndAttachPrefix($this->collection1, $this->format);
     }
 
-    public function testItemsImportUpload(): void
+    public function test_items_import_upload(): void
     {
         $user = $this->user;
         $filePath = base_path('tests/import-test-files/items-import/small_items_import.csv');
@@ -55,16 +57,16 @@ class ItemsImportTest extends TestCase
         $this->assertFileExists("{$path}/{$filename}.csv");
     }
 
-    public function testItemsImportUploadExecuteWithErrors(): void
+    public function test_items_import_upload_execute_with_errors(): void
     {
         $user = $this->user;
         $filePath = base_path('tests/import-test-files/items-import/sample_items_import_mixed_errors.csv');
 
         $response = $this->actingAs($user)
-      ->withSession(['items-import-file' => $filePath])
-      ->post('/items/batch/audio-import-execute',
-          [],
-          ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+            ->withSession(['items-import-file' => $filePath])
+            ->post('/items/batch/audio-import-execute',
+                [],
+                ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
         $responseArray = json_decode($response->getContent(), true);
         // see if the response html includes the uploaded file error string
@@ -74,7 +76,7 @@ class ItemsImportTest extends TestCase
         $this->assertTrue($htmlContainsErrorMessage, 'The HTML in the response does not include the correct error notification.');
     }
 
-    public function testItemsImportNewUploadExecuteWithSuccess(): void
+    public function test_items_import_new_upload_execute_with_success(): void
     {
         NewCallNumberSequence::factory()->create([
             'prefix' => $this->prefix->label,
@@ -85,10 +87,10 @@ class ItemsImportTest extends TestCase
         $filePath = base_path('tests/import-test-files/items-import/small_items_import.csv');
 
         $response = $this->actingAs($user)
-      ->withSession(['items-import-file' => $filePath])
-      ->post('/items/batch/audio-import-execute',
-          [],
-          ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+            ->withSession(['items-import-file' => $filePath])
+            ->post('/items/batch/audio-import-execute',
+                [],
+                ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
         $responseArray = json_decode($response->getContent(), true);
         $htmlContainsSuccessMessage = strpos($responseArray['html'], 'Your import was successful!') !== false;
@@ -97,7 +99,7 @@ class ItemsImportTest extends TestCase
         $this->assertTrue($htmlContainsSuccessMessage, 'The HTML in the response does not include the correct success notification.');
     }
 
-    public function testItemsImportUpdateExecuteWithSuccess(): void
+    public function test_items_import_update_execute_with_success(): void
     {
         NewCallNumberSequence::factory()->create([
             'prefix' => $this->prefix->label,
@@ -108,10 +110,10 @@ class ItemsImportTest extends TestCase
         $filePath = base_path('tests/import-test-files/items-import/items_import_with_call_number.csv');
 
         $response = $this->actingAs($user)
-      ->withSession(['items-import-file' => $filePath])
-      ->post('/items/batch/audio-import-execute',
-          [],
-          ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+            ->withSession(['items-import-file' => $filePath])
+            ->post('/items/batch/audio-import-execute',
+                [],
+                ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
         $responseArray = json_decode($response->getContent(), true);
         $htmlContainsSuccessMessage = strpos($responseArray['html'], 'Your import was successful!') !== false;
@@ -120,7 +122,7 @@ class ItemsImportTest extends TestCase
         $this->assertTrue($htmlContainsSuccessMessage, 'The HTML in the response does not include the correct success notification.');
     }
 
-    public function testItemsImportUpdateActuallyUpdates(): void
+    public function test_items_import_update_actually_updates(): void
     {
         $avItem = $this->audioVisualItem1;
         NewCallNumberSequence::factory()->create([
@@ -132,26 +134,26 @@ class ItemsImportTest extends TestCase
         $filePath = base_path('tests/import-test-files/items-import/items_import_with_call_number.csv');
 
         $this->actingAs($user)
-      ->withSession(['items-import-file' => $filePath])
-      ->post('/items/batch/audio-import-execute',
-          [],
-          ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+            ->withSession(['items-import-file' => $filePath])
+            ->post('/items/batch/audio-import-execute',
+                [],
+                ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
         $updatedTitle = $avItem->fresh()->title;
 
         $this->assertEquals('Test open reel 1', $updatedTitle, "The audiovisual item's title was not updated.");
     }
 
-    public function testItemsImportValidationNoCallNumberSequence(): void
+    public function test_items_import_validation_no_call_number_sequence(): void
     {
         $user = $this->user;
         $filePath = base_path('tests/import-test-files/items-import/small_items_import.csv');
 
         $response = $this->actingAs($user)
-      ->withSession(['items-import-file' => $filePath])
-      ->post('/items/batch/audio-import-execute',
-          [],
-          ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+            ->withSession(['items-import-file' => $filePath])
+            ->post('/items/batch/audio-import-execute',
+                [],
+                ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
         $responseArray = json_decode($response->getContent(), true);
         $htmlContainsErrorMessage = strpos($responseArray['html'],
@@ -161,16 +163,16 @@ class ItemsImportTest extends TestCase
         $this->assertTrue($htmlContainsErrorMessage, 'The HTML in the response does not include the correct error notification.');
     }
 
-    public function testItemsImportValidationMustAlreadyExistInDatabase(): void
+    public function test_items_import_validation_must_already_exist_in_database(): void
     {
         $user = $this->user;
         $filePath = base_path('tests/import-test-files/items-import/sample_items_import_mixed_errors.csv');
 
         $response = $this->actingAs($user)
-      ->withSession(['items-import-file' => $filePath])
-      ->post('/items/batch/audio-import-execute',
-          [],
-          ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+            ->withSession(['items-import-file' => $filePath])
+            ->post('/items/batch/audio-import-execute',
+                [],
+                ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
         $responseArray = json_decode($response->getContent(), true);
         $htmlContainsErrorMessage = strpos($responseArray['html'],
@@ -180,7 +182,7 @@ class ItemsImportTest extends TestCase
         $this->assertTrue($htmlContainsErrorMessage, 'The HTML in the response does not include the correct error notification.');
     }
 
-    public function testItemsImportUpdateSetsAccessRestrictionInTitleCase(): void
+    public function test_items_import_update_sets_access_restriction_in_title_case(): void
     {
         $avItem = $this->audioVisualItem1;
         NewCallNumberSequence::factory()->create([
@@ -192,10 +194,10 @@ class ItemsImportTest extends TestCase
         $filePath = base_path('tests/import-test-files/items-import/items_import_with_call_number.csv');
 
         $this->actingAs($user)
-      ->withSession(['items-import-file' => $filePath])
-      ->post('/items/batch/audio-import-execute',
-          [],
-          ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+            ->withSession(['items-import-file' => $filePath])
+            ->post('/items/batch/audio-import-execute',
+                [],
+                ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
         $updatedAccessRestriction = $avItem->fresh()->access_restrictions;
 

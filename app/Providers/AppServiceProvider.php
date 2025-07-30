@@ -24,10 +24,8 @@ class AppServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         // For legacy support of Jitterbug, keep resource parameters plural
         Route::singularResourceParameters(false);
@@ -36,12 +34,11 @@ class AppServiceProvider extends ServiceProvider
         app('view')->composer('*', function ($view) {
             $route = app('request')->route();
             if ($route) {
-                $action = app('request')->route()->getAction();
+                $action = $route->getAction();
                 $controller = class_basename($action['controller']);
                 [$controller, $action] = explode('@', $controller);
                 // Remove controller from the end of the name
-                $controller =
-          substr($controller, 0, strlen($controller) - strlen('Controller'));
+                $controller = substr($controller, 0, strlen($controller) - strlen('Controller'));
                 $controller = Str::camel($controller);
                 $view->with(compact('controller', 'action'));
             }
@@ -69,10 +66,8 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         require_once __DIR__.'/../Http/helpers.php';
     }

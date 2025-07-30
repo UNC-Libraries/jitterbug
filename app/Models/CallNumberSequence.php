@@ -18,7 +18,7 @@ class CallNumberSequence extends Model
                   where('collection_id', '=', $collectionId)->first();
         if ($sequence === null) {
             if (in_array($prefix, self::ALWAYS_USE_NEW_STYLE)) {
-                $sequence = new NewCallNumberSequence();
+                $sequence = new NewCallNumberSequence;
                 $sequence->prefix = $prefix;
                 $sequence->collection_id = $collectionId;
                 $sequence->archival_identifier = $archivalIdentifier;

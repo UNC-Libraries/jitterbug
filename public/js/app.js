@@ -71,14 +71,14 @@ jitterbug = {
   },
 
   initSubmitButton: function() {
-    $('button[type="submit"]').click(function(event){
+    $('button[type="submit"]').on('click', function(event){
       $(this).attr('disabled', true);
       $(this).closest('form').submit();
     });
   },
 
   initSelectAll: function(allSelector, checkboxSelector) {
-    $(allSelector).change(function(event) {
+    $(allSelector).on('change', function(event) {
       // check all boxes if select all is clicked or vice versa
       if (this.checked) {
         $(checkboxSelector).each(function() {
@@ -92,7 +92,7 @@ jitterbug = {
     });
 
     // if all checkboxes are individually clicked, populate select all accordingly
-    $(checkboxSelector).change(function () {
+    $(checkboxSelector).on('change', function () {
       if ($(this).is(":checked")) {
         let isAllChecked = 0;
 
@@ -118,7 +118,7 @@ jitterbug = {
       sessionStorage.setItem('selectedAdminTable', 'users');
     }
     // Bind click handlers to each table radio button in the admin section
-    $('input[name=table]').click(function(event) {
+    $('input[name=table]').on('click', function(event) {
       let table = $(this).val(),
           resource = table.replace(/_/g, '-');
       // Get the records for the chosen table
@@ -215,7 +215,7 @@ jitterbug = {
 
   toggleLegacy: function() {
     let legacyCheckboxes = $('.legacy input:checkbox');
-    legacyCheckboxes.click(function(event) {
+    legacyCheckboxes.on('click', function(event) {
       let makeLegacy = $(this).is(':checked');
       let route = makeLegacy ? '/prefixes/set-legacy-status'
           : '/prefixes/remove-legacy-status';
@@ -237,7 +237,7 @@ jitterbug = {
       placement: 'bottom',
       html: true,
       content: $('#new-record-form').html()
-    }).click(function(event) {
+    }).on('click', function(event) {
       event.preventDefault();
       let button = this;
       // Because setting the container option is broken, we have to resort
@@ -393,7 +393,7 @@ jitterbug = {
       placement: 'bottom',
       html: true,
       content: $(formSelector).html()
-    }).click(function(event) {
+    }).on('click', function(event) {
       event.preventDefault();
       let fieldSpan = this;
 
@@ -490,7 +490,7 @@ jitterbug = {
   },
 
   bindAdminRecordDelete: function(resource, anchor) {
-    $(anchor).click(function(event) {
+    $(anchor).on('click', function(event) {
       event.preventDefault();
 
       let row = $(this).closest('tr');
@@ -575,7 +575,7 @@ jitterbug = {
   },
 
   bindFormatPrefixDetachment: function(anchor) {
-    $(anchor).click(function(event) {
+    $(anchor).on('click', function(event) {
       event.preventDefault();
 
       let row = $(this).closest('tr');
@@ -661,7 +661,7 @@ jitterbug = {
   },
 
   initDashboardActivityStream: function() {
-    $('.recent-activity li[role="button"]').click(function(event) {
+    $('.recent-activity li[role="button"]').on('click', function(event) {
       let type = $(this).data('object-type'),
           id = $(this).data('object-id');
       window.location.href='/' + type + 's/' + id;
@@ -704,13 +704,13 @@ jitterbug = {
   dataImported: false,
 
   initItemsNewButton: function() {
-    $('#items-new').click(function(event) {
+    $('#items-new').on('click', function(event) {
       jitterbug.tableSelection.clear();
     });
   },
 
   initItemsBatchMenu: function() {
-    $('#items-batch-edit').click(function(event) {
+    $('#items-batch-edit').on('click', function(event) {
       let tableSelection = jitterbug.tableSelection;
       let maxEditLimit = $(this).data('max-edit-limit');
       if (!jitterbug.validateBatchSelection(tableSelection, 'editing', maxEditLimit)) {
@@ -720,7 +720,7 @@ jitterbug = {
     });
 
     jitterbug.initDataExportModal('items');
-    $('#items-batch-export').click(function(event) {
+    $('#items-batch-export').on('click', function(event) {
       let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'exporting')) {
         return;
@@ -728,7 +728,7 @@ jitterbug = {
       jitterbug.openDataExportModal('items', tableSelection);
     });
 
-    $('#items-batch-mark').click(function(event) {
+    $('#items-batch-mark').on('click', function(event) {
       let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'marking', 100)) {
         return;
@@ -736,7 +736,7 @@ jitterbug = {
       jitterbug.batchMark('items', 'AudioVisualItem', tableSelection);
     });
 
-    $('#items-batch-unmark').click(function(event) {
+    $('#items-batch-unmark').on('click', function(event) {
       let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'unmarking', 100)) {
         return;
@@ -744,7 +744,7 @@ jitterbug = {
       jitterbug.batchUnmark('items', 'AudioVisualItem', tableSelection);
     });
 
-    $('#items-batch-delete').click(function(event) {
+    $('#items-batch-delete').on('click', function(event) {
       let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'deleting', 100)) {
         return;
@@ -753,7 +753,7 @@ jitterbug = {
       $('#batch-delete-form input[name="ids"]').val(tableSelection.selectedIds());
     });
 
-    $('#items-batch-items-import').click(function(event) {
+    $('#items-batch-items-import').on('click', function(event) {
       $('#items-import-modal').modal('toggle');
     });
   },
@@ -763,7 +763,7 @@ jitterbug = {
     jitterbug.initDataImportForm('items');
 
     // Click handlers for 'start over' links and buttons
-    $('#items-import-modal .reset').click(function(event) {
+    $('#items-import-modal .reset').on('click', function(event) {
       event.preventDefault();
       jitterbug.resetDataImportModal('items');
     });
@@ -810,7 +810,7 @@ jitterbug = {
   },
 
   initItemTypeControls: function() {
-    $('#detail #item-type-controls :radio').click(function(event) {
+    $('#detail #item-type-controls :radio').on('click', function(event) {
       if ($(this).val()=='AudioItem') {
         $('#audio-form').show();
         $('#film-form').hide();
@@ -828,7 +828,7 @@ jitterbug = {
   },
 
   initItemCallNumberGeneration: function() {
-    $('#collection-id, #format-id').change(function() {
+    $('#collection-id, #format-id').on('change', function() {
       let collectionId = $('#collection-id').val();
       let formatId = $('#format-id').val();
       if (collectionId.length && formatId.length) {
@@ -848,13 +848,13 @@ jitterbug = {
   },
 
   initInstancesNewButton: function() {
-    $('#instances-new').click(function(event) {
+    $('#instances-new').on('click', function(event) {
       jitterbug.tableSelection.clear();
     });
   },
 
   initInstancesBatchMenu: function() {
-    $('#instances-batch-edit').click(function(event) {
+    $('#instances-batch-edit').on('click', function(event) {
       let tableSelection = jitterbug.tableSelection;
       let maxEditLimit = $(this).data('max-edit-limit');
       if (!jitterbug.validateBatchSelection(tableSelection, 'editing', maxEditLimit)) {
@@ -864,7 +864,7 @@ jitterbug = {
     });
 
     jitterbug.initDataExportModal('instances');
-    $('#instances-batch-export').click(function(event) {
+    $('#instances-batch-export').on('click', function(event) {
       let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'exporting')) {
         return;
@@ -872,7 +872,7 @@ jitterbug = {
       jitterbug.openDataExportModal('instances', tableSelection);
     });
 
-    $('#instances-batch-mark').click(function(event) {
+    $('#instances-batch-mark').on('click', function(event) {
       let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'marking', 100)) {
         return;
@@ -880,7 +880,7 @@ jitterbug = {
       jitterbug.batchMark('instances', 'PreservationInstance', tableSelection);
     });
 
-    $('#instances-batch-unmark').click(function(event) {
+    $('#instances-batch-unmark').on('click', function(event) {
       let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'unmarking', 500)) {
         return;
@@ -888,7 +888,7 @@ jitterbug = {
       jitterbug.batchUnmark('instances', 'PreservationInstance', tableSelection);
     });
 
-    $('#instances-batch-delete').click(function(event) {
+    $('#instances-batch-delete').on('click', function(event) {
       let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'deleting', 100)) {
         return;
@@ -900,7 +900,7 @@ jitterbug = {
   },
 
   initInstanceTypeControls: function() {
-    $('#detail #instance-type-controls :radio').click(function(event) {
+    $('#detail #instance-type-controls :radio').on('click', function(event) {
       if ($(this).val()=='AudioInstance') {
         $('#audio-form').show();
         $('#film-form').hide();
@@ -918,20 +918,20 @@ jitterbug = {
   },
 
   initInstanceBatchCheckbox: function() {
-    $('#batch-checkbox').change(function(event) {
+    $('#batch-checkbox').on('change', function(event) {
       $('#fileName').attr('readonly', $(this).is(':checked'));
       $('#fileName').val('');
     });
   },
 
   initTransfersNewButton: function() {
-    $('#transfers-new').click(function(event) {
+    $('#transfers-new').on('click', function(event) {
       jitterbug.tableSelection.clear();
     });
   },
 
   initTransfersBatchMenu: function() {
-    $('#transfers-batch-edit').click(function(event) {
+    $('#transfers-batch-edit').on('click', function(event) {
       let tableSelection = jitterbug.tableSelection;
       let maxEditLimit = $(this).data('max-edit-limit');
       if (!jitterbug.validateBatchSelection(tableSelection, 'editing', maxEditLimit)) {
@@ -941,7 +941,7 @@ jitterbug = {
     });
 
     jitterbug.initDataExportModal('transfers');
-    $('#transfers-batch-export').click(function(event) {
+    $('#transfers-batch-export').on('click', function(event) {
       let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'exporting')) {
         return;
@@ -949,7 +949,7 @@ jitterbug = {
       jitterbug.openDataExportModal('transfers', tableSelection);
     });
 
-    $('#transfers-batch-mark').click(function(event) {
+    $('#transfers-batch-mark').on('click', function(event) {
       let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'marking', 100)) {
         return;
@@ -957,7 +957,7 @@ jitterbug = {
       jitterbug.batchMark('transfers', 'Transfer', tableSelection);
     });
 
-    $('#transfers-batch-unmark').click(function(event) {
+    $('#transfers-batch-unmark').on('click', function(event) {
       let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'unmarking', 500)) {
         return;
@@ -965,7 +965,7 @@ jitterbug = {
       jitterbug.batchUnmark('transfers', 'Transfer', tableSelection);
     });
 
-    $('#transfers-batch-delete').click(function(event) {
+    $('#transfers-batch-delete').on('click', function(event) {
       let tableSelection = jitterbug.tableSelection;
       if (!jitterbug.validateBatchSelection(tableSelection, 'deleting', 100)) {
         return;
@@ -974,17 +974,17 @@ jitterbug = {
       $('#batch-delete-form input[name="ids"]').val(tableSelection.selectedIds());
     });
 
-    $('#transfers-batch-audio-import').click(function(event) {
+    $('#transfers-batch-audio-import').on('click', function(event) {
       $('#audio-import-modal').modal('toggle');
     });
 
-    $('#transfers-batch-video-import').click(function(event) {
+    $('#transfers-batch-video-import').on('click', function(event) {
       $('#video-import-modal').modal('toggle');
     });
   },
 
   initTransferTypeControls: function() {
-    $('#detail #transfer-type-controls :radio').click(function(event) {
+    $('#detail #transfer-type-controls :radio').on('click', function(event) {
       if ($(this).val()=='AudioTransfer') {
         $('#audio-form').show();
         $('#film-form').hide();
@@ -1002,7 +1002,7 @@ jitterbug = {
   },
 
   initTransferCallNumberQuery: function() {
-    $('#preservation-instance-id').change(function() {
+    $('#preservation-instance-id').on('change', function() {
       let preservationInstanceId = $('#preservation-instance-id').val();
       if (preservationInstanceId.length) {
         query = {};
@@ -1020,7 +1020,7 @@ jitterbug = {
   },
 
   initBatchDeleteForm: function() {
-    $('#batch-delete-form button[type="submit"]').click(function() {
+    $('#batch-delete-form button[type="submit"]').on('click', function() {
       $(this).attr('clicked', 'true');
     });
     $('#batch-delete-form').submit( function(event) {
@@ -1038,7 +1038,7 @@ jitterbug = {
     jitterbug.initDataImportForm('audio');
 
     // Click handlers for 'start over' links and buttons
-    $('#audio-import-modal .reset').click(function(event) {
+    $('#audio-import-modal .reset').on('click', function(event) {
       event.preventDefault();
       jitterbug.resetDataImportModal('audio');
     });
@@ -1057,7 +1057,7 @@ jitterbug = {
     jitterbug.initDataImportForm('video');
 
     // Click handlers for 'start over' links and buttons
-    $('#video-import-modal .reset').click(function(event) {
+    $('#video-import-modal .reset').on('click', function(event) {
       event.preventDefault();
       jitterbug.resetDataImportModal('video');
     });
@@ -1072,7 +1072,7 @@ jitterbug = {
   },
 
   initFileSelect: function() {
-    $(':file').change(function() {
+    $(':file').on('change', function() {
       let input = $(this),
           fileName = input.val().replace(/\\/g, '/').replace(/.*\//, '');
       input.trigger('fileselect', fileName);
@@ -1354,7 +1354,7 @@ jitterbug = {
   },
 
   initMarkRibbon: function() {
-    $('.mark').click(function(event) {
+    $('.mark').on('click', function(event) {
       let mark = $(this);
       let data = {};
       data['markableType'] = mark.data('markable-type');
@@ -1409,8 +1409,9 @@ jitterbug = {
   },
 
   initDatepicker: function() {
-    $('#detail .input-group.date').datepicker({
-      format: "yyyy-mm-dd"
+    flatpickr('#detail .input-group.date', {
+      dateFormat: 'Y-m-d',
+      wrap: true
     });
   },
 
@@ -1423,17 +1424,17 @@ jitterbug = {
   // do with the addition of a 'reset' icon after they
   // have changed the value.
   initBatchEditMixed: function() {
-    $("input[value='<mixed>']").change(function() {
+    $("input[value='<mixed>']").on('change', function() {
       jitterbug.handleMixedValueChange(this);
     });
 
     $('textarea').filter(function () {
       return $(this).val() === '<mixed>';
-    }).change(function() {
+    }).on('change', function() {
       jitterbug.handleMixedValueChange(this);
     });
 
-    $('select:has(option[value="<mixed>"]:selected)').change(function() {
+    $('select:has(option[value="<mixed>"]:selected)').on('change', function() {
       jitterbug.handleMixedValueChange(this);
     });
   },
@@ -1454,7 +1455,7 @@ jitterbug = {
           </a>\
         </div>\
       ');
-      $('#' + linkId + '').click(function(event) {
+      $('#' + linkId + '').on('click', function(event) {
         $('#' + divId + '').remove();
         parent.removeClass('col-xs-6');
         parent.addClass('col-xs-7');
@@ -1502,7 +1503,7 @@ jitterbug = {
   },
 
   initRevisionHistory: function() {
-    $('.revision-history-title').click(function(event) {
+    $('.revision-history-title').on('click', function(event) {
       event.preventDefault();
       let icon = $('.revision-history-title i');
       if (icon.hasClass('fa-caret-right')) {
@@ -1517,19 +1518,19 @@ jitterbug = {
   },
 
   initRelatedPreservationInstances: function() {
-    $('#related-instances tr[role="button"]').click(function(event) {
+    $('#related-instances tr[role="button"]').on('click', function(event) {
       window.location.href='/instances/' + $(this).data('id');
     });
   },
 
   initRelatedCuts: function() {
-    $('#related-cuts tr[role="button"]').click(function(event) {
+    $('#related-cuts tr[role="button"]').on('click', function(event) {
       window.location.href='/cuts/' + $(this).data('id') + '?instanceId=' + $(this).data('instance');
     });
   },
 
   initRelatedTransfers: function() {
-    $('#related-transfers tr[role="button"]').click(function(event) {
+    $('#related-transfers tr[role="button"]').on('click', function(event) {
       window.location.href='/transfers/' + $(this).data('id');
     });
   },
@@ -1662,14 +1663,14 @@ jitterbug = {
             $.publish('dataLoaded');
 
             // Bind click handlers to all data table rows
-            $(dataSelector + ' tr[role="button"]').click(function(event) {
+            $(dataSelector + ' tr[role="button"]').on('click', function(event) {
               tableSelection.clear();
               tableSelection.render();
               window.location.href='/' + resource + '/' + $(this).data('id');
             });
 
             // Bind click handler to header row for sortable columns
-            $('#header-row').click(function(e) {
+            $('#header-row').on('click', function(e) {
               e.preventDefault();
               const column = e.target;
               const columnName = column.getAttribute('data-sort-column');
@@ -1692,19 +1693,19 @@ jitterbug = {
                       $(this).parent().hasClass('active')) {
                     return;
                   } else if ($(this).hasClass('prev-page')) {
-                    $(this).click(function(event){
+                    $(this).on('click', function(event){
                       event.preventDefault();
                       tableParams.setPage(currentPage - 1);
                       executeQuery(sortColumn, sortDirection);
                     });
                   } else if ($(this).hasClass('next-page')) {
-                    $(this).click(function(event){
+                    $(this).on('click', function(event){
                       event.preventDefault();
                       tableParams.setPage(currentPage + 1);
                       executeQuery(sortColumn, sortDirection);
                     });
                   } else {
-                    $(this).click(function(event){
+                    $(this).on('click', function(event){
                       event.preventDefault();
                       tableParams.setPage($(this).text().trim());
                       executeQuery(sortColumn, sortDirection);
@@ -1809,7 +1810,7 @@ jitterbug = {
 
           // Hook up the clear search link
           let clearLink = $(selector).next().find('a');
-          clearLink.click(function(event) {
+          clearLink.on('click', function(event) {
             event.preventDefault();
             $(selector).next().find('i').hide();
             $(selector).val('');
@@ -2010,7 +2011,7 @@ jitterbug = {
 
         init = function() {
           $.each(checkboxes, function(i, checkbox) {
-            $(checkbox).click(function(event) {
+            $(checkbox).on('click', function(event) {
               // If this is an 'Any' checkbox
               if ($(this).is(checkboxes[0])) {
 
@@ -2048,7 +2049,7 @@ jitterbug = {
             });
           });
           $.each(radioButtons, function(i, radioButton) {
-            $(radioButton).click(function(event) {
+            $(radioButton).on('click', function(event) {
               $.publish('filterChanged');
             });
           });
@@ -2126,7 +2127,7 @@ jitterbug = {
                   ' <a id="' + listType() + '-clear-selection" href="#" style="color: #fff">\
                 <i class="fa fa-times-circle" aria-hidden="true"></i>\
               </a>');
-              $('#' + listType() + '-clear-selection').click(function(event) {
+              $('#' + listType() + '-clear-selection').on('click', function(event) {
                 event.preventDefault();
                 // Turn on the 'Any' filter
                 setSelected(['0']);
@@ -2205,7 +2206,7 @@ jitterbug = {
           });
 
           // Bind click handlers to all data table rows
-          dataTableRows.click(function(event) {
+          dataTableRows.on('click', function(event) {
             // The index of the Solr search result
             let index = $(this).data('index');
             // The id of the record at the index
@@ -2273,7 +2274,7 @@ jitterbug = {
                 ' <a id="clear-selection" href="#" style="color: #fff">\
                     <i class="fa fa-times-circle" aria-hidden="true"></i>\
                   </a>');
-            $('#clear-selection').click(function(event) {
+            $('#clear-selection').on('click', function(event) {
               event.preventDefault();
               clear();
               render();
@@ -2529,9 +2530,10 @@ jitterbug = {
           // Binding click events to the radio buttons themselves didn't work,
           // because Bootstrap was not propagating events, so we're binding to
           // the labels instead.
-          $(filtersSelector).click(function(event) {
+          $(filtersSelector).on('click',function(event) {
             event.preventDefault();
             currentFilter = $(this).data('filter');
+            updateFilterHighlighting();
             // when the filter changes, deselect all marks
             deselectAllMarks();
             store();
@@ -2539,7 +2541,7 @@ jitterbug = {
           });
 
           // Hook up user selection drop down
-          $(usersSelector).click(function(event) {
+          $(usersSelector).on('click', function(event) {
             event.preventDefault();
             selectedUserId = $(this).data('user-id');
             store();
@@ -2551,16 +2553,10 @@ jitterbug = {
             currentFilter = 'all';
             $(filtersSelector).first().addClass('active');
           } else {
-            $(filtersSelector).each(function() {
-              if (currentFilter == $(this).data('filter')) {
-                $(this).addClass('active');
-              } else {
-                $(this).removeClass('active');
-              }
-            });
+            updateFilterHighlighting();
           }
           // set up delete marks button
-          $('.delete-marks button').click(function() {
+          $('.delete-marks button').on('click', function() {
             let size = $('input.delete-checkbox:checkbox:checked').length;
             if (confirm('Are you sure you want to delete ' + size + ' marks?')) {
               deleteMarks();
@@ -2568,6 +2564,16 @@ jitterbug = {
           });
 
           getMarks();
+        },
+
+        updateFilterHighlighting = function() {
+          $(filtersSelector).each(function() {
+            if (currentFilter === $(this).data('filter')) {
+              $(this).addClass('active');
+            } else {
+              $(this).removeClass('active');
+            }
+          });
         },
 
         getMarks = function() {
@@ -2633,14 +2639,14 @@ jitterbug = {
 
         link = function() {
           // Hook up individual marks to their associated objects
-          $(marksSelector).click(function(event) {
+          $(marksSelector). on('click',function(event) {
             let type = $(this).data('object-type'),
                 id = $(this).data('object-id');
             window.location.href='/' + type + 's/' + id;
           });
 
           // unlink delete checkboxes from the associated objects
-          $('.delete-checkbox').click(function(event) {
+          $('.delete-checkbox').on('click', function(event) {
             event.stopImmediatePropagation();
           });
         },

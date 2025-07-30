@@ -4,15 +4,16 @@ namespace Jitterbug\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class AudioInstance extends Model
 {
+    use HasFactory;
     use NullFieldPreserver;
     use RevisionableTrait;
     use SoftDeletes;
-    use HasFactory;
 
     protected $revisionCreationsEnabled = true;
 
@@ -38,17 +39,17 @@ class AudioInstance extends Model
         return $this->morphOne('PreservationInstance', 'subclass')->withTrashed();
     }
 
-    public function tapeBrand()
+    public function tapeBrand(): BelongsTo
     {
         return $this->belongsTo(\Jitterbug\Models\TapeBrand::class);
     }
 
-    public function pmSpeed()
+    public function pmSpeed(): BelongsTo
     {
         return $this->belongsTo(\Jitterbug\Models\PmSpeed::class);
     }
 
-    public function samplingRate()
+    public function samplingRate(): BelongsTo
     {
         return $this->belongsTo(\Jitterbug\Models\SamplingRate::class);
     }

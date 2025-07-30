@@ -3,24 +3,24 @@
 @section('content')
 <div id="dashboard">
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
       <h6>Overview</h6>
     </div>
   </div>
   <div class="row overview">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
       <div class="row">
-        <div class="col-xs-4 centered">
+        <div class="col-sm-4 centered">
           <div id="item-chart" class="chart" data-counts="{{$itemCounts->counts()}}"></div>
           <h1>{{$itemCounts->total()}}</h1>
           <p>Audio Visual Items</p>
         </div>
-        <div class="col-xs-4 centered">
+        <div class="col-sm-4 centered">
           <div id="instance-chart" class="chart" data-counts="{{$instanceCounts->counts()}}"></div>
           <h1>{{$instanceCounts->total()}}</h1>
           <p>Preservation Instances</p>
         </div>
-        <div class="col-xs-4 centered">
+        <div class="col-sm-4 centered">
           <div id="transfer-chart" class="chart" data-counts="{{$transferCounts->counts()}}"></div>
           <h1>{{$transferCounts->total()}}</h1>
           <p>Transfers</p>
@@ -29,7 +29,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-6">
+    <div class="col-sm-6">
       <h6>Recent Activity</h6>
       <div class="dashboard-module">
         <div class="recent-activity-module">
@@ -63,24 +63,24 @@
         </div>
       </div>
     </div>
-    <div class="col-xs-6">
+    <div class="col-sm-6">
       <h6>Marks</h6>
       <div class="dashboard-module">
         <div class="marks-module">
 
           <div class="marks-controls">
             <div id="marks-filters" class="btn-group" data-toggle="buttons">
-              <label class="btn btn-sm btn-secondary" data-filter='all' title="Show all marks">
-                <input type="radio" name="marks-filter" value="all" checked="checked"><i class="fa fa-bookmark" aria-hidden="true"></i>
+              <label class="btn btn-sm btn-secondary form-label" data-filter='all' title="Show all marks">
+                <input class="btn-check" type="radio" name="marks-filter" value="all" checked="checked"><i class="fa fa-bookmark" aria-hidden="true"></i>
               </label>
-              <label class="btn btn-sm btn-secondary" data-filter='item' title="Show item marks">
-                <input type="radio" name="marks-filter" value="item"><i class="fa fa-headphones fa-fw" aria-hidden="true"></i>
+              <label class="btn btn-sm btn-secondary form-label" data-filter='item' title="Show item marks">
+                <input class="btn-check" type="radio" name="marks-filter" value="item"><i class="fa fa-headphones fa-fw" aria-hidden="true"></i>
               </label>
-              <label class="btn btn-sm btn-secondary" data-filter='instance' title="Show instance marks">
-                <input type="radio" name="marks-filter" value="instance"><i class="fa fa-database fa-fw" aria-hidden="true"></i>
+              <label class="btn btn-sm btn-secondary form-label" data-filter='instance' title="Show instance marks">
+                <input class="btn-check" type="radio" name="marks-filter" value="instance"><i class="fa fa-database fa-fw" aria-hidden="true"></i>
               </label>
-              <label class="btn btn-sm btn-secondary" data-filter='transfer' title="Show transfer marks">
-                <input type="radio" name="marks-filter" value="transfer"><i class="fa fa-exchange fa-fw" aria-hidden="true"></i>
+              <label class="btn btn-sm btn-secondary form-label" data-filter='transfer' title="Show transfer marks">
+                <input class="btn-check" type="radio" name="marks-filter" value="transfer"><i class="fa fa-exchange fa-fw" aria-hidden="true"></i>
               </label>
             </div>
 

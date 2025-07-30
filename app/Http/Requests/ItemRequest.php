@@ -6,20 +6,16 @@ class ItemRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         // Add rules for base audio visual item
         $rules = [];
@@ -53,7 +49,7 @@ class ItemRequest extends Request
             $this->addRuleIfNotMixed($rules, 'subclass.track_configuration', 'max:100');
             $this->addRuleIfNotMixed($rules, 'subclass.audio_base', 'max:100');
             $this->addRuleIfNotMixed($rules, 'subclass.audio_content_description', 'max:1000');
-        // Add rules for film items
+            // Add rules for film items
         } elseif ($subclassType === 'FilmItem') {
             $this->addRuleIfNotMixed($rules, 'subclass.film_element', 'max:255');
             $this->addRuleIfNotMixed($rules, 'subclass.film_base', 'required|max:255');
@@ -65,7 +61,7 @@ class ItemRequest extends Request
             $this->addRuleIfNotMixed($rules, 'subclass.can_number', 'integer|digits_between:0,6');
             $this->addRuleIfNotMixed($rules, 'subclass.condition', 'max:255');
             $this->addRuleIfNotMixed($rules, 'subclass.film_content_description', 'max:1000');
-        // Add rules for video items
+            // Add rules for video items
         } elseif ($subclassType === 'VideoItem') {
             $this->addRuleIfNotMixed($rules, 'subclass.video_element', 'max:255');
             $this->addRuleIfNotMixed($rules, 'subclass.video_color', 'max:255');
@@ -81,7 +77,7 @@ class ItemRequest extends Request
      *
      * @return array of messages
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             // Messages for audio visual item fields

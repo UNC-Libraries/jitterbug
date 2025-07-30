@@ -1,4 +1,5 @@
 <?php
+namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models\AudioItem;
@@ -7,6 +8,7 @@ use Jitterbug\Models\Department;
 use Jitterbug\Models\PlaybackMachine;
 use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Models\User;
+use TestCase;
 
 class TransferAudioImportsTest extends TestCase
 {
@@ -39,7 +41,7 @@ class TransferAudioImportsTest extends TestCase
         AudioVisualItem::factory()->create(['speed' => '78 rpm']);
     }
 
-    public function testAudioImportUpload(): void
+    public function test_audio_import_upload(): void
     {
         $user = $this->user;
         $filePath = base_path('tests/import-test-files/audio-import/sample_audio_import_missing_original_pm_column.csv');
@@ -57,16 +59,16 @@ class TransferAudioImportsTest extends TestCase
         $this->assertFileExists("{$path}/{$filename}.csv");
     }
 
-    public function testAudioImportUploadExecuteWithErrors(): void
+    public function test_audio_import_upload_execute_with_errors(): void
     {
         $user = $this->user;
         $filePath = base_path('tests/import-test-files/audio-import/small_import_non_validated.csv');
 
         $response = $this->actingAs($user)
-                     ->withSession(['audio-import-file' => $filePath])
-                     ->post('/transfers/batch/audio-import-execute',
-                         [],
-                         ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+            ->withSession(['audio-import-file' => $filePath])
+            ->post('/transfers/batch/audio-import-execute',
+                [],
+                ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
         $responseArray = json_decode($response->getContent(), true);
         // see if the response html includes the uploaded file error string
@@ -76,16 +78,16 @@ class TransferAudioImportsTest extends TestCase
         $this->assertTrue($htmlContainsErrorMessage, 'The HTML in the response does not include the correct error notification.');
     }
 
-    public function testAudioImportUploadExecuteWithSuccess(): void
+    public function test_audio_import_upload_execute_with_success(): void
     {
         $user = $this->user;
         $filePath = base_path('tests/import-test-files/audio-import/small_upload_file_no_errors.csv');
 
         $response = $this->actingAs($user)
-                       ->withSession(['audio-import-file' => $filePath])
-                       ->post('/transfers/batch/audio-import-execute',
-                           [],
-                           ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+            ->withSession(['audio-import-file' => $filePath])
+            ->post('/transfers/batch/audio-import-execute',
+                [],
+                ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
         $responseArray = json_decode($response->getContent(), true);
         $htmlContainsSuccessMessage = strpos($responseArray['html'], 'Your import was successful!') !== false;
@@ -94,17 +96,17 @@ class TransferAudioImportsTest extends TestCase
         $this->assertTrue($htmlContainsSuccessMessage, 'The HTML in the response does not include the correct success notification.');
     }
 
-    public function testAudioImportUploadUpdateSizeWithSuccess(): void
+    public function test_audio_import_upload_update_size_with_success(): void
     {
         $user = $this->user;
         $avItem = $this->audioVisualItem1;
         $filePath = base_path('tests/import-test-files/audio-import/small_upload_file_no_errors.csv');
 
         $response = $this->actingAs($user)
-                     ->withSession(['audio-import-file' => $filePath])
-                     ->post('/transfers/batch/audio-import-execute',
-                         [],
-                         ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+            ->withSession(['audio-import-file' => $filePath])
+            ->post('/transfers/batch/audio-import-execute',
+                [],
+                ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
         $responseArray = json_decode($response->getContent(), true);
         $audioItem = $avItem->subclass;
@@ -113,17 +115,17 @@ class TransferAudioImportsTest extends TestCase
         $this->assertEquals('7"', $audioItem->size, 'The size column in the related AudioItem was not set correctly.');
     }
 
-    public function testAudioImportUploadUpdateTrackConfigWithSuccess(): void
+    public function test_audio_import_upload_update_track_config_with_success(): void
     {
         $user = $this->user;
         $avItem = $this->audioVisualItem1;
         $filePath = base_path('tests/import-test-files/audio-import/small_upload_file_no_errors.csv');
 
         $response = $this->actingAs($user)
-      ->withSession(['audio-import-file' => $filePath])
-      ->post('/transfers/batch/audio-import-execute',
-          [],
-          ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+            ->withSession(['audio-import-file' => $filePath])
+            ->post('/transfers/batch/audio-import-execute',
+                [],
+                ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
         $responseArray = json_decode($response->getContent(), true);
         $audioItem = $avItem->subclass;
@@ -133,17 +135,17 @@ class TransferAudioImportsTest extends TestCase
             'The track configuration column in the related AudioItem was not set correctly.');
     }
 
-    public function testAudioImportUploadUpdateBaseWithSuccess(): void
+    public function test_audio_import_upload_update_base_with_success(): void
     {
         $user = $this->user;
         $avItem = $this->audioVisualItem1;
         $filePath = base_path('tests/import-test-files/audio-import/small_upload_file_no_errors.csv');
 
         $response = $this->actingAs($user)
-      ->withSession(['audio-import-file' => $filePath])
-      ->post('/transfers/batch/audio-import-execute',
-          [],
-          ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+            ->withSession(['audio-import-file' => $filePath])
+            ->post('/transfers/batch/audio-import-execute',
+                [],
+                ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
         $responseArray = json_decode($response->getContent(), true);
         $audioItem = $avItem->subclass;
@@ -153,26 +155,26 @@ class TransferAudioImportsTest extends TestCase
             'The base column in the related AudioItem was not set correctly.');
     }
 
-    public function testAudioImportUploadUpdateSpeedWithSuccess(): void
+    public function test_audio_import_upload_update_speed_with_success(): void
     {
         $user = $this->user;
         $avItem = $this->audioVisualItem1;
         $filePath = base_path('tests/import-test-files/audio-import/small_upload_file_no_errors.csv');
 
         $response = $this->actingAs($user)
-      ->withSession(['audio-import-file' => $filePath])
-      ->post('/transfers/batch/audio-import-execute',
-          [],
-          ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+            ->withSession(['audio-import-file' => $filePath])
+            ->post('/transfers/batch/audio-import-execute',
+                [],
+                ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
         $responseArray = json_decode($response->getContent(), true);
-        $avItemInDb = Jitterbug\Models\AudioVisualItem::find($avItem->id);
+        $avItemInDb = AudioVisualItem::find($avItem->id);
         $this->assertEquals('success', $responseArray['status'], "The JSON status should be 'success'.");
         $this->assertEquals('78 rpm', $avItemInDb->speed,
             'The speed column in the AudioVisualItem entry was not set correctly.');
     }
 
-    public function testAudioImportUploadUpdateWithUnusedHeadersMissing(): void
+    public function test_audio_import_upload_update_with_unused_headers_missing(): void
     {
         $user = $this->user;
         PreservationInstance::factory()->create(['id' => 82143, 'call_number' => 'FT-6708']);
@@ -181,10 +183,10 @@ class TransferAudioImportsTest extends TestCase
         $filePath = base_path('tests/import-test-files/audio-import/sample_audio_import_update_missing_headers.csv');
 
         $response = $this->actingAs($user)
-      ->withSession(['audio-import-file' => $filePath])
-      ->post('/transfers/batch/audio-import-execute',
-          [],
-          ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+            ->withSession(['audio-import-file' => $filePath])
+            ->post('/transfers/batch/audio-import-execute',
+                [],
+                ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
         $responseArray = json_decode($response->getContent(), true);
         $htmlContainsSuccessMessage = strpos($responseArray['html'], 'Your import was successful!') !== false;
@@ -193,7 +195,7 @@ class TransferAudioImportsTest extends TestCase
         $this->assertTrue($htmlContainsSuccessMessage, 'The HTML in the response does not include the correct success notification.');
     }
 
-    public function testAudioImportUploadUpdateDoesNotUpdateBlankValues(): void
+    public function test_audio_import_upload_update_does_not_update_blank_values(): void
     {
         $user = $this->user;
         $preservationInstance = PreservationInstance::factory()->create(['id' => 82143, 'call_number' => 'FT-6708']);
@@ -203,10 +205,10 @@ class TransferAudioImportsTest extends TestCase
         $filePath = base_path('tests/import-test-files/audio-import/sample_audio_import_update_missing_headers.csv');
 
         $this->actingAs($user)
-      ->withSession(['audio-import-file' => $filePath])
-      ->post('/transfers/batch/audio-import-execute',
-          [],
-          ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+            ->withSession(['audio-import-file' => $filePath])
+            ->post('/transfers/batch/audio-import-execute',
+                [],
+                ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
         $preservationInstance->refresh();
 
         $this->assertEquals($originalFileName, $preservationInstance->file_name, 'The filename should be unchanged.');

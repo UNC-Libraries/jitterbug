@@ -3,12 +3,12 @@
 @section('content')
 <div id="detail">
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
       {!! Breadcrumbs::render('items.create') !!}
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
       <h6>Create Audio Visual Item</h6>
     </div>
   </div>
@@ -17,7 +17,7 @@
 
   <div class="row first detail-container">
     <div class="row">
-      <div class="col-xs-12 preform">
+      <div class="col-sm-12 preform">
         <span id="item-type-controls">
           <span style="margin-right: .75rem">
             {{ html()->label('Item Type: ', 'subclass_type')->class('form-control-label') }}
@@ -56,16 +56,16 @@
     </div>
 
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-sm-12">
         <hr class="after"/>
       </div>
     </div>
     
     <div class="row">
-      <div class="col-xs-6">
+      <div class="col-sm-6">
         @include('items._form-common')
       </div>
-      <div class="col-xs-6">
+      <div class="col-sm-6">
         {{-- Begin subclass fields --}}
         <div id="audio-form" @if (old('subclass_type') !== null && old('subclass_type') !== 'AudioItem') style="display: none;" @endif>
           @include('items._form-audio')
@@ -82,12 +82,12 @@
   </div>
 
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
       <hr class="after"/>
     </div>
   </div>
   <div class="row last">
-    <div class="col-xs-12 actions">
+    <div class="col-sm-12 actions">
       <button class="btn btn-sm btn-primary" type="submit" style="outline: none;"><i class="fa fa-save" aria-hidden="true"></i> Save</button>
       <a class="" href="{{ route('items.index') }}">or Cancel</a>
     </div>

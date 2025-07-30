@@ -2,20 +2,21 @@
 
 namespace Jitterbug\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\Access\Authorizable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
-use LdapRecord\Laravel\Auth\LdapAuthenticatable;
 use LdapRecord\Laravel\Auth\AuthenticatesWithLdap;
+use LdapRecord\Laravel\Auth\LdapAuthenticatable;
 
-class User extends Authenticatable implements LdapAuthenticatable, AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
+class User extends Authenticatable implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract, LdapAuthenticatable
 {
-    use Notifiable, Authorizable, AuthenticatesWithLdap, HasFactory;
+    use AuthenticatesWithLdap, Authorizable, HasFactory, Notifiable;
 
     /**
      * The database table used by the model.
@@ -46,9 +47,9 @@ class User extends Authenticatable implements LdapAuthenticatable, Authenticatab
     /**
      * Return the marks for this user.
      */
-    public function marks()
+    public function marks(): HasMany
     {
-        return $this->hasMany(\Jitterbug\Models\Mark::class);
+        return $this->hasMany(Mark::class);
     }
 
     /**
@@ -96,9 +97,6 @@ class User extends Authenticatable implements LdapAuthenticatable, Authenticatab
     /**
      * Return a list of engineer users, suitable for use in dropdown
      * menus.
-     *
-     * @param $originalUserId
-     * @return array
      */
     public static function engineerList($originalUserId = null): array
     {

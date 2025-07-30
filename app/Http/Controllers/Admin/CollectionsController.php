@@ -63,9 +63,9 @@ class CollectionsController extends Controller
                 // Since this is a new collection, create new sequences
                 // for all prefixes with the same collection type ID
                 $results = DB::table('prefixes')->select('label')
-                                        ->where('collection_type_id', '=', $collection->collection_type_id)
-                                        ->distinct()
-                                        ->get();
+                    ->where('collection_type_id', '=', $collection->collection_type_id)
+                    ->distinct()
+                    ->get();
                 foreach ($results as $result) {
                     $prefix = $result->label;
                     $sequence = new NewCallNumberSequence;
@@ -97,7 +97,7 @@ class CollectionsController extends Controller
                 DB::transaction(function () use ($id, $collection, &$affectedItems) {
                     if ($collection->isDirty('archival_identifier')) {
                         NewCallNumberSequence::where('collection_id', $id)
-              ->update(['archival_identifier' => $collection->archival_identifier]);
+                            ->update(['archival_identifier' => $collection->archival_identifier]);
                     }
 
                     $collection->save();
@@ -132,7 +132,7 @@ class CollectionsController extends Controller
 
                 return response()->json($response);
             } else {
-                $bag = new MessageBag();
+                $bag = new MessageBag;
                 $bag->add('status', 'Looks like that collection is currently in use. '.
           'Remove audio visual items from the collection before deleting.');
                 $response = $bag;

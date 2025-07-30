@@ -6,10 +6,8 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         DB::statement('
         CREATE OR REPLACE VIEW audio_visual_item_collections AS 
@@ -190,10 +188,8 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         DB::statement('DROP VIEW IF EXISTS audio_visual_item_collections');
         DB::statement('DROP VIEW IF EXISTS audio_visual_item_formats');

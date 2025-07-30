@@ -4,15 +4,16 @@ namespace Jitterbug\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Cut extends Model
 {
+    use HasFactory;
     use NullFieldPreserver;
     use RevisionableTrait;
     use SoftDeletes;
-    use HasFactory;
 
     protected $revisionFormattedFields = [
         'side' => 'isEmpty:nothing|%s',
@@ -36,17 +37,17 @@ class Cut extends Model
 
     protected $revisionCreationsEnabled = true;
 
-    public function item()
+    public function item(): BelongsTo
     {
         return $this->belongsTo(\Jitterbug\Models\AudioVisualItem::class, 'call_number', 'call_number');
     }
 
-    public function preservationInstance()
+    public function preservationInstance(): BelongsTo
     {
         return $this->belongsTo(\Jitterbug\Models\PreservationInstance::class);
     }
 
-    public function transfer()
+    public function transfer(): BelongsTo
     {
         return $this->belongsTo(\Jitterbug\Models\Transfer::class);
     }

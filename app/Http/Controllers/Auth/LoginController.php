@@ -52,16 +52,15 @@ class LoginController extends Controller
     /**
      * Get the failed login response instance.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     protected function sendFailedLoginResponse(Request $request)
     {
         return redirect()->back()
-      ->withInput($request->only($this->username(), 'remember'))
-      ->withErrors([
-          'failedLogin' => 'Invalid Onyen or Password',
-      ]);
+            ->withInput($request->only($this->username(), 'remember'))
+            ->withErrors([
+                'failedLogin' => 'Invalid Onyen or Password',
+            ]);
     }
 
     /**
@@ -83,6 +82,10 @@ class LoginController extends Controller
         return [
             'samaccountname' => $request->get('username'),
             'password' => $request->get('password'),
+            'fallback' => [
+                'username' => $request->get('username'),
+                'password' => $request->get('password')
+            ],
         ];
     }
 }

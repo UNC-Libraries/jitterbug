@@ -10,22 +10,21 @@ class UsersTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         if (env('APP_ENV') !== 'production') {
             $password = Hash::make(env('ADMIN_USER_PASSWORD'));
-            $users[] = [
+            User::updateOrCreate([
+                'username' => 'admin',
+            ], [
                 'first_name' => 'Dev',
                 'last_name' => 'Admin',
                 'email' => 'admin@jitterbug.com',
                 'admin' => 1,
-                'username' => 'dev-admin',
+                'username' => 'admin',
                 'password' => $password,
-            ];
-            User::insert($users);
+            ]);
         }
     }
 }

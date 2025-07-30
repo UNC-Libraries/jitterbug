@@ -4,17 +4,20 @@ namespace Jitterbug\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class AudioVisualItem extends Model
 {
+    use CompositeHistory;
+    use HasFactory;
+    use Markable;
     use NullFieldPreserver;
     use RevisionableTrait;
-    use CompositeHistory;
     use SoftDeletes;
-    use Markable;
-    use HasFactory;
 
     const BATCH_EDIT_MAX_LIMIT = 1000;
 
@@ -71,7 +74,7 @@ class AudioVisualItem extends Model
     public function __construct($attributes = [])
     {
         $this->subclass_type = 'AudioItem';
-        $this->entry_date = (new \DateTime())->format('Y-m-d');
+        $this->entry_date = (new \DateTime)->format('Y-m-d');
         parent::__construct($attributes);
     }
 
@@ -80,29 +83,29 @@ class AudioVisualItem extends Model
         return false;
     }
 
-    public function collection()
+    public function collection(): BelongsTo
     {
         return $this->belongsTo(\Jitterbug\Models\Collection::class);
     }
 
-    public function format()
+    public function format(): BelongsTo
     {
         return $this->belongsTo(\Jitterbug\Models\Format::class);
     }
 
-    public function preservationInstances()
+    public function preservationInstances(): HasMany
     {
         return $this->hasMany(\Jitterbug\Models\PreservationInstance::class,
             'call_number', 'call_number');
     }
 
-    public function cuts()
+    public function cuts(): HasMany
     {
         return $this->hasMany(\Jitterbug\Models\Cut::class,
             'call_number', 'call_number');
     }
 
-    public function subclass()
+    public function subclass(): MorphTo
     {
         return $this->morphTo();
     }

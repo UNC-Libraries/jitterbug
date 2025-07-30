@@ -1,9 +1,11 @@
 <?php
+namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models\Format;
 use Jitterbug\Models\Prefix;
 use Jitterbug\Models\User;
+use TestCase;
 
 class FormatsTest extends TestCase
 {
@@ -23,7 +25,7 @@ class FormatsTest extends TestCase
         $this->prefix = Prefix::factory()->create();
     }
 
-    public function testAttachPrefixes()
+    public function test_attach_prefixes(): void
     {
         $adminUser = $this->adminUser;
         $format = $this->format;
@@ -41,7 +43,7 @@ class FormatsTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
     }
 
-    public function testDetachPrefixes()
+    public function test_detach_prefixes(): void
     {
         $adminUser = $this->adminUser;
         $format = $this->format;

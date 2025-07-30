@@ -37,7 +37,7 @@ class AutoIncrementCollectionIds extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
         $bar = $this->output->createProgressBar(100);
         $collections = Collection::withTrashed()->get();
@@ -56,40 +56,42 @@ class AutoIncrementCollectionIds extends Command
         $bar->advance();
         $brokenIds = [];
         DB::table('new_call_number_sequences')
-        ->whereNotNull('collection_id')
-        ->chunkById(1000, function ($results) use (&$brokenIds, &$collectionIdMapping, &$bar) {
-            foreach ($results as $result) {
-                if (isset($collectionIdMapping[$result->collection_id])) {
-                    $newCollectionId = $collectionIdMapping[$result->collection_id];
-                } else {
-                    $brokenIds['sequence_id'] = $result->id;
-                    continue;
-                }
+            ->whereNotNull('collection_id')
+            ->chunkById(1000, function ($results) use (&$brokenIds, &$collectionIdMapping, &$bar) {
+                foreach ($results as $result) {
+                    if (isset($collectionIdMapping[$result->collection_id])) {
+                        $newCollectionId = $collectionIdMapping[$result->collection_id];
+                    } else {
+                        $brokenIds['sequence_id'] = $result->id;
 
-                DB::table('new_call_number_sequences')
-             ->where('id', $result->id)
-             ->update(['collection_id' => $newCollectionId]);
-            }
-            $bar->advance();
-        });
+                        continue;
+                    }
+
+                    DB::table('new_call_number_sequences')
+                        ->where('id', $result->id)
+                        ->update(['collection_id' => $newCollectionId]);
+                }
+                $bar->advance();
+            });
 
         DB::table('audio_visual_items')
-        ->whereNotNull('collection_id')
-        ->chunkById(1000, function ($results) use (&$brokenIds, &$collectionIdMapping, &$bar) {
-            foreach ($results as $result) {
-                if (isset($collectionIdMapping[$result->collection_id])) {
-                    $newCollectionId = $collectionIdMapping[$result->collection_id];
-                } else {
-                    $brokenIds['av_item_id'] = $result->id;
-                    continue;
-                }
+            ->whereNotNull('collection_id')
+            ->chunkById(1000, function ($results) use (&$brokenIds, &$collectionIdMapping, &$bar) {
+                foreach ($results as $result) {
+                    if (isset($collectionIdMapping[$result->collection_id])) {
+                        $newCollectionId = $collectionIdMapping[$result->collection_id];
+                    } else {
+                        $brokenIds['av_item_id'] = $result->id;
 
-                DB::table('audio_visual_items')
-             ->where('id', $result->id)
-             ->update(['collection_id' => $newCollectionId]);
-            }
-            $bar->advance();
-        });
+                        continue;
+                    }
+
+                    DB::table('audio_visual_items')
+                        ->where('id', $result->id)
+                        ->update(['collection_id' => $newCollectionId]);
+                }
+                $bar->advance();
+            });
 
         $headers = ['table => id'];
         $this->table($headers, $brokenIds);

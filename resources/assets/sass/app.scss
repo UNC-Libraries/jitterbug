@@ -32,7 +32,7 @@ $state-danger-border:            darken($state-danger-bg, 5%) !default;
 
 $modal-sm:                       400px !default;
 
-@import "node_modules/bootstrap/scss/bootstrap.scss";
+@import "bootstrap/scss/bootstrap";
 
 $global-nav-bg:                #417505;
 $global-nav-button-bg:         $brand-primary;
@@ -127,7 +127,7 @@ Header & Footer
 }
 
 #support-nav a {
-  color: $gray-dark;
+  color: $gray-800;
 }
 
 #support-nav ul {
@@ -579,7 +579,7 @@ Data Panel
 }
 
 #data-panel .pagination .page-link {
-  color: $gray-dark;
+  color: $gray-800;
   background-color: #fff;
 }
 
@@ -588,12 +588,12 @@ Data Panel
 }
 
 #data-panel .pagination li.page-item a:hover {
-  color: $gray-dark;
+  color: $gray-800;
   background-color: #fff;
 }
 
 #data-panel .pagination li.page-item.active a {
-  color: $gray-dark;
+  color: $gray-800;
   background-color: #f7f7f7;
   border-radius: $border-radius-sm;
   border: solid 1px $gray-light;
@@ -686,7 +686,7 @@ Record Details
 }
 
 #detail .revision-history-title a {
-  color: $gray-dark;
+  color: $gray-800;
   text-decoration: none;
 }
 
@@ -711,7 +711,7 @@ Record Details
   padding-top: .5rem;
 }
 
-#detail .form-group .detail-value {
+#detail .mb-3 .detail-value {
   padding-left: .25rem;
   padding-right: 0;
 }
@@ -934,7 +934,7 @@ Bootstrap Overrides
   border: none;
 }
 
-.btn-primary:link, .btn-primary:visited, .btn-primary:active {
+.btn-primary, .btn-primary:link, .btn-primary:visited, .btn-primary:active {
   color: #fff;
   background-color: $brand-primary;
   border: none;
@@ -953,43 +953,43 @@ Bootstrap Overrides
 }
 
 .btn-secondary {
-  color: $gray-dark;
+  color: $gray-800;
   background-color: #fff;
   border: 1px solid $gray-light;
 }
 
 .btn-secondary.active, .btn-secondary.active:hover {
-  color: $gray-dark;
+  color: $gray-800;
   background-color: darken($gray-light, 6%);
   border: 1px solid $gray-light;
 }
 
 .btn-secondary:active:hover, .btn-secondary:active:focus {
-  color: $gray-dark;
+  color: $gray-800;
   background-color: darken($gray-light, 6%);
   border: 1px solid darken($gray-light, 6%);
 }
 
 .open > .btn-secondary.dropdown-toggle, .open > .btn-secondary.dropdown-toggle:focus, .open > .btn-secondary.dropdown-toggle:hover  {
-  color: $gray-dark;
+  color: $gray-800;
   background-color: darken($gray-light, 6%);
   border: 1px solid darken($gray-light, 6%);
 }
 
 .btn-secondary:link, .btn-secondary:visited, .btn-secondary:active {
-  color: $gray-dark;
+  color: $gray-800;
   background-color: #fff;
   border: 1px solid $gray-light;
 }
 
 .btn-secondary:hover {
-  color: $gray-dark;
+  color: $gray-800;
   background-color: scale-color($gray-light, $lightness: 30%);
   border: 1px solid scale-color($gray-light, $lightness: 30%);
 }
 
 .btn-secondary:focus {
-  color: $gray-dark;
+  color: $gray-800;
   background-color: scale-color($gray-light, $lightness: 10%);
   border: 1px solid scale-color($gray-light, $lightness: 10%);
 }
@@ -1039,9 +1039,9 @@ Bootstrap Overrides
   line-height: 1.3;
 }
 
-.form-group {
+/*.form-group {
   margin: 0;
-}
+}*/
 
 .input-group-addon {
   background-color: #e9e9e9;

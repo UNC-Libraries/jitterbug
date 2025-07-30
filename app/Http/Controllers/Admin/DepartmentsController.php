@@ -84,7 +84,7 @@ class DepartmentsController extends Controller
 
                 return response()->json($response);
             } else {
-                $bag = new MessageBag();
+                $bag = new MessageBag;
                 $bag->add('status', 'Looks like that department is currently in use. '.
           'Change the department of the related preservation instances before '.
           'deleting.');

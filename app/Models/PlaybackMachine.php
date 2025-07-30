@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PlaybackMachine extends Model
 {
+    use HasFactory;
     use NullFieldPreserver;
     use SoftDeletes;
-    use HasFactory;
 
     protected $fillable = ['name'];
 

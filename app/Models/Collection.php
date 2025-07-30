@@ -4,22 +4,24 @@ namespace Jitterbug\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Collection extends Model
 {
+    use HasFactory;
     use NullFieldPreserver;
     use SoftDeletes;
-    use HasFactory;
 
     protected $fillable = ['name', 'collection_type_id', 'archival_identifier'];
 
-    public function audioVisualItems()
+    public function audioVisualItems(): HasMany
     {
         return $this->hasMany(\Jitterbug\Models\AudioVisualItem::class);
     }
 
-    public function collectionType()
+    public function collectionType(): BelongsTo
     {
         return $this->belongsTo(CollectionType::class);
     }

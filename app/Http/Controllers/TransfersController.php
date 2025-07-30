@@ -80,9 +80,9 @@ class TransfersController extends Controller
                 $transferIds[] = $transfer->id;
             }
             $marks = Mark::whereIn('markable_id', $transferIds)
-            ->where('markable_type', 'Transfer')
-            ->where('user_id', Auth::user()->id)
-            ->get()->pluck('markable_id');
+                ->where('markable_type', 'Transfer')
+                ->where('user_id', Auth::user()->id)
+                ->get()->pluck('markable_id');
 
             return view('transfers._transfers',
                 compact('transfers', 'marks', 'start', 'sortColumn', 'sortDirection', 'totalRecordCount'));
@@ -238,7 +238,7 @@ class TransfersController extends Controller
         $subclassType = $first->subclass_type;
 
         $transfers = Transfer::whereIn('id', $transferIds)
-                            ->where('subclass_type', $subclassType)->get();
+            ->where('subclass_type', $subclassType)->get();
         if ($transferIdsCount !== $transfers->count()) {
             $request->session()->put('alert', ['type' => 'danger', 'message' => '<strong>Oops! There\'s a problem.</strong> '.
         'Batch editing can only be done with transfers of the same type. '.

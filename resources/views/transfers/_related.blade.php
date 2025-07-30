@@ -1,12 +1,12 @@
   <?php $cut=$transfer->cut; ?>
   @if ($cut !== null)
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
       <h6>Related Cut</h6>
     </div>
   </div>
   <div class="row related-container">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
       <table id="related-cuts" class="table table-sm table-hover">
         <thead>
           <tr>

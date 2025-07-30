@@ -9,10 +9,10 @@ use Venturecraft\Revisionable\RevisionableTrait;
 
 class AudioTransfer extends Model
 {
+    use HasFactory;
     use NullFieldPreserver;
     use RevisionableTrait;
     use SoftDeletes;
-    use HasFactory;
 
     protected $revisionCreationsEnabled = true;
 

@@ -9,20 +9,16 @@ class InstanceRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         // Add rules for base preservation instances
         $rules = [];
@@ -53,13 +49,13 @@ class InstanceRequest extends Request
             $this->addRuleIfNotMixed($rules, 'audio_file_codec', 'required|max:60');
             $this->addRuleIfNotMixed($rules, 'subclass.sampling_rate_id', 'required');
             $this->addRuleIfNotMixed($rules, 'subclass.test_tones', 'max:255');
-        // Add rules for film instances
+            // Add rules for film instances
         } elseif ($subclassType === 'FilmInstance') {
             $this->addRuleIfNotMixed($rules, 'film_file_format', 'required|max:60');
             $this->addRuleIfNotMixed($rules, 'film_file_codec', 'required|max:60');
             $this->addRuleIfNotMixed($rules, 'subclass.film_frame_size', 'max:30');
             $this->addRuleIfNotMixed($rules, 'subclass.film_aspect_ratio', 'max:30');
-        // Add rules for video instances
+            // Add rules for video instances
         } elseif ($subclassType === 'VideoInstance') {
             $this->addRuleIfNotMixed($rules, 'video_file_format', 'required|max:60');
             $this->addRuleIfNotMixed($rules, 'video_file_codec', 'required|max:60');
@@ -75,7 +71,7 @@ class InstanceRequest extends Request
      *
      * @return array of messages
      */
-    public function messages()
+    public function messages(): array
     {
         return [
             // Messages for preservation instance fields

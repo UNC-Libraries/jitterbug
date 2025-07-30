@@ -8,10 +8,8 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('audio_visual_items', function (Blueprint $table) {
             $table->string('physical_location')->nullable()->after('recording_location');
@@ -20,10 +18,8 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('audio_visual_items', function (Blueprint $table) {
             $table->dropColumn('physical_location');

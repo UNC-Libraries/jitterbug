@@ -23,8 +23,8 @@ class UsersController extends Controller
     {
         if ($request->ajax()) {
             $records = User::hasLoggedIn()
-                  ->orderBy('inactive', 'ASC')
-                  ->get();
+                ->orderBy('inactive', 'ASC')
+                ->get();
 
             return view('admin._users', compact('records'));
         }

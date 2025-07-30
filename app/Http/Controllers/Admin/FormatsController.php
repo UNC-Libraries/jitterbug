@@ -112,7 +112,7 @@ class FormatsController extends Controller
 
                 return response()->json($response);
             } else {
-                $bag = new MessageBag();
+                $bag = new MessageBag;
                 $bag->add('status', 'Looks like that format is currently in use. '.
           'Change the format of the related audio visual items before '.
           'deleting.');

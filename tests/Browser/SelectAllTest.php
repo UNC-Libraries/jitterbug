@@ -14,19 +14,17 @@ class SelectAllTest extends DuskTestCase
 
     /**
      * A Dusk test example.
-     *
-     * @return void
      */
-    public function testSelectAllWorks()
+    public function test_select_all_works(): void
     {
         User::factory()->create();
         $this->browse(function (Browser $browser) {
             $browser->loginAs(User::find(1))
-        ->visit('/instances')
-        ->keys('#search', 'general', '{enter}')
-        ->pause(1000)
-        ->click('table > thead > tr > th')
-        ->driver->getKeyboard()->sendKeys([WebDriverKeys::COMMAND, 'a']);
+                ->visit('/instances')
+                ->keys('#search', 'general', '{enter}')
+                ->pause(1000)
+                ->click('table > thead > tr > th')
+                ->driver->getKeyboard()->sendKeys([WebDriverKeys::COMMAND, 'a']);
 
             $browser->pause(10000)->assertPresent('.selected');
         });
