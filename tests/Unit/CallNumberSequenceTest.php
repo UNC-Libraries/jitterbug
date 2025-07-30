@@ -9,8 +9,8 @@ use Jitterbug\Models\Format;
 use Jitterbug\Models\LegacyCallNumberSequence;
 use Jitterbug\Models\NewCallNumberSequence;
 use Jitterbug\Models\Prefix;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use TestCase;
 
 class CallNumberSequenceTest extends TestCase
 {

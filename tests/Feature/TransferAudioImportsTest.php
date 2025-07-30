@@ -8,7 +8,7 @@ use Jitterbug\Models\Department;
 use Jitterbug\Models\PlaybackMachine;
 use Jitterbug\Models\PreservationInstance;
 use Jitterbug\Models\User;
-use PHPUnit\Framework\TestCase;
+use TestCase;
 
 class TransferAudioImportsTest extends TestCase
 {
@@ -168,7 +168,7 @@ class TransferAudioImportsTest extends TestCase
                 ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
         $responseArray = json_decode($response->getContent(), true);
-        $avItemInDb = Jitterbug\Models\AudioVisualItem::find($avItem->id);
+        $avItemInDb = AudioVisualItem::find($avItem->id);
         $this->assertEquals('success', $responseArray['status'], "The JSON status should be 'success'.");
         $this->assertEquals('78 rpm', $avItemInDb->speed,
             'The speed column in the AudioVisualItem entry was not set correctly.');

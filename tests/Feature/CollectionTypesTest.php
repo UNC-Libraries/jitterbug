@@ -5,7 +5,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models\Collection;
 use Jitterbug\Models\CollectionType;
 use Jitterbug\Models\User;
-use PHPUnit\Framework\TestCase;
+use TestCase;
 
 class CollectionTypesTest extends TestCase
 {

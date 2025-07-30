@@ -8,7 +8,7 @@ use Jitterbug\Models\Cut;
 use Jitterbug\Models\Format;
 use Jitterbug\Models\NewCallNumberSequence;
 use Jitterbug\Models\User;
-use PHPUnit\Framework\TestCase;
+use TestCase;
 use Tests\Helpers\TestHelper;
 
 class AudioVisualItemsTest extends TestCase

@@ -7,7 +7,7 @@ use Jitterbug\Models\ImportTransaction;
 use Jitterbug\Models\User;
 use Jitterbug\Presenters\TransactionDigest;
 use LdapRecord\Laravel\Testing\DirectoryEmulator;
-use PHPUnit\Framework\TestCase;
+use TestCase;
 use Venturecraft\Revisionable\Revision;
 
 class TransactionDigestTest extends TestCase

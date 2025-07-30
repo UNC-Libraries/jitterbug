@@ -6,7 +6,7 @@ use Jitterbug\Models\CollectionType;
 use Jitterbug\Models\Format;
 use Jitterbug\Models\Prefix;
 use Jitterbug\Models\User;
-use PHPUnit\Framework\TestCase;
+use TestCase;
 
 class PrefixesTest extends TestCase
 {

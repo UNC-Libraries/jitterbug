@@ -5,7 +5,7 @@ namespace Tests\Unit;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models\Transfer;
 use Jitterbug\Models\User;
-use PHPUnit\Framework\TestCase;
+use TestCase;
 
 class TransferTest extends TestCase
 {

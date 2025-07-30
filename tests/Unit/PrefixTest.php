@@ -5,8 +5,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models\Collection;
 use Jitterbug\Models\Format;
 use Jitterbug\Models\Prefix;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use TestCase;
 
 class PrefixTest extends TestCase
 {

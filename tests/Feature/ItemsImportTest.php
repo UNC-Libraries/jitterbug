@@ -7,7 +7,7 @@ use Jitterbug\Models\Collection;
 use Jitterbug\Models\Format;
 use Jitterbug\Models\NewCallNumberSequence;
 use Jitterbug\Models\User;
-use PHPUnit\Framework\TestCase;
+use TestCase;
 use Tests\Helpers\TestHelper;
 
 class ItemsImportTest extends TestCase

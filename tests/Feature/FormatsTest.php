@@ -5,7 +5,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Jitterbug\Models\Format;
 use Jitterbug\Models\Prefix;
 use Jitterbug\Models\User;
-use PHPUnit\Framework\TestCase;
+use TestCase;
 
 class FormatsTest extends TestCase
 {
