@@ -16,7 +16,7 @@ class VerifyCsrfToken extends BaseVerifier
      *
      * @throws TokenMismatchException
      */
-    public function handle($request, Closure $next): mixed
+    public function handle(Request $request, Closure $next): mixed
     {
         return parent::handle($request, $next);
     }
