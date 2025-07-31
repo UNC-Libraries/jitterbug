@@ -84,7 +84,7 @@ class LoginController extends Controller
             'password' => $request->get('password'),
             'fallback' => [
                 'username' => $request->get('username'),
-                'password' => $request->get('password')
+                'password' => $request->get('password'),
             ],
         ];
     }
