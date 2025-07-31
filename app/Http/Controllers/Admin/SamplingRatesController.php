@@ -4,6 +4,7 @@ namespace Jitterbug\Http\Controllers\Admin;
 
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\MessageBag;
 use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Http\Requests\SamplingRateRequest;
@@ -13,16 +14,13 @@ use Jitterbug\Models\SamplingRate;
 /**
  * Controller for the management of sampling rates in the Admin area.
  */
-class SamplingRatesController extends Controller
+class SamplingRatesController extends Controller implements HasMiddleware
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware(['auth', 'admin']);
+        return [
+            ['auth', 'admin'],
+        ];
     }
 
     public function index(Request $request)

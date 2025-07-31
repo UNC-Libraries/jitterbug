@@ -13,3 +13,5 @@ Homestead.yaml
 .phpunit.result.cache
 .phpunit.cache
 mysql-connector-java-*
+/storage/pail
+/.nova
