@@ -2,6 +2,7 @@
 
 namespace Jitterbug\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
@@ -56,7 +57,8 @@ class User extends Authenticatable implements AuthenticatableContract, Authoriza
      * Return users that have logged into the system. Basically
      * filters out legacy users and the system user.
      */
-    public function scopeHasLoggedIn($query)
+    #[Scope]
+    protected function hasLoggedIn($query)
     {
         return $query->where('password', '<>', 'null');
     }
