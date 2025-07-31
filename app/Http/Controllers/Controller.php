@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 abstract class Controller
 {
-
     /**
      * Resolve a table selection range (beginning and ending indices) to an
      * array of record ids, fetching the ids from Solr. If beginning and

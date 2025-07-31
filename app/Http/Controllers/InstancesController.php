@@ -2,11 +2,10 @@
 
 namespace Jitterbug\Http\Controllers;
 
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Str;
 use Jitterbug\Export\InstancesExport;
 use Jitterbug\Http\Requests\InstanceRequest;

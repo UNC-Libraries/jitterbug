@@ -2,9 +2,8 @@
 
 namespace Jitterbug\Http\Controllers\Admin;
 
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\MessageBag;
 use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Models\User;

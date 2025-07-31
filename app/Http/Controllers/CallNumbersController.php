@@ -2,9 +2,8 @@
 
 namespace Jitterbug\Http\Controllers;
 
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Jitterbug\Models\CallNumberSequence;
 use Jitterbug\Models\PreservationInstance;
 

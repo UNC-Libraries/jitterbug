@@ -12,7 +12,6 @@ class VerifyCsrfToken extends BaseVerifier
     /**
      * Handle an incoming request.
      *
-     * @param  Request  $request
      *
      * @throws TokenMismatchException
      */

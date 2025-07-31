@@ -2,10 +2,9 @@
 
 namespace Jitterbug\Http\Controllers;
 
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Jitterbug\Models\AudioVisualItemType;
 use Jitterbug\Models\Mark;
 use Jitterbug\Models\PreservationInstanceType;

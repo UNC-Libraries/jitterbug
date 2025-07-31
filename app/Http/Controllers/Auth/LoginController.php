@@ -2,10 +2,10 @@
 
 namespace Jitterbug\Http\Controllers\Auth;
 
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Jitterbug\Http\Controllers\Controller;
 use LdapRecord\Auth\BindException;
 
