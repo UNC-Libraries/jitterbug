@@ -2,6 +2,8 @@
 
 namespace Jitterbug\Http\Controllers\Admin;
 
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
@@ -13,16 +15,13 @@ use Jitterbug\Models\PmSpeed;
 /**
  * Controller for the management of PM speeds in the Admin area.
  */
-class PmSpeedsController extends Controller
+class PmSpeedsController extends Controller implements HasMiddleware
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware(['auth', 'admin']);
+        return [
+            ['auth', 'admin'],
+        ];
     }
 
     public function index(Request $request)

@@ -2,21 +2,20 @@
 
 namespace Jitterbug\Http\Controllers\Admin;
 
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Models\User;
 
-class AdminController extends Controller
+class AdminController extends Controller implements HasMiddleware
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware(['auth', 'admin']);
+        return [
+            ['auth', 'admin'],
+        ];
     }
 
     public function index()

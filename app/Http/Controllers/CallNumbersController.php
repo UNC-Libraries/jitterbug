@@ -2,6 +2,8 @@
 
 namespace Jitterbug\Http\Controllers;
 
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Http\Request;
 use Jitterbug\Models\CallNumberSequence;
 use Jitterbug\Models\PreservationInstance;
@@ -9,16 +11,13 @@ use Jitterbug\Models\PreservationInstance;
 /**
  * Controller for operations related to call numbers.
  */
-class CallNumbersController extends Controller
+class CallNumbersController extends Controller implements HasMiddleware
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware('auth');
+        return [
+            'auth',
+        ];
     }
 
     public function generate(Request $request)

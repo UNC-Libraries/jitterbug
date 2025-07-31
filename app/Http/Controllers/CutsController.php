@@ -2,6 +2,8 @@
 
 namespace Jitterbug\Http\Controllers;
 
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use DB;
 use Illuminate\Http\Request;
 use Jitterbug\Http\Requests\CutRequest;
@@ -12,7 +14,7 @@ use Jitterbug\Models\Transfer;
 use Jitterbug\Support\SolariumProxy;
 use Uuid;
 
-class CutsController extends Controller
+class CutsController extends Controller implements HasMiddleware
 {
     protected $solrItems;
 
@@ -27,11 +29,17 @@ class CutsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
 
         $this->solrItems = new SolariumProxy('jitterbug-items');
         $this->solrInstances = new SolariumProxy('jitterbug-instances');
         $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
+    }
+
+    public static function middleware(): array
+    {
+        return [
+            'auth',
+        ];
     }
 
     /**

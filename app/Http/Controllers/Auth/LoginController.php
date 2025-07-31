@@ -2,12 +2,14 @@
 
 namespace Jitterbug\Http\Controllers\Auth;
 
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Jitterbug\Http\Controllers\Controller;
 use LdapRecord\Auth\BindException;
 
-class LoginController extends Controller
+class LoginController extends Controller implements HasMiddleware
 {
     use AuthenticatesUsers {
         logout as doLogout;
@@ -21,14 +23,11 @@ class LoginController extends Controller
      */
     protected $redirectTo = '/dashboard';
 
-    /**
-     * Create a new authentication controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware('guest', ['except' => 'logout']);
+        return [
+            new Middleware('guest', except: ['logout']),
+        ];
     }
 
     public function logout(Request $request)

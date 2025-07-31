@@ -2,6 +2,8 @@
 
 namespace Jitterbug\Http\Controllers\Admin;
 
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
@@ -18,7 +20,7 @@ use Jitterbug\Support\SolariumProxy;
 /**
  * Controller for the management of collections in the Admin area.
  */
-class CollectionsController extends Controller
+class CollectionsController extends Controller implements HasMiddleware
 {
     protected $solrItems;
 
@@ -33,10 +35,17 @@ class CollectionsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth', 'admin']);
+
         $this->solrItems = new SolariumProxy('jitterbug-items');
         $this->solrInstances = new SolariumProxy('jitterbug-instances');
         $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
+    }
+
+    public static function middleware(): array
+    {
+        return [
+            ['auth', 'admin'],
+        ];
     }
 
     public function index(Request $request)

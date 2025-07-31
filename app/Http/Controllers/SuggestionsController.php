@@ -2,6 +2,8 @@
 
 namespace Jitterbug\Http\Controllers;
 
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Http\Request;
 
 /**
@@ -34,16 +36,13 @@ use Illuminate\Http\Request;
  *    deferRequestBy: 100
  *  });
  */
-class SuggestionsController extends Controller
+class SuggestionsController extends Controller implements HasMiddleware
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware('auth');
+        return [
+            'auth',
+        ];
     }
 
     public function recordingLocations(Request $request)

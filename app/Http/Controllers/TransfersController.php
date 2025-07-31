@@ -2,6 +2,8 @@
 
 namespace Jitterbug\Http\Controllers;
 
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -27,7 +29,7 @@ use Jitterbug\Support\SolariumPaginator;
 use Jitterbug\Support\SolariumProxy;
 use Uuid;
 
-class TransfersController extends Controller
+class TransfersController extends Controller implements HasMiddleware
 {
     protected $requiredAudioImportKeys = [];
 
@@ -46,11 +48,17 @@ class TransfersController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
 
         $this->solrItems = new SolariumProxy('jitterbug-items');
         $this->solrInstances = new SolariumProxy('jitterbug-instances');
         $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
+    }
+
+    public static function middleware(): array
+    {
+        return [
+            'auth',
+        ];
     }
 
     /**

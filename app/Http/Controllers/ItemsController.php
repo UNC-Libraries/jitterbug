@@ -2,6 +2,8 @@
 
 namespace Jitterbug\Http\Controllers;
 
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -27,7 +29,7 @@ use Jitterbug\Support\SolariumProxy;
 use Session;
 use Uuid;
 
-class ItemsController extends Controller
+class ItemsController extends Controller implements HasMiddleware
 {
     protected $solrItems;
 
@@ -42,10 +44,17 @@ class ItemsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+
         $this->solrItems = new SolariumProxy('jitterbug-items');
         $this->solrInstances = new SolariumProxy('jitterbug-instances');
         $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
+    }
+
+    public static function middleware(): array
+    {
+        return [
+            'auth',
+        ];
     }
 
     /**
