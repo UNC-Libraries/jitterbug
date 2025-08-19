@@ -8,6 +8,7 @@
 
   <link href="{{ asset('css/jquery.dataTables.min.css') }}"  rel="stylesheet" type="text/css"/>
   <link href="{{ asset('css/flatpickr.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/chosen-jquery.css') }}" rel="stylesheet">
   <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" >
 
   <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
