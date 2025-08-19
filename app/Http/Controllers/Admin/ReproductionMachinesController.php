@@ -4,6 +4,7 @@ namespace Jitterbug\Http\Controllers\Admin;
 
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\MessageBag;
 use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Http\Requests\ReproductionMachineRequest;
@@ -14,7 +15,7 @@ use Jitterbug\Support\SolariumProxy;
 /**
  * Controller for the management of reproduction machines in the Admin area.
  */
-class ReproductionMachinesController extends Controller
+class ReproductionMachinesController extends Controller implements HasMiddleware
 {
     protected $solrInstances;
 
@@ -25,8 +26,15 @@ class ReproductionMachinesController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth', 'admin']);
+
         $this->solrInstances = new SolariumProxy('jitterbug-instances');
+    }
+
+    public static function middleware(): array
+    {
+        return [
+            ['auth', 'admin'],
+        ];
     }
 
     public function index(Request $request)

@@ -9,6 +9,11 @@ return [
             'driver' => 'sqlite',
             'database' => storage_path().'/database.sqlite',
             'prefix' => '',
+            'url' => env('DB_URL'),
+            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+            'busy_timeout' => null,
+            'journal_mode' => null,
+            'synchronous' => null,
         ],
 
         'mysql' => [
@@ -21,6 +26,14 @@ return [
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
             'strict' => false,
+            'url' => env('DB_URL'),
+            'port' => env('DB_PORT', '3306'),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'prefix_indexes' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
         ],
     ],
 
@@ -37,6 +50,9 @@ return [
             'host' => '127.0.0.1',
             'port' => 6379,
             'database' => 0,
+            'url' => env('REDIS_URL'),
+            'username' => env('REDIS_USERNAME'),
+            'password' => env('REDIS_PASSWORD'),
         ],
 
     ],

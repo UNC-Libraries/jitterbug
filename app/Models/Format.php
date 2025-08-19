@@ -2,6 +2,7 @@
 
 namespace Jitterbug\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -17,7 +18,8 @@ class Format extends Model
     protected $fillable = ['name', 'prefix', 'legacy_prefix'];
 
     // Filters out formats that will not be used for new items
-    public function scopeWithFutureUse($query)
+    #[Scope]
+    protected function withFutureUse($query)
     {
         return $query->where('id', '<>', 25)
             ->where('id', '<>', 54);
