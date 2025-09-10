@@ -206,7 +206,7 @@
       @if ($transfer->cut === null && $transfer->type === 'Audio') 
       <a class="btn btn-sm btn-secondary" role="button" href="{{ route('cuts.create', array('instanceId' => $transfer->preservationInstance->id, 'transferId' => $transfer->id)) }}"><i class="fa fa-plus" aria-hidden="true"></i> Add Cut</a>
       @endif
-      <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target=".confirm-delete-modal" style="outline: none; float: right;"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></button>
+      <button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target=".confirm-delete-modal" style="outline: none; float: right;"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></button>
 
       {{ html()->form('DELETE', route('transfers.destroy', [$transfer->id]))->style('display: inline;')->open() }}
       <div class="modal fade confirm-delete-modal" tabindex="-1" role="dialog" aria-labelledby="confirmDelete" aria-hidden="true">
@@ -214,7 +214,7 @@
           <div class="modal-content">
 
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
               <h4 id="confirmDelete" class="modal-title">Confirm Delete</h4>

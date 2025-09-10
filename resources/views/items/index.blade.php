@@ -14,7 +14,7 @@
         <a id="items-new" class="btn btn-sm btn-secondary" style="margin-right: 5px;" href="{{ route('items.create') }}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
           <div class="btn-group dropdown">
               <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="fa fa-cubes" data-toggle="dropdown" aria-hidden="true"></i> Batch</button>
+                  <i class="fa fa-cubes" data-bs-toggle="dropdown" aria-hidden="true"></i> Batch</button>
               <ul id="items-batch-dropdown" class="dropdown-menu">
                   <li><a id="items-batch-edit" class="dropdown-item" href="#" data-max-edit-limit="{{$maxEditLimit}}">Edit</a></li>
                   <li><a id="items-batch-export" class="dropdown-item" href="#">Export</a></li>
@@ -35,7 +35,7 @@
           <div class="modal-content">
 
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
               <h4 id="confirmDelete" class="modal-title">Confirm Delete</h4>

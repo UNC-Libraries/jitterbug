@@ -69,7 +69,7 @@
         <div class="marks-module">
 
           <div class="marks-controls">
-            <div id="marks-filters" class="btn-group" data-toggle="buttons">
+            <div id="marks-filters" class="btn-group" data-bs-toggle="buttons">
               <label class="btn btn-sm btn-secondary form-label" data-filter='all' title="Show all marks">
                 <input class="btn-check" type="radio" name="marks-filter" value="all" checked="checked"><i class="fa fa-bookmark" aria-hidden="true"></i>
               </label>
@@ -85,7 +85,7 @@
             </div>
 
             <div class="btn-group" style="margin-top: .3rem; float: right;">
-              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user" data-toggle="dropdown" aria-hidden="true"></i>&nbsp; <span id="selected-marks-user">{{str_limit($currentUser->fullName(), 13)}}</span></button>
+              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user" data-bs-toggle="dropdown" aria-hidden="true"></i>&nbsp; <span id="selected-marks-user">{{str_limit($currentUser->fullName(), 13)}}</span></button>
               <div id="user-dropdown" class="dropdown-menu dropdown-menu-right dropdown-scrollable">
                 @foreach ($marksUsers as $user)
                 <a class="dropdown-item marks-user @if ($currentUser->id === $user->id) current-user @endif" href="#" data-user-id="{{$user->id}}">{{$user->fullName()}}</a>

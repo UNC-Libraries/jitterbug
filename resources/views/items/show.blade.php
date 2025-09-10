@@ -443,7 +443,7 @@
     <div class="col-sm-12 actions">
       <a class="btn btn-sm btn-secondary" role="button" href="{{ route('items.edit', $item->id) }}" style="margin-right: .3rem;"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
       <a class="btn btn-sm btn-secondary" role="button" href="{{ route('instances.create', array('itemId' => $item->id)) }}"><i class="fa fa-plus" aria-hidden="true"></i> Add Preservation Instance</a>
-      <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target=".confirm-delete-modal" style="outline: none; float: right;"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></button>
+      <button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target=".confirm-delete-modal" style="outline: none; float: right;"><i class="fa fa-trash fa-fw" aria-hidden="true"></i></button>
 
       {{ html()->form('DELETE', route('items.destroy', [$item->id]))->style('display: inline;')->open() }}
       <div class="modal fade confirm-delete-modal" tabindex="-1" role="dialog" aria-labelledby="confirmDelete" aria-hidden="true">
@@ -451,7 +451,7 @@
           <div class="modal-content">
 
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
               <h4 id="confirmDelete" class="modal-title">Confirm Delete</h4>

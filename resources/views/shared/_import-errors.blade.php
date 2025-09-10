@@ -10,7 +10,7 @@
         <tr>
           <td>{{$index+2}}</td>
           @foreach ($possibleDataKeys as $fieldName)
-            <td @if ($bag->has($fieldName)) data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="{{$bag->first($fieldName)}}" tabindex="0" class="text-danger" @endif>{!! !empty($data[$index][$fieldName]) ? $data[$index][$fieldName] : ($bag->has($fieldName) ? '<div class="empty-required">&nbsp;</div>' : '') !!}</td>
+            <td @if ($bag->has($fieldName)) data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="bottom" data-bs-content="{{$bag->first($fieldName)}}" tabindex="0" class="text-danger" @endif>{!! !empty($data[$index][$fieldName]) ? $data[$index][$fieldName] : ($bag->has($fieldName) ? '<div class="empty-required">&nbsp;</div>' : '') !!}</td>
           @endforeach
         </tr>
       @endif
