@@ -1405,13 +1405,12 @@ jitterbug = {
   },
 
   initPopovers: function() {
-    $('[data-toggle="popover"]').popover();
+    $('[data-bs-toggle="popover"]').popover();
   },
 
   initDatepicker: function() {
-    flatpickr('#detail .input-group.date', {
-      dateFormat: 'Y-m-d',
-      wrap: true
+    flatpickr('.input-group.date', {
+      dateFormat: 'Y-m-d'
     });
   },
 
