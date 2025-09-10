@@ -12,18 +12,19 @@
     <div class="top-controls">
       <div style="float: left;">
         <a id="items-new" class="btn btn-sm btn-secondary" style="margin-right: 5px;" href="{{ route('items.create') }}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
-        <div class="btn-group">
-          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cubes" data-toggle="dropdown" aria-hidden="true"></i> Batch</button>
-          <div id="items-batch-dropdown" class="dropdown-menu">
-            <a id="items-batch-edit" class="dropdown-item" href="#" data-max-edit-limit="{{$maxEditLimit}}">Edit</a>
-            <a id="items-batch-export" class="dropdown-item" href="#">Export</a>
-            <a id="items-batch-mark" class="dropdown-item" href="#">Mark</a>
-            <a id="items-batch-unmark" class="dropdown-item" href="#">Unmark</a>
-            <a id="items-batch-delete" class="dropdown-item" href="#">Delete</a>
-            <div class="dropdown-divider"></div>
-            <a id="items-batch-items-import" class="dropdown-item" href="#">Items Import</a>
+          <div class="btn-group dropdown">
+              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-cubes" data-toggle="dropdown" aria-hidden="true"></i> Batch</button>
+              <ul id="items-batch-dropdown" class="dropdown-menu">
+                  <li><a id="items-batch-edit" class="dropdown-item" href="#" data-max-edit-limit="{{$maxEditLimit}}">Edit</a></li>
+                  <li><a id="items-batch-export" class="dropdown-item" href="#">Export</a></li>
+                  <li><a id="items-batch-mark" class="dropdown-item" href="#">Mark</a></li>
+                  <li><a id="items-batch-unmark" class="dropdown-item" href="#">Unmark</a></li>
+                  <li><a id="items-batch-delete" class="dropdown-item" href="#">Delete</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a id="items-batch-items-import" class="dropdown-item" href="#">Items Import</a></li>
+              </ul>
           </div>
-        </div>
       </div>
 
       @include('shared._data-export-modal', ['route' => 'items.batch.export.build', 'title' => 'Export Audio Visual Items'])

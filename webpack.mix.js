@@ -15,7 +15,7 @@ mix.sass('resources/assets/sass/app.scss', 'public/css');
 
 mix.scripts([
   'node_modules/js-cookie/dist/js.cookie.min.js',
-  'node_modules/bootstrap/dist/js/bootstrap.min.js',
+  'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
   // We're using a very slightly modified version of colResizable,
   // so have made a copy of the source to the public directory.
   'public/js/colResizable-1.6.js',
