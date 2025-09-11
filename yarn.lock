@@ -5299,7 +5299,7 @@ webpack-cli@^4.9.1, webpack-cli@4.x.x:
     rechoir "^0.7.0"
     webpack-merge "^5.7.3"
 
-webpack-cli@^6.0.1, webpack-cli@6.x.x:
+webpack-cli@6.x.x:
   version "6.0.1"
   resolved "https://registry.npmjs.org/webpack-cli/-/webpack-cli-6.0.1.tgz"
   integrity sha512-MfwFQ6SfwinsUVi0rNJm7rHZ31GyTcpVE5pgVA3hwFRb7COD4TzjUUwhGWKfO50+xdc2MQPuEBBJoqIMGt3JDw==
