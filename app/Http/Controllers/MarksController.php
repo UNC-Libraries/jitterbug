@@ -2,9 +2,9 @@
 
 namespace Jitterbug\Http\Controllers;
 
-use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Support\Facades\Auth;
 use Jitterbug\Models\Mark;
 
 class MarksController extends Controller implements HasMiddleware

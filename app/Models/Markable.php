@@ -23,9 +23,9 @@ trait Markable
         $mark = $this->getMark();
         if ($mark === null) {
             $mark = new Mark;
-            $mark->markableType = class_basename(get_class($this));
-            $mark->markableId = $this->id;
-            $mark->userId = \Auth::user()->id;
+            $mark->markable_type = class_basename(get_class($this));
+            $mark->markable_id = $this->id;
+            $mark->user_id = \Auth::user()->id;
         } else {
             $mark->touch();
         }
