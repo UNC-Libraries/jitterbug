@@ -67,7 +67,7 @@ class ItemsImport extends Import
                 }
                 // Validates certain field values already exist in the DB
                 foreach ($this->mustAlreadyExistInDbKeys as $dbKey => $class) {
-                    if (! empty($row[$dbKey]) && ! $this->valueExists($class, snake_case($dbKey), $row[$dbKey])) {
+                    if (! empty($row[$dbKey]) && ! $this->valueExists($class, Str::snake($dbKey), $row[$dbKey])) {
                         $bag->add($dbKey, $dbKey.' must already exist in the database.');
                     }
                 }
