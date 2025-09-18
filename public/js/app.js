@@ -1410,7 +1410,9 @@ jitterbug = {
 
   initDatepicker: function() {
     flatpickr('.input-group.date', {
-      dateFormat: 'Y-m-d'
+        allowInput: true,
+        dateFormat: 'Y-m-d',
+        wrap: true
     });
   },
 

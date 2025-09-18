@@ -35,9 +35,9 @@
             {{ html()->label('Transfer Date', 'transfer_date')->class('form-control-label') }}
           </div>
           <div class="col-sm-7 detail-value">
-            <div class="input-group date">
+            <div class="input-group date flatpickr">
               {{ html()->text('transfer_date')->class('form-control form-control-sm')->data('input') }}
-              <span class="input-group-addon" data-bs-toggle><i class="fa fa-calendar" aria-hidden="true"></i></span>
+              <span class="input-group-addon" data-toggle><i class="fa fa-calendar" aria-hidden="true"></i></span>
             </div>
             @if ($errors->has('transfer_date'))
               <div class="form-control-label"><small>{!! $errors->first('transfer_date') !!}</small></div>

@@ -182,9 +182,9 @@
             {{ html()->label('Item Date', 'item_date')->class('form-control-label') }}
           </div>
           <div class="col-sm-7 detail-value">
-            <div class="input-group date">
-              {{ html()->text('item_date')->class('form-control form-control-sm') }}
-              <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+            <div class="input-group date flatpickr">
+              {{ html()->text('item_date')->class('form-control form-control-sm')->data('input') }}
+              <span class="input-group-addon" data-toggle><i class="fa fa-calendar" aria-hidden="true"></i></span>
             </div>
             @if ($errors->has('item_date'))
               <div class="form-control-label"><small>{!! $errors->first('item_date') !!}</small></div>
@@ -211,9 +211,9 @@
             {{ html()->label('Entry Date', 'entry_date')->class('form-control-label') }}
           </div>
           <div class="col-sm-7 detail-value">
-            <div class="input-group date">
-              {{ html()->text('entry_date')->class('form-control form-control-sm') }}
-              <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+            <div class="input-group date flatpickr">
+              {{ html()->text('entry_date')->class('form-control form-control-sm')->data('input') }}
+              <span class="input-group-addon" data-toggle><i class="fa fa-calendar" aria-hidden="true"></i></span>
             </div>
             @if ($errors->has('entry_date'))
               <div class="form-control-label"><small>{!! $errors->first('entry_date') !!}</small></div>

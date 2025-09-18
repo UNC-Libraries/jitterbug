@@ -1683,3 +1683,26 @@ Adapted from https://codepen.io/ddools/pen/vLPMVE
     background-repeat: no-repeat !important;
   }
 }
+
+.has-danger .form-control-feedback,
+.has-danger .form-control-label,
+.has-danger .col-form-label,
+.has-danger .form-check-label,
+.has-danger .custom-control {
+  color: #d9534f;
+}
+
+/** Classes that were in BS 4 alpha, but were removed **/
+.has-danger .form-control {
+  border-color: #d9534f;
+}
+
+.has-danger .input-group-addon {
+  color: #d9534f;
+  border-color: #d9534f;
+  background-color: #fdf7f7;
+}
+
+.has-danger .form-control-danger {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23d9534f' viewBox='-2 -2 7 7'%3E%3Cpath stroke='%23d9534f' d='M0 0l3 3m0-3L0 3'/%3E%3Ccircle r='.5'/%3E%3Ccircle cx='3' r='.5'/%3E%3Ccircle cy='3' r='.5'/%3E%3Ccircle cx='3' cy='3' r='.5'/%3E%3C/svg%3E");
+}
