@@ -91,7 +91,7 @@ $('#speed').autocomplete({
 
 ## Compiling Assets
 
-Jitterbug uses [Laravel Mix](https://laravel.com/docs/8.x/mix) to compile its assets, including Sass for its css.
+Jitterbug uses [Laravel Mix](https://laravel.com/docs/12.x/mix) to compile its assets, including Sass for its css.
 Add your css to `resources/assets/sass/app.scss` and then run `npm run dev` in the application terminal to compile the new changes.
 
 For example, in the VM:
