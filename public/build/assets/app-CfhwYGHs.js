@@ -1,77 +1,59 @@
-// See: http://www.paulirish.com/2009/markup-based-unobtrusive-comprehensive-dom-ready-execution/
-
-JITTERBUG = {
+import { $, j as jitterbug } from "./jitterbug-C7z39nYE.js";
+window.$ = window.jQuery = $;
+const JITTERBUG_LOAD = {
   common: {
-    init: function() {
+    init() {
       jitterbug.initAjax();
       jitterbug.initSessionTimeout();
       jitterbug.getAlert();
     }
   },
-
   login: {
-    showLoginForm: function() {
+    showLoginForm() {
       jitterbug.initGreeting();
     }
   },
-
   admin: {
-    init: function() {
-      // controller-wide code 
+    init() {
     },
-
-    index: function() {
+    index() {
       jitterbug.initAdmin();
     }
   },
-
   dashboard: {
-    init: function() {
-      // controller-wide code 
+    init() {
     },
-
-    index: function() {
+    index() {
       jitterbug.initDashboardCharts();
       jitterbug.initDashboardActivityStream();
       jitterbug.initDashboardMarks();
     }
   },
-
   items: {
-    init: function() {
-      // controller-wide code 
+    init() {
     },
-
-    index: function() {
+    index() {
       jitterbug.initItemsIndex();
-      // TODO Will fix a bug where batch marking, 
-      // then navigating away from the index page,
-      // then using the back button renders the 
-      // page without the new marks
-      // jitterbug.renderMarks();
       jitterbug.initTableKeyboardShortcuts();
       jitterbug.initItemsImportModal();
       jitterbug.initItemsNewButton();
       jitterbug.initItemsBatchMenu();
       jitterbug.initBatchDeleteForm();
     },
-
-    show: function() {
+    show() {
       jitterbug.initMarkRibbon();
       jitterbug.initRevisionHistory();
       jitterbug.initRelatedPreservationInstances();
       jitterbug.initRelatedCuts();
     },
-
-    create: function() {
+    create() {
       jitterbug.initItemTypeControls();
       jitterbug.initItemCallNumberGeneration();
       jitterbug.initDatepicker();
       jitterbug.initItemSuggestions();
       jitterbug.initSubmitButton();
     },
-
-    edit: function() {
+    edit() {
       jitterbug.initDatepicker();
       jitterbug.initItemSuggestions();
       jitterbug.initRevisionHistory();
@@ -79,80 +61,63 @@ JITTERBUG = {
       jitterbug.initRelatedCuts();
       jitterbug.initSubmitButton();
     },
-
-    batchEdit: function() {
+    batchEdit() {
       jitterbug.initBatchEditMixed();
       jitterbug.initDatepicker();
       jitterbug.initItemSuggestions();
       jitterbug.initSubmitButton();
     }
   },
-
   instances: {
-    init: function() {
-      // controller-wide code 
+    init() {
     },
-
-    index: function() {
+    index() {
       jitterbug.initInstancesIndex();
-      // jitterbug.renderMarks();
       jitterbug.initTableKeyboardShortcuts();
       jitterbug.initInstancesNewButton();
       jitterbug.initInstancesBatchMenu();
       jitterbug.initBatchDeleteForm();
     },
-
-    show: function() {
+    show() {
       jitterbug.initMarkRibbon();
       jitterbug.initRevisionHistory();
       jitterbug.initRelatedCuts();
       jitterbug.initRelatedTransfers();
     },
-
-    create: function() {
+    create() {
       jitterbug.initInstanceTypeControls();
       jitterbug.initInstanceBatchCheckbox();
       jitterbug.initSubmitButton();
     },
-
-    edit: function() {
+    edit() {
       jitterbug.initRevisionHistory();
       jitterbug.initRelatedCuts();
       jitterbug.initRelatedTransfers();
       jitterbug.initSubmitButton();
     },
-
-    batchEdit: function() {
+    batchEdit() {
       jitterbug.initBatchEditMixed();
       jitterbug.initSubmitButton();
     }
   },
-
   cuts: {
-    init: function() {
-      // controller-wide code 
+    init() {
     },
-
-    show: function() {
+    show() {
       jitterbug.initRevisionHistory();
       jitterbug.initRelatedTransfers();
     },
-
     edit: function() {
       jitterbug.initRevisionHistory();
       jitterbug.initRelatedTransfers();
       jitterbug.initSubmitButton();
     }
   },
-
   transfers: {
-    init: function() {
-      // controller-wide code 
+    init() {
     },
-
-    index: function() {
+    index() {
       jitterbug.initTransfersIndex();
-      // jitterbug.renderMarks();
       jitterbug.initTableKeyboardShortcuts();
       jitterbug.initAudioImportModal();
       jitterbug.initVideoImportModal();
@@ -160,64 +125,51 @@ JITTERBUG = {
       jitterbug.initTransfersBatchMenu();
       jitterbug.initBatchDeleteForm();
     },
-
-    show: function() {
+    show() {
       jitterbug.initMarkRibbon();
       jitterbug.initRevisionHistory();
       jitterbug.initRelatedCuts();
     },
-
-    create: function() {
+    create() {
       jitterbug.initTransferTypeControls();
       jitterbug.initTransferCallNumberQuery();
       jitterbug.initDatepicker();
       jitterbug.initSubmitButton();
     },
-
-    edit: function() {
+    edit() {
       jitterbug.initDatepicker();
       jitterbug.initTransferCallNumberQuery();
       jitterbug.initRevisionHistory();
       jitterbug.initRelatedCuts();
       jitterbug.initSubmitButton();
     },
-
-    batchEdit: function() {
+    batchEdit() {
       jitterbug.initDatepicker();
       jitterbug.initTransferCallNumberQuery();
       jitterbug.initBatchEditMixed();
       jitterbug.initSubmitButton();
     }
   },
-
   formats: {
-    init: function() {
-      // controller-wide code
+    init() {
     },
-
-    show: function() {
+    show() {
       jitterbug.initPrefixActions();
-    },
-  },
-
+    }
+  }
 };
-
-ROUTER = {
-  exec: function(controller, action) {
-    var ns = JITTERBUG,
-        action = (action === undefined) ? "init" : action;
+const ROUTER = {
+  exec(controller, action) {
+    let ns = JITTERBUG_LOAD, action_type = action === void 0 ? "init" : action;
     if (controller !== "" && ns[controller] && typeof ns[controller][action] == "function") {
-      ns[controller][action]();
+      ns[controller][action_type]();
     }
   },
-
-  init: function() {
-    var body = document.body,
-      controller = body.getAttribute("data-controller"),
-          action = body.getAttribute("data-action");
-      ROUTER.exec("common");
-      ROUTER.exec(controller);
-      ROUTER.exec(controller, action);
+  init() {
+    let body = document.body, controller = body.getAttribute("data-controller"), action = body.getAttribute("data-action");
+    ROUTER.exec("common");
+    ROUTER.exec(controller);
+    ROUTER.exec(controller, action);
   }
 };
 $(document).ready(ROUTER.init);

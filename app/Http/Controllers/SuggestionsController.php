@@ -26,7 +26,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
  * the input element a css id name. e.g. #speed, or #recording-location,
  * etc.
  *
- * 4. In app.js, add a jQuery selector using the id you created in step 3,
+ * 4. In jitterbug.js, add a jQuery selector using the id you created in step 3,
  * then call autocomplete. The serviceUrl should correspond to the route
  * you created in step 2. For example:
  *

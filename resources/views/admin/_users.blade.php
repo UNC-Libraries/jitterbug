@@ -32,26 +32,4 @@
     </table>
   </div>
 </div>
-
-<script>
-  $(document).ready( function () {
-    let table = $('#user-table').DataTable({
-      columnDefs: [
-        // the last two columns are not orderable: admin & inactive checkboxes
-        { orderable: false, targets: [-2, -1] }
-      ]
-    });
-
-    table.on('click', '.admin', function(e) {
-      if (e.target.id.startsWith('admin')) {
-        jitterbug.toggleAdmin(e.target.id);
-      }
-    });
-
-    table.on('click', '.inactive', function(e) {
-      if (e.target.id.startsWith('active')) {
-        jitterbug.toggleInactive(e.target.id);
-      }
-    });
-  });
-</script>
+@vite('resources/assets/js/usersTable.js')
