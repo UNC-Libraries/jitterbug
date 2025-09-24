@@ -1,10 +1,10 @@
-// import $ from 'jquery';
-// window.$ = window.jQuery = $;
+import $ from 'jquery';
+window.$ = window.jQuery = $;
 
 import 'chosen-js/chosen.jquery.min';
 import './colResizable-1.6'
 import 'devbridge-autocomplete';
-import 'bootstrap';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 import flatpickr from 'flatpickr';
 
 export const jitterbug = {

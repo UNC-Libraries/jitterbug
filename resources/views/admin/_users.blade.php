@@ -32,4 +32,3 @@
     </table>
   </div>
 </div>
-@vite('resources/assets/js/usersTable.js')

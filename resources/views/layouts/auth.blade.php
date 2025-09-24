@@ -22,7 +22,6 @@ and are used to route JavaScript in app.js --}}
     </footer>
 
   </div>
-  @include('shared._scripts')
 </body>
 
 </html>

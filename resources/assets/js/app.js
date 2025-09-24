@@ -1,9 +1,6 @@
 // See: http://www.paulirish.com/2009/markup-based-unobtrusive-comprehensive-dom-ready-execution/
-
- import $ from 'jquery';
 import {jitterbug} from './jitterbug';
-
-window.$ = window.jQuery = $;
+import DataTable from "datatables.net-dt";
 
 export const JITTERBUG_LOAD = {
     common: {
@@ -226,3 +223,26 @@ export const ROUTER = {
     }
 };
 $(document).ready(ROUTER.init);
+
+// Set up the user data table
+$(document).ready( function () {
+    new DataTable('#user-table', {
+        columnDefs: [
+            // the last two columns are not orderable: admin & inactive checkboxes
+            { orderable: false, targets: [-2, -1] }
+        ]
+    });
+
+    let table = $('#user-table');
+    table.on('click', '.admin', function(e) {
+        if (e.target.id.startsWith('admin')) {
+            jitterbug.toggleAdmin(e.target.id);
+        }
+    });
+
+    table.on('click', '.inactive', function(e) {
+        if (e.target.id.startsWith('active')) {
+            jitterbug.toggleInactive(e.target.id);
+        }
+    });
+});

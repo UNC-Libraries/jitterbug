@@ -1,8 +1,4 @@
 {
-  "_jitterbug-C7z39nYE.js": {
-    "file": "assets/jitterbug-C7z39nYE.js",
-    "name": "jitterbug"
-  },
   "node_modules/chosen-js/chosen-sprite.png": {
     "file": "assets/chosen-sprite-BTe4w5m6.png",
     "src": "node_modules/chosen-js/chosen-sprite.png"
@@ -40,22 +36,10 @@
     "src": "node_modules/chosen-js/chosen-sprite@2x.png"
   },
   "resources/assets/js/app.js": {
-    "file": "assets/app-CfhwYGHs.js",
+    "file": "assets/app-F2s3XCpE.js",
     "name": "app",
     "src": "resources/assets/js/app.js",
-    "isEntry": true,
-    "imports": [
-      "_jitterbug-C7z39nYE.js"
-    ]
-  },
-  "resources/assets/js/usersTable.js": {
-    "file": "assets/usersTable-CWryzK_i.js",
-    "name": "usersTable",
-    "src": "resources/assets/js/usersTable.js",
-    "isEntry": true,
-    "imports": [
-      "_jitterbug-C7z39nYE.js"
-    ]
+    "isEntry": true
   },
   "resources/assets/sass/app.scss": {
     "file": "assets/app-BtlGwsKl.css",
