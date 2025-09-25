@@ -1,10 +1,12 @@
 import $ from 'jquery';
 window.$ = window.jQuery = $;
 
+import '@popperjs/core';
+import 'bootstrap';
 import 'chosen-js/chosen.jquery.min';
 import './colResizable-1.6'
 import 'devbridge-autocomplete';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
+
 import flatpickr from 'flatpickr';
 
 export const jitterbug = {
@@ -2044,11 +2046,7 @@ export const jitterbug = {
                             }
 
                             // If one is checked, turn off the Any filter
-                            if (oneIsChecked) {
-                                checkboxes[0].checked = false;
-                            } else {
-                                checkboxes[0].checked = true;
-                            }
+                            checkboxes[0].checked = !oneIsChecked;
                         }
 
                         renderSelectionCount();
@@ -2106,11 +2104,12 @@ export const jitterbug = {
             for (let i=0; i < selected.length; i++) {
                 values.push(selected[i].value);
             }
+            console.log(values);
             return values;
         };
 
         let count = () => {
-            if (selectedFilters()[0] === 0) {
+            if (selectedFilters()[0] == 0) {
                 return 0;
             } else {
                 return selectedFilters().length;

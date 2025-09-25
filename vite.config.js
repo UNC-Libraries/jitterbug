@@ -1,13 +1,11 @@
 import laravel from 'laravel-vite-plugin';
 import * as path from "node:path";
 import {defineConfig} from "vite";
-import commonjs from "vite-plugin-commonjs";
 import inject from '@rollup/plugin-inject';
 
 export default defineConfig({
     build: {
-        minify: false,
-
+        minify: true,
     },
     resolve: {
         alias: {
@@ -15,7 +13,6 @@ export default defineConfig({
         }
     },
     plugins: [
-        commonjs(),
         inject({
             $: 'jquery',
             jQuery: 'jquery',
