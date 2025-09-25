@@ -51,7 +51,7 @@
             {{ html()->label('Engineer', 'engineer_id')->class('form-control-label') }}
           </div>
           <div class="col-sm-7 detail-value">
-            {{ html()->select('engineer_id', $engineers, $transfer->engineer_id)->class('form-control form-control-sm') }}
+            {{ html()->select('engineer_id', $engineers, $transfer->engineer_id)->class('form-control form-control-sm form-select') }}
             @if ($errors->has('engineer_id'))
               <div class="form-control-label"><small>{!! $errors->first('engineer_id') !!}</small></div>
             @endif
@@ -64,7 +64,7 @@
             {{ html()->label('Vendor', 'vendor_id')->class('form-control-label') }}
           </div>
           <div class="col-sm-7 detail-value">
-            {{ html()->select('vendor_id', $vendors, $transfer->vendor_id)->class('form-control form-control-sm') }}
+            {{ html()->select('vendor_id', $vendors, $transfer->vendor_id)->class('form-control form-control-sm form-select') }}
             @if ($errors->has('vendor_id'))
               <div class="form-control-label"><small>{!! $errors->first('vendor_id') !!}</small></div>
             @endif
@@ -77,7 +77,7 @@
             {{ html()->label('Playback Machine', 'playback_machine_id')->class('form-control-label') }}
           </div>
           <div class="col-sm-7 detail-value">
-            {{ html()->select('playback_machine_id', $playbackMachines, $transfer->playback_machine_id)->class('form-control form-control-sm') }}
+            {{ html()->select('playback_machine_id', $playbackMachines, $transfer->playback_machine_id)->class('form-control form-control-sm form-select') }}
             @if ($errors->has('playback_machine_id'))
               <div class="form-control-label"><small>{!! $errors->first('playback_machine_id') !!}</small></div>
             @endif

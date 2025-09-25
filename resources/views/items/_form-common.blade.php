@@ -52,7 +52,7 @@
             {{ html()->label('Collection', 'collection_id')->class('form-control-label') }}
           </div>
           <div class="col-sm-7 detail-value">
-            {{ html()->select('collection_id', $collections, $item->collection_id)->id('collection-id')->class('form-control form-control-sm') }}
+            {{ html()->select('collection_id', $collections, $item->collection_id)->id('collection-id')->class('form-control form-control-sm form-select') }}
             @if ($errors->has('collection_id'))
               <div class="form-control-label"><small>{!! $errors->first('collection_id') !!}</small></div>
             @endif
@@ -91,7 +91,7 @@
             {{ html()->label('Format', 'format_id')->class('form-control-label') }}
           </div>
           <div class="col-sm-7 detail-value">
-            {{ html()->select('format_id', $formats, $item->format_id)->id('format-id')->class('form-control form-control-sm') }}
+            {{ html()->select('format_id', $formats, $item->format_id)->id('format-id')->class('form-control form-control-sm form-select') }}
             @if ($errors->has('format_id'))
               <div class="form-control-label"><small>{!! $errors->first('format_id') !!}</small></div>
             @endif
@@ -235,7 +235,7 @@
                 {{ html()->radio('blank', true, '0') }} No
               </label>
             @else
-              {{ html()->select('blank', array('1' => 'Yes', '0' => 'No', '<mixed>' => '<mixed>'), $item->blank)->class('form-control form-control-sm') }}
+              {{ html()->select('blank', array('1' => 'Yes', '0' => 'No', '<mixed>' => '<mixed>'), $item->blank)->class('form-control form-control-sm form-select') }}
             @endif
           </div>
         </div>

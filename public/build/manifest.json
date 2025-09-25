@@ -36,13 +36,13 @@
     "src": "node_modules/chosen-js/chosen-sprite@2x.png"
   },
   "resources/assets/js/app.js": {
-    "file": "assets/app-CUYInjke.js",
+    "file": "assets/app-AkLUNqiB.js",
     "name": "app",
     "src": "resources/assets/js/app.js",
     "isEntry": true
   },
   "resources/assets/sass/app.scss": {
-    "file": "assets/app-B5TLbaiq.css",
+    "file": "assets/app-95TIvdYe.css",
     "src": "resources/assets/sass/app.scss",
     "isEntry": true
   }

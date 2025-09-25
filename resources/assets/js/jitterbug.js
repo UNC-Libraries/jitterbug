@@ -1,7 +1,7 @@
-import $ from 'jquery';
-window.$ = window.jQuery = $;
-
-import '@popperjs/core';
+// We need to load jquery via a wrapper
+// See https://github.com/twbs/bootstrap/issues/38914
+// and https://github.com/twbs/bootstrap/issues/38914#issuecomment-2108123487 for a fix
+import './jquery_wrapper'
 import 'bootstrap';
 import 'chosen-js/chosen.jquery.min';
 import './colResizable-1.6'
@@ -30,12 +30,6 @@ export const jitterbug = {
         localStorage.removeItem('transfersTableParams');
         // clear marks module
         sessionStorage.removeItem('dashboardMarks');
-    },
-
-    initAjax() {
-        $.ajaxSetup({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
-        });
     },
 
     initSessionTimeout() {
@@ -242,26 +236,19 @@ export const jitterbug = {
 
     initAdminEditableFields(resource) {
         $('#new-record-button').popover({
-            // Setting the 'container' option here doesn't work with Bootstrap
-            // alpha 2
             placement: 'bottom',
             html: true,
-            content: $('#new-record-form').html()
+            content: $('#new-record-form form')
         }).on('click', function(event) {
             event.preventDefault();
             let button = this;
-            // Because setting the container option is broken, we have to resort
-            // to this ugliness to style the popover with an unlimited max-width
-            // (for our inline form) for only this use.
-            let popover = $('#' + $(this).attr('aria-describedby'));
-            popover.css('max-width', 'none');
             // This causes the popover to redraw properly centered after the
             // max-width was changed. This must be popover('show') rather than
             // popover('toggle').
             $(button).popover('show');
 
             // Hookup the new record popover form submit
-            popover.find('form').submit(function(event) {
+           $('.popover.show form').on('submit', function(event) {
                 event.preventDefault();
                 let form = $(this).serialize();
 
@@ -278,6 +265,9 @@ export const jitterbug = {
                     url: '/' + resource,
                     type: 'post',
                     data: form,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
                     success: function (data) {
                         let tableContainer = $('#table-container');
                         // Scroll the table div to the top to show the new record
@@ -308,7 +298,7 @@ export const jitterbug = {
                         jitterbug.bindAdminRecordDelete(resource, deleteAnchor);
 
                         // Insert row
-                        templateRow.prependTo('#table-container > table > tbody');
+                        templateRow.prependTo('#table-container table tbody');
                     },
                     error: function (jqXHR, textStatus, error) {
                         // Validation error
@@ -342,15 +332,6 @@ export const jitterbug = {
             $('#new-record-button').popover('hide');
         });
 
-        // There is a bug in Bootstrap 4 where manually hiding a popover
-        // (as we do above) will cause the popover to require 2 clicks to
-        // show again:
-        // https://github.com/twbs/bootstrap/issues/16732
-        body_events.on('hidden.bs.popover', function (event) {
-            // This hack fixes the bug referenced above
-            $(event.target).data('bs.popover')._activeTrigger.click = false;
-        });
-
         // Hookup the field popovers
         $('.editable').each(function() {
             jitterbug.createAdminEditableFieldPopover(resource, this);
@@ -380,8 +361,9 @@ export const jitterbug = {
                     }
                 }
             });
-            if (!$('#new-record-button').is(target)) {
-                $('#new-record-button').popover('hide');
+            let new_record_button = $('#new-record-button');
+            if (!new_record_button.is(target)) {
+                new_record_button.popover('hide');
             }
         });
 
@@ -456,6 +438,9 @@ export const jitterbug = {
                     url: '/' + resource + '/' + id,
                     type: 'put',
                     data: data,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
                     success: function (data) {
                         // If ajax is successful we need to change the cell value
                         // to the new value. the default is an empty space
@@ -476,7 +461,7 @@ export const jitterbug = {
                     },
                     error: function (jqXHR, textStatus, error) {
                         // Validation error
-                        if (jqXHR.status===422) {
+                        if (jqXHR.status === 422) {
                             let errors = JSON.parse(jqXHR.responseText);
                             // Get the first error, no matter which field it is for.
                             for (let key in errors) if (errors.hasOwnProperty(key)) break;
@@ -509,6 +494,9 @@ export const jitterbug = {
             $.ajax({
                 url: '/' + resource + '/' + id,
                 type: 'delete',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 success: function (data) {
                     let additionalMessage = data['message'] === undefined ? '' : data['message'];
                     row.remove();
@@ -517,7 +505,7 @@ export const jitterbug = {
                 },
                 error: function (jqXHR, textStatus, error) {
                     // Validation error
-                    if (jqXHR.status===422) {
+                    if (jqXHR.status === 422) {
                         let errors = JSON.parse(jqXHR.responseText);
                         // Get the first error
                         for (let key in errors) if (errors.hasOwnProperty(key)) break;
@@ -567,6 +555,9 @@ export const jitterbug = {
                 url: '/formats/attach_prefixes',
                 type: 'POST',
                 data: data,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 success: function () {
                     // clear out dropdown selections
                     dropdown.val('');
@@ -598,6 +589,9 @@ export const jitterbug = {
                 url: '/formats/detach_prefixes',
                 type: 'POST',
                 data: data,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 success: function () {
                     row.remove();
                     jitterbug.displayAlert('success',
@@ -1132,12 +1126,16 @@ export const jitterbug = {
                 return;
             }
 
-            $('#' + type + '-upload-spinner').show();
+            let spinner = $('#' + type + '-upload-spinner');
+            spinner.show();
             let form = new FormData(this);
             $.ajax({
                 url: $(this).attr('action'),
                 type: 'post',
                 data: form,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 processData: false,
                 contentType: false,
                 success: function (data) {
@@ -1173,7 +1171,7 @@ export const jitterbug = {
                     }
                 },
                 complete() {
-                    $('#' + type + '-upload-spinner').hide();
+                    spinner.hide();
                 }
             });
         });
@@ -1186,12 +1184,16 @@ export const jitterbug = {
             let submitButton = $(this).find('button[type="submit"]');
             submitButton.attr('disabled', true);
 
-            $('#' + type + '-import-spinner').show();
+            let spinner = $('#' + type + '-import-spinner');
+            spinner.show();
             let form = new FormData(this);
             $.ajax({
                 url: $(this).attr('action'),
                 type: 'post',
                 data: form,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 processData: false,
                 contentType: false,
                 success: function (data) {
@@ -1201,7 +1203,7 @@ export const jitterbug = {
                     $('#' + type + '-import-step-2').hide();
                     $('#' + type + '-import-step-3 .modal-body').height(300);
                     $('#' + type + '-import-step-3').show();
-                    if (status=='success') {
+                    if (status == 'success') {
                         $('#' + type + '-import-step-3 .modal-body').height(50);
                         jitterbug.dataImported = true;
                     }
@@ -1212,7 +1214,7 @@ export const jitterbug = {
                     console.log('import failure: ' + textStatus);
                 },
                 complete() {
-                    $('#' + type + '-import-spinner').hide();
+                    spinner.hide();
                     submitButton.attr('disabled', false);
                 }
             });
@@ -1220,8 +1222,8 @@ export const jitterbug = {
     },
 
     validateDataUploadForm(type) {
-        if ($('#' + type + '-import-file').val() == '' ||
-            $('#' + type + '-import-filename').val() == '') {
+        if ($('#' + type + '-import-file').val() === '' ||
+            $('#' + type + '-import-filename').val() === '') {
             $('#' + type + '-upload-form-error').html('<small>Please select a \
         data file to upload.</small>').show();
             return false;
@@ -1267,6 +1269,9 @@ export const jitterbug = {
                 url: $(this).attr('action'),
                 type: 'post',
                 data: form,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 processData: false,
                 contentType: false,
                 success: function (data) {
@@ -1300,13 +1305,16 @@ export const jitterbug = {
 
     openDataExportModal(resource, tableSelection) {
         $('#data-export-modal').modal('toggle');
-
+        let spinner = $('#loading-export-fields-spinner');
         // Get the export fields appropriate for the current selection
-        $('#loading-export-fields-spinner').show();
+        spinner.show();
         $.ajax({
             url: '/' + resource + '/batch/export-fields',
             type: 'post',
             data: {'ids': tableSelection.selectedIds().toString()},
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
             success: function (data) {
                 $('#data-export-fields-container').replaceWith(data);
                 let delay = 200;
@@ -1321,7 +1329,7 @@ export const jitterbug = {
                 console.log('Could not fetch export fields: ' + error);
             },
             complete() {
-                $('#loading-export-fields-spinner').hide();
+                spinner.hide();
             }
         });
     },
@@ -1486,7 +1494,8 @@ export const jitterbug = {
     initTableKeyboardShortcuts() {
         $(document).keydown(function(event) {
             // If search input is focused, return
-            if ($('#search').is(':focus') && $('#search').val() != '') {
+            let search = $('#search');
+            if (search.is(':focus') && search.val() !== '') {
                 return;
             }
             let modalOpen = false;
@@ -1498,10 +1507,10 @@ export const jitterbug = {
             });
             if (!modalOpen) {
                 // Right arrow
-                if (event.which == 39) {
+                if (event.which === 39) {
                     $('.next-page').first().trigger('click');
                     // Left arrow
-                } else if (event.which == 37) {
+                } else if (event.which === 37) {
                     $('.prev-page').first().trigger('click');
                     // Cmd/ctrl-a (select all)
                 } else if (event.which === 65 && (event.ctrlKey || event.metaKey)) {
@@ -1698,14 +1707,14 @@ export const jitterbug = {
                 });
 
                 // Bind click handlers to all data pagination links
-                if ($('.pagination').length) {
+                let pagination = $('.pagination');
+                if (pagination.length) {
                     let currentPage = parseInt($('.page-item.active').text().trim());
                     tableParams.setPage(currentPage);
-                    $('.pagination').each(function() {
+                    pagination.each(function() {
                         $('.page-link').each(function() {
                             if ($(this).parent().hasClass('disabled') ||
                                 $(this).parent().hasClass('active')) {
-                                return;
                             } else if ($(this).hasClass('prev-page')) {
                                 $(this).on('click', function(event){
                                     event.preventDefault();

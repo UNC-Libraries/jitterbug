@@ -33,12 +33,12 @@
  
     {{--Need the surrounding div here to keep the form displaying inline--}}
     <div id="new-record-form" class="hidden">
-      <form class="d-flex flex-row align-items-center flex-wrap">
-        <input type="text" name="archival_identifier" class="form-control form-control-sm" maxlength="255" placeholder="Archival Identifier" autocomplete="off" style="width: 150px;">
-        <input type="text" name="name" class="form-control form-control-sm" maxlength="255" placeholder="Name" autocomplete="off" style="width: 250px;">
-        {{ html()->select('collection_type_id', $collectionTypes)->class('form-control form-control-sm') }}
-        <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
-        <button class="btn btn-sm btn-secondary cancel-new-record"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
+      <form class="d-flex flex-row align-items-center">
+              <input type="text" name="archival_identifier" class="form-control form-control-sm" maxlength="255" placeholder="Archival Identifier" autocomplete="off" style="width: 150px;">
+              <input type="text" name="name" class="form-control form-control-sm mx-1" maxlength="255" placeholder="Name" autocomplete="off" style="width: 250px;">
+              {{ html()->select('collection_type_id', $collectionTypes)->class('form-control form-control-sm mx-1 form-select') }}
+              <button class="btn btn-sm btn-secondary popover-submit mx-1" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
+              <button class="btn btn-sm btn-secondary cancel-new-record mx-1"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
       </form>
     </div>
 
@@ -52,7 +52,7 @@
 
     <div id="edit-collection_type_id-form" class="hidden">
       <form class="d-flex flex-row align-items-center flex-wrap">
-        {{ html()->select('collection_type_id', $collectionTypes)->class('form-control form-control-sm')->data('field', 'collectionTypeId') }}
+        {{ html()->select('collection_type_id', $collectionTypes)->class('form-control form-control-sm form-select')->data('field', 'collectionTypeId') }}
         <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
         <button class="btn btn-sm btn-secondary cancel-edit"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
       </form>

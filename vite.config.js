@@ -13,9 +13,10 @@ export default defineConfig({
         }
     },
     plugins: [
+        // Injects jquery as a global variable
         inject({
             $: 'jquery',
-            jQuery: 'jquery',
+            jQuery: 'jquery'
         }),
         laravel({
             input: [

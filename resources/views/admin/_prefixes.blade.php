@@ -14,13 +14,14 @@
       </tr>
       </thead>
       <tbody>
+
       @foreach ($records as $record)
         <tr>
           <td><span data-field="id">{{ $record->id }}</span></td>
           <td><span class="editable" data-id="{{ $record->id }}" data-field="label" role="button">{{ $record->label }}</span></td>
           <td>
             <span class="editable" data-id="{{ $record->id }}" data-field="collection_type_id" data-role="button">
-              {{ \Jitterbug\Models\CollectionType::formattedName($record->collectionType) }}
+              {{ CollectionType::formattedName($record->collectionType) }}
             </span>
           </td>
           <td class="legacy"><input role="button" data-id="{{ $record->id }}" type="checkbox" @if ($record->legacy === 1) checked="checked" @endif></td>
@@ -34,12 +35,12 @@
 
 {{--Need the surrounding div here to keep the form displaying inline--}}
 <div id="new-record-form" class="hidden">
-  <form class="d-flex flex-row align-items-center flex-wrap">
+  <form class="d-flex flex-row align-items-center">
     <input type="text" name="label" class="form-control form-control-sm" maxlength="255" placeholder="Label" autocomplete="off" style="width: 250px;">
-    {{ html()->select('collection_type_id', $collectionTypes)->class('form-control form-control-sm') }}
+    {{ html()->select('collection_type_id', $collectionTypes)->class('form-control form-control-sm mx-1') }}
     Legacy?
-    <input role="button" type="checkbox">
-    <button class="btn btn-sm btn-secondary popover-submit" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
+    <input role="button" type="checkbox" class="mx-1">
+    <button class="btn btn-sm btn-secondary popover-submit mx-1" type="submit"><i class="fa fa-fw fa-check" aria-hidden="true"></i></button>
     <button class="btn btn-sm btn-secondary cancel-new-record"><i class="fa fa-fw fa-ban" aria-hidden="true"></i></button>
   </form>
 </div>
