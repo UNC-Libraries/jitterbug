@@ -258,8 +258,7 @@ export const jitterbug = {
                 submitButton.attr('disabled', true);
                 cancelButton.attr('disabled', true);
                 let icon = submitButton.find('i');
-                icon.removeClass('fa-check');
-                icon.addClass('fa-spinner').addClass('fa-pulse');
+                icon.removeClass('fa-check').addClass('fa-spinner fa-pulse');
 
                 $.ajax({
                     url: '/' + resource,
@@ -307,10 +306,6 @@ export const jitterbug = {
                             let errorMessage = errors['errors']['name'][0];
                             // Get the first error, no matter which it is.
 
-                            // Unfortunately, we have to hide the popover here
-                            // because it doesn't stay pinned to the field it
-                            // relates to when the alert div is opened (a bug
-                            // in Bootstrap/Tether).
                             jitterbug.displayAlert('danger',
                                 '<strong>Whoops.</strong> ' + errorMessage);
                         } else {
@@ -320,6 +315,10 @@ export const jitterbug = {
                     },
                     complete() {
                         $(button).popover('hide');
+                        icon.removeClass('fa-spinner fa-pulse').addClass('fa-check');
+                        submitButton.attr('disabled', false);
+                        cancelButton.attr('disabled', false);
+                        $('.popover-body form input').val('')
                     }
                 });
             });
@@ -478,6 +477,8 @@ export const jitterbug = {
                         // field it relates to when the alert div is opened for
                         // display of the error (a bug in Bootstrap/Tether).
                         $(fieldSpan).popover('hide');
+                        submitButton.attr('disabled', false);
+                        cancelButton.attr('disabled', false);
                     }
                 });
             });
