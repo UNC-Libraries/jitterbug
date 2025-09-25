@@ -91,16 +91,21 @@ $('#speed').autocomplete({
 
 ## Compiling Assets
 
-Jitterbug uses [Laravel Mix](https://laravel.com/docs/12.x/mix) to compile its assets, including Sass for its css.
-Add your css to `resources/assets/sass/app.scss` and then run `npm run dev` in the application terminal to compile the new changes.
+Jitterbug uses [Vite](https://laravel.com/docs/12.x/vite) to compile its assets, including Sass for its css.
+Add your css to `resources/assets/sass/app.scss` and then run `npm run build` in the application terminal to compile the new changes.
+The same goes for any JavaScript changes you make.
+You can also toggle whether the assets are minified in `vite.config.js`. You should minify them for production, but can be 
+useful debug feature to not minifiy them.
 
 For example, in the VM:
 
 ```bash
 vagrant ssh
-cd /vagrant
-npm run dev
+cd /jitterbug
+npm run build
 ```
+
+Note: if running `build` you may need to run `npm install` first so it picks up the correct C compiler.
 
 ## Running [Laravel Dusk](https://laravel.com/docs/8.x/dusk) tests (VM only)
 
@@ -114,7 +119,7 @@ npm run dev
 2. Navigate to the Jitterbug repo folder
 
     ```bash
-    cd /vagrant
+    cd /jitterbug
     ```
 
 3. Run the Laravel Dusk tests
