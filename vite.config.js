@@ -4,6 +4,7 @@ import {defineConfig} from "vite";
 import inject from '@rollup/plugin-inject';
 
 export default defineConfig({
+    base: './',
     build: {
         minify: true,
     },
