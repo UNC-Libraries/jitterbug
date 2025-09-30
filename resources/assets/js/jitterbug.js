@@ -84,13 +84,13 @@ export const jitterbug = {
     initSelectAll(allSelector, checkboxSelector) {
         $(allSelector).on('change', function(event) {
             // check all boxes if select all is clicked or vice versa
-            if (jitterbug.checked) {
+            if (this.checked) {
                 $(checkboxSelector).each(function() {
-                    jitterbug.checked=true;
+                    this.checked=true;
                 });
             } else {
                 $(checkboxSelector).each(function() {
-                    jitterbug.checked=false;
+                    this.checked=false;
                 });
             }
         });
@@ -101,11 +101,11 @@ export const jitterbug = {
                 let isAllChecked = 0;
 
                 $(checkboxSelector).each(function() {
-                    if (!jitterbug.checked)
+                    if (!this.checked)
                         isAllChecked = 1;
                 });
 
-                if (isAllChecked == 0) {
+                if (isAllChecked === 0) {
                     $(allSelector).prop("checked", true);
                 }
             }
@@ -2655,7 +2655,7 @@ export const jitterbug = {
         let deselectAllMarks = () => {
             $('#mark-checkbox-all').prop('checked', false);
             $('.delete-checkbox').each(function() {
-                jitterbug.checked=false;
+                this.checked=false;
             });
         };
 
