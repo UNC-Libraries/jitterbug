@@ -32,6 +32,14 @@ export const jitterbug = {
         sessionStorage.removeItem('dashboardMarks');
     },
 
+    initAjax() {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    },
+
     initSessionTimeout() {
         let threeHours = 10800000;
         window.setTimeout(function() {
@@ -264,9 +272,6 @@ export const jitterbug = {
                     url: '/' + resource,
                     type: 'post',
                     data: form,
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
                     success: function (data) {
                         let tableContainer = $('#table-container');
                         // Scroll the table div to the top to show the new record
@@ -313,7 +318,7 @@ export const jitterbug = {
                                 '<strong>Uh oh.</strong> An error has occurred: ' + error);
                         }
                     },
-                    complete() {
+                    complete: function() {
                         $(button).popover('hide');
                         icon.removeClass('fa-spinner fa-pulse').addClass('fa-check');
                         submitButton.attr('disabled', false);
@@ -437,9 +442,6 @@ export const jitterbug = {
                     url: '/' + resource + '/' + id,
                     type: 'put',
                     data: data,
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
                     success: function (data) {
                         // If ajax is successful we need to change the cell value
                         // to the new value. the default is an empty space
@@ -471,7 +473,7 @@ export const jitterbug = {
                                 '<strong>Uh oh.</strong> An error has occurred: ' + error);
                         }
                     },
-                    complete() {
+                    complete: function() {
                         // Unfortunately, this will also hide the popover on
                         // validation error because it doesn't stay pinned to the
                         // field it relates to when the alert div is opened for
@@ -495,9 +497,6 @@ export const jitterbug = {
             $.ajax({
                 url: '/' + resource + '/' + id,
                 type: 'delete',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
                 success: function (data) {
                     let additionalMessage = data['message'] === undefined ? '' : data['message'];
                     row.remove();
@@ -556,9 +555,6 @@ export const jitterbug = {
                 url: '/formats/attach_prefixes',
                 type: 'POST',
                 data: data,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
                 success: function () {
                     // clear out dropdown selections
                     dropdown.val('');
@@ -590,9 +586,6 @@ export const jitterbug = {
                 url: '/formats/detach_prefixes',
                 type: 'POST',
                 data: data,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
                 success: function () {
                     row.remove();
                     jitterbug.displayAlert('success',
@@ -1134,9 +1127,6 @@ export const jitterbug = {
                 url: $(this).attr('action'),
                 type: 'post',
                 data: form,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
                 processData: false,
                 contentType: false,
                 success: function (data) {
@@ -1171,7 +1161,7 @@ export const jitterbug = {
               again.</small>').show();
                     }
                 },
-                complete() {
+                complete: function() {
                     spinner.hide();
                 }
             });
@@ -1192,9 +1182,6 @@ export const jitterbug = {
                 url: $(this).attr('action'),
                 type: 'post',
                 data: form,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
                 processData: false,
                 contentType: false,
                 success: function (data) {
@@ -1214,7 +1201,7 @@ export const jitterbug = {
                 error: function (jqXHR, textStatus, error) {
                     console.log('import failure: ' + textStatus);
                 },
-                complete() {
+                complete: function() {
                     spinner.hide();
                     submitButton.attr('disabled', false);
                 }
@@ -1270,9 +1257,6 @@ export const jitterbug = {
                 url: $(this).attr('action'),
                 type: 'post',
                 data: form,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
                 processData: false,
                 contentType: false,
                 success: function (data) {
@@ -1313,9 +1297,6 @@ export const jitterbug = {
             url: '/' + resource + '/batch/export-fields',
             type: 'post',
             data: {'ids': tableSelection.selectedIds().toString()},
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
             success: function (data) {
                 $('#data-export-fields-container').replaceWith(data);
                 let delay = 200;
@@ -1329,7 +1310,7 @@ export const jitterbug = {
             error: function (jqXHR, textStatus, error) {
                 console.log('Could not fetch export fields: ' + error);
             },
-            complete() {
+            complete: function() {
                 spinner.hide();
             }
         });
@@ -2324,13 +2305,13 @@ export const jitterbug = {
                         $.ajax({
                             url: '/' + resource + '/resolve-range',
                             data: query,
-                            success(data) {
+                            success: function(data) {
                                 ids = data['ids'].map(Number);
                                 store();
                                 render();
                             },
                             statusCode: {
-                                400() {
+                                400: function() {
                                     jitterbug.displayAlert('danger',
                                         '<strong>Sorry to interrupt!</strong> It appears someone \
                                         has changed the data you\'re viewing. Please reload the \
@@ -2339,7 +2320,7 @@ export const jitterbug = {
                                     render();
                                 }
                             },
-                            error() {
+                            error: function() {
                                 console.log('Could not resolve selection range');
                             }
                         });
@@ -2800,6 +2781,7 @@ export const jitterbug = {
     }
 };
 
+jitterbug.initAjax();
 jitterbug.SearchField.load = jitterbug.loader;
 jitterbug.TableParams.load = jitterbug.loader;
 jitterbug.FilterPanel.load = jitterbug.loader;

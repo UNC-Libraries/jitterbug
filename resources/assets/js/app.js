@@ -5,6 +5,7 @@ import DataTable from "datatables.net-dt";
 export const JITTERBUG_LOAD = {
     common: {
         init() {
+            jitterbug.initAjax();
             jitterbug.initSessionTimeout();
             jitterbug.getAlert();
         }
