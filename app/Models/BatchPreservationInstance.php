@@ -2,6 +2,7 @@
 
 namespace Jitterbug\Models;
 
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Jitterbug\Util\DurationFormat;
 
 class BatchPreservationInstance extends PreservationInstance
@@ -12,11 +13,11 @@ class BatchPreservationInstance extends PreservationInstance
 
     protected $subclasses;
 
-    protected $aggregateInstance;
+    protected PreservationInstance $aggregateInstance;
 
-    protected $aggregateSubclass;
+    protected mixed $aggregateSubclass;
 
-    protected $batchGuarded = ['id', 'subclass_type', 'subclass_id', 'created_at',
+    protected array $batchGuarded = ['id', 'subclass_type', 'subclass_id', 'created_at',
         'updated_at', ];
 
     protected $attributes;
@@ -40,12 +41,12 @@ class BatchPreservationInstance extends PreservationInstance
         $this->attributes = $this->aggregateInstance->attributes;
     }
 
-    public function batch()
+    public function batch(): true
     {
         return true;
     }
 
-    public function getDurationAttribute()
+    public function getDurationAttribute(): float|int|string|null
     {
         if ($this->duration_in_seconds === '<mixed>') {
             return $this->duration_in_seconds;
@@ -54,7 +55,7 @@ class BatchPreservationInstance extends PreservationInstance
         }
     }
 
-    public function getIdsAttribute()
+    public function getIdsAttribute(): string
     {
         $ids = [];
         foreach ($this->instances as $instance) {
@@ -69,12 +70,12 @@ class BatchPreservationInstance extends PreservationInstance
         return $this->aggregateSubclass;
     }
 
-    public function subclass()
+    public function subclass(): MorphTo
     {
         return $this->aggregateSubclass;
     }
 
-    public function getTypeAttribute()
+    public function getTypeAttribute(): string
     {
         $fullType = $this->instances->first()->getAttribute('subclass_type');
         $type = substr($fullType, 0, strlen($fullType) - strlen('Instance'));
