@@ -17,7 +17,8 @@ export default defineConfig({
         // Injects jquery as a global variable
         inject({
             $: 'jquery',
-            jQuery: 'jquery'
+            jQuery: 'jquery',
+            exclude: ['**/*.scss']
         }),
         laravel({
             input: [

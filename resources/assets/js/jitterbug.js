@@ -2411,8 +2411,8 @@ export const jitterbug = {
             } else {
                 ids.splice(result, 1);
             }
-            if (jitterbug.count() === 0) {
-                jitterbug.clear();
+            if (count() === 0) {
+                clear();
             }
         };
 
