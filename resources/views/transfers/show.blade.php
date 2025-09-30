@@ -214,10 +214,9 @@
           <div class="modal-content">
 
             <div class="modal-header">
-              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
               <h4 id="confirmDelete" class="modal-title">Confirm Delete</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+              </button>
             </div>
             <div class="modal-body">
               <strong>Be careful!</strong> @if ($transfer->cut) This transfer has a related cut, which will also be deleted.@endif This cannot be undone.

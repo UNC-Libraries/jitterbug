@@ -129,10 +129,9 @@
           <div class="modal-content">
 
             <div class="modal-header">
-              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
               <h4 id="confirmDelete" class="modal-title">Confirm Delete</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+              </button>
             </div>
             <div class="modal-body">
               <strong>Are you sure?</strong> This cut has a related transfer. Do you want to delete just this cut, or do you want to delete this cut and the associated transfer? This cannot be undone.
