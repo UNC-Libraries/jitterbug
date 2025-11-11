@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Jitterbug\Models\AudioVisualItem;
 use Jitterbug\Models\CallNumberSequence;
 use Jitterbug\Models\Collection;
 use Jitterbug\Models\CollectionType;
@@ -31,6 +32,7 @@ class CallNumberSequenceTest extends TestCase
         ]);
         $this->collection = Collection::factory()->create([
             'collection_type_id' => $this->collectionType->id,
+            'archival_identifier' => '12345'
         ]);
     }
 
@@ -91,5 +93,24 @@ class CallNumberSequenceTest extends TestCase
         // no prefixes have been attached to this format
         $this->expectException(NotFoundHttpException::class);
         CallNumberSequence::next($this->collection->id, $format->id);
+    }
+
+    public function test_next_with_duplicate_returns_increased_call_number(): void
+    {
+        $callNumber = NewCallNumberSequence::factory()->create([
+            'prefix' => $this->prefix->label,
+            'collection_id' => $this->collection->id,
+            'next' => 2,
+        ]);
+        $format = Format::factory()->create();
+        $format->prefixes()->attach($this->prefix->id);
+
+        $avItem1 = AudioVisualItem::factory()->create(['call_number' => $this->prefix->label.'-12345/2']);
+
+        $sequence = CallNumberSequence::next($this->collection->id, $format->id);
+        $this->assertSame(3, $sequence->next,
+            'Sequence is not an increased NewCallNumberSequence, as it should be.');
+        $this->assertTrue(is_a($sequence, \Jitterbug\Models\NewCallNumberSequence::class),
+            'Sequence is not a NewCallNumberSequence, as it should be.');
     }
 }
