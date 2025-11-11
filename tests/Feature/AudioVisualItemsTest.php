@@ -24,7 +24,7 @@ class AudioVisualItemsTest extends TestCase
     {
         parent::setUp();
         $this->user = User::factory()->create();
-        $cut = Cut::factory()->create();
+        $cut = Cut::factory()->create(['call_number' => 'FS-12345/1']);
         $this->avItem = AudioVisualItem::factory()->create(['call_number' => $cut->call_number]);
         TestHelper::addUserIdToRevision('AudioVisualItem', $this->avItem->id, $this->user->id);
     }
