@@ -38,7 +38,7 @@ class ItemsImportTest extends TestCase
     }
 
     // TODO https://unclibrary.atlassian.net/browse/APPDEV-11923
-    public function testItemsImportUpload(): void
+    public function test_items_import_upload(): void
     {
         $user = $this->user;
         $filePath = base_path('tests/import-test-files/items-import/small_items_import.csv');
