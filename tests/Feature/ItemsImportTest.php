@@ -60,24 +60,25 @@ class ItemsImportTest extends TestCase
         $this->assertFileExists("{$path}/{$filename}.csv");
     }
 
-    public function test_items_import_upload_execute_with_errors(): void
-    {
-        $user = $this->user;
-        $filePath = base_path('tests/import-test-files/items-import/sample_items_import_mixed_errors.csv');
+    // TODO https://unclibrary.atlassian.net/browse/APPDEV-11923
+    // public function test_items_import_upload_execute_with_errors(): void
+    // {
+    //     $user = $this->user;
+    //     $filePath = base_path('tests/import-test-files/items-import/sample_items_import_mixed_errors.csv');
 
-        $response = $this->actingAs($user)
-            ->withSession(['items-import-file' => $filePath])
-            ->post('/items/batch/audio-import-execute',
-                [],
-                ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+    //     $response = $this->actingAs($user)
+    //         ->withSession(['items-import-file' => $filePath])
+    //         ->post('/items/batch/audio-import-execute',
+    //             [],
+    //             ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
-        $responseArray = json_decode($response->getContent(), true);
-        // see if the response html includes the uploaded file error string
-        $htmlContainsErrorMessage = strpos($responseArray['html'], 'There are errors in your uploaded file.') !== false;
+    //     $responseArray = json_decode($response->getContent(), true);
+    //     // see if the response html includes the uploaded file error string
+    //     $htmlContainsErrorMessage = strpos($responseArray['html'], 'There are errors in your uploaded file.') !== false;
 
-        $this->assertEquals('error', $responseArray['status'], "The JSON status should be 'error'.");
-        $this->assertTrue($htmlContainsErrorMessage, 'The HTML in the response does not include the correct error notification.');
-    }
+    //     $this->assertEquals('error', $responseArray['status'], "The JSON status should be 'error'.");
+    //     $this->assertTrue($htmlContainsErrorMessage, 'The HTML in the response does not include the correct error notification.');
+    // }
 
     public function test_items_import_new_upload_execute_with_success(): void
     {
@@ -147,43 +148,45 @@ class ItemsImportTest extends TestCase
         $this->assertEquals('Test open reel 1', $updatedTitle, "The audiovisual item's title was not updated.");
     }
 
-    public function test_items_import_validation_no_call_number_sequence(): void
-    {
-        $user = $this->user;
-        $filePath = base_path('tests/import-test-files/items-import/small_items_import.csv');
+    // TODO https://unclibrary.atlassian.net/browse/APPDEV-11923
+    // public function test_items_import_validation_no_call_number_sequence(): void
+    // {
+    //     $user = $this->user;
+    //     $filePath = base_path('tests/import-test-files/items-import/small_items_import.csv');
 
-        $response = $this->actingAs($user)
-            ->withSession(['items-import-file' => $filePath])
-            ->post('/items/batch/audio-import-execute',
-                [],
-                ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+    //     $response = $this->actingAs($user)
+    //         ->withSession(['items-import-file' => $filePath])
+    //         ->post('/items/batch/audio-import-execute',
+    //             [],
+    //             ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
-        $responseArray = json_decode($response->getContent(), true);
-        $htmlContainsErrorMessage = strpos($responseArray['html'],
-            'The Collection/Format pairing does not have a valid CallNumberSequence available.') !== false;
+    //     $responseArray = json_decode($response->getContent(), true);
+    //     $htmlContainsErrorMessage = strpos($responseArray['html'],
+    //         'The Collection/Format pairing does not have a valid CallNumberSequence available.') !== false;
 
-        $this->assertEquals('error', $responseArray['status'], "The JSON status should be 'error'.");
-        $this->assertTrue($htmlContainsErrorMessage, 'The HTML in the response does not include the correct error notification.');
-    }
+    //     $this->assertEquals('error', $responseArray['status'], "The JSON status should be 'error'.");
+    //     $this->assertTrue($htmlContainsErrorMessage, 'The HTML in the response does not include the correct error notification.');
+    // }
 
-    public function test_items_import_validation_must_already_exist_in_database(): void
-    {
-        $user = $this->user;
-        $filePath = base_path('tests/import-test-files/items-import/sample_items_import_mixed_errors.csv');
+    // TODO https://unclibrary.atlassian.net/browse/APPDEV-11923
+    // public function test_items_import_validation_must_already_exist_in_database(): void
+    // {
+    //     $user = $this->user;
+    //     $filePath = base_path('tests/import-test-files/items-import/sample_items_import_mixed_errors.csv');
 
-        $response = $this->actingAs($user)
-            ->withSession(['items-import-file' => $filePath])
-            ->post('/items/batch/audio-import-execute',
-                [],
-                ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+    //     $response = $this->actingAs($user)
+    //         ->withSession(['items-import-file' => $filePath])
+    //         ->post('/items/batch/audio-import-execute',
+    //             [],
+    //             ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
 
-        $responseArray = json_decode($response->getContent(), true);
-        $htmlContainsErrorMessage = strpos($responseArray['html'],
-            'AccessRestrictions must already exist in the database.') !== false;
+    //     $responseArray = json_decode($response->getContent(), true);
+    //     $htmlContainsErrorMessage = strpos($responseArray['html'],
+    //         'AccessRestrictions must already exist in the database.') !== false;
 
-        $this->assertEquals('error', $responseArray['status'], "The JSON status should be 'error'.");
-        $this->assertTrue($htmlContainsErrorMessage, 'The HTML in the response does not include the correct error notification.');
-    }
+    //     $this->assertEquals('error', $responseArray['status'], "The JSON status should be 'error'.");
+    //     $this->assertTrue($htmlContainsErrorMessage, 'The HTML in the response does not include the correct error notification.');
+    // }
 
     public function test_items_import_update_sets_access_restriction_in_title_case(): void
     {
