@@ -17,16 +17,18 @@ class AudioVisualItemsTest extends TestCase
     use RefreshDatabase;
 
     private $user;
-
     private $avItem;
+    private $collection;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->user = User::factory()->create();
         $cut = Cut::factory()->create(['call_number' => 'FS-12345/1']);
-        $this->avItem = AudioVisualItem::factory()->create(['call_number' => $cut->call_number]);
+        $collection = Collection::factory()->create();
+        $this->avItem = AudioVisualItem::factory()->create(['call_number' => $cut->call_number, 'collection_id' => $collection->id]);
         TestHelper::addUserIdToRevision('AudioVisualItem', $this->avItem->id, $this->user->id);
+        NewCallNumberSequence::factory()->create(['prefix' => 'FS', 'collection_id' => $collection->id]);
     }
 
     /**

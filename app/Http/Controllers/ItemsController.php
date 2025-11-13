@@ -16,6 +16,7 @@ use Jitterbug\Models\AudioVisualItemCollection;
 use Jitterbug\Models\AudioVisualItemFormat;
 use Jitterbug\Models\AudioVisualItemType;
 use Jitterbug\Models\BatchAudioVisualItem;
+use Jitterbug\Models\NewCallNumberSequence;
 use Jitterbug\Models\CallNumberSequence;
 use Jitterbug\Models\Collection;
 use Jitterbug\Models\Cut;
@@ -346,12 +347,13 @@ class ItemsController extends Controller implements HasMiddleware
             $transactionId = Uuid::uuid4();
             DB::statement("set @transaction_id = '$transactionId';");
 
+            $newCall = $item->call_number;
             // Update call number everywhere if it has changed
             if ($item->isDirty('call_number')) {
-                $subclass->call_number = $item->call_number;
+                $subclass->call_number = $newCall;
 
                 $origCall = $item->getOriginal()['call_number'];
-                $newCall = $item->call_number;
+                
 
                 // Yes, it would be nice (and more performant) if we
                 // could use the batch update syntax for this, rather
