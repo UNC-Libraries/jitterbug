@@ -355,10 +355,14 @@
                 }
             ],
 <<<<<<< HEAD
+<<<<<<< HEAD
             "time": "2025-09-20T02:16:09+00:00"
 =======
             "time": "2025-10-06T02:22:34+00:00"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "time": "2025-10-06T02:22:34+00:00"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
         },
         {
             "name": "directorytree/ldaprecord-laravel",
@@ -430,6 +434,7 @@
         {
             "name": "doctrine/dbal",
 <<<<<<< HEAD
+<<<<<<< HEAD
             "version": "3.10.2",
             "source": {
                 "type": "git",
@@ -452,6 +457,18 @@
                 "url": "https://api.github.com/repos/doctrine/dbal/zipball/65edaca19a752730f290ec2fb89d593cb40afb43",
                 "reference": "65edaca19a752730f290ec2fb89d593cb40afb43",
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "version": "3.10.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/dbal.git",
+                "reference": "65edaca19a752730f290ec2fb89d593cb40afb43"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/65edaca19a752730f290ec2fb89d593cb40afb43",
+                "reference": "65edaca19a752730f290ec2fb89d593cb40afb43",
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
                 "shasum": ""
             },
             "require": {
@@ -468,6 +485,7 @@
             "require-dev": {
                 "doctrine/cache": "^1.11|^2.0",
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "doctrine/coding-standard": "13.0.1",
                 "fig/log-test": "^1",
                 "jetbrains/phpstorm-stubs": "2023.1",
@@ -478,6 +496,12 @@
                 "jetbrains/phpstorm-stubs": "2023.1",
                 "phpstan/phpstan": "2.1.30",
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+                "doctrine/coding-standard": "14.0.0",
+                "fig/log-test": "^1",
+                "jetbrains/phpstorm-stubs": "2023.1",
+                "phpstan/phpstan": "2.1.30",
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
                 "phpstan/phpstan-strict-rules": "^2",
                 "phpunit/phpunit": "9.6.29",
                 "slevomat/coding-standard": "8.24.0",
@@ -544,10 +568,14 @@
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "source": "https://github.com/doctrine/dbal/tree/3.10.2"
 =======
                 "source": "https://github.com/doctrine/dbal/tree/3.10.3"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+                "source": "https://github.com/doctrine/dbal/tree/3.10.3"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
             },
             "funding": [
                 {
@@ -564,10 +592,14 @@
                 }
             ],
 <<<<<<< HEAD
+<<<<<<< HEAD
             "time": "2025-09-04T23:51:27+00:00"
 =======
             "time": "2025-10-09T09:05:12+00:00"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "time": "2025-10-09T09:05:12+00:00"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
         },
         {
             "name": "doctrine/deprecations",
@@ -1783,6 +1815,7 @@
         {
             "name": "laravel/framework",
 <<<<<<< HEAD
+<<<<<<< HEAD
             "version": "v12.31.1",
             "source": {
                 "type": "git",
@@ -1813,6 +1846,22 @@
             "require": {
                 "brick/math": "^0.9.3|^0.10.2|^0.11|^0.12|^0.13|^0.14",
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "version": "v11.46.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/framework.git",
+                "reference": "5fd457f807570a962a53b403b1346efe4cc80bb8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/5fd457f807570a962a53b403b1346efe4cc80bb8",
+                "reference": "5fd457f807570a962a53b403b1346efe4cc80bb8",
+                "shasum": ""
+            },
+            "require": {
+                "brick/math": "^0.9.3|^0.10.2|^0.11|^0.12|^0.13|^0.14",
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
                 "composer-runtime-api": "^2.2",
                 "doctrine/inflector": "^2.0.5",
                 "dragonmantank/cron-expression": "^3.4",
@@ -1921,10 +1970,13 @@
                 "league/flysystem-sftp-v3": "^3.25.1",
                 "mockery/mockery": "^1.6.10",
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "opis/json-schema": "^2.4.1",
                 "orchestra/testbench-core": "^10.6.5",
                 "pda/pheanstalk": "^5.0.6|^7.0.0",
 =======
+=======
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
                 "orchestra/testbench-core": "^9.16.1",
                 "pda/pheanstalk": "^5.0.6",
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
@@ -2021,10 +2073,14 @@
                 "source": "https://github.com/laravel/framework"
             },
 <<<<<<< HEAD
+<<<<<<< HEAD
             "time": "2025-09-23T15:33:04+00:00"
 =======
             "time": "2025-09-30T14:51:32+00:00"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "time": "2025-09-30T14:51:32+00:00"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
         },
         {
             "name": "laravel/helpers",
@@ -2145,6 +2201,7 @@
         {
             "name": "laravel/serializable-closure",
 <<<<<<< HEAD
+<<<<<<< HEAD
             "version": "v2.0.5",
             "source": {
                 "type": "git",
@@ -2167,6 +2224,18 @@
                 "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/038ce42edee619599a1debb7e81d7b3759492819",
                 "reference": "038ce42edee619599a1debb7e81d7b3759492819",
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "version": "v2.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/serializable-closure.git",
+                "reference": "038ce42edee619599a1debb7e81d7b3759492819"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/038ce42edee619599a1debb7e81d7b3759492819",
+                "reference": "038ce42edee619599a1debb7e81d7b3759492819",
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
                 "shasum": ""
             },
             "require": {
@@ -2215,10 +2284,14 @@
                 "source": "https://github.com/laravel/serializable-closure"
             },
 <<<<<<< HEAD
+<<<<<<< HEAD
             "time": "2025-09-22T17:29:40+00:00"
 =======
             "time": "2025-10-09T13:42:30+00:00"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "time": "2025-10-09T13:42:30+00:00"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
         },
         {
             "name": "laravel/tinker",
@@ -3265,6 +3338,7 @@
         {
             "name": "nikic/php-parser",
 <<<<<<< HEAD
+<<<<<<< HEAD
             "version": "v5.6.1",
             "source": {
                 "type": "git",
@@ -3287,6 +3361,18 @@
                 "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/3a454ca033b9e06b63282ce19562e892747449bb",
                 "reference": "3a454ca033b9e06b63282ce19562e892747449bb",
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "version": "v5.6.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nikic/PHP-Parser.git",
+                "reference": "3a454ca033b9e06b63282ce19562e892747449bb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/3a454ca033b9e06b63282ce19562e892747449bb",
+                "reference": "3a454ca033b9e06b63282ce19562e892747449bb",
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
                 "shasum": ""
             },
             "require": {
@@ -3330,6 +3416,7 @@
             "support": {
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "source": "https://github.com/nikic/PHP-Parser/tree/v5.6.1"
             },
             "time": "2025-08-13T20:13:15+00:00"
@@ -3338,6 +3425,11 @@
             },
             "time": "2025-10-21T19:32:17+00:00"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+                "source": "https://github.com/nikic/PHP-Parser/tree/v5.6.2"
+            },
+            "time": "2025-10-21T19:32:17+00:00"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
         },
         {
             "name": "nunomaduro/termwind",
@@ -3427,6 +3519,7 @@
             "time": "2025-10-18T11:10:27+00:00"
         },
         {
+<<<<<<< HEAD
 <<<<<<< HEAD
             "name": "phiki/phiki",
             "version": "v2.0.4",
@@ -3519,6 +3612,17 @@
             "dist": {
                 "type": "zip",
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "name": "phpoption/phpoption",
+            "version": "1.9.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/schmittjoh/php-option.git",
+                "reference": "638a154f8d4ee6a5cfa96d6a34dfbe0cffa9566d"
+            },
+            "dist": {
+                "type": "zip",
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
                 "url": "https://api.github.com/repos/schmittjoh/php-option/zipball/638a154f8d4ee6a5cfa96d6a34dfbe0cffa9566d",
                 "reference": "638a154f8d4ee6a5cfa96d6a34dfbe0cffa9566d",
                 "shasum": ""
@@ -4048,6 +4152,7 @@
         {
             "name": "psy/psysh",
 <<<<<<< HEAD
+<<<<<<< HEAD
             "version": "v0.12.12",
             "source": {
                 "type": "git",
@@ -4070,6 +4175,18 @@
                 "url": "https://api.github.com/repos/bobthecow/psysh/zipball/95c29b3756a23855a30566b745d218bee690bef2",
                 "reference": "95c29b3756a23855a30566b745d218bee690bef2",
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "version": "v0.12.14",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bobthecow/psysh.git",
+                "reference": "95c29b3756a23855a30566b745d218bee690bef2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/95c29b3756a23855a30566b745d218bee690bef2",
+                "reference": "95c29b3756a23855a30566b745d218bee690bef2",
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
                 "shasum": ""
             },
             "require": {
@@ -4134,6 +4251,7 @@
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "source": "https://github.com/bobthecow/psysh/tree/v0.12.12"
             },
             "time": "2025-09-20T13:46:31+00:00"
@@ -4142,6 +4260,11 @@
             },
             "time": "2025-10-27T17:15:31+00:00"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+                "source": "https://github.com/bobthecow/psysh/tree/v0.12.14"
+            },
+            "time": "2025-10-27T17:15:31+00:00"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
         },
         {
             "name": "ralouphie/getallheaders",
@@ -4569,6 +4692,7 @@
         {
             "name": "symfony/console",
 <<<<<<< HEAD
+<<<<<<< HEAD
             "version": "v7.3.3",
             "source": {
                 "type": "git",
@@ -4591,6 +4715,18 @@
                 "url": "https://api.github.com/repos/symfony/console/zipball/c28ad91448f86c5f6d9d2c70f0cf68bf135f252a",
                 "reference": "c28ad91448f86c5f6d9d2c70f0cf68bf135f252a",
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "version": "v7.3.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/console.git",
+                "reference": "c28ad91448f86c5f6d9d2c70f0cf68bf135f252a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/console/zipball/c28ad91448f86c5f6d9d2c70f0cf68bf135f252a",
+                "reference": "c28ad91448f86c5f6d9d2c70f0cf68bf135f252a",
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
                 "shasum": ""
             },
             "require": {
@@ -4656,10 +4792,14 @@
             ],
             "support": {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/console/tree/v7.3.3"
 =======
                 "source": "https://github.com/symfony/console/tree/v7.3.6"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+                "source": "https://github.com/symfony/console/tree/v7.3.6"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
             },
             "funding": [
                 {
@@ -4680,10 +4820,14 @@
                 }
             ],
 <<<<<<< HEAD
+<<<<<<< HEAD
             "time": "2025-08-25T06:35:40+00:00"
 =======
             "time": "2025-11-04T01:21:42+00:00"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "time": "2025-11-04T01:21:42+00:00"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
         },
         {
             "name": "symfony/css-selector",
@@ -4824,6 +4968,7 @@
         {
             "name": "symfony/error-handler",
 <<<<<<< HEAD
+<<<<<<< HEAD
             "version": "v7.3.2",
             "source": {
                 "type": "git",
@@ -4846,6 +4991,18 @@
                 "url": "https://api.github.com/repos/symfony/error-handler/zipball/bbe40bfab84323d99dab491b716ff142410a92a8",
                 "reference": "bbe40bfab84323d99dab491b716ff142410a92a8",
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "version": "v7.3.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/error-handler.git",
+                "reference": "bbe40bfab84323d99dab491b716ff142410a92a8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/error-handler/zipball/bbe40bfab84323d99dab491b716ff142410a92a8",
+                "reference": "bbe40bfab84323d99dab491b716ff142410a92a8",
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
                 "shasum": ""
             },
             "require": {
@@ -4894,10 +5051,14 @@
             "homepage": "https://symfony.com",
             "support": {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/error-handler/tree/v7.3.2"
 =======
                 "source": "https://github.com/symfony/error-handler/tree/v7.3.6"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+                "source": "https://github.com/symfony/error-handler/tree/v7.3.6"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
             },
             "funding": [
                 {
@@ -4918,10 +5079,14 @@
                 }
             ],
 <<<<<<< HEAD
+<<<<<<< HEAD
             "time": "2025-07-07T08:17:57+00:00"
 =======
             "time": "2025-10-31T19:12:50+00:00"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "time": "2025-10-31T19:12:50+00:00"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
         },
         {
             "name": "symfony/event-dispatcher",
@@ -5086,6 +5251,7 @@
         {
             "name": "symfony/finder",
 <<<<<<< HEAD
+<<<<<<< HEAD
             "version": "v7.3.2",
             "source": {
                 "type": "git",
@@ -5108,6 +5274,18 @@
                 "url": "https://api.github.com/repos/symfony/finder/zipball/9f696d2f1e340484b4683f7853b273abff94421f",
                 "reference": "9f696d2f1e340484b4683f7853b273abff94421f",
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "version": "v7.3.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/finder.git",
+                "reference": "9f696d2f1e340484b4683f7853b273abff94421f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/9f696d2f1e340484b4683f7853b273abff94421f",
+                "reference": "9f696d2f1e340484b4683f7853b273abff94421f",
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
                 "shasum": ""
             },
             "require": {
@@ -5143,10 +5321,14 @@
             "homepage": "https://symfony.com",
             "support": {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/finder/tree/v7.3.2"
 =======
                 "source": "https://github.com/symfony/finder/tree/v7.3.5"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+                "source": "https://github.com/symfony/finder/tree/v7.3.5"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
             },
             "funding": [
                 {
@@ -5166,6 +5348,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
 <<<<<<< HEAD
             "time": "2025-07-15T13:41:35+00:00"
         },
@@ -5197,6 +5380,22 @@
                 "url": "https://api.github.com/repos/symfony/http-foundation/zipball/6379e490d6ecfc5c4224ff3a754b90495ecd135c",
                 "reference": "6379e490d6ecfc5c4224ff3a754b90495ecd135c",
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "time": "2025-10-15T18:45:57+00:00"
+        },
+        {
+            "name": "symfony/http-foundation",
+            "version": "v7.3.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/http-foundation.git",
+                "reference": "6379e490d6ecfc5c4224ff3a754b90495ecd135c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/6379e490d6ecfc5c4224ff3a754b90495ecd135c",
+                "reference": "6379e490d6ecfc5c4224ff3a754b90495ecd135c",
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
                 "shasum": ""
             },
             "require": {
@@ -5247,10 +5446,14 @@
             "homepage": "https://symfony.com",
             "support": {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/http-foundation/tree/v7.3.3"
 =======
                 "source": "https://github.com/symfony/http-foundation/tree/v7.3.6"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+                "source": "https://github.com/symfony/http-foundation/tree/v7.3.6"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
             },
             "funding": [
                 {
@@ -5270,6 +5473,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
 <<<<<<< HEAD
             "time": "2025-08-20T08:04:18+00:00"
         },
@@ -5301,6 +5505,22 @@
                 "url": "https://api.github.com/repos/symfony/http-kernel/zipball/f9a34dc0196677250e3609c2fac9de9e1551a262",
                 "reference": "f9a34dc0196677250e3609c2fac9de9e1551a262",
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "time": "2025-11-06T11:05:57+00:00"
+        },
+        {
+            "name": "symfony/http-kernel",
+            "version": "v7.3.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/http-kernel.git",
+                "reference": "f9a34dc0196677250e3609c2fac9de9e1551a262"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/f9a34dc0196677250e3609c2fac9de9e1551a262",
+                "reference": "f9a34dc0196677250e3609c2fac9de9e1551a262",
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
                 "shasum": ""
             },
             "require": {
@@ -5386,10 +5606,14 @@
             "homepage": "https://symfony.com",
             "support": {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/http-kernel/tree/v7.3.3"
 =======
                 "source": "https://github.com/symfony/http-kernel/tree/v7.3.6"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+                "source": "https://github.com/symfony/http-kernel/tree/v7.3.6"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
             },
             "funding": [
                 {
@@ -5409,6 +5633,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
 <<<<<<< HEAD
             "time": "2025-08-29T08:23:45+00:00"
         },
@@ -5440,6 +5665,22 @@
                 "url": "https://api.github.com/repos/symfony/mailer/zipball/fd497c45ba9c10c37864e19466b090dcb60a50ba",
                 "reference": "fd497c45ba9c10c37864e19466b090dcb60a50ba",
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "time": "2025-11-06T20:58:12+00:00"
+        },
+        {
+            "name": "symfony/mailer",
+            "version": "v7.3.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/mailer.git",
+                "reference": "fd497c45ba9c10c37864e19466b090dcb60a50ba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/mailer/zipball/fd497c45ba9c10c37864e19466b090dcb60a50ba",
+                "reference": "fd497c45ba9c10c37864e19466b090dcb60a50ba",
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
                 "shasum": ""
             },
             "require": {
@@ -5491,10 +5732,14 @@
             "homepage": "https://symfony.com",
             "support": {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/mailer/tree/v7.3.3"
 =======
                 "source": "https://github.com/symfony/mailer/tree/v7.3.5"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+                "source": "https://github.com/symfony/mailer/tree/v7.3.5"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
             },
             "funding": [
                 {
@@ -5514,6 +5759,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
 <<<<<<< HEAD
             "time": "2025-08-13T11:49:31+00:00"
         },
@@ -5545,6 +5791,22 @@
                 "url": "https://api.github.com/repos/symfony/mime/zipball/b1b828f69cbaf887fa835a091869e55df91d0e35",
                 "reference": "b1b828f69cbaf887fa835a091869e55df91d0e35",
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "time": "2025-10-24T14:27:20+00:00"
+        },
+        {
+            "name": "symfony/mime",
+            "version": "v7.3.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/mime.git",
+                "reference": "b1b828f69cbaf887fa835a091869e55df91d0e35"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/mime/zipball/b1b828f69cbaf887fa835a091869e55df91d0e35",
+                "reference": "b1b828f69cbaf887fa835a091869e55df91d0e35",
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
                 "shasum": ""
             },
             "require": {
@@ -5600,10 +5862,14 @@
             ],
             "support": {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/mime/tree/v7.3.2"
 =======
                 "source": "https://github.com/symfony/mime/tree/v7.3.4"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+                "source": "https://github.com/symfony/mime/tree/v7.3.4"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
             },
             "funding": [
                 {
@@ -5624,10 +5890,14 @@
                 }
             ],
 <<<<<<< HEAD
+<<<<<<< HEAD
             "time": "2025-07-15T13:41:35+00:00"
 =======
             "time": "2025-09-16T08:38:17+00:00"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "time": "2025-09-16T08:38:17+00:00"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -6215,6 +6485,7 @@
             ],
             "time": "2025-07-08T02:45:35+00:00"
 <<<<<<< HEAD
+<<<<<<< HEAD
         },
         {
             "name": "symfony/polyfill-php84",
@@ -6377,6 +6648,8 @@
             "time": "2025-06-23T16:12:55+00:00"
 =======
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
         },
         {
             "name": "symfony/polyfill-uuid",
@@ -6464,6 +6737,7 @@
         {
             "name": "symfony/process",
 <<<<<<< HEAD
+<<<<<<< HEAD
             "version": "v7.3.3",
             "source": {
                 "type": "git",
@@ -6486,6 +6760,18 @@
                 "url": "https://api.github.com/repos/symfony/process/zipball/f24f8f316367b30810810d4eb30c543d7003ff3b",
                 "reference": "f24f8f316367b30810810d4eb30c543d7003ff3b",
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "version": "v7.3.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/process.git",
+                "reference": "f24f8f316367b30810810d4eb30c543d7003ff3b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/process/zipball/f24f8f316367b30810810d4eb30c543d7003ff3b",
+                "reference": "f24f8f316367b30810810d4eb30c543d7003ff3b",
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
                 "shasum": ""
             },
             "require": {
@@ -6518,10 +6804,14 @@
             "homepage": "https://symfony.com",
             "support": {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/process/tree/v7.3.3"
 =======
                 "source": "https://github.com/symfony/process/tree/v7.3.4"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+                "source": "https://github.com/symfony/process/tree/v7.3.4"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
             },
             "funding": [
                 {
@@ -6541,6 +6831,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
 <<<<<<< HEAD
             "time": "2025-08-18T09:42:54+00:00"
         },
@@ -6572,6 +6863,22 @@
                 "url": "https://api.github.com/repos/symfony/routing/zipball/c97abe725f2a1a858deca629a6488c8fc20c3091",
                 "reference": "c97abe725f2a1a858deca629a6488c8fc20c3091",
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "time": "2025-09-11T10:12:26+00:00"
+        },
+        {
+            "name": "symfony/routing",
+            "version": "v7.3.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/routing.git",
+                "reference": "c97abe725f2a1a858deca629a6488c8fc20c3091"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/c97abe725f2a1a858deca629a6488c8fc20c3091",
+                "reference": "c97abe725f2a1a858deca629a6488c8fc20c3091",
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
                 "shasum": ""
             },
             "require": {
@@ -6624,10 +6931,14 @@
             ],
             "support": {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/routing/tree/v7.3.2"
 =======
                 "source": "https://github.com/symfony/routing/tree/v7.3.6"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+                "source": "https://github.com/symfony/routing/tree/v7.3.6"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
             },
             "funding": [
                 {
@@ -6648,10 +6959,14 @@
                 }
             ],
 <<<<<<< HEAD
+<<<<<<< HEAD
             "time": "2025-07-15T11:36:08+00:00"
 =======
             "time": "2025-11-05T07:57:47+00:00"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "time": "2025-11-05T07:57:47+00:00"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
         },
         {
             "name": "symfony/service-contracts",
@@ -6743,6 +7058,7 @@
         {
             "name": "symfony/string",
 <<<<<<< HEAD
+<<<<<<< HEAD
             "version": "v7.3.3",
             "source": {
                 "type": "git",
@@ -6765,6 +7081,18 @@
                 "url": "https://api.github.com/repos/symfony/string/zipball/f96476035142921000338bad71e5247fbc138872",
                 "reference": "f96476035142921000338bad71e5247fbc138872",
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "version": "v7.3.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/string.git",
+                "reference": "f96476035142921000338bad71e5247fbc138872"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/string/zipball/f96476035142921000338bad71e5247fbc138872",
+                "reference": "f96476035142921000338bad71e5247fbc138872",
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
                 "shasum": ""
             },
             "require": {
@@ -6822,10 +7150,14 @@
             ],
             "support": {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/string/tree/v7.3.3"
 =======
                 "source": "https://github.com/symfony/string/tree/v7.3.4"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+                "source": "https://github.com/symfony/string/tree/v7.3.4"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
             },
             "funding": [
                 {
@@ -6845,6 +7177,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
 <<<<<<< HEAD
             "time": "2025-08-25T06:35:40+00:00"
         },
@@ -6876,6 +7209,22 @@
                 "url": "https://api.github.com/repos/symfony/translation/zipball/ec25870502d0c7072d086e8ffba1420c85965174",
                 "reference": "ec25870502d0c7072d086e8ffba1420c85965174",
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "time": "2025-09-11T14:36:48+00:00"
+        },
+        {
+            "name": "symfony/translation",
+            "version": "v7.3.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/translation.git",
+                "reference": "ec25870502d0c7072d086e8ffba1420c85965174"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/ec25870502d0c7072d086e8ffba1420c85965174",
+                "reference": "ec25870502d0c7072d086e8ffba1420c85965174",
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
                 "shasum": ""
             },
             "require": {
@@ -6943,10 +7292,14 @@
             "homepage": "https://symfony.com",
             "support": {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/translation/tree/v7.3.3"
 =======
                 "source": "https://github.com/symfony/translation/tree/v7.3.4"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+                "source": "https://github.com/symfony/translation/tree/v7.3.4"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
             },
             "funding": [
                 {
@@ -6967,10 +7320,14 @@
                 }
             ],
 <<<<<<< HEAD
+<<<<<<< HEAD
             "time": "2025-08-01T21:02:37+00:00"
 =======
             "time": "2025-09-07T11:39:36+00:00"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "time": "2025-09-07T11:39:36+00:00"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
         },
         {
             "name": "symfony/translation-contracts",
@@ -7131,6 +7488,7 @@
         {
             "name": "symfony/var-dumper",
 <<<<<<< HEAD
+<<<<<<< HEAD
             "version": "v7.3.3",
             "source": {
                 "type": "git",
@@ -7153,6 +7511,18 @@
                 "url": "https://api.github.com/repos/symfony/var-dumper/zipball/476c4ae17f43a9a36650c69879dcf5b1e6ae724d",
                 "reference": "476c4ae17f43a9a36650c69879dcf5b1e6ae724d",
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "version": "v7.3.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/var-dumper.git",
+                "reference": "476c4ae17f43a9a36650c69879dcf5b1e6ae724d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/476c4ae17f43a9a36650c69879dcf5b1e6ae724d",
+                "reference": "476c4ae17f43a9a36650c69879dcf5b1e6ae724d",
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
                 "shasum": ""
             },
             "require": {
@@ -7207,10 +7577,14 @@
             ],
             "support": {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/var-dumper/tree/v7.3.3"
 =======
                 "source": "https://github.com/symfony/var-dumper/tree/v7.3.5"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+                "source": "https://github.com/symfony/var-dumper/tree/v7.3.5"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
             },
             "funding": [
                 {
@@ -7231,10 +7605,14 @@
                 }
             ],
 <<<<<<< HEAD
+<<<<<<< HEAD
             "time": "2025-08-13T11:49:31+00:00"
 =======
             "time": "2025-09-27T09:00:46+00:00"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "time": "2025-09-27T09:00:46+00:00"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -8626,6 +9004,7 @@
         {
             "name": "phpunit/phpunit",
 <<<<<<< HEAD
+<<<<<<< HEAD
             "version": "11.5.41",
             "source": {
                 "type": "git",
@@ -8648,6 +9027,18 @@
                 "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/c6b89b6cf4324a8b4cb86e1f5dfdd6c9e0371924",
                 "reference": "c6b89b6cf4324a8b4cb86e1f5dfdd6c9e0371924",
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "version": "11.5.43",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/phpunit.git",
+                "reference": "c6b89b6cf4324a8b4cb86e1f5dfdd6c9e0371924"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/c6b89b6cf4324a8b4cb86e1f5dfdd6c9e0371924",
+                "reference": "c6b89b6cf4324a8b4cb86e1f5dfdd6c9e0371924",
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
                 "shasum": ""
             },
             "require": {
@@ -8720,10 +9111,14 @@
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
 <<<<<<< HEAD
+<<<<<<< HEAD
                 "source": "https://github.com/sebastianbergmann/phpunit/tree/11.5.41"
 =======
                 "source": "https://github.com/sebastianbergmann/phpunit/tree/11.5.43"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.5.43"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
             },
             "funding": [
                 {
@@ -8748,10 +9143,14 @@
                 }
             ],
 <<<<<<< HEAD
+<<<<<<< HEAD
             "time": "2025-09-24T06:32:10+00:00"
 =======
             "time": "2025-10-30T08:39:39+00:00"
 >>>>>>> 67b52b8 (APPDEV-11922 increase call number sequence and add test)
+=======
+            "time": "2025-10-30T08:39:39+00:00"
+>>>>>>> a7793fe55d0d0ced5632cc990f7f419942e1d0c0
         },
         {
             "name": "sebastian/cli-parser",
