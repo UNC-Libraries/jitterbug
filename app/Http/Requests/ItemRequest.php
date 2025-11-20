@@ -19,7 +19,7 @@ class ItemRequest extends Request
     {
         // Add rules for base audio visual item
         $rules = [];
-        $rules['batch_size'] = 'required_if:batch,1|integer|between:2,100';
+        $rules['batch_size'] = 'nullable|required_if:batch,1|integer|between:2,100';
         if ($this->route()->getName() !== 'items.store') {
             $this->addRuleIfNotMixed($rules, 'call_number',
                 'required|min:4|max:30|unique:audio_visual_items,call_number,'.
@@ -35,9 +35,9 @@ class ItemRequest extends Request
         $this->addRuleIfNotMixed($rules, 'recording_location', 'max:255');
         $this->addRuleIfNotMixed($rules, 'physical_location', 'max:255');
         $this->addRuleIfNotMixed($rules, 'access_restrictions', 'max:255');
-        $this->addRuleIfNotMixed($rules, 'oclc', 'integer|digits_between:0,15');
+        $this->addRuleIfNotMixed($rules, 'oclc', 'nullable|integer|digits_between:0,15');
         $this->addRuleIfNotMixed($rules, 'item_year', 'max:255');
-        $this->addRuleIfNotMixed($rules, 'item_date', 'date_format:Y-m-d');
+        $this->addRuleIfNotMixed($rules, 'item_date', 'nullable|date_format:Y-m-d');
         $this->addRuleIfNotMixed($rules, 'speed', 'max:255');
         $this->addRuleIfNotMixed($rules, 'entry_date',
             'required|date_format:Y-m-d');

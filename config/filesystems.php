@@ -9,6 +9,8 @@ return [
             'driver' => 'local',
             'root' => env('STORAGE_PATH', storage_path()).'/app',
             'throw' => false,
+            'serve' => true,
+            'report' => false,
         ],
 
         'rackspace' => [

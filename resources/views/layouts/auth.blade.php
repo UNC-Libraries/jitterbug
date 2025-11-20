@@ -5,7 +5,7 @@
   @include('shared._head', ['title' => $title])
 </head>
 {{-- $controller and $action are injected in the AppServiceProvider 
-and are used to route JavaScript in router.js --}}
+and are used to route JavaScript in app.js --}}
 <body data-controller="{{$controller}}" data-action="{{$action}}" style="min-width: 400px !important;">
   <div class="container">
 
@@ -22,7 +22,6 @@ and are used to route JavaScript in router.js --}}
     </footer>
 
   </div>
-  @include('shared._scripts')
 </body>
 
 </html>

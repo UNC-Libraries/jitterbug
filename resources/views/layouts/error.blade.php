@@ -20,7 +20,6 @@
     </footer>
 
   </div>
-  @include('shared._scripts')
 </body>
 
 </html>

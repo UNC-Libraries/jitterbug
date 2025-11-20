@@ -34,7 +34,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->web([
             EncryptCookies::class,
-            VerifyCsrfToken::class
+            VerifyCsrfToken::class,
         ]);
 
         $middleware->throttleApi('60,1');

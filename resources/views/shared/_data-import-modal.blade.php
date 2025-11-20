@@ -5,10 +5,9 @@
             <div id="{{$type}}-import-step-1">
               {{ html()->form('POST', route("{$section}.batch.{$type}.import.upload"))->acceptsFiles()->id("{$type}-upload-form")->open() }}
               <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
                 <h4 class="modal-title">{{title_case($type)}} Import - Step 1 of 3</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
               </div>
               <div class="modal-body import-modal-body">
                 <div class="file-select-label">File to Import (.csv, UTF-8, quoted text)</div>
@@ -31,10 +30,9 @@
             <div id="{{$type}}-import-step-2" style="display: none;">
               {{ html()->form('POST', route("{$section}.batch.{$type}.import.execute"))->id("{$type}-import-form")->open() }}
               <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
                 <h4 class="modal-title">{{title_case($type)}} Import - Step 2 of 3</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
               </div>
               <div class="modal-body import-modal-body">
                 <div id="{{$type}}-upload-data-container"></div>
@@ -52,10 +50,10 @@
 
             <div id="{{$type}}-import-step-3" style="display: none;">
               <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
                 <h4 class="modal-title">{{title_case($type)}} Import - Step 3 of 3</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+
               </div>
               <div class="modal-body import-modal-body">
                 <div id="{{$type}}-import-result-container"></div>

@@ -1,0 +1,49 @@
+{
+  "node_modules/chosen-js/chosen-sprite.png": {
+    "file": "assets/chosen-sprite-BTe4w5m6.png",
+    "src": "node_modules/chosen-js/chosen-sprite.png"
+  },
+  "node_modules/chosen-js/chosen-sprite@2x.png": {
+    "file": "assets/chosen-sprite@2x-WTw8_Bjt.png",
+    "src": "node_modules/chosen-js/chosen-sprite@2x.png"
+  },
+  "node_modules/font-awesome/fonts/fontawesome-webfont.eot": {
+    "file": "assets/fontawesome-webfont-G5YE5S7X.eot",
+    "src": "node_modules/font-awesome/fonts/fontawesome-webfont.eot"
+  },
+  "node_modules/font-awesome/fonts/fontawesome-webfont.svg": {
+    "file": "assets/fontawesome-webfont-D13rzr4g.svg",
+    "src": "node_modules/font-awesome/fonts/fontawesome-webfont.svg"
+  },
+  "node_modules/font-awesome/fonts/fontawesome-webfont.ttf": {
+    "file": "assets/fontawesome-webfont-CQDK8MU3.ttf",
+    "src": "node_modules/font-awesome/fonts/fontawesome-webfont.ttf"
+  },
+  "node_modules/font-awesome/fonts/fontawesome-webfont.woff": {
+    "file": "assets/fontawesome-webfont-CDK5bt4p.woff",
+    "src": "node_modules/font-awesome/fonts/fontawesome-webfont.woff"
+  },
+  "node_modules/font-awesome/fonts/fontawesome-webfont.woff2": {
+    "file": "assets/fontawesome-webfont-B-jkhYfk.woff2",
+    "src": "node_modules/font-awesome/fonts/fontawesome-webfont.woff2"
+  },
+  "public/img/chosen-sprite.png": {
+    "file": "assets/chosen-sprite-BTe4w5m6.png",
+    "src": "node_modules/chosen-js/chosen-sprite.png"
+  },
+  "public/img/chosen-sprite@2x.png": {
+    "file": "assets/chosen-sprite@2x-WTw8_Bjt.png",
+    "src": "node_modules/chosen-js/chosen-sprite@2x.png"
+  },
+  "resources/assets/js/app.js": {
+    "file": "assets/app-CjrxpgHt.js",
+    "name": "app",
+    "src": "resources/assets/js/app.js",
+    "isEntry": true
+  },
+  "resources/assets/sass/app.scss": {
+    "file": "assets/app-r2J6eUoX.css",
+    "src": "resources/assets/sass/app.scss",
+    "isEntry": true
+  }
+}

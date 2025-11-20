@@ -5,6 +5,7 @@ namespace Jitterbug\Http\Controllers;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Str;
 use Jitterbug\Export\ItemsExport;
 use Jitterbug\Http\Requests\ItemRequest;
@@ -15,6 +16,7 @@ use Jitterbug\Models\AudioVisualItemCollection;
 use Jitterbug\Models\AudioVisualItemFormat;
 use Jitterbug\Models\AudioVisualItemType;
 use Jitterbug\Models\BatchAudioVisualItem;
+use Jitterbug\Models\NewCallNumberSequence;
 use Jitterbug\Models\CallNumberSequence;
 use Jitterbug\Models\Collection;
 use Jitterbug\Models\Cut;
@@ -27,7 +29,7 @@ use Jitterbug\Support\SolariumProxy;
 use Session;
 use Uuid;
 
-class ItemsController extends Controller
+class ItemsController extends Controller implements HasMiddleware
 {
     protected $solrItems;
 
@@ -42,10 +44,17 @@ class ItemsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+
         $this->solrItems = new SolariumProxy('jitterbug-items');
         $this->solrInstances = new SolariumProxy('jitterbug-instances');
         $this->solrTransfers = new SolariumProxy('jitterbug-transfers');
+    }
+
+    public static function middleware(): array
+    {
+        return [
+            'auth',
+        ];
     }
 
     /**
@@ -338,12 +347,13 @@ class ItemsController extends Controller
             $transactionId = Uuid::uuid4();
             DB::statement("set @transaction_id = '$transactionId';");
 
+            $newCall = $item->call_number;
             // Update call number everywhere if it has changed
             if ($item->isDirty('call_number')) {
-                $subclass->call_number = $item->call_number;
+                $subclass->call_number = $newCall;
 
                 $origCall = $item->getOriginal()['call_number'];
-                $newCall = $item->call_number;
+                
 
                 // Yes, it would be nice (and more performant) if we
                 // could use the batch update syntax for this, rather
@@ -368,7 +378,14 @@ class ItemsController extends Controller
                     $transfer->call_number = $newCall;
                     $transfer->save();
                 }
+
             }
+
+            // increase call number sequence since the new one is now used
+            $prefix = explode('-', $newCall)[0];
+            $sequence = NewCallNumberSequence::where('prefix', '=', $prefix)->
+                  where('collection_id', '=', $item->collection_id)->first();
+            $sequence->increase();
 
             $subclass->save();
             $item->touch();

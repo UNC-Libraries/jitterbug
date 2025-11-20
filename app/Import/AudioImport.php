@@ -5,6 +5,7 @@ namespace Jitterbug\Import;
 use Auth;
 use DB;
 use Illuminate\Support\MessageBag;
+use Illuminate\Support\Str;
 use Jitterbug\Models\AudioInstance;
 use Jitterbug\Models\AudioItem;
 use Jitterbug\Models\AudioTransfer;
@@ -157,7 +158,7 @@ class AudioImport extends Import
 
                 // Validates certain field values already exist in the DB
                 foreach ($this->mustAlreadyExistInDbKeys as $dbKey => $class) {
-                    if (! empty($row[$dbKey]) && ! $this->valueExists($class, snake_case($dbKey), $row[$dbKey])) {
+                    if (! empty($row[$dbKey]) && ! $this->valueExists($class, Str::snake($dbKey), $row[$dbKey])) {
                         $bag->add($dbKey, $dbKey.' must already exist in the database.');
                     }
                 }

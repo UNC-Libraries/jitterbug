@@ -2,6 +2,8 @@
 
 namespace Jitterbug\Models;
 
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+
 class BatchAudioVisualItem extends AudioVisualItem
 {
     use MergeableAttributes;
@@ -10,11 +12,11 @@ class BatchAudioVisualItem extends AudioVisualItem
 
     protected $subclasses;
 
-    protected $aggregateItem;
+    protected AudioVisualItem $aggregateItem;
 
-    protected $aggregateSubclass;
+    protected mixed $aggregateSubclass;
 
-    protected $batchGuarded = ['id', 'subclass_type', 'subclass_id', 'created_at',
+    protected array $batchGuarded = ['id', 'subclass_type', 'subclass_id', 'created_at',
         'updated_at', ];
 
     protected $attributes;
@@ -39,12 +41,12 @@ class BatchAudioVisualItem extends AudioVisualItem
         $this->attributes = $this->aggregateItem->attributes;
     }
 
-    public function batch()
+    public function batch(): true
     {
         return true;
     }
 
-    public function getIdsAttribute()
+    public function getIdsAttribute(): string
     {
         $ids = [];
         foreach ($this->items as $item) {
@@ -59,12 +61,12 @@ class BatchAudioVisualItem extends AudioVisualItem
         return $this->aggregateSubclass;
     }
 
-    public function subclass()
+    public function subclass(): MorphTo
     {
         return $this->aggregateSubclass;
     }
 
-    public function getTypeAttribute()
+    public function getTypeAttribute(): string
     {
         $fullType = $this->items->first()->getAttribute('subclass_type');
         $type = substr($fullType, 0, strlen($fullType) - strlen('Item'));

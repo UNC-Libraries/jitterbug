@@ -80,7 +80,7 @@ Jitterbug uses the [devbridge autocomplete plugin](https://github.com/devbridge/
 1. Define a controller method in the SuggestionsController class for the field using plural naming conventions. You only need to copy and paste one of the exsiting methods and change the parameters for the ```getAutocompleteSuggestions()``` method call to correspond to the model you want the suggestions for, and then the field name.
 2. Add a route to routes.php in the 'suggestions' group that references the controller method that was defined in step 1.
 3. Go to the form where you want the suggestions to appear, and give the input element a css id name. e.g. #speed, or #recording-location, etc.
-4. In app.js, add a jQuery selector using the id you created in step 3, then call autocomplete. The serviceUrl should correspond to the route you created in step 2. For example:
+4. In jitterbug.js, add a jQuery selector using the id you created in step 3, then call autocomplete. The serviceUrl should correspond to the route you created in step 2. For example:
 
 ```javascript
 $('#speed').autocomplete({
@@ -91,16 +91,21 @@ $('#speed').autocomplete({
 
 ## Compiling Assets
 
-Jitterbug uses [Laravel Mix](https://laravel.com/docs/8.x/mix) to compile its assets, including Sass for its css.
-Add your css to `resources/assets/sass/app.scss` and then run `npm run dev` in the application terminal to compile the new changes.
+Jitterbug uses [Vite](https://laravel.com/docs/12.x/vite) to compile its assets, including Sass for its css.
+Add your css to `resources/assets/sass/app.scss` and then run `npm run build` in the application terminal to compile the new changes.
+The same goes for any JavaScript changes you make.
+You can also toggle whether the assets are minified in `vite.config.js`. You should minify them for production, but can be 
+useful debug feature to not minifiy them.
 
 For example, in the VM:
 
 ```bash
 vagrant ssh
-cd /vagrant
-npm run dev
+cd /jitterbug
+npm run build
 ```
+
+Note: if running `build` you may need to run `npm install` first so it picks up the correct C compiler.
 
 ## Running [Laravel Dusk](https://laravel.com/docs/8.x/dusk) tests (VM only)
 
@@ -114,7 +119,7 @@ npm run dev
 2. Navigate to the Jitterbug repo folder
 
     ```bash
-    cd /vagrant
+    cd /jitterbug
     ```
 
 3. Run the Laravel Dusk tests

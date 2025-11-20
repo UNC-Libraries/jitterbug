@@ -590,7 +590,7 @@ class TransactionDigest
             }
 
             // e.g. convert 'AudioVisualItem' to 'audio_visual_item'
-            $snakeClass = snake_case($class);
+            $snakeClass = Str::snake($class);
             $explodedClass = explode('_', $snakeClass);
             // We have a base class instance, so get the subclass type
             // ('audio', 'film' or 'video')

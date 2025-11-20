@@ -2,6 +2,8 @@
 
 namespace Jitterbug\Models;
 
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+
 class BatchTransfer extends Transfer
 {
     use MergeableAttributes;
@@ -10,11 +12,11 @@ class BatchTransfer extends Transfer
 
     protected $subclasses;
 
-    protected $aggregateTransfer;
+    protected Transfer $aggregateTransfer;
 
-    protected $aggregateSubclass;
+    protected mixed $aggregateSubclass;
 
-    protected $batchGuarded = ['id', 'subclass_type', 'subclass_id', 'created_at',
+    protected array $batchGuarded = ['id', 'subclass_type', 'subclass_id', 'created_at',
         'updated_at', ];
 
     protected $attributes;
@@ -38,12 +40,12 @@ class BatchTransfer extends Transfer
         $this->attributes = $this->aggregateTransfer->attributes;
     }
 
-    public function batch()
+    public function batch(): true
     {
         return true;
     }
 
-    public function getIdsAttribute()
+    public function getIdsAttribute(): string
     {
         $ids = [];
         foreach ($this->transfers as $transfer) {
@@ -58,12 +60,12 @@ class BatchTransfer extends Transfer
         return $this->aggregateSubclass;
     }
 
-    public function subclass()
+    public function subclass(): MorphTo
     {
         return $this->aggregateSubclass;
     }
 
-    public function getTypeAttribute()
+    public function getTypeAttribute(): string
     {
         $fullType = $this->transfers->first()->getAttribute('subclass_type');
         $type = substr($fullType, 0, strlen($fullType) - strlen('Transfer'));

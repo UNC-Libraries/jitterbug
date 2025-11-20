@@ -4,6 +4,7 @@ namespace Jitterbug\Http\Controllers\Admin;
 
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Jitterbug\Http\Controllers\Controller;
 use Jitterbug\Http\Requests\PrefixRequest;
 use Jitterbug\Models\CollectionType;
@@ -12,16 +13,13 @@ use Jitterbug\Models\Prefix;
 /**
  * Controller for the management of Prefixes in the Admin area.
  */
-class PrefixesController extends Controller
+class PrefixesController extends Controller implements HasMiddleware
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware(['auth', 'admin']);
+        return [
+            ['auth', 'admin'],
+        ];
     }
 
     public function index(Request $request)

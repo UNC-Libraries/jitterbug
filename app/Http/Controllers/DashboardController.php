@@ -4,6 +4,7 @@ namespace Jitterbug\Http\Controllers;
 
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Jitterbug\Models\AudioVisualItemType;
 use Jitterbug\Models\Mark;
 use Jitterbug\Models\PreservationInstanceType;
@@ -13,16 +14,13 @@ use Jitterbug\Presenters\ActivityStream;
 use Jitterbug\Presenters\DashboardMark;
 use Jitterbug\Presenters\TypeCounts;
 
-class DashboardController extends Controller
+class DashboardController extends Controller implements HasMiddleware
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware('auth');
+        return [
+            'auth',
+        ];
     }
 
     public function index()

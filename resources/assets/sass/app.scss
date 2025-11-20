@@ -1,3 +1,9 @@
+@import 'font-awesome';
+@import 'bootstrap';
+@import 'flatpickr';
+@import 'chosen-js/chosen.min';
+@import 'datatables.net-dt/css/dataTables.dataTables.min';
+
 /*  * { border: 1px solid black; } */
 
 $brand-primary:             #4f8d06 !default;
@@ -483,11 +489,6 @@ Filter Panel
 Data Panel
 ------------------------------------------- */
 
-/* A chrome rendering bug workaround */
-#search {
-  height: 29px;
-}
-
 #data-panel {
   background-color: #fff;
   -webkit-user-select: none;
@@ -518,7 +519,7 @@ Data Panel
   border-left: 4px solid $marked-color;
 }
 
-#data-panel table tr.selected {
+#data-panel table tr.selected td {
   background-color: #e8e8e8;
 }
 
@@ -1126,13 +1127,14 @@ label {
 
 .popover {
   font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial;
+  max-width: none;
 }
 
 .popover-title {
   display: none;
 }
 
-.popover-content {
+.popover-body {
   padding: 4px 10px;
 }
 
@@ -1680,4 +1682,27 @@ Adapted from https://codepen.io/ddools/pen/vLPMVE
     background-size: 52px 37px !important;
     background-repeat: no-repeat !important;
   }
+}
+
+.has-danger .form-control-feedback,
+.has-danger .form-control-label,
+.has-danger .col-form-label,
+.has-danger .form-check-label,
+.has-danger .custom-control {
+  color: #d9534f;
+}
+
+/** Classes that were in BS 4 alpha, but were removed **/
+.has-danger .form-control {
+  border-color: #d9534f;
+}
+
+.has-danger .input-group-addon {
+  color: #d9534f;
+  border-color: #d9534f;
+  background-color: #fdf7f7;
+}
+
+.has-danger .form-control-danger {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23d9534f' viewBox='-2 -2 7 7'%3E%3Cpath stroke='%23d9534f' d='M0 0l3 3m0-3L0 3'/%3E%3Ccircle r='.5'/%3E%3Ccircle cx='3' r='.5'/%3E%3Ccircle cy='3' r='.5'/%3E%3Ccircle cx='3' cy='3' r='.5'/%3E%3C/svg%3E");
 }

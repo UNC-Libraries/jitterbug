@@ -104,7 +104,7 @@
             {{ html()->label('Repro Machine', 'reproduction_machine_id')->class('form-control-label') }}
           </div>
           <div class="col-sm-7 detail-value">
-            {{ html()->select('reproduction_machine_id', $reproductionMachines, $instance->reproduction_machine_id)->class('form-control form-control-sm') }}
+            {{ html()->select('reproduction_machine_id', $reproductionMachines, $instance->reproduction_machine_id)->class('form-control form-control-sm form-select') }}
             @if ($errors->has('reproduction_machine_id'))
               <div class="form-control-label"><small>{!! $errors->first('reproduction_machine_id') !!}</small></div>
             @endif
@@ -117,7 +117,7 @@
             {{ html()->label('Project', 'project_id')->class('form-control-label') }}
           </div>
           <div class="col-sm-7 detail-value">
-            {{ html()->select('project_id', $projects, $instance->project_id)->class('form-control form-control-sm') }}
+            {{ html()->select('project_id', $projects, $instance->project_id)->class('form-control form-control-sm form-select') }}
             @if ($errors->has('project_id'))
               <div class="form-control-label"><small>{!! $errors->first('project_id') !!}</small></div>
             @endif
@@ -130,7 +130,7 @@
             {{ html()->label('Department', 'department_id')->class('form-control-label') }}
           </div>
           <div class="col-sm-7 detail-value">
-            {{ html()->select('department_id', $departments, $instance->department_id)->class('form-control form-control-sm') }}
+            {{ html()->select('department_id', $departments, $instance->department_id)->class('form-control form-control-sm form-select') }}
             @if ($errors->has('department_id'))
               <div class="form-control-label"><small>{!! $errors->first('department_id') !!}</small></div>
             @endif

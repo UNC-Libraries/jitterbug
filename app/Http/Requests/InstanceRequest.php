@@ -22,7 +22,7 @@ class InstanceRequest extends Request
     {
         // Add rules for base preservation instances
         $rules = [];
-        $rules['batch_size'] = 'required_if:batch,1|integer|between:2,100';
+        $rules['batch_size'] = 'nullable|required_if:batch,1|integer|between:2,100';
         $this->addRuleIfNotMixed($rules, 'call_number',
             'required|min:4|max:30|exists:audio_visual_items,call_number,deleted_at,NULL');
         // If this is a batch create or update, don't require a file name since it
@@ -35,7 +35,7 @@ class InstanceRequest extends Request
         }
         $this->addRuleIfNotMixed($rules, 'file_location', 'max:60');
         $this->addRuleIfNotMixed($rules, 'file_size_in_bytes',
-            'integer|required|digits_between:0,15');
+            'required|integer|digits_between:0,15');
         $this->addRuleIfNotMixed($rules, 'duration', ['required',
             'regex:'.DurationFormat::$pattern, ]);
         $this->addRuleIfNotMixed($rules, 'checksum', 'max:255');

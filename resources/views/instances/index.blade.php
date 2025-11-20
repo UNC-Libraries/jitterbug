@@ -13,14 +13,14 @@
       <div style="float: left;">
         <a id="instances-new" class="btn btn-sm btn-secondary" style="margin-right: 5px;" href="{{ route('instances.create') }}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
         <div class="btn-group">
-          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cubes" data-toggle="dropdown" aria-hidden="true"></i> Batch</button>
-          <div class="dropdown-menu">
-            <a id="instances-batch-edit" class="dropdown-item" href="#" data-max-edit-limit="{{$maxEditLimit}}">Edit</a>
-            <a id="instances-batch-export" class="dropdown-item" href="#">Export</a>
-            <a id="instances-batch-mark" class="dropdown-item" href="#">Mark</a>
-            <a id="instances-batch-unmark" class="dropdown-item" href="#">Unmark</a>
-            <a id="instances-batch-delete" class="dropdown-item" href="#">Delete</a>
-          </div>
+          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cubes" data-bs-toggle="dropdown" aria-hidden="true"></i> Batch</button>
+          <ul class="dropdown-menu">
+              <li><a id="instances-batch-edit" class="dropdown-item" href="#" data-max-edit-limit="{{$maxEditLimit}}">Edit</a></li>
+              <li><a id="instances-batch-export" class="dropdown-item" href="#">Export</a></li>
+              <li><a id="instances-batch-mark" class="dropdown-item" href="#">Mark</a></li>
+              <li><a id="instances-batch-unmark" class="dropdown-item" href="#">Unmark</a></li>
+              <li><a id="instances-batch-delete" class="dropdown-item" href="#">Delete</a></li>
+          </ul>
         </div>
       </div>
 
@@ -32,10 +32,8 @@
           <div class="modal-content">
 
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
               <h4 id="confirmDelete" class="modal-title">Confirm Delete</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <strong>Be careful!</strong>

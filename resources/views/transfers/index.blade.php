@@ -12,17 +12,17 @@
       <div style="float: left;">
         <a id="transfers-new" class="btn btn-sm btn-secondary" style="margin-right: 5px;" href="{{ route('transfers.create') }}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> New</a>
         <div class="btn-group">
-          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cubes" data-toggle="dropdown" aria-hidden="true"></i> Batch</button>
-          <div class="dropdown-menu">
-            <a id="transfers-batch-edit" class="dropdown-item" href="#" data-max-edit-limit="{{$maxEditLimit}}">Edit</a>
-            <a id="transfers-batch-export" class="dropdown-item" href="#">Export</a>
-            <a id="transfers-batch-mark" class="dropdown-item" href="#">Mark</a>
-            <a id="transfers-batch-unmark" class="dropdown-item" href="#">Unmark</a>
-            <a id="transfers-batch-delete" class="dropdown-item" href="#">Delete</a>
-            <div class="dropdown-divider"></div>
-            <a id="transfers-batch-audio-import" class="dropdown-item" href="#">Audio Import</a>
-            <a id="transfers-batch-video-import" class="dropdown-item" href="#">Video Import</a>
-          </div>
+          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cubes" data-bs-toggle="dropdown" aria-hidden="true"></i> Batch</button>
+          <ul class="dropdown-menu">
+            <li><a id="transfers-batch-edit" class="dropdown-item" href="#" data-max-edit-limit="{{$maxEditLimit}}">Edit</a></li>
+              <li><a id="transfers-batch-export" class="dropdown-item" href="#">Export</a></li>
+              <li><a id="transfers-batch-mark" class="dropdown-item" href="#">Mark</a></li>
+              <li><a id="transfers-batch-unmark" class="dropdown-item" href="#">Unmark</a></li>
+              <li><a id="transfers-batch-delete" class="dropdown-item" href="#">Delete</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a id="transfers-batch-audio-import" class="dropdown-item" href="#">Audio Import</a></li>
+              <li><a id="transfers-batch-video-import" class="dropdown-item" href="#">Video Import</a></li>
+          </ul>
         </div>
       </div>
 
@@ -34,10 +34,9 @@
           <div class="modal-content">
 
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
               <h4 id="confirmDelete" class="modal-title">Confirm Delete</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+              </button>
             </div>
             <div class="modal-body">
               <strong>Be careful!</strong>

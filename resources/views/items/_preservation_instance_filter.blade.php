@@ -1,4 +1,4 @@
-<h6>Preservation Instance Filter<span class="selection-count label label-default" style="margin-left: 5px;"></span></h6>
+<h6>Preservation Instance Filter<span class="selection-count badge bg-secondary" style="margin-left: 5px;"></span></h6>
 <ul id="preservation-instance-filters" class="filter-list">
   <li>
     <div>

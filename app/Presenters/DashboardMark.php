@@ -2,6 +2,7 @@
 
 namespace Jitterbug\Presenters;
 
+use Illuminate\Support\Str;
 use Westsworld\TimeAgo;
 
 /**
@@ -18,7 +19,7 @@ class DashboardMark
         $this->mark = $mark;
 
         $class = $this->mark->markable_type;
-        $snakeClass = snake_case($class);
+        $snakeClass = Str::snake($class);
         $explodedClass = explode('_', $snakeClass);
         $this->objectType = array_pop($explodedClass);
     }

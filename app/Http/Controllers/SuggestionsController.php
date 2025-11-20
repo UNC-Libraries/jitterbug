@@ -3,6 +3,7 @@
 namespace Jitterbug\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
 /**
  * Controller for producing form level autocomplete suggestions for
@@ -25,7 +26,7 @@ use Illuminate\Http\Request;
  * the input element a css id name. e.g. #speed, or #recording-location,
  * etc.
  *
- * 4. In app.js, add a jQuery selector using the id you created in step 3,
+ * 4. In jitterbug.js, add a jQuery selector using the id you created in step 3,
  * then call autocomplete. The serviceUrl should correspond to the route
  * you created in step 2. For example:
  *
@@ -34,16 +35,13 @@ use Illuminate\Http\Request;
  *    deferRequestBy: 100
  *  });
  */
-class SuggestionsController extends Controller
+class SuggestionsController extends Controller implements HasMiddleware
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware('auth');
+        return [
+            'auth',
+        ];
     }
 
     public function recordingLocations(Request $request)
