@@ -37,7 +37,10 @@ class CallNumberSequence extends Model
     // if the call number is already in use, use the next one
     $avItem = AudioVisualItem::where('call_number', '=', $sequence->callNumber());
     if ($avItem != null) {
-        $increasedSequence = $sequence->increase();
+        $sequence->increase();
+        // find updated sequence
+        return NewCallNumberSequence::where('prefix', '=', $prefix)->
+        where('collection_id', '=', $collectionId)->first();
     }
 
         return $sequence;
