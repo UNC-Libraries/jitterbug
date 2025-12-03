@@ -108,8 +108,8 @@ class CallNumberSequenceTest extends TestCase
         $avItem1 = AudioVisualItem::factory()->create(['call_number' => $this->prefix->label.'-12345/2']);
 
         $sequence = CallNumberSequence::next($this->collection->id, $format->id);
-        $this->assertSame(3, $sequence->next,
-            'Sequence is not an increased NewCallNumberSequence, as it should be.');
+        $this->assertSame($this->prefix->label.'-12345/3', $sequence->callNumber(),
+            'Did not return the right new call number sequence.');
         $this->assertTrue(is_a($sequence, \Jitterbug\Models\NewCallNumberSequence::class),
             'Sequence is not a NewCallNumberSequence, as it should be.');
     }
