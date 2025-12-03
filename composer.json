@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "laravel/framework": "^10.48",
+        "laravel/framework": "^10.50",
         "solarium/solarium": "^6.3",
         "symfony/event-dispatcher": "^4.3 || ^5.0 || ^6.0",
         "venturecraft/revisionable": "dev-main",
