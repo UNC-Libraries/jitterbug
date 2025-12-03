@@ -3,7 +3,7 @@
 namespace Jitterbug\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class CallNumberSequence extends Model
 {
@@ -31,13 +31,17 @@ class CallNumberSequence extends Model
 
         if ($sequence === null) {
             Log::error('No new or legacy sequence found for prefix \''.$prefix.
-        '\''.' with collection id '.$collectionId);
+                '\''.' with collection id '.$collectionId);
         }
 
     // if the call number is already in use, use the next one
-    $avItem = AudioVisualItem::where('call_number', '=', $sequence->callNumber());
-    if ($avItem != null) {
-        $increasedSequence = $sequence->increase();
+    $avItem = AudioVisualItem::where('call_number', '=', $sequence->callNumber())->first();
+
+    if (!empty($avItem)) {
+        $sequence->increase();
+        // find updated sequence
+        return NewCallNumberSequence::where('prefix', '=', $prefix)->
+        where('collection_id', '=', $collectionId)->first();
     }
 
         return $sequence;
@@ -46,7 +50,7 @@ class CallNumberSequence extends Model
     /**
      * Increment the sequence id.
      */
-    public function increase()
+    public function increase(): void
     {
         $reservedIds = [];
         if ($this->reserved !== null) {
