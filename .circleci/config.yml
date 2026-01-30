@@ -44,27 +44,9 @@ jobs:
           name: Install Solr (slim version)
           command: |
             cd ~
-            sudo wget --no-verbose https://archive.apache.org/dist/solr/solr/9.4.0/solr-9.4.0-slim.tgz
-            sudo tar xzf solr-9.4.0-slim.tgz solr-9.4.0-slim/bin/install_solr_service.sh --strip-components=2
-            sudo ./install_solr_service.sh solr-9.4.0-slim.tgz -n
-
-      - run:
-          name: Setup DataImportHandler
-          command: |
-            sudo mkdir /opt/solr/modules
-            sudo mkdir /opt/solr/modules/dataimporthandler
-            sudo mkdir /opt/solr/modules/dataimporthandler/lib
-            cd /opt/solr/modules/dataimporthandler/lib
-            sudo wget --no-verbose https://github.com/SearchScale/dataimporthandler/releases/download/v9.4.0/data-import-handler-9.4.0.jar
-
-      - run:
-          name: Get and hook up connector file
-          command: |
-            cd ~/jitterbug
-            sudo wget --no-verbose -nc http://www.mirrorservice.org/sites/ftp.mysql.com/Downloads/Connector-J/mysql-connector-java-8.0.28.zip
-            sudo unzip -n mysql-connector-java-8.0.28.zip
-            cd /
-            sudo cp ~/jitterbug/mysql-connector-java-8.0.28/mysql-connector-java-8.0.28.jar /opt/solr/modules/dataimporthandler/lib/.
+            sudo wget --no-verbose https://archive.apache.org/dist/solr/solr/9.8.1/solr-9.8.1-slim.tgz
+            sudo tar xzf solr-9.8.1-slim.tgz solr-9.8.1-slim/bin/install_solr_service.sh --strip-components=2
+            sudo ./install_solr_service.sh solr-9.8.1-slim.tgz -n
 
       - run:
           name: Change solr home directory
@@ -83,19 +65,42 @@ jobs:
             mkdir jitterbug-instances
             mkdir jitterbug-transfers
             cd jitterbug-items
+            mkdir lib
             cat ~/jitterbug/dev_files/jitterbug-items.core.properties.example > core.properties
             ln -s ~/jitterbug/solrconfig/jitterbug-items/conf conf
             cd ..
             cd jitterbug-instances
+            mkdir lib
             cat ~/jitterbug/dev_files/jitterbug-instances.core.properties.example > core.properties
             ln -s ~/jitterbug/solrconfig/jitterbug-instances/conf conf
             cd ..
             cd jitterbug-transfers
+            mkdir lib
             cat ~/jitterbug/dev_files/jitterbug-transfers.core.properties.example > core.properties
             ln -s ~/jitterbug/solrconfig/jitterbug-transfers/conf conf
             cd /opt/solr
             bin/solr start
             cd ~/jitterbug
+
+      - run:
+          name: Setup DataImportHandler
+          command: |
+            cd ~/jitterbug
+            sudo wget --no-verbose https://github.com/SearchScale/dataimporthandler/releases/download/v9.7.0/data-import-handler-9.7.0.jar
+            sudo cp ~/jitterbug/data-import-handler-9.7.0.jar /opt/solr/server/solr/jitterbug-items/lib/.
+            sudo cp ~/jitterbug/data-import-handler-9.7.0.jar /opt/solr/server/solr/jitterbug-instances/lib/.
+            sudo cp ~/jitterbug/data-import-handler-9.7.0.jar /opt/solr/server/solr/jitterbug-transfers/lib/.
+
+      - run:
+          name: Get and hook up connector file
+          command: |
+            cd ~/jitterbug
+            sudo wget --no-verbose -nc http://www.mirrorservice.org/sites/ftp.mysql.com/Downloads/Connector-J/mysql-connector-java-8.0.28.zip
+            sudo unzip -n mysql-connector-java-8.0.28.zip
+            cd /
+            sudo cp ~/jitterbug/mysql-connector-java-8.0.28/mysql-connector-java-8.0.28.jar /opt/solr/server/solr/jitterbug-items/lib/.
+            sudo cp ~/jitterbug/mysql-connector-java-8.0.28/mysql-connector-java-8.0.28.jar /opt/solr/server/solr/jitterbug-instances/lib/.
+            sudo cp ~/jitterbug/mysql-connector-java-8.0.28/mysql-connector-java-8.0.28.jar /opt/solr/server/solr/jitterbug-transfers/lib/.
 
       # Download and cache dependencies
       - restore_cache:
