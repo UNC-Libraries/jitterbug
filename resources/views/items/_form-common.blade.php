@@ -8,6 +8,8 @@
             @if (!$item->batch())
               @if (routeName() === 'items.create')
                 {{ html()->text('call_number')->id('call-number')->class('form-control form-control-sm')->isReadonly()->placeholder('Will be auto-generated') }}
+              @else
+                {{ html()->text('call_number')->id('call-number')->class('form-control form-control-sm')->isReadonly() }}
               @endif
               @if ($errors->has('call_number'))
                 <div class="form-control-label"><small>{!! $errors->first('call_number') !!}</small></div>
