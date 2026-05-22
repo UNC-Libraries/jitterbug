@@ -2,7 +2,7 @@
       <div class="row">
         <div class="mb-3 @if ($errors->has('call_number')) has-danger @endif">
           <div class="col-sm-4 col-sm-offset-1 detail-label">
-            {{ html()->label('Call Number', 'call_number')->class('form-control-label')->isReadonly() }}
+            {{ html()->label('Call Number', 'call_number')->class('form-control-label') }}
           </div>
           <div class="col-sm-7 detail-value">
             @if (!$item->batch())
