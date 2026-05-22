@@ -337,8 +337,7 @@ class ItemsController extends Controller implements HasMiddleware
         $subclass->fill($input['subclass']);
 
         $updateSolrInstancesAndTransfers = false;
-        if ($item->isDirty('call_number') || $item->isDirty('collection_id') ||
-                                         $item->isDirty('format_id')) {
+        if ($item->isDirty('collection_id') || $item->isDirty('format_id')) {
             $updateSolrInstancesAndTransfers = true;
         }
 
@@ -346,40 +345,6 @@ class ItemsController extends Controller implements HasMiddleware
         DB::transaction(function () use ($item, $subclass) {
             $transactionId = Uuid::uuid4();
             DB::statement("set @transaction_id = '$transactionId';");
-
-            $newCall = $item->call_number;
-            // Update call number everywhere if it has changed
-            if ($item->isDirty('call_number')) {
-                $subclass->call_number = $newCall;
-
-                $origCall = $item->getOriginal()['call_number'];
-                
-
-                // Yes, it would be nice (and more performant) if we
-                // could use the batch update syntax for this, rather
-                // than fetching and iterating over the results, then
-                // calling save. Unfortunately, the batch update
-                // syntax doesn't fire model events, which we need for
-                // auditing.
-                $instances = PreservationInstance::where('call_number', $origCall)->get();
-                foreach ($instances as $instance) {
-                    $instance->call_number = $newCall;
-                    $instance->save();
-                }
-
-                $cuts = Cut::where('call_number', $origCall)->get();
-                foreach ($cuts as $cut) {
-                    $cut->call_number = $newCall;
-                    $cut->save();
-                }
-
-                $transfers = Transfer::where('call_number', $origCall)->get();
-                foreach ($transfers as $transfer) {
-                    $transfer->call_number = $newCall;
-                    $transfer->save();
-                }
-
-            }
 
             $subclass->save();
             $item->touch();
@@ -437,8 +402,7 @@ class ItemsController extends Controller implements HasMiddleware
                 $subclass = $item->subclass;
                 $subclass->fill($input['subclass']);
 
-                if ($item->isDirty('collection_id') ||
-            $item->isDirty('format_id')) {
+                if ($item->isDirty('collection_id') || $item->isDirty('format_id')) {
                     $collectionOrFormatUpdated[] = $item;
                 }
 
