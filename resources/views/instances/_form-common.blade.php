@@ -2,14 +2,10 @@
       <div class="row">
         <div class="mb-3 @if ($errors->has('call_number')) has-danger @endif">
           <div class="col-sm-4 col-sm-offset-1 detail-label">
-            {{ html()->label('Call Number', 'call_number')->class('form-control-label') }}
+            {{ html()->label('Call Number', 'call_number')->class('form-control-label')->isReadonly() }}
           </div>
           <div class="col-sm-7 detail-value">
-            @if (isset($linked) && $linked)
-              {{ html()->text('call_number')->class('form-control form-control-sm')->isReadonly() }}
-            @else
-              {{ html()->text('call_number')->class('form-control form-control-sm') }}
-            @endif
+            {{ html()->text('call_number')->class('form-control form-control-sm')->isReadonly() }}
             @if ($errors->has('call_number'))
               <div class="form-control-label"><small>{!! $errors->first('call_number') !!}</small></div>
             @endif
