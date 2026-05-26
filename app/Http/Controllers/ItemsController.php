@@ -381,12 +381,6 @@ class ItemsController extends Controller implements HasMiddleware
 
             }
 
-            // increase call number sequence since the new one is now used
-            $prefix = explode('-', $newCall)[0];
-            $sequence = NewCallNumberSequence::where('prefix', '=', $prefix)->
-                  where('collection_id', '=', $item->collection_id)->first();
-            $sequence->increase();
-
             $subclass->save();
             $item->touch();
             $item->save();
