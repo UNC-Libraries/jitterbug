@@ -381,10 +381,26 @@ class InstancesController extends Controller implements HasMiddleware
         $instance->fill($input);
         $subclass->fill($input['subclass']);
 
+        // This will be uncommon
+        $callNumberChanged = $instance->isDirty('call_number');
+
         // Update MySQL
         DB::transaction(function () use ($instance, $subclass, $callNumberChanged) {
             $transactionId = Uuid::uuid4();
             DB::statement("set @transaction_id = '$transactionId';");
+
+            if ($callNumberChanged) {
+                $transfers = $instance->transfers;
+                foreach ($transfers as $transfer) {
+                    $transfer->call_number = $instance->call_number;
+                    $transfer->save();
+                }
+                $cuts = $instance->cuts;
+                foreach ($cuts as $cut) {
+                    $cut->call_number = $instance->call_number;
+                    $cut->save();
+                }
+            }
 
             $subclass->save();
             $instance->touch(); // Touch in case not dirty and subclass is dirty
@@ -394,6 +410,17 @@ class InstancesController extends Controller implements HasMiddleware
         });
 
         // Update Solr
+        if ($callNumberChanged) {
+            // Need to update the original and new related items in Solr in case cuts
+            // were on the original.
+            $originalItem =
+        AudioVisualItem::where('call_number', $originalCallNumber)->first();
+            $newItem =
+        AudioVisualItem::where('call_number', $instance->call_number)->first();
+            $this->solrItems->update([$originalItem, $newItem]);
+            // Need to update transfers since the call number has changed.
+            $this->solrTransfers->update($instance->transfers);
+        }
         $this->solrInstances->update($instance);
 
         $request->session()->put('alert', ['type' => 'success', 'message' => '<strong>Yep.</strong> '.
