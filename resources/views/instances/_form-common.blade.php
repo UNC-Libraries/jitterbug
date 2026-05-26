@@ -5,7 +5,11 @@
             {{ html()->label('Call Number', 'call_number')->class('form-control-label') }}
           </div>
           <div class="col-sm-7 detail-value">
-            {{ html()->text('call_number')->class('form-control form-control-sm') }}
+            @if (isset($linked) && $linked)
+              {{ html()->text('call_number')->class('form-control form-control-sm')->isReadonly() }}
+            @else
+              {{ html()->text('call_number')->class('form-control form-control-sm') }}
+            @endif
             @if ($errors->has('call_number'))
               <div class="form-control-label"><small>{!! $errors->first('call_number') !!}</small></div>
             @endif
