@@ -36,14 +36,27 @@
     "src": "node_modules/chosen-js/chosen-sprite@2x.png"
   },
   "resources/assets/js/app.js": {
-    "file": "assets/app-CjrxpgHt.js",
+    "file": "assets/app-CWgir_aI.js",
     "name": "app",
     "src": "resources/assets/js/app.js",
     "isEntry": true
   },
   "resources/assets/sass/app.scss": {
-    "file": "assets/app-r2J6eUoX.css",
+    "file": "assets/app-Csv7ZvLA.css",
+    "name": "app",
+    "names": [
+      "app.css"
+    ],
     "src": "resources/assets/sass/app.scss",
-    "isEntry": true
+    "isEntry": true,
+    "assets": [
+      "assets/fontawesome-webfont-G5YE5S7X.eot",
+      "assets/fontawesome-webfont-B-jkhYfk.woff2",
+      "assets/fontawesome-webfont-CDK5bt4p.woff",
+      "assets/fontawesome-webfont-CQDK8MU3.ttf",
+      "assets/fontawesome-webfont-D13rzr4g.svg",
+      "assets/chosen-sprite-BTe4w5m6.png",
+      "assets/chosen-sprite@2x-WTw8_Bjt.png"
+    ]
   }
 }
