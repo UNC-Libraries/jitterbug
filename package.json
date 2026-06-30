@@ -13,7 +13,7 @@
         "concurrently": "^9.0.1",
         "cross-env": "^7.0.3",
         "datatables.net-dt": "^2.3.4",
-        "devbridge-autocomplete": "1.5.0",
+        "devbridge-autocomplete": "2.0.1",
         "flatpickr": "^4.6.13",
         "font-awesome": "^4.7.0",
         "jquery": "^3.7.1",
