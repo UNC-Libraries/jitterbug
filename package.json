@@ -13,16 +13,16 @@
         "concurrently": "^9.0.1",
         "cross-env": "^7.0.3",
         "datatables.net-dt": "^2.3.4",
-        "devbridge-autocomplete": "2.0.1",
+        "devbridge-autocomplete": "2.0.7",
         "flatpickr": "^4.6.13",
         "font-awesome": "^4.7.0",
         "jquery": "^3.7.1",
         "laravel-vite-plugin": "^3.1.0",
-        "postcss": "^8.5.23",
+        "postcss": "^8.5.32",
         "resolve-url-loader": "^5.0.0",
         "sass": "^1.77.2",
         "sass-loader": "^14.2.1",
-        "vite": "^8.1.6"
+        "vite": "^8.3.7"
     },
     "optionalDependencies": {
         "@rollup/rollup-linux-arm64-gnu": "4.52.0"
