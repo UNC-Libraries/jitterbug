@@ -132,8 +132,13 @@ Header & Footer
   float: right;
 }
 
-#support-nav a {
+#support-nav a,
+#support-nav button {
   color: $gray-800;
+}
+
+#support-nav button {
+  font-size: inherit;
 }
 
 #support-nav ul {
