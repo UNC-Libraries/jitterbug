@@ -147,7 +147,7 @@ abstract class Export
             $fieldValue = $model->$fieldName;
         }
 
-        return $fieldValue;
+        return $this->safeCsvValue($fieldValue);
     }
 
     private function hasDisplayAccessor($model, $fieldName)
@@ -163,5 +163,24 @@ abstract class Export
     private function isForeignKey($fieldName)
     {
         return ends_with($fieldName, '_id');
+    }
+
+    /**
+     * Prepend a single quote to the value if it starts with a character that
+     * could be interpreted as a formula in Excel. This is a security measure
+     * to prevent CSV injection attacks.
+     *
+     * @param string $value
+     * @return string
+     */
+    private function safeCsvValue($value)
+    {
+        if (!is_string($value)) {
+            return $value;
+        }
+
+        // Prefix a single quote if the value starts (optionally after whitespace)
+        // with =, +, -, or @—characters that spreadsheet apps may treat as formulas.
+        return preg_match('/^\s*[=+\-@]/', $value) === 1 ? "'".$value : $value;
     }
 }
