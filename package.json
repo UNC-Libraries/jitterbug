@@ -8,21 +8,21 @@
     "devDependencies": {
         "@popperjs/core": "^2.11.8",
         "@rollup/plugin-inject": "5.0.5",
-        "bootstrap": "^5.3.7",
+        "bootstrap": "^5.3.9",
         "chosen-js": "^1.8.7",
-        "concurrently": "^9.0.1",
-        "cross-env": "^7.0.3",
-        "datatables.net-dt": "^2.3.4",
+        "concurrently": "^10.0.7",
+        "cross-env": "^10.1.0",
+        "datatables.net-dt": "^2.3.8",
         "devbridge-autocomplete": "2.0.7",
         "flatpickr": "^4.6.13",
         "font-awesome": "^4.7.0",
-        "jquery": "^3.7.1",
-        "laravel-vite-plugin": "^3.1.0",
-        "postcss": "^8.5.32",
+        "jquery": "^3.8.0",
+        "laravel-vite-plugin": "^3.2.1",
+        "postcss": "^8.5.33",
         "resolve-url-loader": "^5.0.0",
-        "sass": "^1.77.2",
-        "sass-loader": "^14.2.1",
-        "vite": "^8.3.7"
+        "sass": "^1.108.2",
+        "sass-loader": "^17.1.1",
+        "vite": "^8.3.8"
     },
     "optionalDependencies": {
         "@rollup/rollup-linux-arm64-gnu": "4.52.0"

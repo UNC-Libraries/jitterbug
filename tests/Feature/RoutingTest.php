@@ -28,4 +28,23 @@ class RoutingTest extends TestCase
 
         $this->assertEquals(200, $response->getStatusCode());
     }
+
+    public function test_logout_requires_post(): void
+    {
+        $user = User::factory()->create();
+        $this->be($user);
+
+        $this->get('/logout')->assertStatus(405);
+    }
+
+    public function test_post_logout_logs_user_out(): void
+    {
+        $user = User::factory()->create();
+        $this->be($user);
+
+        $this->post('/logout')
+            ->assertRedirect('/login?logout=true');
+
+        $this->assertGuest();
+    }
 }

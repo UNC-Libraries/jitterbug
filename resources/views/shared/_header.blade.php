@@ -8,7 +8,10 @@
               </li>
               @endif
               <li class="last">
-                <a href="/logout">Sign Out</a>
+                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                  @csrf
+                  <button type="submit" class="btn btn-link p-0">Sign Out</button>
+                </form>
               </li>
             </ul>
           </div>
