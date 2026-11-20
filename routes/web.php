@@ -194,4 +194,4 @@ Route::resource('transfers', TransfersController::class);
 
 Route::get('login', [Auth\LoginController::class, 'showLoginForm'])->name('loginForm');
 Route::post('login', [Auth\LoginController::class, 'login'])->name('login');
-Route::get('logout', [Auth\LoginController::class, 'logout'])->name('logout');
+Route::post('logout', [Auth\LoginController::class, 'logout'])->name('logout');
